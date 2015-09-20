@@ -13,7 +13,15 @@ class TurfTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+
+        let db = try! Database(name: "test")!
+        let connection = db.newConnection()!
+        connection.readWriteTransaction { (transaction) -> Void in
+            let col = ReadOnlyCollection<Int>(name: "test", readTransaction: transaction)
+            let key = col.allKeys()[0]
+//            let val = col.valueForKey(12)
+        }
+
     }
     
     override func tearDown() {
