@@ -10,6 +10,7 @@
 		72B616E41BAF474A00CFE67C /* Turf.h in Headers */ = {isa = PBXBuildFile; fileRef = 72B616E31BAF474A00CFE67C /* Turf.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		72B616EB1BAF474A00CFE67C /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B616E01BAF474A00CFE67C /* Turf.framework */; settings = {ASSET_TAGS = (); }; };
 		72B616F01BAF474A00CFE67C /* TurfTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B616EF1BAF474A00CFE67C /* TurfTests.swift */; };
+		72B616FB1BAF47F700CFE67C /* Milk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B616FA1BAF47F700CFE67C /* Milk.framework */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		72B616EA1BAF474A00CFE67C /* TurfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TurfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B616EF1BAF474A00CFE67C /* TurfTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurfTests.swift; sourceTree = "<group>"; };
 		72B616F11BAF474A00CFE67C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		72B616FA1BAF47F700CFE67C /* Milk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Milk.framework; path = Carthage/Build/iOS/Milk.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72B616FB1BAF47F700CFE67C /* Milk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +56,7 @@
 		72B616D61BAF474A00CFE67C = {
 			isa = PBXGroup;
 			children = (
+				72B616FA1BAF47F700CFE67C /* Milk.framework */,
 				72B616E21BAF474A00CFE67C /* Turf */,
 				72B616EE1BAF474A00CFE67C /* TurfTests */,
 				72B616E11BAF474A00CFE67C /* Products */,
@@ -108,6 +112,7 @@
 				72B616DC1BAF474A00CFE67C /* Frameworks */,
 				72B616DD1BAF474A00CFE67C /* Headers */,
 				72B616DE1BAF474A00CFE67C /* Resources */,
+				72B616FC1BAF481100CFE67C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -187,6 +192,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		72B616FC1BAF481100CFE67C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Milk.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		72B616DB1BAF474A00CFE67C /* Sources */ = {
@@ -311,6 +333,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Turf/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -327,6 +353,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Turf/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
