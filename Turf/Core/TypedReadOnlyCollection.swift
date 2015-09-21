@@ -33,7 +33,7 @@ public class TypedReadOnlyCollection<TPrimaryKey: AllowedPrimaryKeyType, TValue:
 
     public func valueForKey(primaryKey: TPrimaryKey) -> TValue? {
         let data = NSData()
-        return TValue.deserialize(try! serializer.fromData(data)!)
+        return TValue.deserialize(try! serializer.init(data: data)!)
     }
 
     public func metadataForKey(primaryKey: String) -> TValue? {

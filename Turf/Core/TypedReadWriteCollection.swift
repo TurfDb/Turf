@@ -9,12 +9,6 @@
 import Foundation
 import Milk
 
-extension Serializer {
-    init() {
-        
-    }
-}
-
 public class TypedReadWriteCollection<TPrimaryKey: AllowedPrimaryKeyType, TValue: Serializable, TMetadata: Serializable, TSerializer: Serializer>: Collection {
     public let name: String
 
@@ -39,7 +33,7 @@ public class TypedReadWriteCollection<TPrimaryKey: AllowedPrimaryKeyType, TValue
 
     public func valueForKey(primaryKey: TPrimaryKey) -> TValue? {
         let data = NSData()
-        return TValue.deserialize(try! serializer.fromData(data)!)
+        return TValue.deserialize(try! serializer.init(data: data)!)
     }
 
     public func metadataForKey(primaryKey: String) -> TMetadata? {
