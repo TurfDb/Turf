@@ -17,6 +17,8 @@ public class Connection {
     public private(set) var snapshot: UInt
     public private(set) var hasOpenedEndedReadTransaction: Bool
 
+    internal let databaseAdapter: KeyValueSQLiteAdapter
+
     internal init(database: Database) {
         self.database = database
         self.cacheEnabled = true
@@ -24,6 +26,8 @@ public class Connection {
 
         self.snapshot = 0
         self.hasOpenedEndedReadTransaction = false
+
+        self.databaseAdapter = KeyValueSQLiteAdapter()
     }
 
     public func readTransaction(operations: (ReadTransaction) -> Void) {

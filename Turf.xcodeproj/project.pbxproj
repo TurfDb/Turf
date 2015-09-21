@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		724C1D2D1BB0C0890030EAA1 /* SQLiteDatabaseInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C1D2C1BB0C0890030EAA1 /* SQLiteDatabaseInitializer.swift */; settings = {ASSET_TAGS = (); }; };
+		724C1D2F1BB0C0BD0030EAA1 /* SQLiteWALCheckpointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C1D2E1BB0C0BD0030EAA1 /* SQLiteWALCheckpointer.swift */; settings = {ASSET_TAGS = (); }; };
+		724C1D321BB0C1540030EAA1 /* ConnectionSnapshoter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C1D311BB0C1540030EAA1 /* ConnectionSnapshoter.swift */; settings = {ASSET_TAGS = (); }; };
+		724C1D341BB0C1950030EAA1 /* ChangeSetGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C1D331BB0C1950030EAA1 /* ChangeSetGenerator.swift */; settings = {ASSET_TAGS = (); }; };
+		724C1D361BB0C3FA0030EAA1 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C1D351BB0C3FA0030EAA1 /* Cache.swift */; settings = {ASSET_TAGS = (); }; };
+		724C1D381BB0C41F0030EAA1 /* ConnectionSnapshotCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C1D371BB0C41F0030EAA1 /* ConnectionSnapshotCache.swift */; settings = {ASSET_TAGS = (); }; };
 		72B616E41BAF474A00CFE67C /* Turf.h in Headers */ = {isa = PBXBuildFile; fileRef = 72B616E31BAF474A00CFE67C /* Turf.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		72B616EB1BAF474A00CFE67C /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B616E01BAF474A00CFE67C /* Turf.framework */; settings = {ASSET_TAGS = (); }; };
 		72B616F01BAF474A00CFE67C /* TurfTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B616EF1BAF474A00CFE67C /* TurfTests.swift */; };
@@ -23,6 +29,7 @@
 		72B617131BAF4FFF00CFE67C /* TypedReadOnlyCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B617121BAF4FFF00CFE67C /* TypedReadOnlyCollection.swift */; settings = {ASSET_TAGS = (); }; };
 		72B617151BAF507D00CFE67C /* TypedReadWriteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B617141BAF507D00CFE67C /* TypedReadWriteCollection.swift */; settings = {ASSET_TAGS = (); }; };
 		72B617171BAF537600CFE67C /* AllowedPrimaryKeyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B617161BAF537600CFE67C /* AllowedPrimaryKeyType.swift */; settings = {ASSET_TAGS = (); }; };
+		72DB066E1BB007150027608C /* KeyValueSQLiteAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DB066D1BB007150027608C /* KeyValueSQLiteAdapter.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +43,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		724C1D2C1BB0C0890030EAA1 /* SQLiteDatabaseInitializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteDatabaseInitializer.swift; sourceTree = "<group>"; };
+		724C1D2E1BB0C0BD0030EAA1 /* SQLiteWALCheckpointer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteWALCheckpointer.swift; sourceTree = "<group>"; };
+		724C1D311BB0C1540030EAA1 /* ConnectionSnapshoter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSnapshoter.swift; sourceTree = "<group>"; };
+		724C1D331BB0C1950030EAA1 /* ChangeSetGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeSetGenerator.swift; sourceTree = "<group>"; };
+		724C1D351BB0C3FA0030EAA1 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		724C1D371BB0C41F0030EAA1 /* ConnectionSnapshotCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSnapshotCache.swift; sourceTree = "<group>"; };
 		72B616E01BAF474A00CFE67C /* Turf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Turf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B616E31BAF474A00CFE67C /* Turf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Turf.h; sourceTree = "<group>"; };
 		72B616E51BAF474A00CFE67C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -55,6 +68,7 @@
 		72B617121BAF4FFF00CFE67C /* TypedReadOnlyCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedReadOnlyCollection.swift; sourceTree = "<group>"; };
 		72B617141BAF507D00CFE67C /* TypedReadWriteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedReadWriteCollection.swift; sourceTree = "<group>"; };
 		72B617161BAF537600CFE67C /* AllowedPrimaryKeyType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllowedPrimaryKeyType.swift; sourceTree = "<group>"; };
+		72DB066D1BB007150027608C /* KeyValueSQLiteAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyValueSQLiteAdapter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +91,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		724C1D301BB0C12C0030EAA1 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				724C1D351BB0C3FA0030EAA1 /* Cache.swift */,
+				724C1D331BB0C1950030EAA1 /* ChangeSetGenerator.swift */,
+				724C1D311BB0C1540030EAA1 /* ConnectionSnapshoter.swift */,
+				724C1D371BB0C41F0030EAA1 /* ConnectionSnapshotCache.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		72B616D61BAF474A00CFE67C = {
 			isa = PBXGroup;
 			children = (
@@ -99,11 +124,13 @@
 		72B616E21BAF474A00CFE67C /* Turf */ = {
 			isa = PBXGroup;
 			children = (
+				724C1D301BB0C12C0030EAA1 /* Core */,
 				72B617091BAF496500CFE67C /* ConnectionPool */,
+				72B616FD1BAF485E00CFE67C /* CoreAPI */,
 				72B617001BAF48A600CFE67C /* Extensions */,
-				72B616FD1BAF485E00CFE67C /* Core */,
-				72B616E31BAF474A00CFE67C /* Turf.h */,
 				72B616E51BAF474A00CFE67C /* Info.plist */,
+				72DB066C1BB006EA0027608C /* SQLAdapter */,
+				72B616E31BAF474A00CFE67C /* Turf.h */,
 			);
 			path = Turf;
 			sourceTree = "<group>";
@@ -117,7 +144,7 @@
 			path = TurfTests;
 			sourceTree = "<group>";
 		};
-		72B616FD1BAF485E00CFE67C /* Core */ = {
+		72B616FD1BAF485E00CFE67C /* CoreAPI */ = {
 			isa = PBXGroup;
 			children = (
 				72B617161BAF537600CFE67C /* AllowedPrimaryKeyType.swift */,
@@ -131,7 +158,7 @@
 				72B617121BAF4FFF00CFE67C /* TypedReadOnlyCollection.swift */,
 				72B617141BAF507D00CFE67C /* TypedReadWriteCollection.swift */,
 			);
-			path = Core;
+			path = CoreAPI;
 			sourceTree = "<group>";
 		};
 		72B617001BAF48A600CFE67C /* Extensions */ = {
@@ -148,6 +175,16 @@
 				72B6170A1BAF499700CFE67C /* ConnectionPool.swift */,
 			);
 			path = ConnectionPool;
+			sourceTree = "<group>";
+		};
+		72DB066C1BB006EA0027608C /* SQLAdapter */ = {
+			isa = PBXGroup;
+			children = (
+				72DB066D1BB007150027608C /* KeyValueSQLiteAdapter.swift */,
+				724C1D2C1BB0C0890030EAA1 /* SQLiteDatabaseInitializer.swift */,
+				724C1D2E1BB0C0BD0030EAA1 /* SQLiteWALCheckpointer.swift */,
+			);
+			path = SQLAdapter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,15 +313,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72DB066E1BB007150027608C /* KeyValueSQLiteAdapter.swift in Sources */,
 				72B616FF1BAF487200CFE67C /* Database.swift in Sources */,
+				724C1D341BB0C1950030EAA1 /* ChangeSetGenerator.swift in Sources */,
 				72B617171BAF537600CFE67C /* AllowedPrimaryKeyType.swift in Sources */,
 				72B617041BAF48F000CFE67C /* Connection.swift in Sources */,
+				724C1D381BB0C41F0030EAA1 /* ConnectionSnapshotCache.swift in Sources */,
 				72B617131BAF4FFF00CFE67C /* TypedReadOnlyCollection.swift in Sources */,
 				72B617061BAF492400CFE67C /* ReadTransaction.swift in Sources */,
 				72B6170B1BAF499700CFE67C /* ConnectionPool.swift in Sources */,
 				72B617081BAF494600CFE67C /* ReadWriteTransaction.swift in Sources */,
+				724C1D2F1BB0C0BD0030EAA1 /* SQLiteWALCheckpointer.swift in Sources */,
+				724C1D361BB0C3FA0030EAA1 /* Cache.swift in Sources */,
 				72B6170F1BAF4DB000CFE67C /* ReadOnlyCollection.swift in Sources */,
+				724C1D2D1BB0C0890030EAA1 /* SQLiteDatabaseInitializer.swift in Sources */,
 				72B617111BAF4E0100CFE67C /* ReadWriteCollection.swift in Sources */,
+				724C1D321BB0C1540030EAA1 /* ConnectionSnapshoter.swift in Sources */,
 				72B6170D1BAF4D7300CFE67C /* Collection.swift in Sources */,
 				72B617151BAF507D00CFE67C /* TypedReadWriteCollection.swift in Sources */,
 				72B617021BAF48BE00CFE67C /* Extension.swift in Sources */,

@@ -14,7 +14,7 @@ class ConnectionPool {
     private unowned let database: Database
 
     private class PooledConnection {
-        let connection: Connection
+        let connection: Connection//TODO Swap for sqlite3 *db
         var timestamp: NSDate
         var inUse: Bool
 
@@ -54,5 +54,9 @@ class ConnectionPool {
             pooledConnection.inUse = false
             pooledConnection.timestamp = NSDate()
         }
+    }
+
+    func closeAllPooledConnections(onAllClosed onAllClosed: () -> Void) {
+
     }
 }
