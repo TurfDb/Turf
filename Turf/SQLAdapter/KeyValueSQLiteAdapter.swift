@@ -7,8 +7,16 @@
 //
 
 import Foundation
+import SQLite
 
 internal class KeyValueSQLiteAdapter {
+
+    let db: SQLite.Connection
+
+    init(db: SQLite.Connection) {
+        self.db = db
+    }
+
     func collectionNames() -> [String] {
         return []
     }

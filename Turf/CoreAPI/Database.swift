@@ -10,6 +10,8 @@ import Foundation
 
 public class Database {
 
+    public let path: String
+
     private lazy var connectionPool: ConnectionPool = {
         [unowned self] in
         return ConnectionPool(database: self, maximumPoolSize: 1)
@@ -17,10 +19,10 @@ public class Database {
 
     ///
     /// Create and register a new database with the given name.
-    /// :param: name This could be a path to the database file.
+    /// :param: path A path to the database file.
     ///
-    public init?(name: String) throws {
-        
+    public init?(path: String) throws {
+        self.path = path
     }
 
     ///

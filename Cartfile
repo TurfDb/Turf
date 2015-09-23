@@ -1,1 +1,2 @@
 github "jordanhamill/Milk"
+github "stephencelis/SQLite.swift" "swift-2"

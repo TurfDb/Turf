@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SQLite
 
 public class Connection {
 
@@ -19,6 +20,8 @@ public class Connection {
 
     internal let databaseAdapter: KeyValueSQLiteAdapter
 
+    private let db: SQLite.Connection
+
     internal init(database: Database) {
         self.database = database
         self.cacheEnabled = true
@@ -27,7 +30,9 @@ public class Connection {
         self.snapshot = 0
         self.hasOpenedEndedReadTransaction = false
 
-        self.databaseAdapter = KeyValueSQLiteAdapter()
+        self.db = try! SQLite.Connection(database.path)
+
+        self.databaseAdapter = KeyValueSQLiteAdapter(db: self.db)
     }
 
     public func readTransaction(operations: (ReadTransaction) -> Void) {
