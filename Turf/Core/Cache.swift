@@ -21,6 +21,16 @@ internal class Cache<T> {
         self.mapTable = NSMapTable(keyOptions: .StrongMemory, valueOptions: .StrongMemory)
     }
 
+    subscript(key: String) -> T? {
+        get {
+            return valueForKey(key)
+        }
+
+        set {
+            setValue(newValue!, forKey: key)
+        }
+    }
+
     func setValue(value: T, forKey key: String) {
         if let existingEntry = mapTable[key] as? CacheEntry<T> {
             // Update item value

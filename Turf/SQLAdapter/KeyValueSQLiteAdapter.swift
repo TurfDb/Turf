@@ -13,11 +13,16 @@ internal class KeyValueSQLiteAdapter {
 
     let db: SQLite.Connection
 
+    private let queryCache: SQLStatementCache
+
     init(db: SQLite.Connection) {
         self.db = db
+        self.queryCache = SQLStatementCache()
     }
 
     func collectionNames() -> [String] {
+        let q = queryCache.query(key: "col names", query: db.prepare("INSERT INTO users (email) VALUES (?)"))
+        try! q.run([])
         return []
     }
 
