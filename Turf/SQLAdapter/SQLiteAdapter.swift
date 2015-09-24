@@ -71,7 +71,6 @@ internal class SQLiteAdapter: NSObject {
             t.unique(extensionsTable.name)
             t.column(extensionsTable.version, defaultValue: 0)
             t.column(extensionsTable.data)
-            //Future proofing to allow migration handling in case core extension internals may change
             t.column(extensionsTable.turfExtensionVersion, defaultValue: 0)
         })
     }

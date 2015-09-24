@@ -28,7 +28,7 @@ public class ReadTransaction {
     }
 
     public func numberOfKeysInAllCollections() -> UInt {
-        return 0
+        return 0//TODO Eh? make sense any more?
     }
 
     // MARK: List

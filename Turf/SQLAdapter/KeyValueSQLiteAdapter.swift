@@ -26,23 +26,40 @@ internal class KeyValueSQLiteAdapter {
 
 extension KeyValueSQLiteAdapter {
     // MARK: Collections creation/deletion
+    func createCollectionTableNamed<T: AllowedPrimaryKeyType>(name: String, primaryKeyType: T.Type) throws -> SQLCollectionTable<T> {
+        let table = SQLCollectionTable<T>(name: name)
 
+        //TODO Check if it exists first
+        if true {
+            try db.run(table.T.create { t in
+                t.primaryKey(table.key)
+                t.column(table.data)
+                t.column(table.metadata)
+                })
+        }
+
+        return table
+    }
+
+    func dropCollectionTable<T: AllowedPrimaryKeyType>(table: SQLCollectionTable<T>) throws {
+
+    }
 }
 
 extension KeyValueSQLiteAdapter {
     // MARK: Collections queries
-    func collectionNames() -> [String] {
-        let q = queryCache.query(key: "col names", query: db.prepare("INSERT INTO users (email) VALUES (?)"))
-        try! q.run([])
+
+    func numberOfCollections() -> UInt {
+        //        let q = queryCache.query(key: "col names", query: db.prepare("INSERT INTO users (email) VALUES (?)"))
+        return 0
+    }
+
+    func collectionNames() throws -> [String] {
         return []
     }
 
-    func primaryKeyTypes() -> [String: AllowedPrimaryKeyType] {
+    func collectionPrimaryKeyTypes() -> [String: AllowedPrimaryKeyType.Type] {
         return [:]
-    }
-
-    func numberOfCollections() -> UInt {
-        return 0
     }
 }
 
