@@ -58,9 +58,10 @@ public final class Database {
         self.databaseWriteQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-queue")
         self.connectionSetUpQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.setup-queue")
 
-        let temp = Unmanaged<dispatch_queue_t>.passUnretained(databaseWriteQueue).toOpaque()
-        let context = UnsafeMutablePointer<Void>(temp)
-        dispatch_queue_set_specific(self.databaseWriteQueue, databaseWriteQueueKey, context, nil)
+//        let temp = Unmanaged<dispatch_queue_t>.passUnretained(databaseWriteQueue).toOpaque()
+//        let context = UnsafeMutablePointer<Void>(temp)
+//        dispatch_queue_set_specific(self.databaseWriteQueue, databaseWriteQueueKey, context, nil)
+        Dispatch.Queues.setContext(databaseWriteQueueKey, forQueue: self.databaseWriteQueue)
 
         try setUpCollections(collections)
     }
@@ -223,9 +224,10 @@ public final class Database {
     }
 
     func isOnWriteQueue() -> Bool {
-        let temp = Unmanaged<dispatch_queue_t>.passUnretained(databaseWriteQueue).toOpaque()
-        let context = UnsafeMutablePointer<Void>(temp)
-        return dispatch_get_specific(databaseWriteQueueKey) == context
+//        let temp = Unmanaged<dispatch_queue_t>.passUnretained(databaseWriteQueue).toOpaque()
+//        let context = UnsafeMutablePointer<Void>(temp)
+//        return dispatch_get_specific(databaseWriteQueueKey) == context
+        return Dispatch.Queues.isOnQueue(databaseWriteQueue, withKey: databaseWriteQueueKey)
     }
 
     // MARK: Private methods
