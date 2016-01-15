@@ -1,7 +1,6 @@
 import Foundation
 
 private let databaseWriteQueueKey = "databaseWriteQueueKey".UTF8String
-private var databaseWriteQueueKeyValue = "databaseWriteQueueKeyValue".UTF8String
 
 public final class Database {
     // MARK: Public properties
@@ -58,7 +57,10 @@ public final class Database {
         self.minCacheUpdatesSnapshot = 0
         self.databaseWriteQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-queue")
         self.connectionSetUpQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.setup-queue")
-        dispatch_queue_set_specific(self.databaseWriteQueue, databaseWriteQueueKey, &databaseWriteQueueKeyValue, nil)
+
+        let temp = Unmanaged<dispatch_queue_t>.passUnretained(databaseWriteQueue).toOpaque()
+        let context = UnsafeMutablePointer<Void>(temp)
+        dispatch_queue_set_specific(self.databaseWriteQueue, databaseWriteQueueKey, context, nil)
 
         try setUpCollections(collections)
     }
@@ -221,8 +223,9 @@ public final class Database {
     }
 
     func isOnWriteQueue() -> Bool {
-        //TODO Will this work with many Database()s
-        return dispatch_get_specific(databaseWriteQueueKey) == &databaseWriteQueueKeyValue
+        let temp = Unmanaged<dispatch_queue_t>.passUnretained(databaseWriteQueue).toOpaque()
+        let context = UnsafeMutablePointer<Void>(temp)
+        return dispatch_get_specific(databaseWriteQueueKey) == context
     }
 
     // MARK: Private methods
