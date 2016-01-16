@@ -224,18 +224,19 @@ public final class Database {
     }
 
     func isOnWriteQueue() -> Bool {
-//        let temp = Unmanaged<dispatch_queue_t>.passUnretained(databaseWriteQueue).toOpaque()
-//        let context = UnsafeMutablePointer<Void>(temp)
-//        return dispatch_get_specific(databaseWriteQueueKey) == context
         return Dispatch.Queues.isOnQueue(databaseWriteQueue, withKey: databaseWriteQueueKey)
     }
 
     // MARK: Private methods
 
     private func setUpCollections(collections: CollectionsContainer) throws {
-        try newConnection().syncReadWriteTransaction { transaction in
-            transaction.connection.sqlite.setSnapshot(0)
-            collections.setUpCollections(transaction: transaction)
+        let connection = try newConnection()
+        connection.sqlite.setSnapshot(0)
+
+        Dispatch.synchronouslyOn(connection.connectionQueue) {
+            connection.syncReadWriteTransaction { transaction in
+                collections.setUpCollections(transaction: transaction)
+            }
         }
     }
 }

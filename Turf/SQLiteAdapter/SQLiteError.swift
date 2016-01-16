@@ -7,4 +7,11 @@ public enum SQLiteError: ErrorType {
 
     /// Any error from a sqlite3 call
     case Error(code: Int32, reason: String?)
+
+    /// sqlite3_prepare_v2 failed
+    case FailedToPrepareStatement(Int32, String?)
+
+    /// sqlite3_reset failed
+    case FailedToResetStatement(Int32, String?)
+
 }

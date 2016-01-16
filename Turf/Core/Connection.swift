@@ -21,10 +21,11 @@ public final class Connection {
     /// Non-thread safe snapshot number
     internal private(set) var localSnapshot: UInt64
 
+    internal let connectionQueue: Dispatch.Queue
+
     // MARK: Private properties
 
     private let databaseWriteQueue: Dispatch.Queue
-    private let connectionQueue: Dispatch.Queue
     private var connectionModificationLock: OSSpinLock = OS_SPINLOCK_INIT
 
     private var connectionState: ConnectionState = .Inactive
@@ -48,7 +49,7 @@ public final class Connection {
         self.id = id
         self.database = database
         self.databaseWriteQueue = databaseWriteQueue
-        self.connectionQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.connection")
+        self.connectionQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.connection[\(id)]")
         self.localSnapshot = 0
         self.defaultValueCacheSize = defaultValueCacheSize
         self.extensionConnections = [:]
@@ -300,6 +301,7 @@ public final class Connection {
                 collectionLocalStorage
                     .applyChangeSetsToValueCacheAfterSnapshot(localSnapshot, upToSnapshot: sqlSnapshot, withDatabase: database)
             }
+            localSnapshot = sqlSnapshot
         }
     }
 
