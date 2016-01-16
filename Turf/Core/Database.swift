@@ -214,7 +214,7 @@ public final class Database {
             return (connection.localSnapshot < minConnectionSnapshot) ? connection.localSnapshot : minConnectionSnapshot
         }
 
-        if lowestConnectionSnapshot != UInt64.max {
+        if lowestConnectionSnapshot != UInt64.max && lowestConnectionSnapshot > minCacheUpdatesSnapshot {
             for snapshot in minCacheUpdatesSnapshot ..< lowestConnectionSnapshot {
                 cacheUpdatesBySnapshot.removeValueForKey(snapshot)
             }

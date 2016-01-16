@@ -14,19 +14,25 @@ class BasicSample: XCTestCase {
     }
 
     func testExample() {
+        let expectation = expectationWithDescription("just waiting to test stuff")
+
         let db = try! Database(path: "basic.sqlite", collections: collections)
         let connection = try! db.newConnection()
 
         var changeSetToken: String!
 
-        connection.readTransaction { transaction in
+        connection.readTransaction( { transaction in
+            print("registering")
             changeSetToken = transaction.readOnly(self.collections.LineItems)
                 .registerPermamentChangeSetObserver { changeSet in
                     print(changeSet.changes)
                 }
+        }) {
+            print("registered")
         }
 
-        connection.readWriteTransaction { transaction in
+        connection.readWriteTransaction( { transaction in
+            print("writing")
             let checksCollection = transaction.readWrite(self.collections.Checks)
             let lineItemsCollection = transaction.readWrite(self.collections.LineItems)
 
@@ -58,11 +64,23 @@ class BasicSample: XCTestCase {
 //                    fromSource: check)
 //
 //            }
+
+//            dispatch_after(8, dispatch_get_main_queue(), { () -> Void in
+//                expectation.fulfill()
+//            })
+        }) {
+            print("written")
         }
 
-        connection.readTransaction { transaction in
+        connection.readTransaction( { transaction in
+            print("unregistering")
             transaction.readOnly(self.collections.LineItems)
                 .unregisterPermamentChangeSetObserver(changeSetToken)
+        }) {
+            print("unregistered")
+            expectation.fulfill()
         }
+
+        waitForExpectationsWithTimeout(10, handler: nil)
     }
 }

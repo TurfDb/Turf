@@ -85,9 +85,10 @@ public final class Connection {
         - `closure` is executed on the connection's queue.
      - parameter closure: Operations to perform within the read transaction.
      */
-    public func readTransaction(closure: (ReadTransaction -> Void)) {
+    public func readTransaction(closure: (ReadTransaction -> Void), onCompletion: (() -> Void)? = nil) {
         Dispatch.asynchronouslyOn(connectionQueue) {
             self.syncReadTransaction(closure)
+            onCompletion?()
         }
     }
 
@@ -98,9 +99,10 @@ public final class Connection {
         - `closure` is executed on the connection's queue and global write queue.
      - parameter closure: Operations to perform within the read-write transaction.
      */
-    public func readWriteTransaction(closure: (ReadWriteTransaction -> Void)) {
+    public func readWriteTransaction(closure: (ReadWriteTransaction -> Void), onCompletion: (() -> Void)? = nil) {
         Dispatch.asynchronouslyOn(connectionQueue) {
             self.syncReadWriteTransaction(closure)
+            onCompletion?()
         }
     }
 
