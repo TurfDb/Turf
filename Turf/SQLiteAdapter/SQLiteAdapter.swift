@@ -4,8 +4,8 @@ private let TurfMetadataTableName = "\(TurfTablePrefix)_metadata"
 private let TurfRuntimeTableName = "\(TurfTablePrefix)_runtime"
 private let TurfExtensionsTableName = "\(TurfTablePrefix)_extensions"
 
-private let SQLITE_FIRST_BIND_COLUMN = Int32(1)
-private let SQLITE_FIRST_COLUMN = Int32(0)
+let SQLITE_FIRST_BIND_COLUMN = Int32(1)
+let SQLITE_FIRST_COLUMN = Int32(0)
 
 /**
  Wrapper around sqlite3
@@ -234,7 +234,7 @@ postfix func *** <T>(object : T) -> T {
         case SQLITE_DONE: print("SQLITE_DONE")
         case SQLITE_ROW: print("SQLITE_ROW")
         case SQLITE_MISUSE: print("SQLITE_MISUSE")
-        default: print("#AnothaOne \(i)")
+        default: print("#AnotherOne \(i)")
         }
     } else {
         print(object)

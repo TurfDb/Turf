@@ -58,6 +58,7 @@
 		724C9B5E1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C9B5D1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift */; };
 		725E9E0F1C24B3A800364CE1 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E0E1C24B3A800364CE1 /* Cache.swift */; };
 		725E9E111C24B45E00364CE1 /* CacheEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E101C24B45E00364CE1 /* CacheEntry.swift */; };
+		7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277F5471C4C01040081118D /* SQLiteCollection.swift */; };
 		728303ED1BF2777300C266AA /* Collections_.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728303EC1BF2777300C266AA /* Collections_.swift */; };
 		728303F61BF3F56A00C266AA /* ProductsCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728303F51BF3F56A00C266AA /* ProductsCollection.swift */; };
 		728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728C235B1C3B121E0033D986 /* CacheUpdates.swift */; };
@@ -143,6 +144,7 @@
 		724C9B5D1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeErasedCollectionLocalStorage.swift; sourceTree = "<group>"; };
 		725E9E0E1C24B3A800364CE1 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		725E9E101C24B45E00364CE1 /* CacheEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheEntry.swift; sourceTree = "<group>"; };
+		7277F5471C4C01040081118D /* SQLiteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteCollection.swift; sourceTree = "<group>"; };
 		728303EC1BF2777300C266AA /* Collections_.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collections_.swift; sourceTree = "<group>"; };
 		728303F51BF3F56A00C266AA /* ProductsCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductsCollection.swift; sourceTree = "<group>"; };
 		728C235B1C3B121E0033D986 /* CacheUpdates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheUpdates.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				72345EA91C1E254C0001A136 /* SQLiteAdapter.swift */,
 				72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */,
 				72297A8B1C257B290001BE40 /* SQLiteRowChangeType.swift */,
+				7277F5471C4C01040081118D /* SQLiteCollection.swift */,
 			);
 			path = SQLiteAdapter;
 			sourceTree = "<group>";
@@ -630,6 +633,7 @@
 				72345EA61C1E1B840001A136 /* SecondaryIndexConnection.swift in Sources */,
 				72088FB31C1CEB9500127EA0 /* IndexedProperties.swift in Sources */,
 				722801651BFE4949002D3A11 /* Optional.swift in Sources */,
+				7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */,
 				72E1D9DF1C260C4B007335A1 /* SQLStatementCache.swift in Sources */,
 				7218C9631C274778004457DB /* WeakBox.swift in Sources */,
 				72088F841C1CD8C500127EA0 /* ReadTransaction.swift in Sources */,
