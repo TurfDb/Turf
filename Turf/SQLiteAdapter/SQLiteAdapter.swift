@@ -87,6 +87,7 @@ internal final class SQLiteAdapter {
             print("ERROR: Could not begin transaction")
             print(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
+        sqlite3_reset(beginDeferredTransactionStmt)
     }
 
     /**
@@ -99,6 +100,7 @@ internal final class SQLiteAdapter {
             print("ERROR: Could not commit transaction")
             print(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
+        sqlite3_reset(beginDeferredTransactionStmt)
     }
 
     /**

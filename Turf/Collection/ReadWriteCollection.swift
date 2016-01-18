@@ -52,7 +52,8 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
     private func commonSetValue(value: Value, forKey key: String) -> SQLiteRowChangeType {
         let valueData = serializeValue(value)
 
-        let rowChange = try! localStorage.sql.setValueData(valueData, valueSchemaVersion: schemaVersion, forKey: key)
+        do {
+        let rowChange = try localStorage.sql.setValueData(valueData, valueSchemaVersion: schemaVersion, forKey: key)
         switch rowChange {
         case .Insert(_): localStorage.changeSet.recordValueInsertedWithKey(key)
         case .Update(_): localStorage.changeSet.recordValueUpdatedWithKey(key)
@@ -61,8 +62,9 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
         localStorage.cacheUpdates.recordValue(value, upsertedWithKey: key)
 
         readWriteTransaction.connection.recordModifiedCollection(collection)
-
         return rowChange
+        } catch { print("boom", error) }
+        return .Insert(rowId: 0)
     }
 
     private func commonRemoveValuesWithKeys(keys: [String]) {
