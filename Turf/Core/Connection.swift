@@ -1,3 +1,5 @@
+private let connectionQueueKey = "connectionQueueKey".UTF8String
+
 public final class Connection {
     // MARK: Public properties
 
@@ -55,7 +57,13 @@ public final class Connection {
         self.extensionConnections = [:]
         self.collectionsLocalStorage = [:]
         self.modifiedCollections = [:]
-        
+
+//        Dispatch.Queues.setQueueAsContextWithKey(connectionQueueKey, forQueue: self.connectionQueue)
+        Dispatch.Queues.setContext(
+            Dispatch.Queues.makeContext(self.connectionQueue),
+            key: connectionQueueKey,
+            forQueue: self.connectionQueue)
+
         do {
             self.sqlite = try SQLiteAdapter(sqliteDatabaseUrl: database.url)
             self.createExtensionConnections()
@@ -134,10 +142,17 @@ public final class Connection {
     func syncReadWriteTransaction(closure: (ReadWriteTransaction -> Void)) {
         // A database can only have 1 active write transaction at a time
         Dispatch.synchronouslyOn(self.databaseWriteQueue) {
+            Dispatch.Queues.setContext(
+                Dispatch.Queues.makeContext(self.connectionQueue),
+                key: connectionQueueKey,
+                forQueue: self.databaseWriteQueue)
+
             let transaction = ReadWriteTransaction(connection: self)
             self.preReadWriteTransaction(transaction)
             closure(transaction)
             self.postReadWriteTransaction(transaction)
+
+            Dispatch.Queues.setContext(nil, key: connectionQueueKey, forQueue: self.databaseWriteQueue)
         }
     }
 
@@ -174,7 +189,7 @@ public final class Connection {
      - warning: Must be called from a read or read-write transaction
      */
     func connectionForExtension(ext: Extension) -> ExtensionConnection {
-        //TODO assert(IsOnConnectionQueue, "Must be called from a read or read-write transaction")
+//        assert(isOnConnectionQueue(), "Must be called from a read or read-write transaction")
         defer { OSSpinLockUnlock(&connectionModificationLock) }
         OSSpinLockLock(&connectionModificationLock)
 
@@ -220,6 +235,11 @@ public final class Connection {
         modifiedCollections[collection.name] = collection
     }
 
+    func isOnConnectionQueue() -> Bool {
+//        return Dispatch.Queues.isOnQueue(connectionQueue, withKey: connectionQueueKey)
+        return Dispatch.Queues.queueHasContext(Dispatch.Queues.makeContext(connectionQueue), forKey: connectionQueueKey)
+    }
+
     // MARK: Private methods
 
     /**
@@ -228,7 +248,8 @@ public final class Connection {
      - warning: This must be called from the connection queue.
      */
     private func preReadTransaction(transaction: ReadTransaction) {
-        //TODO assert(IsOnConnectionQueue)
+        assert(isOnConnectionQueue(), "Must be called from a read transaction")
+
         connectionState = .ActiveReadTransaction
         sqlite.beginDeferredTransaction()
         ensureLocalCacheSnapshotConsistency()
@@ -240,7 +261,8 @@ public final class Connection {
      - warning: This must be called from the connection queue.
      */
     private func postReadTransaction(transaction: ReadTransaction) {
-        //TODO assert(IsOnConnectionQueue)
+        assert(isOnConnectionQueue(), "Must be called from a read-write transaction")
+
         sqlite.commitTransaction()
         database.removeUnneededCacheUpdates()
         connectionState = .Inactive
@@ -286,7 +308,7 @@ public final class Connection {
      - warning: This must be called from the connection queue.
      */
     private func ensureLocalCacheSnapshotConsistency() {
-        // *TODO* assert(IsOnConnectionQueue)
+        assert(isOnConnectionQueue(), "Must be called from a read or read-write transaction")
 
         // Calling this SELECT statement causes a read transaction to begin on the db/WAL
         // If the sqlSnapshot that we have a "lock" on is less than our cache snapshot, update the cache to

@@ -18,17 +18,24 @@ internal struct Dispatch {
             return queue
         }
 
-        static func setContext(key: UnsafePointer<Int8>, forQueue queue: Queue) {
-            let temp = Unmanaged<dispatch_queue_t>.passUnretained(queue).toOpaque()
-            let context = UnsafeMutablePointer<Void>(temp)
+        static func makeContext(object: AnyObject) -> UnsafeMutablePointer<Void> {
+            let temp = Unmanaged<AnyObject>.passUnretained(object).toOpaque()
+            return UnsafeMutablePointer<Void>(temp)
+        }
+
+        static func setContext(context: UnsafeMutablePointer<Void>, key: UnsafePointer<Int8>, forQueue queue: Queue) {
             dispatch_queue_set_specific(queue, key, context, nil)
         }
 
-        static func isOnQueue(queue: Queue, withKey key: UnsafePointer<Int8>) -> Bool {
-            let temp = Unmanaged<dispatch_queue_t>.passUnretained(queue).toOpaque()
-            let context = UnsafeMutablePointer<Void>(temp)
+        static func queueHasContext(context: UnsafeMutablePointer<Void>, forKey key: UnsafePointer<Int8>) -> Bool {
             return dispatch_get_specific(key) == context
         }
+
+//        static func isOnQueue(queue: Queue, withKey key: UnsafePointer<Int8>) -> Bool {
+//            let temp = Unmanaged<dispatch_queue_t>.passUnretained(queue).toOpaque()
+//            let context = UnsafeMutablePointer<Void>(temp)
+//            return dispatch_get_specific(key) == context
+//        }
     }
 
     static func synchronouslyOn(queue: Queue, closure: () -> Void) {
