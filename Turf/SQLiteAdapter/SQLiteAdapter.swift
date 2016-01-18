@@ -47,7 +47,7 @@ internal final class SQLiteAdapter {
         self.isClosed = false
 
         if success {
-            sqlite3_busy_timeout(self.db, 0/*off*/)
+            sqlite3_busy_timeout(self.db, 0/*ms*/)
             if sqlite3_exec(db, "PRAGMA journal_mode = WAL;", nil, nil, nil).isNotOK {
                 throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
             }
@@ -120,9 +120,9 @@ internal final class SQLiteAdapter {
      - warning: Error handling yet to come
      */
     func databaseSnapshotOnCurrentSqliteTransaction() -> UInt64 {
-        defer { sqlite3_reset(beginDeferredTransactionStmt) }
+        defer { sqlite3_reset(getSnapshotStmt) }
         guard sqlite3_step(getSnapshotStmt).hasRow else { return 0 }
-
+//
         return UInt64(sqlite3_column_int64(getSnapshotStmt, SQLITE_FIRST_COLUMN))
     }
 
@@ -238,6 +238,8 @@ postfix func *** <T>(object : T) -> T {
         case SQLITE_DONE: print("SQLITE_DONE")
         case SQLITE_ROW: print("SQLITE_ROW")
         case SQLITE_MISUSE: print("SQLITE_MISUSE")
+        case SQLITE_BUSY: print("SQLITE_BUSY")
+        case SQLITE_LOCKED: print("SQLITE_LOCKED")
         default: print("#AnotherOne \(i)")
         }
     } else {
