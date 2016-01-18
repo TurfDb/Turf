@@ -31,11 +31,9 @@ class BasicSample: XCTestCase {
             print("read transaction 1 done")
         }
 
-        connection.readWriteTransaction( { transaction in print("read transaction 2") } ) { print("read transaction 2 done") }
-
-//        connection.readWriteTransaction( { transaction in
-//            print("writing")
-//            let checksCollection = transaction.readWrite(self.collections.Checks)
+        connection.readWriteTransaction( { transaction in
+            print("writing")
+            let checksCollection = transaction.readWrite(self.collections.Checks)
 //            let lineItemsCollection = transaction.readWrite(self.collections.LineItems)
 //
 //            //Non secondary indexed query - todo make the generator deserialization lazy
@@ -47,7 +45,8 @@ class BasicSample: XCTestCase {
 ////                print(openCheck.name)
 ////            }
 //
-//            checksCollection.setValue(Check(uuid: "1234", name: "A", isOpen: true, lineItemUuids: []), forKey: "1234")
+            checksCollection.setValue(Check(uuid: "1234", name: "A", isOpen: true, lineItemUuids: []), forKey: "1234")
+            print(checksCollection.valueForKey("1234"))
 //            lineItemsCollection.setValue(LineItem(uuid: "1", name: "A", price: 1.0), forKey: "1234")
 //
 ////            if let check = checksCollection.valueForKey("1234") {
@@ -70,12 +69,16 @@ class BasicSample: XCTestCase {
 ////            dispatch_after(8, dispatch_get_main_queue(), { () -> Void in
 ////                expectation.fulfill()
 ////            })
-//        }) {
-//            print("written")
-//        }
+        }) {
+            print("written")
+        }
 
         connection.readWriteTransaction( { transaction in
             print("unregistering")
+
+            let checksCollection = transaction.readOnly(self.collections.Checks)
+            print(checksCollection.valueForKey("1234"))
+
             transaction.readOnly(self.collections.LineItems)
                 .unregisterPermamentChangeSetObserver(changeSetToken)
         }) {

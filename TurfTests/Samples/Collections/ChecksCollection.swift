@@ -30,11 +30,16 @@ final class ChecksCollection: Collection, IndexedCollection, FTSCollection, Coll
     }
 
     func serializeValue(value: Value) -> NSData {
-        return NSData()
+        //TODO
+        return value.uuid.dataUsingEncoding(NSUTF8StringEncoding)!
     }
 
     func deserializeValue(data: NSData) -> Value? {
-        return nil
+        if let uuid = String(data: data, encoding: NSUTF8StringEncoding) {
+            return Check(uuid: uuid, name: "", isOpen: true, lineItemUuids: [])
+        } else {
+            return nil
+        }
     }
 
     struct IndexedProperties: Turf.IndexedProperties {
