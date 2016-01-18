@@ -18,6 +18,7 @@ class BasicSample: XCTestCase {
 
         let db = try! Database(path: "/Users/jordanhamill/basic2.sqlite", collections: collections)
         let connection = try! db.newConnection()
+        let connection2 = try! db.newConnection()
 
         var changeSetToken: String!
 
@@ -45,6 +46,8 @@ class BasicSample: XCTestCase {
 ////                print(openCheck.name)
 ////            }
 //
+            print(checksCollection.valueForKey("1234"))
+
             checksCollection.setValue(Check(uuid: "1234", name: "A", isOpen: true, lineItemUuids: []), forKey: "1234")
             print(checksCollection.valueForKey("1234"))
 //            lineItemsCollection.setValue(LineItem(uuid: "1", name: "A", price: 1.0), forKey: "1234")
@@ -73,17 +76,18 @@ class BasicSample: XCTestCase {
             print("written")
         }
 
-        connection.readWriteTransaction( { transaction in
+        connection2.readWriteTransaction( { transaction in
             print("unregistering")
 
-            let checksCollection = transaction.readOnly(self.collections.Checks)
+            let checksCollection = transaction.readWrite(self.collections.Checks)
             print(checksCollection.valueForKey("1234"))
+            checksCollection.setValue(Check(uuid: "1234", name: "AB", isOpen: true, lineItemUuids: []), forKey: "1234")
 
-            transaction.readOnly(self.collections.LineItems)
-                .unregisterPermamentChangeSetObserver(changeSetToken)
+//            transaction.readOnly(self.collections.LineItems)
+//                .unregisterPermamentChangeSetObserver(changeSetToken)
         }) {
             print("unregistered")
-            expectation.fulfill()
+//            expectation.fulfill()
         }
 
         waitForExpectationsWithTimeout(5, handler: nil)
