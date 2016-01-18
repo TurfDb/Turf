@@ -5,7 +5,7 @@ final class ChecksCollection: Collection, IndexedCollection, FTSCollection, Coll
     typealias Value = Check
 
     let name = "Checks"
-    let schemaVersion = UInt(1)
+    let schemaVersion = UInt64(1)
     let valueCacheSize: Int? = 50
 
     let index: SecondaryIndex<ChecksCollection, IndexedProperties>

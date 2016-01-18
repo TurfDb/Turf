@@ -5,11 +5,11 @@ class LineItemsCollection: Collection {
     typealias Value = LineItem
 
     let name = "LineItems"
-    let schemaVersion = UInt(1)
+    let schemaVersion = UInt64(1)
     let valueCacheSize: Int? = 50
 
     func setUp(transaction: ReadWriteTransaction) {
-        
+        transaction.registerCollection(self)
     }
 
     func serializeValue(value: Value) -> NSData {

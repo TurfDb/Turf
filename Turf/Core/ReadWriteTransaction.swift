@@ -52,6 +52,7 @@ public final class ReadWriteTransaction: ReadTransaction {
      - parameter collection
      */
     public func registerCollection<TCollection: Collection>(collection: TCollection) {
+        try! SQLiteCollection.createCollectionTableNamed(collection.name, db: connection.sqlite.db)
         connection.database.registerCollection(collection)
     }
 

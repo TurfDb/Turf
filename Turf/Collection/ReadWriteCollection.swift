@@ -67,7 +67,7 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
 
     private func commonRemoveValuesWithKeys(keys: [String]) {
         for key in keys {
-            localStorage.sql.removeValueWithKey(key)
+            try! localStorage.sql.removeValueWithKey(key)
             localStorage.valueCache.removeValueForKey(key)
             localStorage.changeSet.recordValueRemovedWithKey(key)
             localStorage.cacheUpdates.recordValueRemovedWithKey(key)
@@ -76,7 +76,7 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
     }
 
     private func commonRemoveAllValues() {
-        localStorage.sql.removeAllValues()
+        try! localStorage.sql.removeAllValues()
         localStorage.valueCache.removeAllValues()
         localStorage.changeSet.recordAllValuesRemoved()
         localStorage.cacheUpdates.recordAllValuesRemoved()

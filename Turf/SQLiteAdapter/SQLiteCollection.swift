@@ -10,6 +10,8 @@ internal final class SQLiteCollection {
     private var rowIdForKeyStmt: COpaquePointer = nil
     private var insertValueDataStmt: COpaquePointer = nil
     private var updateValueDataStmt: COpaquePointer = nil
+    private var removeValueStmt: COpaquePointer = nil
+    private var removeAllValuesStmt: COpaquePointer = nil
 
     // MARK: Object lifecycle
 
@@ -22,6 +24,8 @@ internal final class SQLiteCollection {
         try setUpRowIdForKeyStmt()
         try setUpInsertValueDataStmt()
         try setUpUpdateValueDataStmt()
+        try setUpRemoveValueInCollectionStmt()
+        try setUpRemoveAllValuesInCollectionStmt()
     }
 
     // MARK: Internal methods
@@ -238,15 +242,45 @@ internal final class SQLiteCollection {
         }
     }
 
-    func removeValueWithKey(key: String) {
-        
+    func removeValueWithKey(key: String) throws {
+        defer { sqlite3_reset(removeAllValuesStmt) }
+
+        let keyIndex = SQLITE_FIRST_BIND_COLUMN
+        sqlite3_bind_text(insertValueDataStmt, keyIndex, key, -1, SQLITE_TRANSIENT)
+
+        if sqlite3_step(removeAllValuesStmt).isNotDone {
+            throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+        }
     }
 
-    func removeAllValues() {
-        
+    func removeAllValues() throws {
+        defer { sqlite3_reset(removeAllValuesStmt) }
+        if sqlite3_step(removeAllValuesStmt).isNotDone {
+            throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+        }
     }
 
     // MARK: Private methods
+
+    private func setUpRemoveValueInCollectionStmt() throws {
+        var stmt: COpaquePointer = nil
+
+        guard sqlite3_prepare_v2(db, "DELETE FROM `\(collectionName)` WHERE key=?;", -1, &stmt, nil).isOK else {
+            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+        }
+
+        self.removeValueStmt = stmt
+    }
+
+    private func setUpRemoveAllValuesInCollectionStmt() throws {
+        var stmt: COpaquePointer = nil
+
+        guard sqlite3_prepare_v2(db, "DELETE FROM `\(collectionName)`;", -1, &stmt, nil).isOK else {
+            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+        }
+
+        self.removeAllValuesStmt = stmt
+    }
 
     private func setUpNumberOfKeysInCollectionStmt() throws {
         var stmt: COpaquePointer = nil
