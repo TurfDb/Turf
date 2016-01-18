@@ -28,6 +28,17 @@ internal final class SQLiteCollection {
         try setUpRemoveAllValuesInCollectionStmt()
     }
 
+    deinit {
+        sqlite3_finalize(numberOfKeysInCollectionStmt)
+        sqlite3_finalize(keysInCollectionStmt)
+        sqlite3_finalize(valueDataForKeyStmt)
+        sqlite3_finalize(rowIdForKeyStmt)
+        sqlite3_finalize(insertValueDataStmt)
+        sqlite3_finalize(updateValueDataStmt)
+        sqlite3_finalize(removeValueStmt)
+        sqlite3_finalize(removeAllValuesStmt)
+    }
+
     // MARK: Internal methods
 
     /**
@@ -36,10 +47,9 @@ internal final class SQLiteCollection {
     static func createCollectionTableNamed(name: String, db: COpaquePointer) throws {
         if sqlite3_exec(db,
             "CREATE TABLE IF NOT EXISTS `\(name)` (" +
-                "    `key` TEXT NOT NULL," +
+                "    `key` TEXT NOT NULL UNIQUE," +
                 "    `valueData` BLOB," +
-                "    `schemaVersion` INTEGER DEFAULT 0," +
-                "    PRIMARY KEY(key)" +
+                "    `schemaVersion` INTEGER DEFAULT 0" +
             ");",
             nil, nil, nil).isNotOK {
                 throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))

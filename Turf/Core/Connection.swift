@@ -58,7 +58,6 @@ public final class Connection {
         self.collectionsLocalStorage = [:]
         self.modifiedCollections = [:]
 
-//        Dispatch.Queues.setQueueAsContextWithKey(connectionQueueKey, forQueue: self.connectionQueue)
         Dispatch.Queues.setContext(
             Dispatch.Queues.makeContext(self.connectionQueue),
             key: connectionQueueKey,
@@ -189,7 +188,7 @@ public final class Connection {
      - warning: Must be called from a read or read-write transaction
      */
     func connectionForExtension(ext: Extension) -> ExtensionConnection {
-//        assert(isOnConnectionQueue(), "Must be called from a read or read-write transaction")
+        assert(isOnConnectionQueue(), "Must be called from a read or read-write transaction")
         defer { OSSpinLockUnlock(&connectionModificationLock) }
         OSSpinLockLock(&connectionModificationLock)
 
@@ -236,7 +235,6 @@ public final class Connection {
     }
 
     func isOnConnectionQueue() -> Bool {
-//        return Dispatch.Queues.isOnQueue(connectionQueue, withKey: connectionQueueKey)
         return Dispatch.Queues.queueHasContext(Dispatch.Queues.makeContext(connectionQueue), forKey: connectionQueueKey)
     }
 

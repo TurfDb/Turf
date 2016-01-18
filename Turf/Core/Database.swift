@@ -58,7 +58,6 @@ public final class Database {
         self.databaseWriteQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-queue")
         self.connectionSetUpQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.setup-queue")
 
-//        Dispatch.Queues.setQueueAsContextWithKey(databaseWriteQueueKey, forQueue: self.databaseWriteQueue)
         Dispatch.Queues.setContext(
             Dispatch.Queues.makeContext(self.databaseWriteQueue),
             key: databaseWriteQueueKey,
@@ -225,7 +224,6 @@ public final class Database {
     }
 
     func isOnWriteQueue() -> Bool {
-//        return Dispatch.Queues.isOnQueue(databaseWriteQueue, withKey: databaseWriteQueueKey)
         return Dispatch.Queues.queueHasContext(Dispatch.Queues.makeContext(databaseWriteQueue), forKey: databaseWriteQueueKey)
     }
 
