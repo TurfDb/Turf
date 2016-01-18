@@ -6,6 +6,8 @@ private let TurfExtensionsTableName = "\(TurfTablePrefix)_extensions"
 
 let SQLITE_FIRST_BIND_COLUMN = Int32(1)
 let SQLITE_FIRST_COLUMN = Int32(0)
+let SQLITE_STATIC = unsafeBitCast(0, sqlite3_destructor_type.self)
+let SQLITE_TRANSIENT = unsafeBitCast(-1, sqlite3_destructor_type.self)
 
 /**
  Wrapper around sqlite3

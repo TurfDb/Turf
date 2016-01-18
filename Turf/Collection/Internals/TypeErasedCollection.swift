@@ -3,7 +3,7 @@ public protocol TypeErasedCollection: class {
     var name: String { get }
 
     /// Collection schema version - This must be incremented when the serialization structure changes
-    var schemaVersion: UInt { get }
+    var schemaVersion: UInt64 { get }
 
     /// Value cache size. If nil, it will use the default size for each connection
     var valueCacheSize: Int? { get }

@@ -8,7 +8,7 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
     var name: String { return collection.name }
 
     /// Collection schema version - This must be incremented when the serialization structure changes
-    var schemaVersion: UInt { return collection.schemaVersion }
+    var schemaVersion: UInt64 { return collection.schemaVersion }
 
     // MARK: Internal properties
 
@@ -23,6 +23,9 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
 
     // MARK: Object lifecycle
 
+    /// Work around to stop swift segfaulting when calling self.collection.deserializeValue(...)
+    private let deserializeValue: (NSData) -> Value?
+
     /**
      - parameter collection: Collection this read-only view wraps
      - parameter transaction: Read transaction the read-only view reads on
@@ -31,6 +34,7 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
         self.collection = collection
         self.readTransaction = transaction
         self.localStorage = readTransaction.connection.localStorageForCollection(collection)
+        self.deserializeValue = collection.deserializeValue
     }
 
     // MARK: Public methods
@@ -39,14 +43,14 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
      - returns: Number of keys in the collection
     */
     public var numberOfKeys: UInt {
-        return 0
+        return localStorage.sql.numberOfKeysInCollection()
     }
 
     /**
      - returns: Primary keys in collection
      */
     public var allKeys: [String] {
-        return []
+        return localStorage.sql.keysInCollection()
     }
 
     /**
@@ -56,6 +60,7 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
      */
     public var allValues: ValuesSequence<Value> {
         var stmt: COpaquePointer = nil
+        //TODO cache
         sqlite3_prepare_v2(readTransaction.connection.sqlite.db, "SELECT data FROM table",  -1, &stmt, nil)
         return ValuesSequence(stmt: stmt, valueDataColumnIndex: 1, deserializer: collection.deserializeValue)
     }
@@ -71,6 +76,16 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
             return cachedValue
         }
 
+        if let result = localStorage.sql.valueDataForKey(key) {
+            precondition(result.schemaVersion == collection.schemaVersion,
+                "Collection \(name) requires a migration")
+
+            if let value = deserializeValue(result.valueData) {
+                localStorage.valueCache[key] = value
+                return value
+            }
+        }
+
         return nil
     }
 
@@ -81,7 +96,7 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
      */
     public func registerPermamentChangeSetObserver(observer: (ChangeSet<String> -> Void)) -> String {
         let token = NSUUID().UUIDString
-
+        //TODO
         return token
     }
 

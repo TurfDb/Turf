@@ -201,7 +201,7 @@ public final class Connection {
         guard let connectionLocalStorage = collectionsLocalStorage[collection.name] as? CollectionLocalStorage<TCollection.Value> else {
 
             let valueCacheCapacity = collection.valueCacheSize ?? self.defaultValueCacheSize
-            let storage = CollectionLocalStorage<TCollection.Value>(collectionName: collection.name, valueCacheCapactity: valueCacheCapacity)
+            let storage = CollectionLocalStorage<TCollection.Value>(db: sqlite.db, collectionName: collection.name, valueCacheCapactity: valueCacheCapacity)
             collectionsLocalStorage[collection.name] = storage
             return storage
         }

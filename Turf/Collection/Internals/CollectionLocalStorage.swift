@@ -18,6 +18,8 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
     /// A squashed change set that also tracks the new values - used to update other connections' caches
     let cacheUpdates: CacheUpdates<String, Value>
 
+    let sql: SQLiteCollection
+
     // MARK: Private properties
 
     // MARK: Object lifecycle
@@ -25,12 +27,13 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
     /**
      - parameter valueCacheCapactity: Number of deserialized values to keep in the value cache
      */
-    init(collectionName: String, valueCacheCapactity: Int) {
+    init(db: COpaquePointer, collectionName: String, valueCacheCapactity: Int) {
         self.collectionName = collectionName
         self.queryCache = Cache(capacity: 5)
         self.valueCache = Cache(capacity: valueCacheCapactity)
         self.changeSet = ChangeSet()
         self.cacheUpdates = CacheUpdates()
+        self.sql = try! SQLiteCollection(db: db, collectionName: collectionName)
     }
 
     // MARK: Internal methods

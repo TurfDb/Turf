@@ -17,7 +17,6 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
     */
     internal init(collection: TCollection, transaction: ReadWriteTransaction) {
         self.readWriteTransaction = transaction
-        //TODO Remove this local property when calling this directly stops segfaulting swiftc
         self.serializeValue = collection.serializeValue
         super.init(collection: collection, transaction: transaction)
     }
@@ -51,8 +50,9 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
     // MARK: Private methods
 
     private func commonSetValue(value: Value, forKey key: String) -> SQLiteRowChangeType {
-        let _ = serializeValue(value)
-        let rowChange: SQLiteRowChangeType = .Insert(rowId: 0)
+        let valueData = serializeValue(value)
+
+        let rowChange = try! localStorage.sql.setValueData(valueData, valueSchemaVersion: schemaVersion, forKey: key)
         switch rowChange {
         case .Insert(_): localStorage.changeSet.recordValueInsertedWithKey(key)
         case .Update(_): localStorage.changeSet.recordValueUpdatedWithKey(key)
@@ -67,6 +67,7 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
 
     private func commonRemoveValuesWithKeys(keys: [String]) {
         for key in keys {
+            localStorage.sql.removeValueWithKey(key)
             localStorage.valueCache.removeValueForKey(key)
             localStorage.changeSet.recordValueRemovedWithKey(key)
             localStorage.cacheUpdates.recordValueRemovedWithKey(key)
@@ -75,6 +76,7 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
     }
 
     private func commonRemoveAllValues() {
+        localStorage.sql.removeAllValues()
         localStorage.valueCache.removeAllValues()
         localStorage.changeSet.recordAllValuesRemoved()
         localStorage.cacheUpdates.recordAllValuesRemoved()

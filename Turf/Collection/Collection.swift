@@ -11,7 +11,7 @@ public protocol Collection: class, TypeErasedCollection {
     var name: String { get }
 
     /// Collection schema version - This must be incremented when the serialization structure changes
-    var schemaVersion: UInt { get }
+    var schemaVersion: UInt64 { get }
 
     /// Value cache size
     var valueCacheSize: Int? { get }
