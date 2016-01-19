@@ -84,7 +84,7 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
      - parameter snapshot: The connection's snapshot number at which the changes were made
      */
     func recordPendingCacheUpdatesOnSnapshot(snapshot: UInt64, withDatabase database: Database){
-        database.recordPendingCacheUpdates(cacheUpdates, onSnapshot: snapshot, forCollectionNamed: collectionName)
+        database.recordPendingCacheUpdates(cacheUpdates.copy(), onSnapshot: snapshot, forCollectionNamed: collectionName)
     }
 
     /**

@@ -65,6 +65,36 @@ internal final class CacheUpdates<Key: Hashable, Value>: TypeErasedCacheUpdates 
             }
         }
     }
+
+    func copy() -> CacheUpdates<Key, Value> {
+        let cacheUpdates = CacheUpdates()
+        cacheUpdates.valueUpdates = self.valueUpdates
+        cacheUpdates.removedKeys = self.removedKeys
+        cacheUpdates.allValuesRemoved = self.allValuesRemoved
+        return cacheUpdates
+    }
+}
+
+extension CacheUpdates: CustomDebugStringConvertible {
+    var debugDescription: String {
+        var description = ""
+
+        if valueUpdates.count == 0 && removedKeys.count == 0 && allValuesRemoved == false {
+            description = "No cache updates"
+        } else {
+            description = "Value updates:\n"
+            for (key, _) in valueUpdates {
+                description += "\t\(key)\n"
+            }
+            description += "Removed keys:\n"
+            for key in removedKeys {
+                description += "\t\(key)\n"
+            }
+            description += "All keys removed: \(allValuesRemoved)\n"
+        }
+
+        return description
+    }
 }
 
 internal protocol TypeErasedCacheUpdates { }
