@@ -363,9 +363,9 @@ public final class Connection {
 
         sqlite.commitTransaction()
 
-        for (name, _) in modifiedCollections {
+        for (name, collection) in modifiedCollections {
             let collectionLocalStorage = collectionsLocalStorage[name]!
-            collectionLocalStorage.notifyCollectionObserversOfChangeSet()
+            collectionLocalStorage.notifyObserversOfChangeSetForCollection(collection)
             collectionLocalStorage.resetChangeSet()
         }
     }

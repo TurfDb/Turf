@@ -5,6 +5,9 @@ private let databaseWriteQueueKey = "databaseWriteQueueKey".UTF8String
 public final class Database {
     // MARK: Public properties
 
+    public static let CollectionChangedNotification = "TurfCollectionChanged"
+    public static let CollectionChangedNotificationChangeSetKey = "changeSet"
+
     /// Database file url
     public let url: NSURL
 

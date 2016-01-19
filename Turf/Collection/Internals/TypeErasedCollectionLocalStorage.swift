@@ -28,8 +28,8 @@ internal protocol TypeErasedCollectionLocalStorage {
      - note:
         - **Not thread safe**
      */
-    func notifyCollectionObserversOfChangeSet()
-
+    func notifyObserversOfChangeSetForCollection(collection: TypeErasedCollection)
+    
     /**
      Informs `database` of any changes a connection has made to a collection for value cache consistency.
      These changes have not yet made it to a sqlite commit yet.

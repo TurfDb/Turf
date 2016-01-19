@@ -43,4 +43,11 @@ public final class ChangeSet<Key> {
         changes = []
         allValuesRemoved = false
     }
+
+    internal func copy() -> ChangeSet<Key> {
+        let changeSet = ChangeSet<Key>()
+        changeSet.changes = self.changes
+        changeSet.allValuesRemoved = self.allValuesRemoved
+        return changeSet
+    }
 }

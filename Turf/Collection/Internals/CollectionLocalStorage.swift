@@ -68,10 +68,20 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
     /**
      Noifies collection observers of any changes
      - note:
-     - **Not thread safe**
+         - **Not thread safe**
      */
-    func notifyCollectionObserversOfChangeSet() {
-        
+    func notifyObserversOfChangeSetForCollection(collection: TypeErasedCollection) {
+        guard changeSet.changes.count > 0 || self.changeSet.allValuesRemoved else { return }
+        let changeSetCopy = self.changeSet.copy()
+        Dispatch.asynchronouslyOn(Dispatch.Queues.Main) {
+            NSNotificationCenter.defaultCenter()
+                .postNotificationName(
+                    Database.CollectionChangedNotification,
+                    object: collection,
+                    userInfo: [
+                        Database.CollectionChangedNotificationChangeSetKey: changeSetCopy
+                    ])
+        }
     }
 
     /**

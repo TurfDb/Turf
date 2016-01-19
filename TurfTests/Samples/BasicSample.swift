@@ -20,6 +20,11 @@ class BasicSample: XCTestCase {
         let connection = try! db.newConnection()
         let connection2 = try! db.newConnection()
 
+        NSNotificationCenter.defaultCenter().addObserverForName(Database.CollectionChangedNotification, object: collections.Checks, queue: nil) { notification in
+            let changeSet = notification.userInfo?[Database.CollectionChangedNotificationChangeSetKey] as? ChangeSet<String>
+            print(changeSet?.changes)
+        }
+
         connection.readWriteTransaction( { transaction in
             print("connection 1 write 1")
             let checksCollection = transaction.readWrite(self.collections.Checks)

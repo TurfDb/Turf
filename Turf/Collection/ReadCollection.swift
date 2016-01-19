@@ -88,25 +88,4 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
 
         return nil
     }
-
-    /**
-     Registers a change set observer that will persist beyond the current transaction
-     - parameter observer: Handler for change set that will be called post-transaction each time this collection changes
-     - returns: A token that is used to unregister this change set observer
-     */
-    public func registerPermamentChangeSetObserver(observer: (ChangeSet<String> -> Void)) -> String {
-        let token = NSUUID().UUIDString
-        //TODO
-        return token
-    }
-
-    /**
-     Unregister a previously registered change set observer
-     - parameter token: A token returned from `registerPermamentChangeSetObserver(_)`
-     - seeAlso: `registerPermamentChangeSetObserver(_)`
-     */
-    public func unregisterPermamentChangeSetObserver(token: String) {
-//        collectionObservers[collection.name]?[token] = nil
-    }
-
 }
