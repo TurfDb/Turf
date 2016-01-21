@@ -27,7 +27,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
      */
     public func findValuesWhere(predicate: String) -> [Value] {
         let connection = extensionConnection()
-        let _ = connection.queryCache.q("SELECT value FROM table \(predicate)")
+//        let _ = connection.queryCache.q("SELECT value FROM table \(predicate)")
 
         return []
     }

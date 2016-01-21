@@ -36,7 +36,7 @@ final class ChecksCollection: Collection, IndexedCollection, FTSCollection, Coll
 
     func deserializeValue(data: NSData) -> Value? {
         if let uuid = String(data: data, encoding: NSUTF8StringEncoding) {
-            return Check(uuid: uuid, name: "", isOpen: true, lineItemUuids: [])
+            return Check(uuid: uuid, name: "", isOpen: true, isCurrent: false, lineItemUuids: [])
         } else {
             return nil
         }
@@ -45,9 +45,10 @@ final class ChecksCollection: Collection, IndexedCollection, FTSCollection, Coll
     struct IndexedProperties: Turf.IndexedProperties {
         let isOpen = IndexedProperty<ChecksCollection, Bool>(name: "isOpen") { return $0.isOpen }
         let name = IndexedProperty<ChecksCollection, String?>(name: "name") { return $0.name }
+        let isCurrent = IndexedProperty<ChecksCollection, Bool>(name: "isCurrent") { return $0.isCurrent }
 
         var allProperties: [CollectionProperty] {
-            return [isOpen, name]
+            return [isOpen, name, isCurrent]
         }
     }
 

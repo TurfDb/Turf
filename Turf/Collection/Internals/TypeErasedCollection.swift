@@ -13,3 +13,9 @@ public protocol TypeErasedCollection: class {
      */
     func setUp(transaction: ReadWriteTransaction)
 }
+
+internal extension TypeErasedCollection where Self: Collection {
+    func readOnly(transaction: ReadTransaction) -> ReadCollection<Self> {
+        return ReadCollection(collection: self, transaction: transaction)
+    }
+}

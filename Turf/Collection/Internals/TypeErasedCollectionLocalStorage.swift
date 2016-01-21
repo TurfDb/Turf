@@ -24,11 +24,14 @@ internal protocol TypeErasedCollectionLocalStorage {
     func resetCacheUpdates()
 
     /**
-     Noifies collection observers of any changes
+     Notifies collection observers of any changes
+     - parameter collection: The `object` which the `NSNotification` is posted on. (This **must** be the same collection for which this is the local storage for).
+     - returns: A copy of the collection's change set.
+
      - note:
-        - **Not thread safe**
+         - **Not thread safe**
      */
-    func notifyObserversOfChangeSetForCollection(collection: TypeErasedCollection)
+    func notifyObserversOfChangeSetForCollection(collection: TypeErasedCollection) -> ChangeSet<String>
     
     /**
      Informs `database` of any changes a connection has made to a collection for value cache consistency.

@@ -21,6 +21,7 @@ public final class Database {
     private let collections: CollectionsContainer
     private var registeredCollectionNames: [String]
     private var connections: [Int: WeakBox<Connection>]
+    private var observingConnections: [Int: WeakBox<ObservingConnection>]
     private var lastConnectionId: Int
     private var cacheUpdatesBySnapshot: [UInt64: [String: TypeErasedCacheUpdates]]
     private var minCacheUpdatesSnapshot: UInt64
@@ -55,6 +56,7 @@ public final class Database {
         self.extensions = [:]
         self.registeredCollectionNames = []
         self.connections = [:]
+        self.observingConnections = [:]
         self.lastConnectionId = 0
         self.cacheUpdatesBySnapshot = [:]
         self.minCacheUpdatesSnapshot = 0
@@ -67,6 +69,10 @@ public final class Database {
             forQueue: self.databaseWriteQueue)
 
         try setUpCollections(collections)
+    }
+
+    deinit {
+        
     }
 
     // MARK: Public methods
@@ -93,10 +99,25 @@ public final class Database {
         let connection = try Connection(id: nextConnectionId, database: self, databaseWriteQueue: databaseWriteQueue)
 
         OSSpinLockLock(&connectionManipulationLock)
+            //TODO Tidy up connections on dealloc of Connection 
             connections[nextConnectionId] = WeakBox(value: connection)
             lastConnectionId = nextConnectionId
 
         return connection
+    }
+
+    public func newObservingConnection(shouldAdvanceWhenDatabaseChanges shouldAdvanceWhenDatabaseChanges: () -> Bool = { return true }) throws -> ObservingConnection {
+        let connection = try newConnection()
+
+        defer { OSSpinLockUnlock(&connectionManipulationLock) }
+        OSSpinLockLock(&connectionManipulationLock)
+
+        let observingConnection = ObservingConnection(
+            connection: connection, shouldAdvanceWhenDatabaseChanges: shouldAdvanceWhenDatabaseChanges)
+
+        observingConnections[connection.id] = WeakBox(value: observingConnection)
+
+        return observingConnection
     }
 
     // MARK: Internal methods
@@ -223,6 +244,12 @@ public final class Database {
             }
 
             minCacheUpdatesSnapshot = lowestConnectionSnapshot
+        }
+    }
+
+    func notifyObservingConnectionsOfModifiedCollectionsWithChangeSets(changeSets: [String: ChangeSet<String>]) {
+        for (_, observingConnection) in observingConnections {
+            observingConnection.value?.processModifiedCollections(changeSets: changeSets)
         }
     }
 

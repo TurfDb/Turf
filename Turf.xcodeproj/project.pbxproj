@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		720470C31C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720470C21C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift */; };
+		720558341C518D1300B0847E /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720558331C518D1300B0847E /* Disposable.swift */; };
+		720558361C518D2100B0847E /* DisposeBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720558351C518D2100B0847E /* DisposeBag.swift */; };
+		720558381C518D2F00B0847E /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720558371C518D2F00B0847E /* ObservableCollection.swift */; };
+		7205583A1C518D5100B0847E /* ObserverOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720558391C518D5100B0847E /* ObserverOf.swift */; };
+		7205583E1C518E0600B0847E /* BasicDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7205583D1C518E0600B0847E /* BasicDisposable.swift */; };
+		720558401C51900E00B0847E /* TypedObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7205583F1C51900E00B0847E /* TypedObservable.swift */; };
+		7206AFC01C4EF99A004E04D4 /* ObservingConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7206AFBF1C4EF99A004E04D4 /* ObservingConnection.swift */; };
 		72088F841C1CD8C500127EA0 /* ReadTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F831C1CD8C500127EA0 /* ReadTransaction.swift */; };
 		72088F861C1CD8E200127EA0 /* ReadWriteTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F851C1CD8E200127EA0 /* ReadWriteTransaction.swift */; };
 		72088F881C1CD8FE00127EA0 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F871C1CD8FE00127EA0 /* Connection.swift */; };
@@ -54,16 +61,15 @@
 		724C9B5E1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C9B5D1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift */; };
 		725E9E0F1C24B3A800364CE1 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E0E1C24B3A800364CE1 /* Cache.swift */; };
 		725E9E111C24B45E00364CE1 /* CacheEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E101C24B45E00364CE1 /* CacheEntry.swift */; };
+		72610B581C5272BC0010D5B1 /* CallbackThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72610B571C5272BC0010D5B1 /* CallbackThread.swift */; };
 		7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277F5471C4C01040081118D /* SQLiteCollection.swift */; };
-		728303ED1BF2777300C266AA /* Collections_.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728303EC1BF2777300C266AA /* Collections_.swift */; };
-		728303F61BF3F56A00C266AA /* ProductsCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728303F51BF3F56A00C266AA /* ProductsCollection.swift */; };
 		728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728C235B1C3B121E0033D986 /* CacheUpdates.swift */; };
+		72A14E361C53F52A002F357F /* BasicObservbleSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A14E351C53F52A002F357F /* BasicObservbleSample.swift */; };
 		72A3E9191C26C75200AADE22 /* ToOneRelationshipProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A3E9181C26C75200AADE22 /* ToOneRelationshipProperty.swift */; };
 		72A3E91B1C26C7D800AADE22 /* ToManyRelationshipProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A3E91A1C26C7D800AADE22 /* ToManyRelationshipProperty.swift */; };
 		72A3E91D1C26C87F00AADE22 /* ReadWriteCollection+CollectionWithRelationships.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A3E91C1C26C87F00AADE22 /* ReadWriteCollection+CollectionWithRelationships.swift */; };
 		72B616E41BAF474A00CFE67C /* Turf.h in Headers */ = {isa = PBXBuildFile; fileRef = 72B616E31BAF474A00CFE67C /* Turf.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		72B616EB1BAF474A00CFE67C /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B616E01BAF474A00CFE67C /* Turf.framework */; };
-		72B616F01BAF474A00CFE67C /* TurfTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B616EF1BAF474A00CFE67C /* TurfTests.swift */; };
 		72CC14611C26CD090048F331 /* ReadCollection+CollectionWithRelationships.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CC14601C26CD090048F331 /* ReadCollection+CollectionWithRelationships.swift */; };
 		72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */; };
 		72E1D9DF1C260C4B007335A1 /* SQLStatementCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E1D9DE1C260C4B007335A1 /* SQLStatementCache.swift */; };
@@ -73,7 +79,6 @@
 		72E1D9E81C26BCE2007335A1 /* FTSProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E1D9E71C26BCE2007335A1 /* FTSProperty.swift */; };
 		72E1D9EA1C26C287007335A1 /* ReadCollection+FTSCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E1D9E91C26C287007335A1 /* ReadCollection+FTSCollection.swift */; };
 		72E7F4EA1C3433D9009C1D9D /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */; };
-		72F384F91BCF113600CED47F /* ModelClassA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F384F81BCF113600CED47F /* ModelClassA.swift */; };
 		72F6F6FE1C245BF40059D72C /* InstallableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F6F6FD1C245BF40059D72C /* InstallableExtension.swift */; };
 		72F6F7001C24622A0059D72C /* ExtendedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F6F6FF1C24622A0059D72C /* ExtendedCollection.swift */; };
 /* End PBXBuildFile section */
@@ -90,6 +95,13 @@
 
 /* Begin PBXFileReference section */
 		720470C21C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReadCollection+IndexedCollection.swift"; sourceTree = "<group>"; };
+		720558331C518D1300B0847E /* Disposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disposable.swift; sourceTree = "<group>"; };
+		720558351C518D2100B0847E /* DisposeBag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisposeBag.swift; sourceTree = "<group>"; };
+		720558371C518D2F00B0847E /* ObservableCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableCollection.swift; sourceTree = "<group>"; };
+		720558391C518D5100B0847E /* ObserverOf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserverOf.swift; sourceTree = "<group>"; };
+		7205583D1C518E0600B0847E /* BasicDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicDisposable.swift; sourceTree = "<group>"; };
+		7205583F1C51900E00B0847E /* TypedObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedObservable.swift; sourceTree = "<group>"; };
+		7206AFBF1C4EF99A004E04D4 /* ObservingConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservingConnection.swift; sourceTree = "<group>"; };
 		72088F831C1CD8C500127EA0 /* ReadTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadTransaction.swift; sourceTree = "<group>"; };
 		72088F851C1CD8E200127EA0 /* ReadWriteTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadWriteTransaction.swift; sourceTree = "<group>"; };
 		72088F871C1CD8FE00127EA0 /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
@@ -136,10 +148,10 @@
 		724C9B5D1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeErasedCollectionLocalStorage.swift; sourceTree = "<group>"; };
 		725E9E0E1C24B3A800364CE1 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		725E9E101C24B45E00364CE1 /* CacheEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheEntry.swift; sourceTree = "<group>"; };
+		72610B571C5272BC0010D5B1 /* CallbackThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallbackThread.swift; sourceTree = "<group>"; };
 		7277F5471C4C01040081118D /* SQLiteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteCollection.swift; sourceTree = "<group>"; };
-		728303EC1BF2777300C266AA /* Collections_.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collections_.swift; sourceTree = "<group>"; };
-		728303F51BF3F56A00C266AA /* ProductsCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductsCollection.swift; sourceTree = "<group>"; };
 		728C235B1C3B121E0033D986 /* CacheUpdates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheUpdates.swift; sourceTree = "<group>"; };
+		72A14E351C53F52A002F357F /* BasicObservbleSample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicObservbleSample.swift; sourceTree = "<group>"; };
 		72A3E9181C26C75200AADE22 /* ToOneRelationshipProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToOneRelationshipProperty.swift; sourceTree = "<group>"; };
 		72A3E91A1C26C7D800AADE22 /* ToManyRelationshipProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToManyRelationshipProperty.swift; sourceTree = "<group>"; };
 		72A3E91C1C26C87F00AADE22 /* ReadWriteCollection+CollectionWithRelationships.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReadWriteCollection+CollectionWithRelationships.swift"; sourceTree = "<group>"; };
@@ -147,8 +159,6 @@
 		72B616E31BAF474A00CFE67C /* Turf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Turf.h; sourceTree = "<group>"; };
 		72B616E51BAF474A00CFE67C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72B616EA1BAF474A00CFE67C /* TurfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TurfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		72B616EF1BAF474A00CFE67C /* TurfTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurfTests.swift; sourceTree = "<group>"; };
-		72B616F11BAF474A00CFE67C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72CC14601C26CD090048F331 /* ReadCollection+CollectionWithRelationships.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReadCollection+CollectionWithRelationships.swift"; sourceTree = "<group>"; };
 		72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeErasedCollection.swift; sourceTree = "<group>"; };
 		72D37B7E1BC326770087153A /* iOS.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = iOS.modulemap; sourceTree = "<group>"; };
@@ -159,7 +169,6 @@
 		72E1D9E71C26BCE2007335A1 /* FTSProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTSProperty.swift; sourceTree = "<group>"; };
 		72E1D9E91C26C287007335A1 /* ReadCollection+FTSCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReadCollection+FTSCollection.swift"; sourceTree = "<group>"; };
 		72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteError.swift; sourceTree = "<group>"; };
-		72F384F81BCF113600CED47F /* ModelClassA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelClassA.swift; sourceTree = "<group>"; };
 		72F6F6FD1C245BF40059D72C /* InstallableExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstallableExtension.swift; sourceTree = "<group>"; };
 		72F6F6FF1C24622A0059D72C /* ExtendedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedCollection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -183,6 +192,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		720558321C518CF000B0847E /* Observable */ = {
+			isa = PBXGroup;
+			children = (
+				7205583D1C518E0600B0847E /* BasicDisposable.swift */,
+				72610B571C5272BC0010D5B1 /* CallbackThread.swift */,
+				720558331C518D1300B0847E /* Disposable.swift */,
+				720558351C518D2100B0847E /* DisposeBag.swift */,
+				720558371C518D2F00B0847E /* ObservableCollection.swift */,
+				720558391C518D5100B0847E /* ObserverOf.swift */,
+				7205583F1C51900E00B0847E /* TypedObservable.swift */,
+			);
+			path = Observable;
+			sourceTree = "<group>";
+		};
 		72088F7B1C1CD75800127EA0 /* SQLiteAdapter */ = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +274,7 @@
 				72088FA91C1CE70800127EA0 /* CollectionsContainer.swift */,
 				72088F871C1CD8FE00127EA0 /* Connection.swift */,
 				72088F891C1CD91200127EA0 /* Database.swift */,
+				7206AFBF1C4EF99A004E04D4 /* ObservingConnection.swift */,
 				72088F831C1CD8C500127EA0 /* ReadTransaction.swift */,
 				72088F851C1CD8E200127EA0 /* ReadWriteTransaction.swift */,
 			);
@@ -261,6 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				72088F9F1C1CE3EB00127EA0 /* Collections */,
+				72A14E351C53F52A002F357F /* BasicObservbleSample.swift */,
 				72088F9D1C1CE38100127EA0 /* BasicSample.swift */,
 			);
 			path = Samples;
@@ -271,8 +296,8 @@
 			children = (
 				72088FA41C1CE48900127EA0 /* Values */,
 				72088FA51C1CE49B00127EA0 /* ChecksCollection.swift */,
-				72088FA71C1CE4A500127EA0 /* LineItemsCollection.swift */,
 				72088FAB1C1CE7B000127EA0 /* Collections.swift */,
+				72088FA71C1CE4A500127EA0 /* LineItemsCollection.swift */,
 			);
 			path = Collections;
 			sourceTree = "<group>";
@@ -284,18 +309,6 @@
 				72088FA21C1CE46200127EA0 /* LineItem.swift */,
 			);
 			name = Values;
-			sourceTree = "<group>";
-		};
-		72088FAD1C1CE8C900127EA0 /* Old */ = {
-			isa = PBXGroup;
-			children = (
-				72B616EF1BAF474A00CFE67C /* TurfTests.swift */,
-				72B616F11BAF474A00CFE67C /* Info.plist */,
-				72F384F81BCF113600CED47F /* ModelClassA.swift */,
-				728303EC1BF2777300C266AA /* Collections_.swift */,
-				728303F51BF3F56A00C266AA /* ProductsCollection.swift */,
-			);
-			name = Old;
 			sourceTree = "<group>";
 		};
 		72088FBB1C1CF33A00127EA0 /* Relationship */ = {
@@ -411,6 +424,7 @@
 				7218C9641C274D6D004457DB /* GCDWrapper */,
 				72B616E51BAF474A00CFE67C /* Info.plist */,
 				72D37B7E1BC326770087153A /* iOS.modulemap */,
+				720558321C518CF000B0847E /* Observable */,
 				72088F7B1C1CD75800127EA0 /* SQLiteAdapter */,
 				72B616E31BAF474A00CFE67C /* Turf.h */,
 				7218C9611C274760004457DB /* Weak */,
@@ -421,7 +435,6 @@
 		72B616EE1BAF474A00CFE67C /* TurfTests */ = {
 			isa = PBXGroup;
 			children = (
-				72088FAD1C1CE8C900127EA0 /* Old */,
 				72088F9C1C1CE34400127EA0 /* Samples */,
 			);
 			path = TurfTests;
@@ -595,12 +608,14 @@
 				72E1D9EA1C26C287007335A1 /* ReadCollection+FTSCollection.swift in Sources */,
 				72CC14611C26CD090048F331 /* ReadCollection+CollectionWithRelationships.swift in Sources */,
 				72E7F4EA1C3433D9009C1D9D /* SQLiteError.swift in Sources */,
+				7205583A1C518D5100B0847E /* ObserverOf.swift in Sources */,
 				72F6F7001C24622A0059D72C /* ExtendedCollection.swift in Sources */,
 				72088F881C1CD8FE00127EA0 /* Connection.swift in Sources */,
 				72088F9A1C1CE15100127EA0 /* ReadableCollection.swift in Sources */,
 				720470C31C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift in Sources */,
 				72A3E9191C26C75200AADE22 /* ToOneRelationshipProperty.swift in Sources */,
 				72297A8E1C257CDB0001BE40 /* CollectionRowChange.swift in Sources */,
+				72610B581C5272BC0010D5B1 /* CallbackThread.swift in Sources */,
 				72088FCA1C1CF7D400127EA0 /* RelationshipWriteTransaction.swift in Sources */,
 				72088FD11C1DF00E00127EA0 /* FullTextSearch.swift in Sources */,
 				725E9E0F1C24B3A800364CE1 /* Cache.swift in Sources */,
@@ -609,18 +624,24 @@
 				72345EAA1C1E254C0001A136 /* SQLiteAdapter.swift in Sources */,
 				72E1D9E61C2611AE007335A1 /* FTSWriteTransaction.swift in Sources */,
 				72345EA61C1E1B840001A136 /* SecondaryIndexConnection.swift in Sources */,
+				720558401C51900E00B0847E /* TypedObservable.swift in Sources */,
 				72088FB31C1CEB9500127EA0 /* IndexedProperties.swift in Sources */,
 				7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */,
 				72E1D9DF1C260C4B007335A1 /* SQLStatementCache.swift in Sources */,
+				7206AFC01C4EF99A004E04D4 /* ObservingConnection.swift in Sources */,
 				7218C9631C274778004457DB /* WeakBox.swift in Sources */,
 				72088F841C1CD8C500127EA0 /* ReadTransaction.swift in Sources */,
 				72088F861C1CD8E200127EA0 /* ReadWriteTransaction.swift in Sources */,
+				7205583E1C518E0600B0847E /* BasicDisposable.swift in Sources */,
 				72A3E91B1C26C7D800AADE22 /* ToManyRelationshipProperty.swift in Sources */,
 				72088FBF1C1CF3D400127EA0 /* RelatedCollections.swift in Sources */,
+				720558341C518D1300B0847E /* Disposable.swift in Sources */,
+				720558361C518D2100B0847E /* DisposeBag.swift in Sources */,
 				72088FD31C1DF01C00127EA0 /* FTSCollection.swift in Sources */,
 				728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */,
 				72088FC61C1CF79000127EA0 /* RelationshipConnection.swift in Sources */,
 				72297A8C1C257B290001BE40 /* SQLiteRowChangeType.swift in Sources */,
+				720558381C518D2F00B0847E /* ObservableCollection.swift in Sources */,
 				72088F8E1C1CD95600127EA0 /* ExtensionConnection.swift in Sources */,
 				7218C9681C2809BB004457DB /* DispatchQueueType.swift in Sources */,
 				72088F8A1C1CD91200127EA0 /* Database.swift in Sources */,
@@ -649,16 +670,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				728303ED1BF2777300C266AA /* Collections_.swift in Sources */,
-				72F384F91BCF113600CED47F /* ModelClassA.swift in Sources */,
 				72088FA61C1CE49B00127EA0 /* ChecksCollection.swift in Sources */,
 				72088FA11C1CE43A00127EA0 /* Check.swift in Sources */,
 				72088FA31C1CE46200127EA0 /* LineItem.swift in Sources */,
 				72088FA81C1CE4A500127EA0 /* LineItemsCollection.swift in Sources */,
 				72088F9E1C1CE38100127EA0 /* BasicSample.swift in Sources */,
-				728303F61BF3F56A00C266AA /* ProductsCollection.swift in Sources */,
-				72B616F01BAF474A00CFE67C /* TurfTests.swift in Sources */,
 				72088FAC1C1CE7B000127EA0 /* Collections.swift in Sources */,
+				72A14E361C53F52A002F357F /* BasicObservbleSample.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

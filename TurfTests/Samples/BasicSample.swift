@@ -28,8 +28,12 @@ class BasicSample: XCTestCase {
         connection.readWriteTransaction( { transaction in
             print("connection 1 write 1")
             let checksCollection = transaction.readWrite(self.collections.Checks)
-            checksCollection.setValue(Check(uuid: "A", name: "A", isOpen: true, lineItemUuids: []), forKey: "1234")
+            checksCollection.removeAllValues()
+            
+            let check = Check(uuid: "A", name: "A", isOpen: true, isCurrent: false, lineItemUuids: [])
+            checksCollection.setValue(check, forKey: "1234")
             print(checksCollection.valueForKey("1234")?.uuid)
+
         }) {
             print("connection 1 write 1 done")
         }
@@ -40,8 +44,8 @@ class BasicSample: XCTestCase {
 
             print(checksCollection.valueForKey("1234")?.uuid)
 
-            checksCollection.setValue(Check(uuid: "AB", name: "AB", isOpen: true, lineItemUuids: []), forKey: "1234")
-            checksCollection.setValue(Check(uuid: "ABC", name: "ABC", isOpen: true, lineItemUuids: []), forKey: "1234")
+            checksCollection.setValue(Check(uuid: "AB", name: "AB", isOpen: true, isCurrent: false, lineItemUuids: []), forKey: "1234")
+            checksCollection.setValue(Check(uuid: "ABC", name: "ABC", isOpen: true, isCurrent: false, lineItemUuids: []), forKey: "1234")
 
             print(checksCollection.valueForKey("1234")?.uuid)
         }) {
@@ -67,7 +71,7 @@ class BasicSample: XCTestCase {
 
             let checksCollection = transaction.readWrite(self.collections.Checks)
             print(checksCollection.valueForKey("1234"))
-            checksCollection.setValue(Check(uuid: "ZEG", name: "AB", isOpen: true, lineItemUuids: []), forKey: "1234")
+            checksCollection.setValue(Check(uuid: "ZEG", name: "AB", isOpen: true, isCurrent: false, lineItemUuids: []), forKey: "1234")
             print(checksCollection.valueForKey("1234"))
 //
         }) {

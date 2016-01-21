@@ -166,6 +166,9 @@ public final class Connection {
         assert(database.isOnWriteQueue(), "Must be called from a read-write transaction")
         self.database.registerExtension(ext)
         ext.install(db: self.sqlite.db)
+        //TODO actually register the extension - writing the to __turf_extensions table too
+        //TODO Add versioning to extensions so we can drop and recreate.
+        //TODO See if data needs repopulated?
     }
 
     /**
@@ -175,6 +178,7 @@ public final class Connection {
      */
     func registerExtension(ext: Extension) {
         database.registerExtension(ext)
+        //TODO actually register the extension - writing the to __turf_extensions table too
     }
 
     /**
@@ -238,14 +242,14 @@ public final class Connection {
         return Dispatch.Queues.queueHasContext(Dispatch.Queues.makeContext(connectionQueue), forKey: connectionQueueKey)
     }
 
-    // MARK: Private methods
+    // MARK: Internal methods
 
     /**
      - Note:
         **Not thread safe**
      - warning: This must be called from the connection queue.
      */
-    private func preReadTransaction(transaction: ReadTransaction) {
+    func preReadTransaction(transaction: ReadTransaction) {
         assert(isOnConnectionQueue(), "Must be called from a read transaction")
 
         connectionState = .ActiveReadTransaction
@@ -258,14 +262,15 @@ public final class Connection {
         **Not thread safe**
      - warning: This must be called from the connection queue.
      */
-    private func postReadTransaction(transaction: ReadTransaction) {
+    func postReadTransaction(transaction: ReadTransaction) {
         assert(isOnConnectionQueue(), "Must be called from a read-write transaction")
 
         sqlite.commitTransaction()
         database.removeUnneededCacheUpdates()
         connectionState = .Inactive
-        database.removeUnneededCacheUpdates()
     }
+
+    // MARK: Private methods
 
     /**
      - Note:
@@ -363,10 +368,22 @@ public final class Connection {
 
         sqlite.commitTransaction()
 
+        var changeSets = [String: ChangeSet<String>]()
         for (name, collection) in modifiedCollections {
             let collectionLocalStorage = collectionsLocalStorage[name]!
-            collectionLocalStorage.notifyObserversOfChangeSetForCollection(collection)
+            let changeSetCopy = collectionLocalStorage.notifyObserversOfChangeSetForCollection(collection)
+            changeSets[name] = changeSetCopy
             collectionLocalStorage.resetChangeSet()
+        }
+
+        //TODO change from main queue
+        Dispatch.asynchronouslyOn(Dispatch.Queues.Main) { [weak self] in
+            guard let strongSelf = self else {
+                print("TESTING: Skipping observation updates")
+                return
+            }
+            print("TESTING: Posting observation updates")
+            strongSelf.database.notifyObservingConnectionsOfModifiedCollectionsWithChangeSets(changeSets)
         }
     }
 
