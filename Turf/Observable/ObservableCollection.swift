@@ -25,8 +25,8 @@ public class ObservableCollection<TCollection: Collection where TCollection: Ind
 
     // MARK: Public methods
 
-    public func valuesWhere(predicate: String, prefilterChangeSet: (([TCollection.Value], ChangeSet<String>) -> Bool)? = nil) -> ObserverOf<[TCollection.Value]> {
-        let queryResultsObserver = ObserverOf<[TCollection.Value]>(initalValue: [])
+    public func valuesWhere(predicate: String, prefilterChangeSet: (([TCollection.Value], ChangeSet<String>) -> Bool)? = nil) -> CollectionTypeObserver<[TCollection.Value]> {
+        let queryResultsObserver = CollectionTypeObserver<[TCollection.Value]>(initalValue: [])
 
         let disposable =
         collectionDidChange { (collection, changeSet) in

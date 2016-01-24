@@ -24,7 +24,7 @@ internal class SecondaryIndexConnection<TCollection: Collection, Properties: Ind
     }
 
     func prepare(db: SQLitePtr) {
-        
+    
     }
 
     // MARK: Private methods

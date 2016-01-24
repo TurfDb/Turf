@@ -2,63 +2,48 @@ public class ObserverOf<T>: TypedObservable {
     // MARK: Public properties
     public typealias Value = T
 
-    public var value: T {
-        didSet {
-            onValueSet(value, transaction: nil)
-        }
-    }
+    public private(set) var value: T
 
     public let disposeBag: DisposeBag
 
     // MARK: Private properties
 
-    private var observers: [T -> Void]
+    private var observers: [UInt64: (T, ReadTransaction?) -> Void]
+    private var nextObserverToken = UInt64(0)
 
     // MARK: Object lifecycle
 
     public init(initalValue: T) {
         self.value = initalValue
         self.disposeBag = DisposeBag()
-        self.observers = []
+        self.observers = [:]
     }
 
     deinit {
         disposeBag.dispose()
     }
 
-    public func didChange(thread: CallbackThread = .CallingThread, callback: (T, ReadTransaction) -> Void) -> Disposable {
-        return BasicDisposable { }
+    public func didChange(thread: CallbackThread = .CallingThread, callback: (T, ReadTransaction?) -> Void) -> Disposable {
+
+        let token = nextObserverToken
+        observers[token] = callback//TODO Account for thread
+        nextObserverToken += 1
+
+        return BasicDisposable { [weak self] in
+            self?.observers.removeValueForKey(token)
+        }
     }
 
-    public func setValue(value: T, fromTransaction transaction: ReadTransaction) {
-        //TODO
+    public func setValue(value: T, fromTransaction transaction: ReadTransaction?) {
+        self.value = value
+        onValueSet(value, transaction: transaction)
     }
-
-    // MARK: Internal methods
 
     // MARK: Private methods
 
     private func onValueSet(newValue: T, transaction: ReadTransaction?) {
-        for observer in observers {
-            observer(newValue)
+        for (_, observer) in observers {
+            observer(newValue, transaction)
         }
     }
 }
-
-public extension ObserverOf where T: CollectionType {
-    var first: ObserverOf<T.Generator.Element?>? { return nil }
-    var last: ObserverOf<T.Generator.Element?>? { return nil }
-    subscript(index: T.Index) -> ObserverOf<T.Generator.Element?>? { return nil }
-
-    func observeEachValue() -> [ObserverOf<T.Generator.Element>] {
-        return []
-    }
-
-    func filter() -> ObserverOf<T>? {
-        return nil
-    }
-}
-
-//public func zip(observables: Observable ...) {
-//    
-//}

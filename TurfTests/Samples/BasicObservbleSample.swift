@@ -52,6 +52,7 @@ class BasicObservableSample: XCTestCase {
             print("\t\(checksCollection!.valueForKey("1234")?.uuid)")
         }
 
+
         let currentCheck = observableChecksCollection
             .valuesWhere(collections.Checks.indexed.isCurrent.equals(true),
                 prefilterChangeSet: {
@@ -59,15 +60,15 @@ class BasicObservableSample: XCTestCase {
                 }
             ).first
 
-        let currentLineItems = ObserverOf<[LineItem]>(initalValue: [])
-        currentCheck?.didChange { check, transaction in
+        let currentLineItems = CollectionTypeObserver<[LineItem]>(initalValue: [])
+        currentCheck.didChange { check, transaction in
             guard let check = check else { return }
 
-            let lineItems = lineItemsForCheck(check, transaction: transaction)
-            currentLineItems.setValue(lineItems, fromTransaction: transaction)
+            let lineItems = lineItemsForCheck(check, transaction: transaction!)
+            currentLineItems.setValue(lineItems, fromTransaction: transaction!)
         }
 
-        currentCheck?.didChange(.MainThread) { (check, transaction) in
+        currentCheck.didChange(.MainThread) { (check, transaction) in
             print(check)
         }
 
