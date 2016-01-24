@@ -29,7 +29,7 @@ class BasicSample: XCTestCase {
             print("connection 1 write 1")
             let checksCollection = transaction.readWrite(self.collections.Checks)
             checksCollection.removeAllValues()
-            
+
             let check = Check(uuid: "A", name: "A", isOpen: true, isCurrent: false, lineItemUuids: [])
             checksCollection.setValue(check, forKey: "1234")
             print(checksCollection.valueForKey("1234")?.uuid)
@@ -44,46 +44,30 @@ class BasicSample: XCTestCase {
 
             print(checksCollection.valueForKey("1234")?.uuid)
 
-            checksCollection.setValue(Check(uuid: "AB", name: "AB", isOpen: true, isCurrent: false, lineItemUuids: []), forKey: "1234")
-            checksCollection.setValue(Check(uuid: "ABC", name: "ABC", isOpen: true, isCurrent: false, lineItemUuids: []), forKey: "1234")
+            var check = Check(uuid: "AB", name: "AB", isOpen: true, isCurrent: false, lineItemUuids: [])
+            checksCollection.setValue(check, forKey: "1234")
+
+            check = Check(uuid: "ABC", name: "ABC", isOpen: true, isCurrent: false, lineItemUuids: [])
+            checksCollection.setValue(check, forKey: "1234")
 
             print(checksCollection.valueForKey("1234")?.uuid)
         }) {
             print("connection 1 write 2 done")
         }
 
-//        connection.readWriteTransaction( { transaction in
-//            print("connection 1 write 3")
-//            let checksCollection = transaction.readWrite(self.collections.Checks)
-//
-//            print(checksCollection.valueForKey("1234")?.uuid)
-//
-//            checksCollection.setValue(Check(uuid: "ABCD", name: "ABCD", isOpen: true, lineItemUuids: []), forKey: "1234")
-//
-//            print(checksCollection.valueForKey("1234")?.uuid)
-//        }) {
-//            print("connection 1 write 3 done")
-//        }
-
-//
         connection2.readWriteTransaction( { transaction in
             print("connection 2 write 1")
 
             let checksCollection = transaction.readWrite(self.collections.Checks)
             print(checksCollection.valueForKey("1234"))
-            checksCollection.setValue(Check(uuid: "ZEG", name: "AB", isOpen: true, isCurrent: false, lineItemUuids: []), forKey: "1234")
+
+            let check = Check(uuid: "ZEG", name: "AB", isOpen: true, isCurrent: false, lineItemUuids: [])
+            checksCollection.setValue(check, forKey: "1234")
             print(checksCollection.valueForKey("1234"))
-//
         }) {
             print("connection 2 write 1 done")
         }
-//
-//        connection2.readWriteTransaction( { transaction in
-//            print("connection 2 write 2")
-//        }) {
-//            print("connection 2 write 2 done")
-//        }
-////
+
         connection.readWriteTransaction( { transaction in
             expectation.fulfill()
         })

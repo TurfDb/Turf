@@ -87,15 +87,17 @@ public class ObservingConnection {
 
     /**
      Calls `shouldAdvanceWhenDatabaseChanges` to check if it should advance the snapshot this connection is on.
-     Asynchronously called after commiting a read-write transaction.
+     Called after commiting a read-write transaction.
 
      - parameter changeSets: Map of `collection name` -> `Collection change set`.
 
      - note:
         - TODO Thread safe
-     - warning: This method should only ever be called from at the end of a commit on the write queue. There is no assertion because it is done asynchronously at the minute.
+     - warning: This method should only ever be called from at the end of a commit on the write queue.
      */
     func processModifiedCollections(changeSets changeSets: [String: ChangeSet<String>]) {
+        assert(connection.database.isOnWriteQueue(), "Must be called from write queue")
+
         guard shouldAdvanceWhenDatabaseChanges() else {
             pendingChangeSets.append(changeSets)
             return
@@ -116,7 +118,9 @@ public class ObservingConnection {
         - TODO thread safe
      */
     private func advanceToLatestSnapshot(changeSets changeSets: [String: ChangeSet<String>])  {
-        Dispatch.synchronouslyOn(connection.connectionQueue) {
+        pendingChangeSets = []
+
+        Dispatch.asynchronouslyOn(connection.connectionQueue) {
             // End previous read transaction
             if let longLivedReadTransaction = self.longLivedReadTransaction {
                 self.connection.postReadTransaction(longLivedReadTransaction)
@@ -135,7 +139,6 @@ public class ObservingConnection {
                 }
             }
 
-            self.pendingChangeSets = []
         }
     }
 }

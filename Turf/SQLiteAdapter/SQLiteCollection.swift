@@ -1,3 +1,4 @@
+//TODO Add some better error handling checking binds etc
 internal final class SQLiteCollection {
     // MARK: Private properties
 
@@ -334,7 +335,7 @@ internal final class SQLiteCollection {
     private func setUpInsertValueDataStmt() throws {
         var stmt: COpaquePointer = nil
 
-        guard sqlite3_prepare_v2(db, "INSERT INTO `\(collectionName)` (`key`,`valueData`, `schemaVersion`) VALUES (?,?,NULL);", -1, &stmt, nil).isOK else {
+        guard sqlite3_prepare_v2(db, "INSERT INTO `\(collectionName)` (`key`,`valueData`, `schemaVersion`) VALUES (?,?,?);", -1, &stmt, nil).isOK else {
             throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
 

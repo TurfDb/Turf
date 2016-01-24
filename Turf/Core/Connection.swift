@@ -376,15 +376,7 @@ public final class Connection {
             collectionLocalStorage.resetChangeSet()
         }
 
-        //TODO change from main queue
-        Dispatch.asynchronouslyOn(Dispatch.Queues.Main) { [weak self] in
-            guard let strongSelf = self else {
-                print("TESTING: Skipping observation updates")
-                return
-            }
-            print("TESTING: Posting observation updates")
-            strongSelf.database.notifyObservingConnectionsOfModifiedCollectionsWithChangeSets(changeSets)
-        }
+        database.notifyObservingConnectionsOfModifiedCollectionsWithChangeSets(changeSets)
     }
 
     /**
