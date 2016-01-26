@@ -72,7 +72,7 @@ public final class ReadWriteTransaction: ReadTransaction {
         - Thread safe
      - parameter extension
      */
-    public func registerExtension(ext: Extension) {
+    public func registerExtension<Ext: Extension>(ext: Ext) {
         connection.registerExtension(ext)
     }
 

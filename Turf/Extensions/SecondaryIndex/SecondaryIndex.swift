@@ -32,11 +32,22 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
 }
 
 extension SecondaryIndex: InstallableExtension {
-    public func install(db db: COpaquePointer) {
+    public func install(db db: SQLitePtr) {
+
+        let typeErasedProperties = properties.allProperties
+
+        var propertyTypes = ["targetPrimaryKey TEXT NOT NULL PRIMARY KEY", "targetRowId INTEGER"]
+
+        propertyTypes += typeErasedProperties.map { property -> String in
+            let nullNotation = (property is NullableProperty) ? "" : "NOT NULL"
+            return "\(property.name) \(property.sqliteTypeName()) \(nullNotation)"
+        }
+
+//        let createSql = "CREATE TABLE IF NOT EXISTS `\(tableName)` (\(propertyTypes.joinWithSeparator(",")))"
 
     }
 
-    public func uninstall(db db: COpaquePointer) {
+    public func uninstall(db db: SQLitePtr) {
 
     }
 }

@@ -13,7 +13,6 @@ public extension ReadCollection where TCollection: IndexedCollection {
      */
     public func findFirstValueWhere(predicate: String) -> Value? {
         let connection = extensionConnection()
-        let _ = connection.queryCache.q("SELECT value FROM table \(predicate) LIMIT 1")
 
         
 

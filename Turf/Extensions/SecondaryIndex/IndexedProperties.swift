@@ -18,5 +18,5 @@
 public protocol IndexedProperties {
     /// All indexed properties 
     /// - warning: Do not mutate this after registering a SecondaryIndex extension
-    var allProperties: [CollectionProperty] { get }
+    var allProperties: [TypeErasedIndexedProperty] { get }
 }

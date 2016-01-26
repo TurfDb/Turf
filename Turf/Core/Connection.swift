@@ -176,7 +176,7 @@ public final class Connection {
      - note: 
         - Thread safe
      */
-    func registerExtension(ext: Extension) {
+    func registerExtension<Ext: Extension>(ext: Ext) {
         database.registerExtension(ext)
         //TODO actually register the extension - writing the to __turf_extensions table too
     }

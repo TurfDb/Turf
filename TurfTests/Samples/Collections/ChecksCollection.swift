@@ -44,10 +44,10 @@ final class ChecksCollection: Collection, IndexedCollection, FTSCollection, Coll
 
     struct IndexedProperties: Turf.IndexedProperties {
         let isOpen = IndexedProperty<ChecksCollection, Bool>(name: "isOpen") { return $0.isOpen }
-        let name = IndexedProperty<ChecksCollection, String?>(name: "name") { return $0.name }
+        let name = NullableIndexedProperty<ChecksCollection, String>(name: "name") { return $0.name }
         let isCurrent = IndexedProperty<ChecksCollection, Bool>(name: "isCurrent") { return $0.isCurrent }
 
-        var allProperties: [CollectionProperty] {
+        var allProperties: [TypeErasedIndexedProperty] {
             return [isOpen, name, isCurrent]
         }
     }

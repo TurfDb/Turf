@@ -1,14 +1,14 @@
-internal class SecondaryIndexWriteTransaction<TCollection: Collection, Properties: IndexedProperties>: ExtensionWriteTransaction {
+internal class SecondaryIndexWriteTransaction<IndexedCollection: Collection, Properties: IndexedProperties>: ExtensionWriteTransaction {
     // MARK: Internal properties
 
     // MARK: Private properties
 
-    private unowned let connection: SecondaryIndexConnection<TCollection, Properties>
+    private unowned let connection: SecondaryIndexConnection<IndexedCollection, Properties>
     private unowned let transaction: ReadWriteTransaction
 
     // MARK: Object lifecycle
 
-    internal init(connection: SecondaryIndexConnection<TCollection, Properties>, transaction: ReadWriteTransaction) {
+    internal init(connection: SecondaryIndexConnection<IndexedCollection, Properties>, transaction: ReadWriteTransaction) {
         self.connection = connection
         self.transaction = transaction
     }
@@ -16,6 +16,14 @@ internal class SecondaryIndexWriteTransaction<TCollection: Collection, Propertie
     // MARK: Internal methods
 
     func handleValueInsertion<TCollection : Collection>(value: TCollection.Value, forKey primaryKey: String, rowId: Int64, inCollection collection: TCollection) {
+        let indexedCollectionValue = value as! IndexedCollection.Value
+
+        let properties = connection.index.properties
+        for property in properties.allProperties {
+            property.bindPropertyValueToSQLiteStmt(<#T##stmt: COpaquePointer##COpaquePointer#>, atIndex: <#T##Int32#>)
+        }
+
+
 //        let stmt = connection.queryCache.q(key: "insertion", query: "INSERT STUFF")
     }
 

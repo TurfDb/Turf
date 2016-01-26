@@ -19,4 +19,8 @@ public struct FTSProperty<TCollection: Collection>: CollectionProperty {
     public func matches(value: String) -> Void {
         return 
     }
+
+    public func sqliteTypeName() -> SQLiteTypeName {
+        return String.sqliteTypeName
+    }
 }

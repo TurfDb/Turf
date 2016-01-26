@@ -1,9 +1,10 @@
 /**
- Define a property of type `T` that will be indexed.
+ Define a property of type `T?` that will be indexed.
+ - note: Workaround for not having `extension Optional: SQLiteType where Wrapped = XYZ`. If Swift supports this we can greatly simplify the secondary indexing code, removing `IndexedCollectionProperty` etc.
  */
-public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType>: IndexedCollectionProperty {
+public struct NullableIndexedProperty<IndexedCollection: Collection, T: SQLiteType>: IndexedCollectionProperty, NullableProperty {
     typealias PropertyCollection = IndexedCollection
-    typealias PropertyValue = T
+    typealias PropertyType = T?
 
     // MARK: Public properties
 
@@ -12,7 +13,7 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType>: Ind
     // MARK: Internal properties
 
     /// Property getter
-    internal var propertyValueForValue: (IndexedCollection.Value -> T)
+    internal var propertyValueForValue: (IndexedCollection.Value -> T?)
 
     // MARK: Object lifecycle
 
@@ -20,7 +21,7 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType>: Ind
     - parameter name: Property name
     - parameter propertyValueForValue: Getter for the property
     */
-    public init(name: String, propertyValueForValue: (IndexedCollection.Value -> T)) {
+    public init(name: String, propertyValueForValue: (IndexedCollection.Value -> T?)) {
         self.name = name
         self.propertyValueForValue = propertyValueForValue
     }
@@ -33,15 +34,11 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType>: Ind
     - parameter value: The value to test equality against
     - returns: A predicate
     */
-    public func equals(value: T) -> String {
+    public func equals(value: T?) -> String {
         return "WHERE \(name) = \(value)"//TODO
     }
 
     public func sqliteTypeName() -> SQLiteTypeName {
         return T.sqliteTypeName
-    }
-
-    func bindPropertyValue(value: IndexedCollection.Value, toSQLiteStmt stmt: COpaquePointer, atIndex index: Int32) {
-        let propertyValue = propertyValueForValue(value)
     }
 }

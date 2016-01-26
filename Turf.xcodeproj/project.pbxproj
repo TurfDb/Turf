@@ -45,7 +45,7 @@
 		72088FCA1C1CF7D400127EA0 /* RelationshipWriteTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FC91C1CF7D400127EA0 /* RelationshipWriteTransaction.swift */; };
 		72088FD11C1DF00E00127EA0 /* FullTextSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FD01C1DF00E00127EA0 /* FullTextSearch.swift */; };
 		72088FD31C1DF01C00127EA0 /* FTSCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FD21C1DF01C00127EA0 /* FTSCollection.swift */; };
-		72088FD51C1E101B00127EA0 /* IndexedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FD41C1E101B00127EA0 /* IndexedProperty.swift */; };
+		72088FD51C1E101B00127EA0 /* TypeErasedIndexedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FD41C1E101B00127EA0 /* TypeErasedIndexedProperty.swift */; };
 		72088FD71C1E10EF00127EA0 /* CollectionProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FD61C1E10EF00127EA0 /* CollectionProperty.swift */; };
 		720FA9B11C259D2000BEF295 /* ValuesSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720FA9B01C259D2000BEF295 /* ValuesSequence.swift */; };
 		7218C9631C274778004457DB /* WeakBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9621C274778004457DB /* WeakBox.swift */; };
@@ -62,6 +62,12 @@
 		725E9E0F1C24B3A800364CE1 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E0E1C24B3A800364CE1 /* Cache.swift */; };
 		725E9E111C24B45E00364CE1 /* CacheEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E101C24B45E00364CE1 /* CacheEntry.swift */; };
 		72610B581C5272BC0010D5B1 /* CallbackThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72610B571C5272BC0010D5B1 /* CallbackThread.swift */; };
+		72662B591C57BF310058F6EF /* SQLiteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B581C57BF310058F6EF /* SQLiteType.swift */; };
+		72662B5B1C57C0310058F6EF /* SQLiteTypeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B5A1C57C0310058F6EF /* SQLiteTypeName.swift */; };
+		72662B5D1C57E7F30058F6EF /* NullableIndexedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B5C1C57E7F30058F6EF /* NullableIndexedProperty.swift */; };
+		72662B5F1C57E7FE0058F6EF /* IndexedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B5E1C57E7FE0058F6EF /* IndexedProperty.swift */; };
+		72662B631C57EBBD0058F6EF /* IndexedCollectionProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B621C57EBBD0058F6EF /* IndexedCollectionProperty.swift */; };
+		72662B651C57EF300058F6EF /* NullableProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B641C57EF300058F6EF /* NullableProperty.swift */; };
 		7269F0351C56DD7C007FF29B /* CollectionTypeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7269F0341C56DD7C007FF29B /* CollectionTypeObserver.swift */; };
 		7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277F5471C4C01040081118D /* SQLiteCollection.swift */; };
 		728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728C235B1C3B121E0033D986 /* CacheUpdates.swift */; };
@@ -133,7 +139,7 @@
 		72088FC91C1CF7D400127EA0 /* RelationshipWriteTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipWriteTransaction.swift; sourceTree = "<group>"; };
 		72088FD01C1DF00E00127EA0 /* FullTextSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullTextSearch.swift; sourceTree = "<group>"; };
 		72088FD21C1DF01C00127EA0 /* FTSCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTSCollection.swift; sourceTree = "<group>"; };
-		72088FD41C1E101B00127EA0 /* IndexedProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedProperty.swift; sourceTree = "<group>"; };
+		72088FD41C1E101B00127EA0 /* TypeErasedIndexedProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeErasedIndexedProperty.swift; sourceTree = "<group>"; };
 		72088FD61C1E10EF00127EA0 /* CollectionProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionProperty.swift; sourceTree = "<group>"; };
 		720FA9B01C259D2000BEF295 /* ValuesSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValuesSequence.swift; sourceTree = "<group>"; };
 		7218C9621C274778004457DB /* WeakBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakBox.swift; sourceTree = "<group>"; };
@@ -150,6 +156,12 @@
 		725E9E0E1C24B3A800364CE1 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		725E9E101C24B45E00364CE1 /* CacheEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheEntry.swift; sourceTree = "<group>"; };
 		72610B571C5272BC0010D5B1 /* CallbackThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallbackThread.swift; sourceTree = "<group>"; };
+		72662B581C57BF310058F6EF /* SQLiteType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteType.swift; sourceTree = "<group>"; };
+		72662B5A1C57C0310058F6EF /* SQLiteTypeName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteTypeName.swift; sourceTree = "<group>"; };
+		72662B5C1C57E7F30058F6EF /* NullableIndexedProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NullableIndexedProperty.swift; sourceTree = "<group>"; };
+		72662B5E1C57E7FE0058F6EF /* IndexedProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedProperty.swift; sourceTree = "<group>"; };
+		72662B621C57EBBD0058F6EF /* IndexedCollectionProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedCollectionProperty.swift; sourceTree = "<group>"; };
+		72662B641C57EF300058F6EF /* NullableProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NullableProperty.swift; sourceTree = "<group>"; };
 		7269F0341C56DD7C007FF29B /* CollectionTypeObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTypeObserver.swift; sourceTree = "<group>"; };
 		7277F5471C4C01040081118D /* SQLiteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteCollection.swift; sourceTree = "<group>"; };
 		728C235B1C3B121E0033D986 /* CacheUpdates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheUpdates.swift; sourceTree = "<group>"; };
@@ -216,6 +228,8 @@
 				72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */,
 				72297A8B1C257B290001BE40 /* SQLiteRowChangeType.swift */,
 				7277F5471C4C01040081118D /* SQLiteCollection.swift */,
+				72662B581C57BF310058F6EF /* SQLiteType.swift */,
+				72662B5A1C57C0310058F6EF /* SQLiteTypeName.swift */,
 			);
 			path = SQLiteAdapter;
 			sourceTree = "<group>";
@@ -264,9 +278,11 @@
 				72345EA41C1E1B680001A136 /* Internals */,
 				72088FB01C1CEB8400127EA0 /* IndexedCollection.swift */,
 				72088FB21C1CEB9500127EA0 /* IndexedProperties.swift */,
-				72088FD41C1E101B00127EA0 /* IndexedProperty.swift */,
+				72088FD41C1E101B00127EA0 /* TypeErasedIndexedProperty.swift */,
 				720470C21C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift */,
 				72088FAE1C1CEB6500127EA0 /* SecondaryIndex.swift */,
+				72662B5C1C57E7F30058F6EF /* NullableIndexedProperty.swift */,
+				72662B5E1C57E7FE0058F6EF /* IndexedProperty.swift */,
 			);
 			path = SecondaryIndex;
 			sourceTree = "<group>";
@@ -384,6 +400,8 @@
 			children = (
 				72345EA51C1E1B840001A136 /* SecondaryIndexConnection.swift */,
 				72345EA71C1E1BA20001A136 /* SecondaryIndexWriteTransaction.swift */,
+				72662B621C57EBBD0058F6EF /* IndexedCollectionProperty.swift */,
+				72662B641C57EF300058F6EF /* NullableProperty.swift */,
 			);
 			path = Internals;
 			sourceTree = "<group>";
@@ -603,12 +621,13 @@
 			files = (
 				724C9B5C1C2575D700E9AD79 /* CollectionLocalStorage.swift in Sources */,
 				720FA9B11C259D2000BEF295 /* ValuesSequence.swift in Sources */,
-				72088FD51C1E101B00127EA0 /* IndexedProperty.swift in Sources */,
+				72088FD51C1E101B00127EA0 /* TypeErasedIndexedProperty.swift in Sources */,
 				72A3E91D1C26C87F00AADE22 /* ReadWriteCollection+CollectionWithRelationships.swift in Sources */,
 				72F6F6FE1C245BF40059D72C /* InstallableExtension.swift in Sources */,
 				72E1D9E41C2611A4007335A1 /* FTSConnection.swift in Sources */,
 				72088FD71C1E10EF00127EA0 /* CollectionProperty.swift in Sources */,
 				72E1D9EA1C26C287007335A1 /* ReadCollection+FTSCollection.swift in Sources */,
+				72662B5B1C57C0310058F6EF /* SQLiteTypeName.swift in Sources */,
 				72CC14611C26CD090048F331 /* ReadCollection+CollectionWithRelationships.swift in Sources */,
 				72E7F4EA1C3433D9009C1D9D /* SQLiteError.swift in Sources */,
 				7205583A1C518D5100B0847E /* ObserverOf.swift in Sources */,
@@ -621,10 +640,12 @@
 				72297A8E1C257CDB0001BE40 /* CollectionRowChange.swift in Sources */,
 				72610B581C5272BC0010D5B1 /* CallbackThread.swift in Sources */,
 				72088FCA1C1CF7D400127EA0 /* RelationshipWriteTransaction.swift in Sources */,
+				72662B631C57EBBD0058F6EF /* IndexedCollectionProperty.swift in Sources */,
 				72088FD11C1DF00E00127EA0 /* FullTextSearch.swift in Sources */,
 				725E9E0F1C24B3A800364CE1 /* Cache.swift in Sources */,
 				72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */,
 				72088FAA1C1CE70800127EA0 /* CollectionsContainer.swift in Sources */,
+				72662B591C57BF310058F6EF /* SQLiteType.swift in Sources */,
 				72345EAA1C1E254C0001A136 /* SQLiteAdapter.swift in Sources */,
 				72E1D9E61C2611AE007335A1 /* FTSWriteTransaction.swift in Sources */,
 				72345EA61C1E1B840001A136 /* SecondaryIndexConnection.swift in Sources */,
@@ -659,10 +680,13 @@
 				72088F8C1C1CD93E00127EA0 /* Extension.swift in Sources */,
 				725E9E111C24B45E00364CE1 /* CacheEntry.swift in Sources */,
 				724C9B5E1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift in Sources */,
+				72662B651C57EF300058F6EF /* NullableProperty.swift in Sources */,
 				72088F941C1CDA1C00127EA0 /* ReadCollection.swift in Sources */,
 				72E1D9E11C261137007335A1 /* FTSProperties.swift in Sources */,
+				72662B5F1C57E7FE0058F6EF /* IndexedProperty.swift in Sources */,
 				72297A901C257CE00001BE40 /* ChangeSet.swift in Sources */,
 				72088FC11C1CF43400127EA0 /* CollectionWithRelationships.swift in Sources */,
+				72662B5D1C57E7F30058F6EF /* NullableIndexedProperty.swift in Sources */,
 				72088FC81C1CF7BA00127EA0 /* RelationshipReadTransaction.swift in Sources */,
 				72345EA81C1E1BA20001A136 /* SecondaryIndexWriteTransaction.swift in Sources */,
 				72E1D9E81C26BCE2007335A1 /* FTSProperty.swift in Sources */,
