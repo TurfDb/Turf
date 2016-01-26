@@ -4,6 +4,9 @@ internal class SecondaryIndexConnection<TCollection: Collection, Properties: Ind
     internal unowned let index: SecondaryIndex<TCollection, Properties>
 
     internal var insertStmt: COpaquePointer!
+    internal var updateStmt: COpaquePointer!
+    internal var removeStmt: COpaquePointer!
+    internal var removeAllStmt: COpaquePointer!
 
     // MARK: Private properties
 
@@ -16,6 +19,13 @@ internal class SecondaryIndexConnection<TCollection: Collection, Properties: Ind
         self.connection = connection
     }
 
+    deinit {
+        if let stmt = insertStmt { sqlite3_finalize(stmt) }
+        if let stmt = updateStmt { sqlite3_finalize(stmt) }
+        if let stmt = removeStmt { sqlite3_finalize(stmt) }
+        if let stmt = removeAllStmt { sqlite3_finalize(stmt) }
+    }
+
     // MARK: Internal methods
 
     func writeTransaction(transaction: ReadWriteTransaction) -> ExtensionWriteTransaction {
@@ -23,6 +33,20 @@ internal class SecondaryIndexConnection<TCollection: Collection, Properties: Ind
     }
 
     func prepare(db: SQLitePtr) {
+        //TODO
+        do {
+            try prepareInsertStmt(db: db)
+            try prepareUpdateStmt(db: db)
+            try prepareRemoveStmt(db: db)
+            try prepareRemoveAllStmt(db: db)
+        } catch {
+            print(error)
+        }
+    }
+
+    // MARK: Private methods
+
+    private func prepareInsertStmt(db db: SQLitePtr) throws {
         var propertyNames = ["targetPrimaryKey", "targetRowId"]
         var propertyBindings = ["?", "?"]
 
@@ -33,14 +57,48 @@ internal class SecondaryIndexConnection<TCollection: Collection, Properties: Ind
 
         let sql = "INSERT INTO `\(index.tableName)` (\(propertyNames.joinWithSeparator(","))) VALUES (\(propertyBindings.joinWithSeparator(",")))"
 
-        //TODO Error handling
         var stmt: COpaquePointer = nil
-        if sqlite3_prepare_v2(db, sql, -1, &stmt, nil).isNotOK {
-            print("TODO ERROR HANDLING")
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil).isOK else {
+            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
-        insertStmt = stmt
 
+        insertStmt = stmt
     }
 
-    // MARK: Private methods
+    private func prepareUpdateStmt(db db: SQLitePtr) throws {
+        var propertyBindings = [String]()
+
+        for property in index.properties.allProperties {
+            propertyBindings.append("\(property.name)=?")
+        }
+
+        let sql = "UPDATE `\(index.tableName)` SET \(propertyBindings.joinWithSeparator(",")) WHERE targetPrimaryKey=?"
+
+        var stmt: COpaquePointer = nil
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil).isOK else {
+            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+        }
+
+        updateStmt = stmt
+    }
+
+    private func prepareRemoveStmt(db db: SQLitePtr) throws {
+        var stmt: COpaquePointer = nil
+
+        guard sqlite3_prepare_v2(db, "DELETE FROM `\(index.tableName)` WHERE targetPrimaryKey=?;", -1, &stmt, nil).isOK else {
+            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+        }
+
+        removeStmt = stmt
+    }
+
+    private func prepareRemoveAllStmt(db db: SQLitePtr) throws {
+        var stmt: COpaquePointer = nil
+
+        guard sqlite3_prepare_v2(db, "DELETE FROM `\(index.tableName)`;", -1, &stmt, nil).isOK else {
+            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+        }
+
+        removeAllStmt = stmt
+    }
 }

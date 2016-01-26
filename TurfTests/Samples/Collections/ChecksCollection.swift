@@ -44,12 +44,27 @@ final class ChecksCollection: Collection, IndexedCollection, FTSCollection, Coll
 
     struct IndexedProperties: Turf.IndexedProperties {
         let isOpen = IndexedProperty<ChecksCollection, Bool>(name: "isOpen") { return $0.isOpen }
-        let name = NullableIndexedProperty<ChecksCollection, String>(name: "name") { return $0.name }
+        let name = IndexedProperty<ChecksCollection, SQLiteOptional<String>>(name: "name") { return $0.name.toSQLite() }
         let isCurrent = IndexedProperty<ChecksCollection, Bool>(name: "isCurrent") { return $0.isCurrent }
 
-        var allProperties: [TypeErasedIndexedProperty] {
-            return [isOpen, name, isCurrent]
+        var allProperties: [IndexedPropertyFromCollection<ChecksCollection>] {
+            //TODO remove need for lift()
+            return [isOpen.lift(), name.lift(), isCurrent.lift()]
         }
+
+//        var bindings: [String: (value: ChecksCollection.Value, toSQLiteStmt: COpaquePointer, atIndex: Int32) -> Int32] { return [
+//                isOpen.name: isOpen.bindPropertyValue,
+//                name.name: name.bindPropertyValue,
+//                isCurrent.name: isCurrent.bindPropertyValue
+//            ]
+//        }
+//
+//        var bindings2: [String: (SQLiteType.Type, (value: ChecksCollection.Value, toSQLiteStmt: COpaquePointer, atIndex: Int32) -> Int32)] { return [
+//                isOpen.name: (isOpen.Type, isOpen.bindPropertyValue),
+//                name.name: (name.Type, name.bindPropertyValue),
+//                isCurrent.name: (isCurrent.Type, isCurrent.bindPropertyValue)
+//            ]
+//        }
     }
 
     struct FTSProperties: Turf.FTSProperties {

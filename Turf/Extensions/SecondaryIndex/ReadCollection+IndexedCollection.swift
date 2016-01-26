@@ -12,11 +12,33 @@ public extension ReadCollection where TCollection: IndexedCollection {
      - returns: Value if there is a match
      */
     public func findFirstValueWhere(predicate: String) -> Value? {
-        let connection = extensionConnection()
+        var value: Value? = nil
 
+        var stmt: COpaquePointer = nil
+        defer { sqlite3_finalize(stmt) }
+
+        do {
+            let connection = extensionConnection()
+            let db = sqlite3_db_handle(connection.insertStmt)
+
+            let sql = "SELECT targetPrimaryKey FROM \(connection.index.tableName) \(predicate) LIMIT 1"
+            guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil).isOK else {
+                throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            }
+
+            let result = sqlite3_step(stmt)
+            if result.hasRow {
+                if let key = String(stmt: stmt, columnIndex: SQLITE_FIRST_COLUMN), fetchedValue = valueForKey(key) {
+                    value = fetchedValue
+                }
+            } else if !result.isDone {
+                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            }
+        } catch {
+            print("TODO Handle errors")
+        }
         
-
-        return nil
+        return value
     }
 
     /**
@@ -25,10 +47,37 @@ public extension ReadCollection where TCollection: IndexedCollection {
      - returns: Values that match the predicate
      */
     public func findValuesWhere(predicate: String) -> [Value] {
-        let connection = extensionConnection()
-//        let _ = connection.queryCache.q("SELECT value FROM table \(predicate)")
+        var values = [Value]()
 
-        return []
+        var stmt: COpaquePointer = nil
+        defer { sqlite3_finalize(stmt) }
+
+        do {
+            let connection = extensionConnection()
+            let db = sqlite3_db_handle(connection.insertStmt)
+
+            let sql = "SELECT targetPrimaryKey FROM \(connection.index.tableName) \(predicate)"
+            guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil).isOK else {
+                throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            }
+
+            var result = sqlite3_step(stmt)
+            while result.hasRow {
+                if let key = String(stmt: stmt, columnIndex: SQLITE_FIRST_COLUMN), value = valueForKey(key) {
+                    values.append(value)
+                }
+                result = sqlite3_step(stmt)
+            }
+
+            if !result.isDone {
+                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            }
+        } catch {
+            print(error)
+            print("TODO Handle errors")
+        }
+        
+        return values
     }
 
     // MARK: Private methods

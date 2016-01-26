@@ -72,9 +72,9 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
      - returns: Value for primary key if it exists
      */
     public func valueForKey(key: String) -> Value? {
-//        if let cachedValue = localStorage.valueCache[key] {
-//            return cachedValue
-//        }
+        if let cachedValue = localStorage.valueCache[key] {
+            return cachedValue
+        }
 
         if let result = localStorage.sql.valueDataForKey(key) {
             precondition(result.schemaVersion == collection.schemaVersion,

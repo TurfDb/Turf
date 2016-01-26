@@ -21,8 +21,8 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
      - parameter properties: A list of collection properties that will be indexed
      */
     public init(collectionName: String, properties: Properties) {
-        self.uniqueName = "index-\(collectionName)"
-        self.tableName = "index-\(collectionName)"
+        self.uniqueName = "index_\(collectionName)"
+        self.tableName = "index_\(collectionName)"
         self.properties = properties
     }
 
@@ -33,21 +33,26 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
 
 extension SecondaryIndex: InstallableExtension {
     public func install(db db: SQLitePtr) {
-
         let typeErasedProperties = properties.allProperties
-
-        var propertyTypes = ["targetPrimaryKey TEXT NOT NULL PRIMARY KEY", "targetRowId INTEGER"]
+        var propertyTypes = ["targetPrimaryKey TEXT NOT NULL UNIQUE", "targetRowId INTEGER"]
 
         propertyTypes += typeErasedProperties.map { property -> String in
-            let nullNotation = (property is NullableProperty) ? "" : "NOT NULL"
-            return "\(property.name) \(property.sqliteTypeName()) \(nullNotation)"
+            let nullNotation = property.isNullable ? "" : "NOT NULL"
+            return "\(property.name) \(property.sqliteTypeName.rawValue) \(nullNotation)"
         }
 
-//        let createSql = "CREATE TABLE IF NOT EXISTS `\(tableName)` (\(propertyTypes.joinWithSeparator(",")))"
+        let sql = "CREATE TABLE IF NOT EXISTS `\(tableName)` (\(propertyTypes.joinWithSeparator(",")))"
 
+        if sqlite3_exec(db, sql, nil, nil, nil).isNotOK {
+            print("ERROR: TODO HANDLE SOME ERRORS")
+        }
     }
 
     public func uninstall(db db: SQLitePtr) {
+        let sql = "DROP TABLE IF EXISTS `\(tableName)`"
 
+        if sqlite3_exec(db, sql, nil, nil, nil).isNotOK {
+            print("ERROR: TODO HANDLE SOME ERRORS")
+        }
     }
 }

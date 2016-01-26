@@ -1,13 +1,12 @@
 /**
  Define a property of type `T` that will be indexed.
  */
-public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType>: IndexedCollectionProperty {
-    typealias PropertyCollection = IndexedCollection
-    typealias PropertyValue = T
-
+public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType> {
     // MARK: Public properties
 
     public let name: String
+
+    public let Type: T.Type = T.self
 
     // MARK: Internal properties
 
@@ -34,14 +33,17 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType>: Ind
     - returns: A predicate
     */
     public func equals(value: T) -> String {
-        return "WHERE \(name) = \(value)"//TODO
+        return "WHERE \(name)=\(value.sqliteValue())"//TODO
     }
 
-    public func sqliteTypeName() -> SQLiteTypeName {
-        return T.sqliteTypeName
+    public func lift() -> IndexedPropertyFromCollection<IndexedCollection> {
+        return IndexedPropertyFromCollection(property: self)
     }
 
-    func bindPropertyValue(value: IndexedCollection.Value, toSQLiteStmt stmt: COpaquePointer, atIndex index: Int32) {
-        let propertyValue = propertyValueForValue(value)
+    // MARK: Internal methods
+
+    internal func bindPropertyValue(value: IndexedCollection.Value, toSQLiteStmt stmt: COpaquePointer, atIndex index: Int32) -> Int32 {
+        let value = propertyValueForValue(value)
+        return value.sqliteBind(stmt, index: index)
     }
 }

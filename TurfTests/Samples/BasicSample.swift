@@ -3,12 +3,14 @@ import Turf
 
 class BasicSample: XCTestCase {
     var collections: Collections!
+    var db: Database!
     override func setUp() {
         super.setUp()
 
         collections = Collections()
+        db = try! Database(path: "/Users/jordanhamill/basic2.sqlite", collections: collections)
     }
-    
+
     override func tearDown() {
         super.tearDown()
     }
@@ -16,7 +18,6 @@ class BasicSample: XCTestCase {
     func testExample() {
         let expectation = expectationWithDescription("just waiting to test stuff")
 
-        let db = try! Database(path: "/Users/jordanhamill/basic2.sqlite", collections: collections)
         let connection = try! db.newConnection()
         let connection2 = try! db.newConnection()
 
@@ -32,6 +33,10 @@ class BasicSample: XCTestCase {
 
             let check = Check(uuid: "A", name: "A", isOpen: true, isCurrent: false, lineItemUuids: [])
             checksCollection.setValue(check, forKey: "1234")
+
+            let check2 = Check(uuid: "AV", name: "AV", isOpen: true, isCurrent: false, lineItemUuids: [])
+
+            checksCollection.setValue(check2, forKey: "1235")
             print(checksCollection.valueForKey("1234")?.uuid)
 
         }) {
@@ -41,6 +46,9 @@ class BasicSample: XCTestCase {
         connection.readWriteTransaction( { transaction in
             print("connection 1 write 2")
             let checksCollection = transaction.readWrite(self.collections.Checks)
+
+            print("all: \(checksCollection.findValuesWhere("WHERE isOpen=1"))")
+            print("first: \(checksCollection.findFirstValueWhere("WHERE isOpen=1"))")
 
             print(checksCollection.valueForKey("1234")?.uuid)
 

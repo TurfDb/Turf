@@ -4,4 +4,5 @@ public enum SQLiteTypeName: String {
     case Real = "REAL"
     case Text = "TEXT"
     case Blob = "BLOB"
+    case _Optional = "SWIFT OPTIONAL"
 }

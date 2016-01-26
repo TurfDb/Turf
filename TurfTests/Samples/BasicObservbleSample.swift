@@ -4,12 +4,11 @@ import Turf
 class BasicObservableSample: XCTestCase {
     var collections: Collections!
     var db: Database!
-
     override func setUp() {
         super.setUp()
 
         collections = Collections()
-        db = try! Database(path: "/Users/jordanhamill/basic3.sqlite", collections: collections)
+        db = try! Database(path: "/Users/jordanhamill/basic2.sqlite", collections: collections)
     }
 
     override func tearDown() {
@@ -54,7 +53,7 @@ class BasicObservableSample: XCTestCase {
 
 
         let currentCheck = observableChecksCollection
-            .valuesWhere(collections.Checks.indexed.isCurrent.equals(true),
+            .valuesWhere(collections.Checks.indexed.isOpen.equals(true),
                 prefilterChangeSet: {
                     return hasChangeForPreviousValue($0, $1, key: { check in return check.uuid })
                 }
@@ -69,11 +68,11 @@ class BasicObservableSample: XCTestCase {
         }
 
         currentCheck.didChange(.MainThread) { (check, transaction) in
-            print(check)
+            print("check: \(check)")
         }
 
         currentLineItems.didChange(.MainThread) { (lineItems, transaction) in
-            print(lineItems)
+            print("line items: \(lineItems)")
         }
 
         connection.readWriteTransaction({ transaction in
