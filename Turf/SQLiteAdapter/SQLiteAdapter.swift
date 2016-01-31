@@ -67,12 +67,19 @@ internal final class SQLiteAdapter {
         }
     }
 
+    deinit {
+        precondition(isClosed, "sqlite connection must be closed before deinitializing")
+    }
+
     // MARK: Internal methods
 
     /**
      Close the sqlite3 connection
      */
     func close() {
+        guard !isClosed else { return }
+
+        finalizePreparedStatements()
         sqlite3_close_v2(db)
         self.isClosed = true
     }
@@ -168,6 +175,25 @@ internal final class SQLiteAdapter {
             throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
         self.setSnapshotStmt = setSnapshotStmt
+    }
+
+    private func finalizePreparedStatements() {
+        if let stmt = beginDeferredTransactionStmt {
+            sqlite3_finalize(stmt)
+        }
+        if let stmt = commitTransactionStmt {
+            sqlite3_finalize(stmt)
+        }
+        //TODO Work out why this statement causes bad access
+//        if let stmt = rollbackTransactionStmt {
+//            sqlite3_finalize(stmt)
+//        }
+        if let stmt = getSnapshotStmt {
+            sqlite3_finalize(stmt)
+        }
+        if let stmt = setSnapshotStmt {
+            sqlite3_finalize(stmt)
+        }
     }
 
     private func createMetadataTable() throws {
