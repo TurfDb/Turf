@@ -39,7 +39,7 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
 
     public func install(transaction: ReadWriteTransaction, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) {
         let typeErasedProperties = properties.allProperties
-        var propertyTypes = ["targetPrimaryKey TEXT NOT NULL UNIQUE", "targetRowId INTEGER"]
+        var propertyTypes = ["targetPrimaryKey TEXT NOT NULL UNIQUE"]
 
         propertyTypes += typeErasedProperties.map { property -> String in
             let nullNotation = property.isNullable ? "" : "NOT NULL"
@@ -63,10 +63,10 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
         }
 
         if requiresRepopulation {
-            precondition(readCollectionOnTransaction != nil, "`readCollectionOnTransaction` must be set")
-            let readCollection = readCollectionOnTransaction!(transaction)
-            let extensionConnection = newConnection(transaction.connection)
-            let extensionTransaction = extensionConnection.writeTransaction(transaction) as! SecondaryIndexWriteTransaction<TCollection, Properties>
+//            precondition(readCollectionOnTransaction != nil, "`readCollectionOnTransaction` must be set")
+//            let readCollection = readCollectionOnTransaction!(transaction)
+//            let extensionConnection = newConnection(transaction.connection)
+//            let extensionTransaction = extensionConnection.writeTransaction(transaction) as! SecondaryIndexWriteTransaction<TCollection, Properties>
         }
     }
 

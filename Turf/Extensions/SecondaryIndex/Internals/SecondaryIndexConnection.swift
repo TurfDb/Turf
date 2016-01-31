@@ -47,8 +47,8 @@ internal class SecondaryIndexConnection<TCollection: Collection, Properties: Ind
     // MARK: Private methods
 
     private func prepareInsertStmt(db db: SQLitePtr) throws {
-        var propertyNames = ["targetPrimaryKey", "targetRowId"]
-        var propertyBindings = ["?", "?"]
+        var propertyNames = ["targetPrimaryKey"]
+        var propertyBindings = ["?"]
 
         for property in index.properties.allProperties {
             propertyNames.append(property.name)

@@ -1,6 +1,4 @@
 internal class SecondaryIndexWriteTransaction<IndexedCollection: Collection, Properties: IndexedProperties>: ExtensionWriteTransaction {
-    // MARK: Internal properties
-
     // MARK: Private properties
 
     private unowned let connection: SecondaryIndexConnection<IndexedCollection, Properties>
@@ -15,7 +13,7 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: Collection, Pro
 
     // MARK: Internal methods
 
-    func handleValueInsertion<TCollection : Collection>(value: TCollection.Value, forKey primaryKey: String, rowId: Int64, inCollection collection: TCollection) {
+    func handleValueInsertion<TCollection : Collection>(value: TCollection.Value, forKey primaryKey: String, inCollection collection: TCollection) {
         //Exensions are allowed to take values from any collection
         //We must force cast the value (to ensure it will crash otherwise) to the same type as the indexed collection's value
         let indexedCollectionValue = value as! Properties.IndexedCollection.Value
@@ -24,14 +22,12 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: Collection, Pro
 
         let stmt = connection.insertStmt
         let primaryKeyIndex = SQLITE_FIRST_BIND_COLUMN
-        let rowIdIndex = SQLITE_FIRST_BIND_COLUMN + 1
 
         sqlite3_bind_text(stmt, primaryKeyIndex, primaryKey, -1, SQLITE_TRANSIENT)
-        sqlite3_bind_int64(stmt, rowIdIndex, rowId)
 
         let properties = connection.index.properties
         for (index, property) in properties.allProperties.enumerate() {
-            property.bindPropertyValue(indexedCollectionValue, toSQLiteStmt: stmt, atIndex: index + rowIdIndex + 1)
+            property.bindPropertyValue(indexedCollectionValue, toSQLiteStmt: stmt, atIndex: index + primaryKeyIndex + 1)
         }
 
         if sqlite3_step(stmt).isNotDone {
@@ -45,7 +41,7 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: Collection, Pro
         }
     }
 
-    func handleValueUpdate<TCollection : Collection>(value: TCollection.Value, forKey primaryKey: String, rowId: Int64, inCollection collection: TCollection) {
+    func handleValueUpdate<TCollection : Collection>(value: TCollection.Value, forKey primaryKey: String, inCollection collection: TCollection) {
         let indexedCollectionValue = value as! Properties.IndexedCollection.Value
 
         defer { sqlite3_reset(connection.updateStmt) }

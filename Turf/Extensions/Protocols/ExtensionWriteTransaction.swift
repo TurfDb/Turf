@@ -7,19 +7,17 @@ public protocol ExtensionWriteTransaction {
      Process a value insertion
      - parameter value: The value inserted
      - parameter primaryKey: The primary key of the value inserted
-     - parameter rowId: The internal sqlite rowid of the value inserted
      - parameter collection: The collection the value was inserted into
      */
-    func handleValueInsertion<TCollection: Collection>(value: TCollection.Value, forKey primaryKey: String, rowId: Int64, inCollection collection: TCollection)
+    func handleValueInsertion<TCollection: Collection>(value: TCollection.Value, forKey primaryKey: String, inCollection collection: TCollection)
 
     /**
      Process a value update
      - parameter value: The updated value
      - parameter primaryKey: The primary key of the updated value
-     - parameter rowId: The internal sqlite rowid of the updated value
      - parameter collection: The collection the value was updated in
      */
-    func handleValueUpdate<TCollection: Collection>(value: TCollection.Value, forKey primaryKey: String, rowId: Int64, inCollection collection: TCollection)
+    func handleValueUpdate<TCollection: Collection>(value: TCollection.Value, forKey primaryKey: String, inCollection collection: TCollection)
 
     /**
      Process the removal of multiple rows

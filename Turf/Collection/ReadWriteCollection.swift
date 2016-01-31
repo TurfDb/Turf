@@ -95,21 +95,21 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
         
         let connection = readWriteTransaction.connection
         switch rowChange {
-        case .Insert(let rowId):
+        case .Insert(_):
             for ext in collection.associatedExtensions {
                 let extConnection = connection.connectionForExtension(ext)
                 let extTransaction = extConnection.writeTransaction(readWriteTransaction)
 
-                extTransaction.handleValueInsertion(value, forKey: key, rowId: rowId, inCollection: collection)
+                extTransaction.handleValueInsertion(value, forKey: key, inCollection: collection)
             }
 
-        case .Update(let rowId):
+        case .Update(_):
             for ext in collection.associatedExtensions {
                 let extConnection = connection.connectionForExtension(ext)
                 //TODO Investigate the potential of caching extension write transactions on the connection
                 let extTransaction = extConnection.writeTransaction(readWriteTransaction)
 
-                extTransaction.handleValueUpdate(value, forKey: key, rowId: rowId, inCollection: collection)
+                extTransaction.handleValueUpdate(value, forKey: key, inCollection: collection)
             }
         }
     }
