@@ -29,6 +29,8 @@ internal final class SQLiteAdapter {
     private var rollbackTransactionStmt: SQLStatement!
     private var getSnapshotStmt: SQLStatement!
     private var setSnapshotStmt: SQLStatement!
+    private var getExtensionDetailsStmt: SQLStatement!
+    private var setExtensionDetailsStmt: SQLStatement!
 
     // MARK: Object lifecycle
 
@@ -143,6 +145,51 @@ internal final class SQLiteAdapter {
         sqlite3_reset(setSnapshotStmt)
     }
 
+    /**
+     Each installed extension gets a row in a turf metadata table for extensions tracking versions and extension data.
+     - returns: Extension's version, turf version in case the extension is potentially refactored and a blob of data that could be associated with the extension's installation.
+     */
+    func getDetailsForExtensionWithName(name: String) -> (version: UInt64, turfVersion: UInt64, data: NSData)? {
+        defer { sqlite3_reset(getExtensionDetailsStmt) }
+
+        let nameIndex = SQLITE_FIRST_BIND_COLUMN
+        sqlite3_bind_text(getExtensionDetailsStmt, nameIndex, name, -1, SQLITE_TRANSIENT)
+
+        guard sqlite3_step(getExtensionDetailsStmt).hasRow else { return nil }
+
+        let versionIndex = SQLITE_FIRST_COLUMN
+        let dataIndex = SQLITE_FIRST_COLUMN + 1
+        let turfVersionIndex = SQLITE_FIRST_COLUMN + 2
+
+        let version = UInt64(sqlite3_column_int64(getExtensionDetailsStmt, versionIndex))
+
+        let bytes = sqlite3_column_blob(getExtensionDetailsStmt, dataIndex)
+        let bytesLength = Int(sqlite3_column_bytes(getExtensionDetailsStmt, dataIndex))
+        let data = NSData(bytes: bytes, length: bytesLength)
+
+        let turfVersion = UInt64(sqlite3_column_int64(getExtensionDetailsStmt, turfVersionIndex))
+
+        return (version, turfVersion, data)
+    }
+
+    func setDetailsForExtension(name name: String, version: UInt64, turfVersion: UInt64, data: NSData) {
+        defer { sqlite3_reset(setExtensionDetailsStmt) }
+
+        let nameIndex = SQLITE_FIRST_BIND_COLUMN
+        let versionIndex = SQLITE_FIRST_BIND_COLUMN + 1
+        let dataIndex = SQLITE_FIRST_BIND_COLUMN + 2
+        let turfVersionIndex = SQLITE_FIRST_BIND_COLUMN + 3
+
+        sqlite3_bind_text(setExtensionDetailsStmt, nameIndex, name, -1, SQLITE_TRANSIENT)
+        sqlite3_bind_int64(setExtensionDetailsStmt, versionIndex, Int64(version))
+        sqlite3_bind_blob(setExtensionDetailsStmt, dataIndex, data.bytes, Int32(data.length), nil)
+        sqlite3_bind_int64(setExtensionDetailsStmt, turfVersionIndex, Int64(turfVersion))
+        if sqlite3_step(rollbackTransactionStmt).isNotDone {
+            print("ERROR: Could not set extension details")
+            print(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+        }
+    }
+
     // MARK: Private methods
 
     private func prepareStatements() throws {
@@ -175,6 +222,18 @@ internal final class SQLiteAdapter {
             throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
         self.setSnapshotStmt = setSnapshotStmt
+
+        var getExtensionDetailsStmt: COpaquePointer = nil
+        if sqlite3_prepare_v2(db, "SELECT version, data, turf_version FROM \(TurfExtensionsTableName) WHERE name=?;",  -1, &getExtensionDetailsStmt, nil).isNotOK {
+            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+        }
+        self.getExtensionDetailsStmt = getExtensionDetailsStmt
+
+        var setExtensionDetailsStmt: COpaquePointer = nil
+        if sqlite3_prepare_v2(db, "INSERT OR REPLACE INTO \(TurfExtensionsTableName) (name, version, data, turf_version) VALUES (?, ?, ?, 0);",  -1, &setExtensionDetailsStmt, nil).isNotOK {
+            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+        }
+        self.setExtensionDetailsStmt = setExtensionDetailsStmt
     }
 
     private func finalizePreparedStatements() {
@@ -192,6 +251,12 @@ internal final class SQLiteAdapter {
             sqlite3_finalize(stmt)
         }
         if let stmt = setSnapshotStmt {
+            sqlite3_finalize(stmt)
+        }
+        if let stmt = getExtensionDetailsStmt {
+            sqlite3_finalize(stmt)
+        }
+        if let stmt = setExtensionDetailsStmt {
             sqlite3_finalize(stmt)
         }
     }
