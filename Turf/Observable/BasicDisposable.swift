@@ -31,4 +31,8 @@ public class BasicDisposable: Disposable {
     
         self.disposed = true
     }
+
+    public func addToBag(disposeBag: DisposeBag) {
+        disposeBag.add(self)
+    }
 }

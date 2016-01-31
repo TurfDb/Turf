@@ -40,4 +40,7 @@ public class DisposeBag: Disposable {
         disposed = true
     }
 
+    public func addToBag(disposeBag: DisposeBag) {
+        disposeBag.add(self)
+    }
 }
