@@ -59,18 +59,8 @@ public final class ReadWriteTransaction: ReadTransaction {
     /**
      Register and install (if required) a database extension
      - note:
-        - Thread safe
+     - Thread safe
      - parameter extension An installable extension
-     */
-    public func registerExtension<Ext: Extension where Ext: InstallableExtension>(ext: Ext) {
-        connection.registerExtension(ext)
-    }
-
-    /**
-     Register a database extension
-     - note:
-        - Thread safe
-     - parameter extension
      */
     public func registerExtension<Ext: Extension>(ext: Ext) {
         connection.registerExtension(ext)

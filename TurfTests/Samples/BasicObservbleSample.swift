@@ -8,7 +8,7 @@ class BasicObservableSample: XCTestCase {
         super.setUp()
 
         collections = Collections()
-        db = try! Database(path: "/Users/jordanhamill/basic2.sqlite", collections: collections)
+        db = try! Database(path: "/Users/jordanhamill/basic3.sqlite", collections: collections)
     }
 
     override func tearDown() {

@@ -29,9 +29,7 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
     public func newConnection(connection: Connection) -> ExtensionConnection {
         return SecondaryIndexConnection(index: self, connection: connection)
     }
-}
 
-extension SecondaryIndex: InstallableExtension {
     public func install(db db: SQLitePtr) {
         let typeErasedProperties = properties.allProperties
         var propertyTypes = ["targetPrimaryKey TEXT NOT NULL UNIQUE", "targetRowId INTEGER"]

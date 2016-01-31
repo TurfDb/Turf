@@ -65,7 +65,6 @@
 		72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */; };
 		72E1D9DF1C260C4B007335A1 /* SQLStatementCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E1D9DE1C260C4B007335A1 /* SQLStatementCache.swift */; };
 		72E7F4EA1C3433D9009C1D9D /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */; };
-		72F6F6FE1C245BF40059D72C /* InstallableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F6F6FD1C245BF40059D72C /* InstallableExtension.swift */; };
 		72F6F7001C24622A0059D72C /* ExtendedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F6F6FF1C24622A0059D72C /* ExtendedCollection.swift */; };
 /* End PBXBuildFile section */
 
@@ -141,7 +140,6 @@
 		72D37B7E1BC326770087153A /* iOS.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = iOS.modulemap; sourceTree = "<group>"; };
 		72E1D9DE1C260C4B007335A1 /* SQLStatementCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLStatementCache.swift; sourceTree = "<group>"; };
 		72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteError.swift; sourceTree = "<group>"; };
-		72F6F6FD1C245BF40059D72C /* InstallableExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstallableExtension.swift; sourceTree = "<group>"; };
 		72F6F6FF1C24622A0059D72C /* ExtendedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedCollection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -223,7 +221,6 @@
 				72088F8B1C1CD93E00127EA0 /* Extension.swift */,
 				72088F8D1C1CD95600127EA0 /* ExtensionConnection.swift */,
 				72088F8F1C1CD97A00127EA0 /* ExtensionWriteTransaction.swift */,
-				72F6F6FD1C245BF40059D72C /* InstallableExtension.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -526,7 +523,6 @@
 			files = (
 				724C9B5C1C2575D700E9AD79 /* CollectionLocalStorage.swift in Sources */,
 				720FA9B11C259D2000BEF295 /* ValuesSequence.swift in Sources */,
-				72F6F6FE1C245BF40059D72C /* InstallableExtension.swift in Sources */,
 				72088FD71C1E10EF00127EA0 /* CollectionProperty.swift in Sources */,
 				72662B5B1C57C0310058F6EF /* SQLiteTypeName.swift in Sources */,
 				72E7F4EA1C3433D9009C1D9D /* SQLiteError.swift in Sources */,
