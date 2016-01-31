@@ -1,7 +1,7 @@
 import Foundation
 import Turf
 
-final class ChecksCollection: Collection, IndexedCollection, FTSCollection, CollectionWithRelationships {
+final class ChecksCollection: Collection, IndexedCollection, CollectionWithRelationships {
     typealias Value = Check
 
     let name = "Checks"
@@ -11,16 +11,12 @@ final class ChecksCollection: Collection, IndexedCollection, FTSCollection, Coll
     let index: SecondaryIndex<ChecksCollection, IndexedProperties>
     let indexed = IndexedProperties()
 
-    let fts: FullTextSearch<ChecksCollection, FTSProperties>
-    let textProperties = FTSProperties()
-
     let relationships = Relationships()
 
     let associatedExtensions: [Extension]
 
     init() {
         index = SecondaryIndex(collectionName: name, properties: indexed)
-        fts = FullTextSearch(collectionName: name, properties: textProperties)
         associatedExtensions = [index]
     }
 
@@ -65,14 +61,6 @@ final class ChecksCollection: Collection, IndexedCollection, FTSCollection, Coll
 //                isCurrent.name: (isCurrent.Type, isCurrent.bindPropertyValue)
 //            ]
 //        }
-    }
-
-    struct FTSProperties: Turf.FTSProperties {
-        let name = FTSProperty<ChecksCollection>(name: "name") { return $0.name ?? "" }
-
-        var allProperties: [FTSProperty<ChecksCollection>] {
-            return [name]
-        }
     }
 
     struct Relationships: Turf.RelatedCollections {
