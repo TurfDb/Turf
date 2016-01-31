@@ -171,7 +171,7 @@ public final class Connection {
             existingInstallation = details
         }
 
-        ext.install(db: self.sqlite.db, existingInstallationDetails: existingInstallation)
+        ext.install(transaction, db: self.sqlite.db, existingInstallationDetails: existingInstallation)
 
         sqlite.setDetailsForExtension(name: ext.uniqueName, version: ext.version, turfVersion: ext.turfVersion, data: NSData())
     }

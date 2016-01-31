@@ -27,7 +27,7 @@ public protocol Extension {
      - warning: Do no begin/commit/rollback any transactions - a transaction has already been opened for this db and will be commited at a point after `install(db:)`
      - parameter db: sqlite3* pointer which can be used to modify the database.
      */
-    func install(db db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?)
+    func install(transaction: ReadWriteTransaction, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?)
 
     /**
      Called when the extension is unregistered.

@@ -10,6 +10,8 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
 
     public static var turfVersion: UInt64 { return 1 }
 
+    public var readCollectionOnTransaction: (ReadTransaction -> ReadCollection<TCollection>)?
+
     // MARK: Internal properties
 
     /// Table name in which the secondary indexed properties are written
@@ -35,7 +37,7 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
         return SecondaryIndexConnection(index: self, connection: connection)
     }
 
-    public func install(db db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) {
+    public func install(transaction: ReadWriteTransaction, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) {
         let typeErasedProperties = properties.allProperties
         var propertyTypes = ["targetPrimaryKey TEXT NOT NULL UNIQUE", "targetRowId INTEGER"]
 
@@ -44,12 +46,13 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
             return "\(property.name) \(property.sqliteTypeName.rawValue) \(nullNotation)"
         }
 
-        if let existingInstallationDetails = existingInstallationDetails
-            where existingInstallationDetails.version < version {
-                if sqlite3_exec(db, "DROP TABLE IF EXISTS \(tableName)", nil, nil, nil).isNotOK {
-                    print("ERROR: TODO HANDLE SOME ERRORS")
-                    return
-                }
+        let requiresRepopulation = existingInstallationDetails != nil ? (existingInstallationDetails!.version < version) : true
+
+        if requiresRepopulation {
+            if sqlite3_exec(db, "DROP TABLE IF EXISTS \(tableName)", nil, nil, nil).isNotOK {
+                print("ERROR: TODO HANDLE SOME ERRORS")
+                return
+            }
         }
 
         let sql = "CREATE TABLE IF NOT EXISTS `\(tableName)` (\(propertyTypes.joinWithSeparator(",")))"
@@ -57,6 +60,13 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
         if sqlite3_exec(db, sql, nil, nil, nil).isNotOK {
             print("ERROR: TODO HANDLE SOME ERRORS")
             return
+        }
+
+        if requiresRepopulation {
+            precondition(readCollectionOnTransaction != nil, "`readCollectionOnTransaction` must be set")
+            let readCollection = readCollectionOnTransaction!(transaction)
+            let extensionConnection = newConnection(transaction.connection)
+            let extensionTransaction = extensionConnection.writeTransaction(transaction) as! SecondaryIndexWriteTransaction<TCollection, Properties>
         }
     }
 
