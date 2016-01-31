@@ -7,6 +7,12 @@ public protocol Extension {
     /// Each exension instance must have a unique name
     var uniqueName: String { get }
 
+    /// Extension instance version number
+    var version: UInt64 { get }
+
+    /// Turf extension version number.
+    static var turfVersion: UInt64 { get }
+
     /**
      Factory method to create a new connection for the extension.
      - note: A new extension connection is required for each `Turf.Connection`
@@ -21,7 +27,7 @@ public protocol Extension {
      - warning: Do no begin/commit/rollback any transactions - a transaction has already been opened for this db and will be commited at a point after `install(db:)`
      - parameter db: sqlite3* pointer which can be used to modify the database.
      */
-    func install(db db: SQLitePtr)
+    func install(db db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?)
 
     /**
      Called when the extension is unregistered.
@@ -30,4 +36,10 @@ public protocol Extension {
      - parameter db: sqlite3* pointer which can be used to modify the database.
      */
     func uninstall(db db: SQLitePtr)
+}
+
+extension Extension {
+    var turfVersion: UInt64 {
+        return Self.turfVersion
+    }
 }

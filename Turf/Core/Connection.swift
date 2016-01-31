@@ -159,16 +159,21 @@ public final class Connection {
      Register a new extension that must perform an action on first installation. It
      is a fatal error to register an extension twice.
      - note:
-     - Thread safe so long as called from read-write transaction
+         - Thread safe so long as called from read-write transaction
      - warning: Must be called from a read-write transaction
      */
-    func registerExtension<Ext: Extension>(ext: Ext) {
+    func registerExtension<Ext: Extension>(ext: Ext, onTransaction transaction: ReadWriteTransaction) {
         assert(database.isOnWriteQueue(), "Must be called from a read-write transaction")
         self.database.registerExtension(ext)
-        ext.install(db: self.sqlite.db)
-        //TODO actually register the extension - writing the to __turf_extensions table too
-        //TODO Add versioning to extensions so we can drop and recreate.
-        //TODO See if data needs repopulated?
+
+        var existingInstallation: ExistingExtensionInstallation? = nil
+        if let details = sqlite.getDetailsForExtensionWithName(ext.uniqueName) {
+            existingInstallation = details
+        }
+
+        ext.install(db: self.sqlite.db, existingInstallationDetails: existingInstallation)
+
+        sqlite.setDetailsForExtension(name: ext.uniqueName, version: ext.version, turfVersion: ext.turfVersion, data: NSData())
     }
 
     /**

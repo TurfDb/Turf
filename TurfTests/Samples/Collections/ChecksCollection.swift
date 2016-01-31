@@ -14,7 +14,7 @@ final class ChecksCollection: Collection, IndexedCollection {
     let associatedExtensions: [Extension]
 
     init() {
-        index = SecondaryIndex(collectionName: name, properties: indexed)
+        index = SecondaryIndex(collectionName: name, properties: indexed, version: 0)
         associatedExtensions = [index]
     }
 

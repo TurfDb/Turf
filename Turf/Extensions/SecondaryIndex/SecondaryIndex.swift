@@ -6,6 +6,10 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
 
     public let uniqueName: String
 
+    public let version: UInt64
+
+    public static var turfVersion: UInt64 { return 1 }
+
     // MARK: Internal properties
 
     /// Table name in which the secondary indexed properties are written
@@ -20,8 +24,9 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
      - parameter collectionName: Name of the collection to secondary index
      - parameter properties: A list of collection properties that will be indexed
      */
-    public init(collectionName: String, properties: Properties) {
+    public init(collectionName: String, properties: Properties, version: UInt64) {
         self.uniqueName = "index_\(collectionName)"
+        self.version = version
         self.tableName = "index_\(collectionName)"
         self.properties = properties
     }
@@ -30,7 +35,7 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
         return SecondaryIndexConnection(index: self, connection: connection)
     }
 
-    public func install(db db: SQLitePtr) {
+    public func install(db db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) {
         let typeErasedProperties = properties.allProperties
         var propertyTypes = ["targetPrimaryKey TEXT NOT NULL UNIQUE", "targetRowId INTEGER"]
 
@@ -39,10 +44,19 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
             return "\(property.name) \(property.sqliteTypeName.rawValue) \(nullNotation)"
         }
 
+        if let existingInstallationDetails = existingInstallationDetails
+            where existingInstallationDetails.version < version {
+                if sqlite3_exec(db, "DROP TABLE IF EXISTS \(tableName)", nil, nil, nil).isNotOK {
+                    print("ERROR: TODO HANDLE SOME ERRORS")
+                    return
+                }
+        }
+
         let sql = "CREATE TABLE IF NOT EXISTS `\(tableName)` (\(propertyTypes.joinWithSeparator(",")))"
 
         if sqlite3_exec(db, sql, nil, nil, nil).isNotOK {
             print("ERROR: TODO HANDLE SOME ERRORS")
+            return
         }
     }
 

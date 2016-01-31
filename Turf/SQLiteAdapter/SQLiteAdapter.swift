@@ -149,7 +149,7 @@ internal final class SQLiteAdapter {
      Each installed extension gets a row in a turf metadata table for extensions tracking versions and extension data.
      - returns: Extension's version, turf version in case the extension is potentially refactored and a blob of data that could be associated with the extension's installation.
      */
-    func getDetailsForExtensionWithName(name: String) -> (version: UInt64, turfVersion: UInt64, data: NSData)? {
+    func getDetailsForExtensionWithName(name: String) -> ExistingExtensionInstallation? {
         defer { sqlite3_reset(getExtensionDetailsStmt) }
 
         let nameIndex = SQLITE_FIRST_BIND_COLUMN
@@ -169,7 +169,7 @@ internal final class SQLiteAdapter {
 
         let turfVersion = UInt64(sqlite3_column_int64(getExtensionDetailsStmt, turfVersionIndex))
 
-        return (version, turfVersion, data)
+        return ExistingExtensionInstallation(version: version, turfVersion: turfVersion, data: data)
     }
 
     func setDetailsForExtension(name name: String, version: UInt64, turfVersion: UInt64, data: NSData) {
@@ -184,7 +184,7 @@ internal final class SQLiteAdapter {
         sqlite3_bind_int64(setExtensionDetailsStmt, versionIndex, Int64(version))
         sqlite3_bind_blob(setExtensionDetailsStmt, dataIndex, data.bytes, Int32(data.length), nil)
         sqlite3_bind_int64(setExtensionDetailsStmt, turfVersionIndex, Int64(turfVersion))
-        if sqlite3_step(rollbackTransactionStmt).isNotDone {
+        if sqlite3_step(setExtensionDetailsStmt).isNotDone {
             print("ERROR: Could not set extension details")
             print(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
@@ -271,12 +271,11 @@ internal final class SQLiteAdapter {
     private func createExtensionsTable() throws {
         if sqlite3_exec(db,
             "CREATE TABLE IF NOT EXISTS `\(TurfExtensionsTableName)` (" +
-                "`uuid` TEXT NOT NULL," +
-                "`name` TEXT NOT NULL," +
+                "`name` TEXT NOT NULL UNIQUE," +
                 "`version` INTEGER NOT NULL DEFAULT '(0)'," +
-                "`data` BLOB NOT NULL," +
+                "`data` BLOB," +
                 "`turf_version` INTEGER NOT NULL DEFAULT '(0)'," +
-                "PRIMARY KEY(uuid)" +
+                "PRIMARY KEY(name)" +
             ");", nil, nil, nil).isNotOK {
                 throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }

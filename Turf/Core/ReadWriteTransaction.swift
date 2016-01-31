@@ -63,7 +63,7 @@ public final class ReadWriteTransaction: ReadTransaction {
      - parameter extension An installable extension
      */
     public func registerExtension<Ext: Extension>(ext: Ext) {
-        connection.registerExtension(ext)
+        connection.registerExtension(ext, onTransaction: self)
     }
 
     // MARK: Internal methods
