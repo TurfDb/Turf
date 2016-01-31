@@ -1,7 +1,7 @@
 import Foundation
 import Turf
 
-final class ChecksCollection: Collection, IndexedCollection, CollectionWithRelationships {
+final class ChecksCollection: Collection, IndexedCollection {
     typealias Value = Check
 
     let name = "Checks"
@@ -10,8 +10,6 @@ final class ChecksCollection: Collection, IndexedCollection, CollectionWithRelat
 
     let index: SecondaryIndex<ChecksCollection, IndexedProperties>
     let indexed = IndexedProperties()
-
-    let relationships = Relationships()
 
     let associatedExtensions: [Extension]
 
@@ -61,23 +59,5 @@ final class ChecksCollection: Collection, IndexedCollection, CollectionWithRelat
 //                isCurrent.name: (isCurrent.Type, isCurrent.bindPropertyValue)
 //            ]
 //        }
-    }
-
-    struct Relationships: Turf.RelatedCollections {
-        let lineItems = ToManyRelationshipProperty<ChecksCollection, LineItemsCollection>(
-            name: "lineItems",
-            sourceKeyFromSourceValue: { check -> String in
-                return check.uuid
-            }, destinationKeysFromSourceValue: { (check, lineItemsCollection) -> [String] in
-                return check.lineItemUuids
-            })
-
-        var toOneRelationships: [CollectionProperty] {
-            return []
-        }
-
-        var toManyRelationships: [CollectionProperty] {
-            return [lineItems]
-        }
     }
 }

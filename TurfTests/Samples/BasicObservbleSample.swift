@@ -21,12 +21,12 @@ class BasicObservableSample: XCTestCase {
         func lineItemsForCheck(check: Check, transaction: ReadTransaction) -> [LineItem] {
             let lineItemsCollection = transaction.readOnly(self.collections.LineItems)
             let checksCollection = transaction.readOnly(self.collections.Checks)
-
-            return checksCollection
-                .destinationValuesInCollection(
-                    lineItemsCollection,
-                    forRelationship: checksCollection.relationships.lineItems,
-                    fromSource: check)
+            return []
+//            return checksCollection
+//                .destinationValuesInCollection(
+//                    lineItemsCollection,
+//                    forRelationship: checksCollection.relationships.lineItems,
+//                    fromSource: check)
         }
 
         func hasChangeForPreviousValue<T>(previousValues: [T], _ changeSet: ChangeSet<String>, key: (T) -> String) -> Bool {

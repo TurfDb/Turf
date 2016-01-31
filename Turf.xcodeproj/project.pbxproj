@@ -37,12 +37,6 @@
 		72088FAF1C1CEB6500127EA0 /* SecondaryIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FAE1C1CEB6500127EA0 /* SecondaryIndex.swift */; };
 		72088FB11C1CEB8400127EA0 /* IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FB01C1CEB8400127EA0 /* IndexedCollection.swift */; };
 		72088FB31C1CEB9500127EA0 /* IndexedProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FB21C1CEB9500127EA0 /* IndexedProperties.swift */; };
-		72088FBD1C1CF37900127EA0 /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FBC1C1CF37900127EA0 /* Relationship.swift */; };
-		72088FBF1C1CF3D400127EA0 /* RelatedCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FBE1C1CF3D400127EA0 /* RelatedCollections.swift */; };
-		72088FC11C1CF43400127EA0 /* CollectionWithRelationships.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FC01C1CF43400127EA0 /* CollectionWithRelationships.swift */; };
-		72088FC61C1CF79000127EA0 /* RelationshipConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FC51C1CF79000127EA0 /* RelationshipConnection.swift */; };
-		72088FC81C1CF7BA00127EA0 /* RelationshipReadTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FC71C1CF7BA00127EA0 /* RelationshipReadTransaction.swift */; };
-		72088FCA1C1CF7D400127EA0 /* RelationshipWriteTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FC91C1CF7D400127EA0 /* RelationshipWriteTransaction.swift */; };
 		72088FD71C1E10EF00127EA0 /* CollectionProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FD61C1E10EF00127EA0 /* CollectionProperty.swift */; };
 		720FA9B11C259D2000BEF295 /* ValuesSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720FA9B01C259D2000BEF295 /* ValuesSequence.swift */; };
 		7218C9631C274778004457DB /* WeakBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9621C274778004457DB /* WeakBox.swift */; };
@@ -66,12 +60,8 @@
 		7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277F5471C4C01040081118D /* SQLiteCollection.swift */; };
 		728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728C235B1C3B121E0033D986 /* CacheUpdates.swift */; };
 		72A14E361C53F52A002F357F /* BasicObservbleSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A14E351C53F52A002F357F /* BasicObservbleSample.swift */; };
-		72A3E9191C26C75200AADE22 /* ToOneRelationshipProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A3E9181C26C75200AADE22 /* ToOneRelationshipProperty.swift */; };
-		72A3E91B1C26C7D800AADE22 /* ToManyRelationshipProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A3E91A1C26C7D800AADE22 /* ToManyRelationshipProperty.swift */; };
-		72A3E91D1C26C87F00AADE22 /* ReadWriteCollection+CollectionWithRelationships.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A3E91C1C26C87F00AADE22 /* ReadWriteCollection+CollectionWithRelationships.swift */; };
 		72B616E41BAF474A00CFE67C /* Turf.h in Headers */ = {isa = PBXBuildFile; fileRef = 72B616E31BAF474A00CFE67C /* Turf.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		72B616EB1BAF474A00CFE67C /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B616E01BAF474A00CFE67C /* Turf.framework */; };
-		72CC14611C26CD090048F331 /* ReadCollection+CollectionWithRelationships.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CC14601C26CD090048F331 /* ReadCollection+CollectionWithRelationships.swift */; };
 		72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */; };
 		72E1D9DF1C260C4B007335A1 /* SQLStatementCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E1D9DE1C260C4B007335A1 /* SQLStatementCache.swift */; };
 		72E7F4EA1C3433D9009C1D9D /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */; };
@@ -120,12 +110,6 @@
 		72088FAE1C1CEB6500127EA0 /* SecondaryIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondaryIndex.swift; sourceTree = "<group>"; };
 		72088FB01C1CEB8400127EA0 /* IndexedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedCollection.swift; sourceTree = "<group>"; };
 		72088FB21C1CEB9500127EA0 /* IndexedProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedProperties.swift; sourceTree = "<group>"; };
-		72088FBC1C1CF37900127EA0 /* Relationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relationship.swift; sourceTree = "<group>"; };
-		72088FBE1C1CF3D400127EA0 /* RelatedCollections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedCollections.swift; sourceTree = "<group>"; };
-		72088FC01C1CF43400127EA0 /* CollectionWithRelationships.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionWithRelationships.swift; sourceTree = "<group>"; };
-		72088FC51C1CF79000127EA0 /* RelationshipConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipConnection.swift; sourceTree = "<group>"; };
-		72088FC71C1CF7BA00127EA0 /* RelationshipReadTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipReadTransaction.swift; sourceTree = "<group>"; };
-		72088FC91C1CF7D400127EA0 /* RelationshipWriteTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipWriteTransaction.swift; sourceTree = "<group>"; };
 		72088FD61C1E10EF00127EA0 /* CollectionProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionProperty.swift; sourceTree = "<group>"; };
 		720FA9B01C259D2000BEF295 /* ValuesSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValuesSequence.swift; sourceTree = "<group>"; };
 		7218C9621C274778004457DB /* WeakBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakBox.swift; sourceTree = "<group>"; };
@@ -149,14 +133,10 @@
 		7277F5471C4C01040081118D /* SQLiteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteCollection.swift; sourceTree = "<group>"; };
 		728C235B1C3B121E0033D986 /* CacheUpdates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheUpdates.swift; sourceTree = "<group>"; };
 		72A14E351C53F52A002F357F /* BasicObservbleSample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicObservbleSample.swift; sourceTree = "<group>"; };
-		72A3E9181C26C75200AADE22 /* ToOneRelationshipProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToOneRelationshipProperty.swift; sourceTree = "<group>"; };
-		72A3E91A1C26C7D800AADE22 /* ToManyRelationshipProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToManyRelationshipProperty.swift; sourceTree = "<group>"; };
-		72A3E91C1C26C87F00AADE22 /* ReadWriteCollection+CollectionWithRelationships.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReadWriteCollection+CollectionWithRelationships.swift"; sourceTree = "<group>"; };
 		72B616E01BAF474A00CFE67C /* Turf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Turf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B616E31BAF474A00CFE67C /* Turf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Turf.h; sourceTree = "<group>"; };
 		72B616E51BAF474A00CFE67C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72B616EA1BAF474A00CFE67C /* TurfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TurfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		72CC14601C26CD090048F331 /* ReadCollection+CollectionWithRelationships.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReadCollection+CollectionWithRelationships.swift"; sourceTree = "<group>"; };
 		72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeErasedCollection.swift; sourceTree = "<group>"; };
 		72D37B7E1BC326770087153A /* iOS.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = iOS.modulemap; sourceTree = "<group>"; };
 		72E1D9DE1C260C4B007335A1 /* SQLStatementCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLStatementCache.swift; sourceTree = "<group>"; };
@@ -230,7 +210,6 @@
 		72088F7F1C1CD7B400127EA0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				72088FBB1C1CF33A00127EA0 /* Relationship */,
 				72088F811C1CD7BF00127EA0 /* SecondaryIndex */,
 				72088F801C1CD7BA00127EA0 /* Protocols */,
 			);
@@ -303,31 +282,6 @@
 				72088FA21C1CE46200127EA0 /* LineItem.swift */,
 			);
 			name = Values;
-			sourceTree = "<group>";
-		};
-		72088FBB1C1CF33A00127EA0 /* Relationship */ = {
-			isa = PBXGroup;
-			children = (
-				72088FC41C1CF77B00127EA0 /* Internals */,
-				72088FC01C1CF43400127EA0 /* CollectionWithRelationships.swift */,
-				72CC14601C26CD090048F331 /* ReadCollection+CollectionWithRelationships.swift */,
-				72A3E91C1C26C87F00AADE22 /* ReadWriteCollection+CollectionWithRelationships.swift */,
-				72088FBE1C1CF3D400127EA0 /* RelatedCollections.swift */,
-				72088FBC1C1CF37900127EA0 /* Relationship.swift */,
-				72A3E91A1C26C7D800AADE22 /* ToManyRelationshipProperty.swift */,
-				72A3E9181C26C75200AADE22 /* ToOneRelationshipProperty.swift */,
-			);
-			path = Relationship;
-			sourceTree = "<group>";
-		};
-		72088FC41C1CF77B00127EA0 /* Internals */ = {
-			isa = PBXGroup;
-			children = (
-				72088FC51C1CF79000127EA0 /* RelationshipConnection.swift */,
-				72088FC71C1CF7BA00127EA0 /* RelationshipReadTransaction.swift */,
-				72088FC91C1CF7D400127EA0 /* RelationshipWriteTransaction.swift */,
-			);
-			path = Internals;
 			sourceTree = "<group>";
 		};
 		7218C9611C274760004457DB /* Weak */ = {
@@ -572,11 +526,9 @@
 			files = (
 				724C9B5C1C2575D700E9AD79 /* CollectionLocalStorage.swift in Sources */,
 				720FA9B11C259D2000BEF295 /* ValuesSequence.swift in Sources */,
-				72A3E91D1C26C87F00AADE22 /* ReadWriteCollection+CollectionWithRelationships.swift in Sources */,
 				72F6F6FE1C245BF40059D72C /* InstallableExtension.swift in Sources */,
 				72088FD71C1E10EF00127EA0 /* CollectionProperty.swift in Sources */,
 				72662B5B1C57C0310058F6EF /* SQLiteTypeName.swift in Sources */,
-				72CC14611C26CD090048F331 /* ReadCollection+CollectionWithRelationships.swift in Sources */,
 				72E7F4EA1C3433D9009C1D9D /* SQLiteError.swift in Sources */,
 				7205583A1C518D5100B0847E /* ObserverOf.swift in Sources */,
 				72F6F7001C24622A0059D72C /* ExtendedCollection.swift in Sources */,
@@ -584,10 +536,8 @@
 				72088F9A1C1CE15100127EA0 /* ReadableCollection.swift in Sources */,
 				720470C31C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift in Sources */,
 				7269F0351C56DD7C007FF29B /* CollectionTypeObserver.swift in Sources */,
-				72A3E9191C26C75200AADE22 /* ToOneRelationshipProperty.swift in Sources */,
 				72297A8E1C257CDB0001BE40 /* CollectionRowChange.swift in Sources */,
 				72610B581C5272BC0010D5B1 /* CallbackThread.swift in Sources */,
-				72088FCA1C1CF7D400127EA0 /* RelationshipWriteTransaction.swift in Sources */,
 				725E9E0F1C24B3A800364CE1 /* Cache.swift in Sources */,
 				72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */,
 				72088FAA1C1CE70800127EA0 /* CollectionsContainer.swift in Sources */,
@@ -603,12 +553,9 @@
 				72088F841C1CD8C500127EA0 /* ReadTransaction.swift in Sources */,
 				72088F861C1CD8E200127EA0 /* ReadWriteTransaction.swift in Sources */,
 				7205583E1C518E0600B0847E /* BasicDisposable.swift in Sources */,
-				72A3E91B1C26C7D800AADE22 /* ToManyRelationshipProperty.swift in Sources */,
-				72088FBF1C1CF3D400127EA0 /* RelatedCollections.swift in Sources */,
 				720558341C518D1300B0847E /* Disposable.swift in Sources */,
 				720558361C518D2100B0847E /* DisposeBag.swift in Sources */,
 				728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */,
-				72088FC61C1CF79000127EA0 /* RelationshipConnection.swift in Sources */,
 				72297A8C1C257B290001BE40 /* SQLiteRowChangeType.swift in Sources */,
 				720558381C518D2F00B0847E /* ObservableCollection.swift in Sources */,
 				72088F8E1C1CD95600127EA0 /* ExtensionConnection.swift in Sources */,
@@ -619,7 +566,6 @@
 				72088F921C1CD9FA00127EA0 /* Collection.swift in Sources */,
 				7218C9661C274D94004457DB /* Dispatch.swift in Sources */,
 				72088F901C1CD97A00127EA0 /* ExtensionWriteTransaction.swift in Sources */,
-				72088FBD1C1CF37900127EA0 /* Relationship.swift in Sources */,
 				72088FB11C1CEB8400127EA0 /* IndexedCollection.swift in Sources */,
 				72088F8C1C1CD93E00127EA0 /* Extension.swift in Sources */,
 				725E9E111C24B45E00364CE1 /* CacheEntry.swift in Sources */,
@@ -627,8 +573,6 @@
 				72088F941C1CDA1C00127EA0 /* ReadCollection.swift in Sources */,
 				72662B5F1C57E7FE0058F6EF /* IndexedProperty.swift in Sources */,
 				72297A901C257CE00001BE40 /* ChangeSet.swift in Sources */,
-				72088FC11C1CF43400127EA0 /* CollectionWithRelationships.swift in Sources */,
-				72088FC81C1CF7BA00127EA0 /* RelationshipReadTransaction.swift in Sources */,
 				72345EA81C1E1BA20001A136 /* SecondaryIndexWriteTransaction.swift in Sources */,
 				72088F961C1CDA3200127EA0 /* ReadWriteCollection.swift in Sources */,
 			);
