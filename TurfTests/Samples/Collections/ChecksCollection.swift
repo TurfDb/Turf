@@ -16,6 +16,8 @@ final class ChecksCollection: Collection, IndexedCollection {
     init() {
         index = SecondaryIndex(collectionName: name, properties: indexed, version: 0)
         associatedExtensions = [index]
+
+        index.collection = self
     }
 
     func setUp(transaction: ReadWriteTransaction) {

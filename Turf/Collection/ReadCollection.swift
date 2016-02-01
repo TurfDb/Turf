@@ -65,6 +65,10 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
         return ValuesSequence(stmt: stmt, valueDataColumnIndex: 1, deserializer: collection.deserializeValue)
     }
 
+    public var allKeysAndValues: [String: Value] {
+        return [:]//TODO
+    }
+
     /**
      Fetch the latest value from the database.
      - note: This can either hit the value cache or hit the database and deserialize the data blob.

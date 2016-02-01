@@ -10,7 +10,7 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
 
     public static var turfVersion: UInt64 { return 1 }
 
-    public var readCollectionOnTransaction: (ReadTransaction -> ReadCollection<TCollection>)?
+    public weak var collection: TCollection?
 
     // MARK: Internal properties
 
@@ -38,35 +38,16 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
     }
 
     public func install(transaction: ReadWriteTransaction, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) {
-        let typeErasedProperties = properties.allProperties
-        var propertyTypes = ["targetPrimaryKey TEXT NOT NULL UNIQUE"]
+        let requiresRepopulation = handleExistingInstallation(existingInstallationDetails, db: db)
 
-        propertyTypes += typeErasedProperties.map { property -> String in
-            let nullNotation = property.isNullable ? "" : "NOT NULL"
-            return "\(property.name) \(property.sqliteTypeName.rawValue) \(nullNotation)"
-        }
-
-        let requiresRepopulation = existingInstallationDetails != nil ? (existingInstallationDetails!.version < version) : true
-
-        if requiresRepopulation {
-            if sqlite3_exec(db, "DROP TABLE IF EXISTS \(tableName)", nil, nil, nil).isNotOK {
-                print("ERROR: TODO HANDLE SOME ERRORS")
-                return
-            }
-        }
-
-        let sql = "CREATE TABLE IF NOT EXISTS `\(tableName)` (\(propertyTypes.joinWithSeparator(",")))"
-
+        let sql = createTableSql()
         if sqlite3_exec(db, sql, nil, nil, nil).isNotOK {
             print("ERROR: TODO HANDLE SOME ERRORS")
             return
         }
 
         if requiresRepopulation {
-//            precondition(readCollectionOnTransaction != nil, "`readCollectionOnTransaction` must be set")
-//            let readCollection = readCollectionOnTransaction!(transaction)
-//            let extensionConnection = newConnection(transaction.connection)
-//            let extensionTransaction = extensionConnection.writeTransaction(transaction) as! SecondaryIndexWriteTransaction<TCollection, Properties>
+            repopulate(transaction, collection: collection!)
         }
     }
 
@@ -76,5 +57,41 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
         if sqlite3_exec(db, sql, nil, nil, nil).isNotOK {
             print("ERROR: TODO HANDLE SOME ERRORS")
         }
+    }
+
+    // MARK: Private methods
+
+    private func repopulate(transaction: ReadWriteTransaction, collection: TCollection) {
+        let readOnlyCollection = transaction.readOnly(collection)
+        let extensionTransaction = newConnection(transaction.connection).writeTransaction(transaction)
+
+        for (key, value) in readOnlyCollection.allKeysAndValues {
+            extensionTransaction.handleValueInsertion(value, forKey: key, inCollection: collection)
+        }
+    }
+
+    private func handleExistingInstallation(existingInstallationDetails: ExistingExtensionInstallation?, db: SQLitePtr) -> Bool {
+        let requiresRepopulation = existingInstallationDetails != nil ? (existingInstallationDetails!.version < version) : true
+
+        if requiresRepopulation {
+            if sqlite3_exec(db, "DROP TABLE IF EXISTS \(tableName)", nil, nil, nil).isNotOK {
+                print("ERROR: TODO HANDLE SOME ERRORS")
+                return false
+            }
+        }
+
+        return requiresRepopulation
+    }
+
+    private func createTableSql() -> String {
+        let typeErasedProperties = properties.allProperties
+        var propertyTypes = ["targetPrimaryKey TEXT NOT NULL UNIQUE"]
+
+        propertyTypes += typeErasedProperties.map { property -> String in
+            let nullNotation = property.isNullable ? "" : "NOT NULL"
+            return "\(property.name) \(property.sqliteTypeName.rawValue) \(nullNotation)"
+        }
+
+        return "CREATE TABLE IF NOT EXISTS `\(tableName)` (\(propertyTypes.joinWithSeparator(",")))"
     }
 }
