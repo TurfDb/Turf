@@ -1,5 +1,9 @@
 //TODO Add some better error handling checking binds etc
 internal final class SQLiteCollection {
+    // MARK: Internal properties
+
+    private(set) var allValuesInCollectionStmt: COpaquePointer = nil
+
     // MARK: Private properties
 
     private let db: COpaquePointer
@@ -13,12 +17,14 @@ internal final class SQLiteCollection {
     private var updateValueDataStmt: COpaquePointer = nil
     private var removeValueStmt: COpaquePointer = nil
     private var removeAllValuesStmt: COpaquePointer = nil
+    private var allKeysAndValuesStmt: COpaquePointer = nil
 
     // MARK: Object lifecycle
 
     init(db: COpaquePointer, collectionName: String) throws {
         self.db = db
         self.collectionName = collectionName
+        try setUpAllValuesInCollectionStmt()
         try setUpNumberOfKeysInCollectionStmt()
         try setUpKeysInCollectionStmt()
         try setUpValueDataForKeyStmt()
@@ -30,6 +36,7 @@ internal final class SQLiteCollection {
     }
 
     deinit {
+        sqlite3_finalize(allValuesInCollectionStmt)
         sqlite3_finalize(numberOfKeysInCollectionStmt)
         sqlite3_finalize(keysInCollectionStmt)
         sqlite3_finalize(valueDataForKeyStmt)
@@ -38,6 +45,7 @@ internal final class SQLiteCollection {
         sqlite3_finalize(updateValueDataStmt)
         sqlite3_finalize(removeValueStmt)
         sqlite3_finalize(removeAllValuesStmt)
+        sqlite3_finalize(allKeysAndValuesStmt)
     }
 
     // MARK: Internal methods
@@ -159,6 +167,29 @@ internal final class SQLiteCollection {
         return keys
     }
 
+    func enumerateKeySchemaVersionAndValueDataInCollection(enumerate: (String, UInt64, NSData) -> Void) {
+        defer { sqlite3_reset(allKeysAndValuesStmt) }
+
+        let keyColumnIndex = SQLITE_FIRST_COLUMN
+        let schemaVersionColumnIndex = SQLITE_FIRST_COLUMN + 1
+        let valueDataColumnIndex = SQLITE_FIRST_COLUMN + 2
+
+        var result = sqlite3_step(keysInCollectionStmt)
+
+        while(result.hasRow) {
+            if let key = String.fromCString(UnsafePointer(sqlite3_column_text(keysInCollectionStmt, keyColumnIndex))) {
+                let bytes = sqlite3_column_blob(valueDataForKeyStmt, valueDataColumnIndex)
+                let bytesLength = Int(sqlite3_column_bytes(valueDataForKeyStmt, valueDataColumnIndex))
+                let valueData = NSData(bytes: bytes, length: bytesLength)
+
+                let schemaVersion = UInt64(sqlite3_column_int64(valueDataForKeyStmt, schemaVersionColumnIndex))
+
+                enumerate(key, schemaVersion, valueData)
+            }
+            result = sqlite3_step(keysInCollectionStmt)
+        }
+    }
+
     /**
      - parameter key: Primary key of the value.
      - parameter collection: Collection name.
@@ -273,6 +304,16 @@ internal final class SQLiteCollection {
 
     // MARK: Private methods
 
+    private func setUpAllValuesInCollectionStmt() throws {
+        var stmt: COpaquePointer = nil
+
+        guard sqlite3_prepare_v2(db, "SELECT valueData, schemaVersion FROM `\(collectionName)`", -1, &stmt, nil).isOK else {
+            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+        }
+
+        self.allValuesInCollectionStmt = stmt
+    }
+
     private func setUpRemoveValueInCollectionStmt() throws {
         var stmt: COpaquePointer = nil
 
@@ -350,5 +391,15 @@ internal final class SQLiteCollection {
         }
         
         self.updateValueDataStmt = stmt
+    }
+
+    private func setUpAllKeysAndValuesStmt() throws {
+        var stmt: COpaquePointer = nil
+
+        guard sqlite3_prepare_v2(db, "SELECT key, valueData, schemaVersion FROM `\(collectionName)`", -1, &stmt, nil).isOK else {
+            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+        }
+
+        self.allKeysAndValuesStmt = stmt
     }
 }

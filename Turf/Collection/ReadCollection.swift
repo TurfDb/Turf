@@ -59,14 +59,23 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
      - returns: All values in the collection
      */
     public var allValues: ValuesSequence<Value> {
-        var stmt: COpaquePointer = nil
-        //TODO cache
-        sqlite3_prepare_v2(readTransaction.connection.sqlite.db, "SELECT data FROM table",  -1, &stmt, nil)
-        return ValuesSequence(stmt: stmt, valueDataColumnIndex: 1, deserializer: collection.deserializeValue)
+        let stmt = localStorage.sql.allValuesInCollectionStmt
+        return ValuesSequence(stmt: stmt, valueDataColumnIndex: 1, schemaVersionColumnIndex: 2, deserializer: collection.deserializeValue, collectionSchemaVersion: schemaVersion)
     }
 
+    /**
+     - warning: Data must be migrated before accessing.
+     - returns: All keys and values in the collection.
+     */
     public var allKeysAndValues: [String: Value] {
-        return [:]//TODO
+        var result = [String: Value]()
+        localStorage.sql.enumerateKeySchemaVersionAndValueDataInCollection { key, schemaVersion, valueData in
+            precondition(schemaVersion == self.schemaVersion,
+                "Collection \(self.name) requires a migration")
+
+            result[key] = self.deserializeValue(valueData)
+        }
+        return result
     }
 
     /**

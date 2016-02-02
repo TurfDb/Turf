@@ -33,7 +33,7 @@ internal class SecondaryIndexConnection<TCollection: Collection, Properties: Ind
     }
 
     func prepare(db: SQLitePtr) {
-        //TODO
+        //TODO throw prepares
         do {
             try prepareInsertStmt(db: db)
             try prepareUpdateStmt(db: db)

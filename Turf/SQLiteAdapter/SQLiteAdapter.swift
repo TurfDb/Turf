@@ -41,7 +41,6 @@ internal final class SQLiteAdapter {
      */
     init(sqliteDatabaseUrl: NSURL) throws {
         var internalDb: COpaquePointer = nil
-        //TODO Verify nomutex and privatecache
         let flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_PRIVATECACHE
 
         let success = sqlite3_open_v2(sqliteDatabaseUrl.absoluteString, &internalDb, flags, nil).isOK

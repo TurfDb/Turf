@@ -31,7 +31,7 @@ public final class ReadWriteTransaction: ReadTransaction {
         - Thread safe
      */
     public func removeAllCollections() {
-        //TODO
+        //TODO remove all collections
     }
 
     /**
