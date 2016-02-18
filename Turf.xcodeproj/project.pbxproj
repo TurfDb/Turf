@@ -58,6 +58,7 @@
 		72662B5B1C57C0310058F6EF /* SQLiteTypeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B5A1C57C0310058F6EF /* SQLiteTypeName.swift */; };
 		72662B5F1C57E7FE0058F6EF /* IndexedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B5E1C57E7FE0058F6EF /* IndexedProperty.swift */; };
 		7269F0351C56DD7C007FF29B /* CollectionTypeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7269F0341C56DD7C007FF29B /* CollectionTypeObserver.swift */; };
+		726D24531C767D5C003CE68C /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 726D24521C767D5C003CE68C /* libsqlite3.tbd */; };
 		7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277F5471C4C01040081118D /* SQLiteCollection.swift */; };
 		728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728C235B1C3B121E0033D986 /* CacheUpdates.swift */; };
 		72A14E361C53F52A002F357F /* BasicObservbleSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A14E351C53F52A002F357F /* BasicObservbleSample.swift */; };
@@ -131,6 +132,7 @@
 		72662B5A1C57C0310058F6EF /* SQLiteTypeName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteTypeName.swift; sourceTree = "<group>"; };
 		72662B5E1C57E7FE0058F6EF /* IndexedProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedProperty.swift; sourceTree = "<group>"; };
 		7269F0341C56DD7C007FF29B /* CollectionTypeObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTypeObserver.swift; sourceTree = "<group>"; };
+		726D24521C767D5C003CE68C /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		7277F5471C4C01040081118D /* SQLiteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteCollection.swift; sourceTree = "<group>"; };
 		728C235B1C3B121E0033D986 /* CacheUpdates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheUpdates.swift; sourceTree = "<group>"; };
 		72A14E351C53F52A002F357F /* BasicObservbleSample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicObservbleSample.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				726D24531C767D5C003CE68C /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,6 +336,7 @@
 		72B616D61BAF474A00CFE67C = {
 			isa = PBXGroup;
 			children = (
+				726D24521C767D5C003CE68C /* libsqlite3.tbd */,
 				72B616E21BAF474A00CFE67C /* Turf */,
 				72B616EE1BAF474A00CFE67C /* TurfTests */,
 				72B616E11BAF474A00CFE67C /* Products */,
@@ -407,7 +411,6 @@
 				72B616DC1BAF474A00CFE67C /* Frameworks */,
 				72B616DD1BAF474A00CFE67C /* Headers */,
 				72B616DE1BAF474A00CFE67C /* Resources */,
-				72B616FC1BAF481100CFE67C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -492,19 +495,6 @@
 
 /* Begin PBXShellScriptBuildPhase section */
 		7288DD7E1BB83DCE00EDC1F2 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
-		};
-		72B616FC1BAF481100CFE67C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -700,15 +690,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Turf/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = Turf/iOS.modulemap;
-				OTHER_LDFLAGS = "-lsqlite3";
+				MODULEMAP_FILE = "";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.Turf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -724,15 +711,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Turf/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = Turf/iOS.modulemap;
-				OTHER_LDFLAGS = "-lsqlite3";
+				MODULEMAP_FILE = "";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.Turf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
