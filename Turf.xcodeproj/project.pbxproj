@@ -59,6 +59,7 @@
 		72662B5F1C57E7FE0058F6EF /* IndexedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B5E1C57E7FE0058F6EF /* IndexedProperty.swift */; };
 		7269F0351C56DD7C007FF29B /* CollectionTypeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7269F0341C56DD7C007FF29B /* CollectionTypeObserver.swift */; };
 		726D24531C767D5C003CE68C /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 726D24521C767D5C003CE68C /* libsqlite3.tbd */; };
+		726D24551C767F02003CE68C /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 726D24541C767F02003CE68C /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277F5471C4C01040081118D /* SQLiteCollection.swift */; };
 		728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728C235B1C3B121E0033D986 /* CacheUpdates.swift */; };
 		72A14E361C53F52A002F357F /* BasicObservbleSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A14E351C53F52A002F357F /* BasicObservbleSample.swift */; };
@@ -133,6 +134,7 @@
 		72662B5E1C57E7FE0058F6EF /* IndexedProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedProperty.swift; sourceTree = "<group>"; };
 		7269F0341C56DD7C007FF29B /* CollectionTypeObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTypeObserver.swift; sourceTree = "<group>"; };
 		726D24521C767D5C003CE68C /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		726D24541C767F02003CE68C /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = usr/include/sqlite3.h; sourceTree = SDKROOT; };
 		7277F5471C4C01040081118D /* SQLiteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteCollection.swift; sourceTree = "<group>"; };
 		728C235B1C3B121E0033D986 /* CacheUpdates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheUpdates.swift; sourceTree = "<group>"; };
 		72A14E351C53F52A002F357F /* BasicObservbleSample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicObservbleSample.swift; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 		72B616E21BAF474A00CFE67C /* Turf */ = {
 			isa = PBXGroup;
 			children = (
+				726D24541C767F02003CE68C /* sqlite3.h */,
 				72EA32681C24B353003CEAFA /* Cache */,
 				72297A8A1C257AF90001BE40 /* ChangeSet */,
 				72088F7C1C1CD76400127EA0 /* Collection */,
@@ -396,6 +399,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				726D24551C767F02003CE68C /* sqlite3.h in Headers */,
 				72B616E41BAF474A00CFE67C /* Turf.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
