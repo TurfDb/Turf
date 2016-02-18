@@ -33,7 +33,7 @@ public final class ValuesSequence<Value>: SequenceType {
      - returns: A generator over rows of `Value`.
      */
     public func generate() -> AnyGenerator<Value> {
-        return anyGenerator {
+        return AnyGenerator {
             guard sqlite3_step(self.stmt).hasRow else {
                 self.finalize()
                 return nil
