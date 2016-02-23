@@ -1,4 +1,4 @@
-public class ObservingConnection {
+public final class ObservingConnection {
     // MARK: Private properties
 
     private let connection: Connection

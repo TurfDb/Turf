@@ -19,8 +19,8 @@ class BasicObservableSample: XCTestCase {
         let expectation = expectationWithDescription("just waiting to test stuff")
 
         func lineItemsForCheck(check: Check, transaction: ReadTransaction) -> [LineItem] {
-            let lineItemsCollection = transaction.readOnly(self.collections.LineItems)
-            let checksCollection = transaction.readOnly(self.collections.Checks)
+//            let lineItemsCollection = transaction.readOnly(self.collections.LineItems)
+//            let checksCollection = transaction.readOnly(self.collections.Checks)
             return []
 //            return checksCollection
 //                .destinationValuesInCollection(
