@@ -13,7 +13,7 @@ public class DisposeBag: Disposable {
 
     // MARK: Object lifecycle
 
-    init() {
+    public init() {
         self.disposed = false
         self.disposables  = []
     }
