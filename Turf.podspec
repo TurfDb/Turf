@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.homepage = "https://github.com/jordanhamill/Turf"
   s.author   = { "Jordan Hamill" => "https://twitter.com/JayHamill22" }
   s.source   = { :git => "git@github.com:jordanhamill/Turf.git", :tag => "#{s.version}" }
-  s.source_files = "Turf/*.swift"
+  s.source_files = "Turf/**/*.swift"
   s.ios.deployment_target = "9.0"
   s.requires_arc = true
 end
