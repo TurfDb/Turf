@@ -1,4 +1,4 @@
-public class ObservableCollection<TCollection: Collection where TCollection: IndexedCollection>: TypedObservable, TypeErasedObservableCollection {
+public class ObservableCollection<TCollection: Collection>: TypedObservable, TypeErasedObservableCollection {
     // MARK: Public properties
     public private(set) var value: ReadCollection<TCollection>?
 
@@ -24,27 +24,6 @@ public class ObservableCollection<TCollection: Collection where TCollection: Ind
     }
 
     // MARK: Public methods
-
-    public func valuesWhere(predicate: String, prefilterChangeSet: (([TCollection.Value], ChangeSet<String>) -> Bool)? = nil) -> CollectionTypeObserver<[TCollection.Value]> {
-        let queryResultsObserver = CollectionTypeObserver<[TCollection.Value]>(initalValue: [])
-
-        let disposable =
-        collectionDidChange { (collection, changeSet) in
-            let canCheckPreviousValue = prefilterChangeSet != nil && queryResultsObserver.value.count > 0
-            let shouldRequery = canCheckPreviousValue ? prefilterChangeSet!(queryResultsObserver.value, changeSet) : true
-
-            if shouldRequery {
-                let queryResults = collection.findValuesWhere(predicate)
-                queryResultsObserver.setValue(queryResults, fromTransaction: collection.readTransaction)
-            }
-        }
-
-        queryResultsObserver.disposeBag.add(disposable)
-        // If disposing ancestors, dispose this collection and all its child observers by removing from ObservingConnection
-        queryResultsObserver.disposeBag.parent = self.disposeBag
-
-        return queryResultsObserver
-    }
 
     /**
      - returns: Disposable - call `dispose()` to remove the `didChange` callback.
@@ -92,6 +71,31 @@ public class ObservableCollection<TCollection: Collection where TCollection: Ind
         return BasicDisposable { [weak self] in
             self?.internalObservers.removeValueForKey(token)
         }
+    }
+}
+
+extension ObservableCollection where TCollection: IndexedCollection {
+    // MARK: Public methods
+
+    public func valuesWhere(predicate: String, prefilterChangeSet: (([TCollection.Value], ChangeSet<String>) -> Bool)? = nil) -> CollectionTypeObserver<[TCollection.Value]> {
+        let queryResultsObserver = CollectionTypeObserver<[TCollection.Value]>(initalValue: [])
+
+        let disposable =
+        collectionDidChange { (collection, changeSet) in
+            let canCheckPreviousValue = prefilterChangeSet != nil && queryResultsObserver.value.count > 0
+            let shouldRequery = canCheckPreviousValue ? prefilterChangeSet!(queryResultsObserver.value, changeSet) : true
+
+            if shouldRequery {
+                let queryResults = collection.findValuesWhere(predicate)
+                queryResultsObserver.setValue(queryResults, fromTransaction: collection.readTransaction)
+            }
+        }
+
+        queryResultsObserver.disposeBag.add(disposable)
+        // If disposing ancestors, dispose this collection and all its child observers by removing from ObservingConnection
+        queryResultsObserver.disposeBag.parent = self.disposeBag
+
+        return queryResultsObserver
     }
 }
 
