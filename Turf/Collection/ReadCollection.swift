@@ -60,7 +60,7 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
      */
     public var allValues: ValuesSequence<Value> {
         let stmt = localStorage.sql.allValuesInCollectionStmt
-        return ValuesSequence(stmt: stmt, valueDataColumnIndex: 1, schemaVersionColumnIndex: 2, deserializer: collection.deserializeValue, collectionSchemaVersion: schemaVersion)
+        return ValuesSequence(stmt: stmt, valueDataColumnIndex: SQLITE_FIRST_COLUMN, schemaVersionColumnIndex: SQLITE_FIRST_COLUMN + 1, deserializer: collection.deserializeValue, collectionSchemaVersion: schemaVersion)
     }
 
     /**
