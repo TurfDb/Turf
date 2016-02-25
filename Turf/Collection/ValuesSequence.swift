@@ -35,7 +35,6 @@ public final class ValuesSequence<Value>: SequenceType {
     public func generate() -> AnyGenerator<Value> {
         return anyGenerator {
             guard sqlite3_step(self.stmt).hasRow else {
-                self.finalize()
                 return nil
             }
 
@@ -53,6 +52,6 @@ public final class ValuesSequence<Value>: SequenceType {
      This *must* be called before ValueSequence goes out of scope.
      */
     public func finalize() {
-        sqlite3_finalize(self.stmt)
+        sqlite3_reset(self.stmt)
     }
 }
