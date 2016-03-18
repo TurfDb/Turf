@@ -62,7 +62,7 @@
 		726D24551C767F02003CE68C /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 726D24541C767F02003CE68C /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277F5471C4C01040081118D /* SQLiteCollection.swift */; };
 		728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728C235B1C3B121E0033D986 /* CacheUpdates.swift */; };
-		72A14E361C53F52A002F357F /* BasicObservbleSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A14E351C53F52A002F357F /* BasicObservbleSample.swift */; };
+		72A14E361C53F52A002F357F /* BasicObservableSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A14E351C53F52A002F357F /* BasicObservableSample.swift */; };
 		72B616E41BAF474A00CFE67C /* Turf.h in Headers */ = {isa = PBXBuildFile; fileRef = 72B616E31BAF474A00CFE67C /* Turf.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		72B616EB1BAF474A00CFE67C /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B616E01BAF474A00CFE67C /* Turf.framework */; };
 		72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */; };
@@ -137,7 +137,7 @@
 		726D24541C767F02003CE68C /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = usr/include/sqlite3.h; sourceTree = SDKROOT; };
 		7277F5471C4C01040081118D /* SQLiteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteCollection.swift; sourceTree = "<group>"; };
 		728C235B1C3B121E0033D986 /* CacheUpdates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheUpdates.swift; sourceTree = "<group>"; };
-		72A14E351C53F52A002F357F /* BasicObservbleSample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicObservbleSample.swift; sourceTree = "<group>"; };
+		72A14E351C53F52A002F357F /* BasicObservableSample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicObservableSample.swift; sourceTree = "<group>"; };
 		72B616E01BAF474A00CFE67C /* Turf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Turf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B616E31BAF474A00CFE67C /* Turf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Turf.h; sourceTree = "<group>"; };
 		72B616E51BAF474A00CFE67C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -263,7 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				72088F9F1C1CE3EB00127EA0 /* Collections */,
-				72A14E351C53F52A002F357F /* BasicObservbleSample.swift */,
+				72A14E351C53F52A002F357F /* BasicObservableSample.swift */,
 				72088F9D1C1CE38100127EA0 /* BasicSample.swift */,
 			);
 			path = Samples;
@@ -582,7 +582,7 @@
 				72088FA81C1CE4A500127EA0 /* LineItemsCollection.swift in Sources */,
 				72088F9E1C1CE38100127EA0 /* BasicSample.swift in Sources */,
 				72088FAC1C1CE7B000127EA0 /* Collections.swift in Sources */,
-				72A14E361C53F52A002F357F /* BasicObservbleSample.swift in Sources */,
+				72A14E361C53F52A002F357F /* BasicObservableSample.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
