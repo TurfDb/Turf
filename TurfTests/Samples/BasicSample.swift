@@ -26,7 +26,7 @@ class BasicSample: XCTestCase {
             print(changeSet?.changes)
         }
 
-        connection.readWriteTransaction( { transaction in
+        connection.readWriteTransaction { transaction in
             print("connection 1 write 1")
             let checksCollection = transaction.readWrite(self.collections.Checks)
             checksCollection.removeAllValues()
@@ -39,11 +39,9 @@ class BasicSample: XCTestCase {
             checksCollection.setValue(check2, forKey: "1235")
             print(checksCollection.valueForKey("1234")?.uuid)
 
-        }) {
-            print("connection 1 write 1 done")
         }
 
-        connection.readWriteTransaction( { transaction in
+        connection.readWriteTransaction { transaction in
             print("connection 1 write 2")
             let checksCollection = transaction.readWrite(self.collections.Checks)
 
@@ -59,11 +57,9 @@ class BasicSample: XCTestCase {
             checksCollection.setValue(check, forKey: "1234")
 
             print(checksCollection.valueForKey("1234")?.uuid)
-        }) {
-            print("connection 1 write 2 done")
         }
 
-        connection2.readWriteTransaction( { transaction in
+        connection2.readWriteTransaction { transaction in
             print("connection 2 write 1")
 
             let checksCollection = transaction.readWrite(self.collections.Checks)
@@ -72,13 +68,11 @@ class BasicSample: XCTestCase {
             let check = Check(uuid: "ZEG", name: "AB", isOpen: true, isCurrent: false, lineItemUuids: [])
             checksCollection.setValue(check, forKey: "1234")
             print(checksCollection.valueForKey("1234"))
-        }) {
-            print("connection 2 write 1 done")
         }
 
-        connection.readWriteTransaction( { transaction in
+        connection.readWriteTransaction { transaction in
             expectation.fulfill()
-        })
+        }
 
         waitForExpectationsWithTimeout(5, handler: nil)
     }

@@ -5,9 +5,9 @@
      let Friends = FriendsCollection()
      let Posts = PostsCollection()
 
-     func setUpCollections(transaction: ReadWriteTransaction) {
-         Friends.setUp(transaction)
-         Posts.setUp(transaction)
+     func setUpCollections(transaction: ReadWriteTransaction) throws {
+         try Friends.setUp(transaction)
+         try Posts.setUp(transaction)
      }
  }
  
