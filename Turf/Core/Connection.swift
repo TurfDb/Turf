@@ -66,7 +66,7 @@ public final class Connection {
         do {
             self.sqlite = try SQLiteAdapter(sqliteDatabaseUrl: database.url)
             self.createExtensionConnections()
-        } catch  {
+        } catch {
             self.sqlite = nil
             throw error
         }
@@ -95,7 +95,10 @@ public final class Connection {
      */
     public func readTransaction(closure: (ReadTransaction -> Void)) {
         Dispatch.synchronouslyOn(connectionQueue) {
-            self.syncReadTransaction(closure)
+            let transaction = ReadTransaction(connection: self)
+            self.preReadTransaction(transaction)
+            closure(transaction)
+            self.postReadTransaction(transaction)
         }
     }
 
@@ -108,56 +111,29 @@ public final class Connection {
      */
     public func readWriteTransaction(closure: (ReadWriteTransaction -> Void)) {
         Dispatch.synchronouslyOn(connectionQueue) {
-            self.syncReadWriteTransaction(closure)
+            Dispatch.synchronouslyOn(self.databaseWriteQueue) {
+                Dispatch.Queues.setContext(
+                    Dispatch.Queues.makeContext(self.connectionQueue),
+                    key: connectionQueueKey,
+                    forQueue: self.databaseWriteQueue)
+
+                let transaction = ReadWriteTransaction(connection: self)
+                self.preReadWriteTransaction(transaction)
+                closure(transaction)
+                self.postReadWriteTransaction(transaction)
+
+                Dispatch.Queues.setContext(nil, key: connectionQueueKey, forQueue: self.databaseWriteQueue)
+            }
         }
     }
 
     // MARK: Internal methods
 
     /**
-     Pass a new read transaction into `closure` that will be executed synchronously on a read queue.
-     - note:
-        - **Not thread safe**
-     - warning: Callers must ensure this operation is performed on `self.connectionQueue`. A connection can only have 1 active read or read-write transaction at a time.
-     - parameter closure: Operations to perform within the read transaction.
-     */
-    func syncReadTransaction(closure: (ReadTransaction -> Void)) {
-        let transaction = ReadTransaction(connection: self)
-        preReadTransaction(transaction)
-        closure(transaction)
-        postReadTransaction(transaction)
-    }
-
-    /**
-     Pass a new read-write transaction into `closure` that will be executed synchronously on the write queue.
-     - note: 
-        - **Not thread safe**
-            - This does dispatch onto the database write queue however it does not guard against other read transactions.
-     - warning: Callers must ensure this operation is performed on `self.connectionQueue`. A connection can only have 1 active read or read-write transaction at a time.
-     - parameter closure: Operations to perform within the read-write transaction.
-     */
-    func syncReadWriteTransaction(closure: (ReadWriteTransaction -> Void)) {
-        // A database can only have 1 active write transaction at a time
-        Dispatch.synchronouslyOn(self.databaseWriteQueue) {
-            Dispatch.Queues.setContext(
-                Dispatch.Queues.makeContext(self.connectionQueue),
-                key: connectionQueueKey,
-                forQueue: self.databaseWriteQueue)
-
-            let transaction = ReadWriteTransaction(connection: self)
-            self.preReadWriteTransaction(transaction)
-            closure(transaction)
-            self.postReadWriteTransaction(transaction)
-
-            Dispatch.Queues.setContext(nil, key: connectionQueueKey, forQueue: self.databaseWriteQueue)
-        }
-    }
-
-    /**
      Register a new extension that must perform an action on first installation. It
      is a fatal error to register an extension twice.
      - note:
-         - Thread safe so long as called from read-write transaction
+         - Thread safe
      - warning: Must be called from a read-write transaction
      */
     func registerExtension<Ext: Extension>(ext: Ext, onTransaction transaction: ReadWriteTransaction) {
@@ -310,7 +286,6 @@ public final class Connection {
         // If the sqlSnapshot that we have a "lock" on is less than our cache snapshot, update the cache to
         // the same point as our sqlite transaction "lock".
         // This can happen when a read (at sql level) happens between a write delivering pending cache updates and sqlite commiting
-        // See *TODO* document drawing the race condition and remove the comment above
         let sqlSnapshot = sqlite.databaseSnapshotOnCurrentSqliteTransaction()
 
         if localSnapshot < sqlSnapshot {

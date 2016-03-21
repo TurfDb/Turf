@@ -42,6 +42,21 @@ internal struct Dispatch {
         dispatch_sync(queue, closure)
     }
 
+    static func synchronouslyOn(queue: Queue, closure: () throws -> Void) throws {
+        var caughtError: ErrorType? = nil
+        dispatch_sync(queue) {
+            do {
+                try closure()
+            } catch {
+                caughtError = error
+            }
+        }
+
+        if let error = caughtError {
+            throw error
+        }
+    }
+
     static func asynchronouslyOn(queue: Queue, closure: () -> Void) {
         dispatch_async(queue, closure)
     }

@@ -64,8 +64,7 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
     }
 
     /**
-     - warning: Data must be migrated before accessing.
-     - returns: All keys and values in the collection.
+     All keys and values in the collection.
      */
     public var allKeysAndValues: [String: Value] {
         var result = [String: Value]()

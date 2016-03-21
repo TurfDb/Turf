@@ -46,6 +46,8 @@
 		72297A8E1C257CDB0001BE40 /* CollectionRowChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72297A8D1C257CDB0001BE40 /* CollectionRowChange.swift */; };
 		72297A901C257CE00001BE40 /* ChangeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72297A8F1C257CE00001BE40 /* ChangeSet.swift */; };
 		722DCF651C5EAE020011C1EF /* ExistingExtensionInstallation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722DCF641C5EAE020011C1EF /* ExistingExtensionInstallation.swift */; };
+		723178CA1CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723178C91CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift */; };
+		723178CD1CA0A9040089E7A8 /* TypeErasedObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723178CC1CA0A9040089E7A8 /* TypeErasedObservableCollection.swift */; };
 		72345EA61C1E1B840001A136 /* SecondaryIndexConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72345EA51C1E1B840001A136 /* SecondaryIndexConnection.swift */; };
 		72345EA81C1E1BA20001A136 /* SecondaryIndexWriteTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72345EA71C1E1BA20001A136 /* SecondaryIndexWriteTransaction.swift */; };
 		72345EAA1C1E254C0001A136 /* SQLiteAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72345EA91C1E254C0001A136 /* SQLiteAdapter.swift */; };
@@ -121,6 +123,8 @@
 		72297A8D1C257CDB0001BE40 /* CollectionRowChange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionRowChange.swift; sourceTree = "<group>"; };
 		72297A8F1C257CE00001BE40 /* ChangeSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeSet.swift; sourceTree = "<group>"; };
 		722DCF641C5EAE020011C1EF /* ExistingExtensionInstallation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExistingExtensionInstallation.swift; sourceTree = "<group>"; };
+		723178C91CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedPropertyFromCollection.swift; sourceTree = "<group>"; };
+		723178CC1CA0A9040089E7A8 /* TypeErasedObservableCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeErasedObservableCollection.swift; sourceTree = "<group>"; };
 		72345EA51C1E1B840001A136 /* SecondaryIndexConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondaryIndexConnection.swift; sourceTree = "<group>"; };
 		72345EA71C1E1BA20001A136 /* SecondaryIndexWriteTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondaryIndexWriteTransaction.swift; sourceTree = "<group>"; };
 		72345EA91C1E254C0001A136 /* SQLiteAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteAdapter.swift; sourceTree = "<group>"; };
@@ -172,6 +176,7 @@
 		720558321C518CF000B0847E /* Observable */ = {
 			isa = PBXGroup;
 			children = (
+				723178CB1CA0A8F00089E7A8 /* Internals */,
 				7205583D1C518E0600B0847E /* BasicDisposable.swift */,
 				72610B571C5272BC0010D5B1 /* CallbackThread.swift */,
 				7269F0341C56DD7C007FF29B /* CollectionTypeObserver.swift */,
@@ -240,6 +245,7 @@
 				72088FB01C1CEB8400127EA0 /* IndexedCollection.swift */,
 				72088FB21C1CEB9500127EA0 /* IndexedProperties.swift */,
 				72662B5E1C57E7FE0058F6EF /* IndexedProperty.swift */,
+				723178C91CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift */,
 				720470C21C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift */,
 				72088FAE1C1CEB6500127EA0 /* SecondaryIndex.swift */,
 			);
@@ -314,6 +320,14 @@
 				728C235B1C3B121E0033D986 /* CacheUpdates.swift */,
 			);
 			path = ChangeSet;
+			sourceTree = "<group>";
+		};
+		723178CB1CA0A8F00089E7A8 /* Internals */ = {
+			isa = PBXGroup;
+			children = (
+				723178CC1CA0A9040089E7A8 /* TypeErasedObservableCollection.swift */,
+			);
+			path = Internals;
 			sourceTree = "<group>";
 		};
 		72345EA41C1E1B680001A136 /* Internals */ = {
@@ -522,6 +536,7 @@
 				720FA9B11C259D2000BEF295 /* ValuesSequence.swift in Sources */,
 				72088FD71C1E10EF00127EA0 /* CollectionProperty.swift in Sources */,
 				72662B5B1C57C0310058F6EF /* SQLiteTypeName.swift in Sources */,
+				723178CA1CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift in Sources */,
 				72E7F4EA1C3433D9009C1D9D /* SQLiteError.swift in Sources */,
 				7205583A1C518D5100B0847E /* ObserverOf.swift in Sources */,
 				72F6F7001C24622A0059D72C /* ExtendedCollection.swift in Sources */,
@@ -545,6 +560,7 @@
 				7218C9631C274778004457DB /* WeakBox.swift in Sources */,
 				72088F841C1CD8C500127EA0 /* ReadTransaction.swift in Sources */,
 				72088F861C1CD8E200127EA0 /* ReadWriteTransaction.swift in Sources */,
+				723178CD1CA0A9040089E7A8 /* TypeErasedObservableCollection.swift in Sources */,
 				7205583E1C518E0600B0847E /* BasicDisposable.swift in Sources */,
 				720558341C518D1300B0847E /* Disposable.swift in Sources */,
 				720558361C518D2100B0847E /* DisposeBag.swift in Sources */,

@@ -15,11 +15,6 @@ public final class ChangeSet<Key: Equatable> {
 
     // MARK: Public methods
 
-    public func packChanges() -> [CollectionRowChange<Key>] {
-        //If there's a remove then insert, call it an update? or an insert then deletion, remove the insert
-        return []
-    }
-
     public func hasChangeForKey(key: Key) -> Bool {
         guard !allValuesRemoved else { return true }
 

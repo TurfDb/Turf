@@ -1,4 +1,6 @@
 public class ObservableCollection<TCollection: Collection>: TypedObservable, TypeErasedObservableCollection {
+    public typealias Callback = (ReadCollection<TCollection>?, ChangeSet<String>) -> Void
+
     // MARK: Public properties
     public private(set) var value: ReadCollection<TCollection>?
 
@@ -7,8 +9,7 @@ public class ObservableCollection<TCollection: Collection>: TypedObservable, Typ
     // MARK: Private properties
 
     private var nextObserverToken = UInt64(0)
-    private var observers: [UInt64: (ReadCollection<TCollection>, ChangeSet<String>) -> Void]
-    private var internalObservers: [UInt64: (ReadCollection<TCollection>, ChangeSet<String>) -> Void]
+    private var observers: [UInt64: (thread: CallbackThread, callback: Callback)]
 
     // MARK: Object lifecycle
 
@@ -16,7 +17,6 @@ public class ObservableCollection<TCollection: Collection>: TypedObservable, Typ
         self.value = nil
         self.disposeBag = DisposeBag()
         self.observers = [:]
-        self.internalObservers = [:]
     }
 
     deinit {
@@ -28,9 +28,9 @@ public class ObservableCollection<TCollection: Collection>: TypedObservable, Typ
     /**
      - returns: Disposable - call `dispose()` to remove the `didChange` callback.
      */
-    public func didChange(thread: CallbackThread = .CallingThread, callback: (ReadCollection<TCollection>?, ChangeSet<String>) -> Void) -> Disposable {
+    public func didChange(thread: CallbackThread = .CallingThread, callback: Callback) -> Disposable {
         let token = nextObserverToken
-        observers[token] = callback//TODO Account for thread
+        observers[token] = (thread, callback)
         nextObserverToken += 1
 
         return BasicDisposable { [weak self] in
@@ -48,46 +48,30 @@ public class ObservableCollection<TCollection: Collection>: TypedObservable, Typ
     func processCollectionChanges(collection: ReadCollection<TCollection>, changeSet: ChangeSet<String>) {
         value = collection
 
-        for (_, observer) in internalObservers {
-            observer(collection, changeSet)
-        }
-
         for (_, observer) in observers {
-            observer(collection, changeSet)
-        }
-    }
-
-    // MARK: Private methods
-
-    /**
-     - returns: Disposable - call `dispose()` to remove the `didChange` callback.
-    */
-    private func collectionDidChange(callback: (ReadCollection<TCollection>, ChangeSet<String>) -> Void) -> BasicDisposable {
-
-        let token = nextObserverToken
-        internalObservers[token] = callback
-        nextObserverToken += 1
-
-        return BasicDisposable { [weak self] in
-            self?.internalObservers.removeValueForKey(token)
+            observer.thread.dispatchSynchronously {
+                observer.callback(collection, changeSet)
+            }
         }
     }
 }
 
 extension ObservableCollection where TCollection: IndexedCollection {
+    public typealias Prefilter = (([TCollection.Value], ChangeSet<String>) -> Bool)?
+
     // MARK: Public methods
 
-    public func valuesWhere(predicate: String, prefilterChangeSet: (([TCollection.Value], ChangeSet<String>) -> Bool)? = nil) -> CollectionTypeObserver<[TCollection.Value]> {
+    public func valuesWhere(predicate: String, thread: CallbackThread = .CallingThread, prefilterChangeSet: Prefilter = nil) -> CollectionTypeObserver<[TCollection.Value]> {
         let queryResultsObserver = CollectionTypeObserver<[TCollection.Value]>(initalValue: [])
 
         let disposable =
-        collectionDidChange { (collection, changeSet) in
+        didChange(thread) { (collection, changeSet) in
             let canCheckPreviousValue = prefilterChangeSet != nil && queryResultsObserver.value.count > 0
             let shouldRequery = canCheckPreviousValue ? prefilterChangeSet!(queryResultsObserver.value, changeSet) : true
 
             if shouldRequery {
-                let queryResults = collection.findValuesWhere(predicate)
-                queryResultsObserver.setValue(queryResults, fromTransaction: collection.readTransaction)
+                let queryResults = collection!.findValuesWhere(predicate)
+                queryResultsObserver.setValue(queryResults, fromTransaction: collection!.readTransaction)
             }
         }
 
@@ -97,8 +81,4 @@ extension ObservableCollection where TCollection: IndexedCollection {
 
         return queryResultsObserver
     }
-}
-
-internal protocol TypeErasedObservableCollection {
-
 }

@@ -1,6 +1,11 @@
 public class CollectionTypeObserver<Collection: CollectionType where Collection.Index : BidirectionalIndexType>: ObserverOf<Collection> {
+
+    // MARK: Public properties
+
     public let first: ObserverOf<Collection.Generator.Element?>
     public let last: ObserverOf<Collection.Generator.Element?>
+
+    // MARK: Object lifecycle
 
     public override init(initalValue: Collection) {
         first = ObserverOf(initalValue: nil)
@@ -14,6 +19,11 @@ public class CollectionTypeObserver<Collection: CollectionType where Collection.
         }
     }
 
+    // MARK: Public methods
+
+    /**
+     Observe any value at `index` in the collection. 
+     */
     public func observeIndex(index: Collection.Index) -> ObserverOf<Collection.Generator.Element?> {
         let observer = ObserverOf<Collection.Generator.Element?>(initalValue: nil)
 
@@ -31,13 +41,13 @@ public class CollectionTypeObserver<Collection: CollectionType where Collection.
 
         return observer
     }
-
-    //    public func filter() -> CollectionTypeObserver<Collection> {
-    //        return CollectionTypeObserver(initalValue: nil)
-    //    }
 }
 
 public extension CollectionTypeObserver where Collection: CollectionType, Collection.Index == Int {
+    /**
+     Observe any value at `index` in the collection. If `collection.count` becomes less than `index` 
+     the updated value will become nil.
+     */
     public func observeIndex(index: Collection.Index) -> ObserverOf<Collection.Generator.Element?> {
         let observer = ObserverOf<Collection.Generator.Element?>(initalValue: nil)
 

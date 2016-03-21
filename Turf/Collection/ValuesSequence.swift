@@ -48,10 +48,9 @@ public final class ValuesSequence<Value>: SequenceType {
         }
     }
 
-    /**
-     This *must* be called before ValueSequence goes out of scope.
-     */
-    public func finalize() {
+    // MARK: Private methods
+
+    private func finalize() {
         sqlite3_reset(self.stmt)
     }
 }
