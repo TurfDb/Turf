@@ -1,6 +1,7 @@
 public class ObserverOf<T>: TypedObservable {
     // MARK: Public properties
     public typealias Value = T
+    public typealias Callback = (T, ReadTransaction?) -> Void
 
     public private(set) var value: T
 
@@ -8,7 +9,7 @@ public class ObserverOf<T>: TypedObservable {
 
     // MARK: Private properties
 
-    private var observers: [UInt64: (T, ReadTransaction?) -> Void]
+    private var observers: [UInt64: (thread: CallbackThread, callback: Callback)]
     private var nextObserverToken = UInt64(0)
 
     // MARK: Object lifecycle
@@ -23,10 +24,12 @@ public class ObserverOf<T>: TypedObservable {
         disposeBag.dispose()
     }
 
+    // MARK: Public methods
+
     public func didChange(thread: CallbackThread = .CallingThread, callback: (T, ReadTransaction?) -> Void) -> Disposable {
 
         let token = nextObserverToken
-        observers[token] = callback//TODO Account for thread
+        observers[token] = (thread, callback)
         nextObserverToken += 1
 
         return BasicDisposable { [weak self] in
@@ -43,7 +46,9 @@ public class ObserverOf<T>: TypedObservable {
 
     private func onValueSet(newValue: T, transaction: ReadTransaction?) {
         for (_, observer) in observers {
-            observer(newValue, transaction)
+            observer.thread.dispatchSynchronously {
+                observer.callback(newValue, transaction)
+            }
         }
     }
 }
