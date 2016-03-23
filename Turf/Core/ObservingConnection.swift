@@ -37,11 +37,11 @@ public final class ObservingConnection {
             return observedCollection
         } else {
             let collectionDidChange = { [weak self] (transaction: ReadTransaction, changeSet: ChangeSet<String>) in
-                if let strongSelf = self {
-                    let observableCollection = strongSelf.observableCollections[collection.name] as! ObservableCollection<TCollection>
-                    let readCollection = collection.readOnly(transaction)
-                    observableCollection.processCollectionChanges(readCollection, changeSet: changeSet)
-                }
+                guard let strongSelf = self else { return }
+
+                let observableCollection = strongSelf.observableCollections[collection.name] as! ObservableCollection<TCollection>
+                let readCollection = collection.readOnly(transaction)
+                observableCollection.processCollectionChanges(readCollection, changeSet: changeSet)
             }
 
             let observedCollection = ObservableCollection<TCollection>()
