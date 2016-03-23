@@ -30,51 +30,61 @@ public final class ObservingConnection {
     // MARK: Public methods
 
     /**
-     - note: TODO thread safe
+     - note: 
+        Thread safe.
      */
     public func observeCollection<TCollection: Collection>(collection: TCollection) -> ObservableCollection<TCollection> {
-        if let observedCollection = observableCollections[collection.name] as? ObservableCollection<TCollection> {
-            return observedCollection
-        } else {
-            let collectionDidChange = { [weak self] (transaction: ReadTransaction, changeSet: ChangeSet<String>) in
-                guard let strongSelf = self else { return }
+        let collectionDidChange = { [weak self] (transaction: ReadTransaction, changeSet: ChangeSet<String>) in
+            guard let strongSelf = self else { return }
 
-                let observableCollection = strongSelf.observableCollections[collection.name] as! ObservableCollection<TCollection>
-                let readCollection = collection.readOnly(transaction)
-                observableCollection.processCollectionChanges(readCollection, changeSet: changeSet)
-            }
-
-            let observedCollection = ObservableCollection<TCollection>()
-            observableCollections[collection.name] = observedCollection
-            collectionUpdateProcessors[collection.name] = collectionDidChange
-
-            observedCollection.disposeBag.add(
-                BasicDisposable { [weak self] in
-                    self?.observableCollections.removeValueForKey(collection.name)
-                    self?.collectionUpdateProcessors.removeValueForKey(collection.name)
-                }
-            )
-
-            //Don't dispose this connection
-            observedCollection.disposeBag.parent = nil
-            
-            return observedCollection
+            let observableCollection = strongSelf.observableCollections[collection.name] as! ObservableCollection<TCollection>
+            let readCollection = collection.readOnly(transaction)
+            observableCollection.processCollectionChanges(readCollection, changeSet: changeSet)
         }
+
+        var observed: ObservableCollection<TCollection>!
+
+        Dispatch.synchronouslyOn(connection.connectionQueue) {
+            if let observedCollection = self.observableCollections[collection.name] as? ObservableCollection<TCollection> {
+                observed = observedCollection
+            } else {
+
+                let observedCollection = ObservableCollection<TCollection>()
+                self.observableCollections[collection.name] = observedCollection
+                self.collectionUpdateProcessors[collection.name] = collectionDidChange
+
+                observedCollection.disposeBag.add(
+                    BasicDisposable { [weak self] in
+                        self?.observableCollections.removeValueForKey(collection.name)
+                        self?.collectionUpdateProcessors.removeValueForKey(collection.name)
+                    }
+                )
+
+                //Don't dispose this connection
+                observedCollection.disposeBag.parent = nil
+                
+                observed = observedCollection
+            }
+        }
+
+        return observed
     }
 
     /**
      - note: 
-        - TODO thread safe
+        - Thread safe
      */
     public func advanceToLatestSnapshot() {
         var changeSets = [String: ChangeSet<String>]()
 
-        for pendingChanges in pendingChangeSets {
-            for (collectionName, pendingChangeSet) in pendingChanges {
-                if let changeSet = changeSets[collectionName] {
-                    changeSet.mergeWithChangeSet(pendingChangeSet)
-                } else {
-                    changeSets[collectionName] = pendingChangeSet
+        Dispatch.synchronouslyOn(connection.connectionQueue) {
+            for pendingChanges in self.pendingChangeSets {
+                for (collectionName, pendingChangeSet) in pendingChanges {
+                    if let changeSet = changeSets[collectionName] {
+                        changeSet.mergeWithChangeSet(pendingChangeSet)
+                    } else {
+                        changeSets[collectionName] = pendingChangeSet
+                    }
                 }
             }
         }
@@ -82,8 +92,7 @@ public final class ObservingConnection {
         advanceToLatestSnapshot(changeSets: changeSets)
     }
 
-    // MARK: Internal methods 
-
+    // MARK: Internal methods
 
     /**
      Calls `shouldAdvanceWhenDatabaseChanges` to check if it should advance the snapshot this connection is on.
@@ -92,7 +101,7 @@ public final class ObservingConnection {
      - parameter changeSets: Map of `collection name` -> `Collection change set`.
 
      - note:
-        - TODO Thread safe
+        - Thread safe due to being called on the write queue.
      - warning: This method should only ever be called from at the end of a commit on the write queue.
      */
     func processModifiedCollections(changeSets changeSets: [String: ChangeSet<String>]) {
@@ -115,12 +124,12 @@ public final class ObservingConnection {
      - parameter changeSets: Map of `collection name` -> `Collection change set`.
 
      - note:
-        - TODO thread safe
+        - Thread safe.
      */
     private func advanceToLatestSnapshot(changeSets changeSets: [String: ChangeSet<String>])  {
-        pendingChangeSets = []
+        Dispatch.synchronouslyOn(connection.connectionQueue) {
+            self.pendingChangeSets = []
 
-        Dispatch.asynchronouslyOn(connection.connectionQueue) {
             // End previous read transaction
             if let longLivedReadTransaction = self.longLivedReadTransaction {
                 self.connection.postReadTransaction(longLivedReadTransaction)

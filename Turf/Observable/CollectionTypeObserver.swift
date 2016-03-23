@@ -22,7 +22,9 @@ public class CollectionTypeObserver<Collection: CollectionType where Collection.
     // MARK: Public methods
 
     /**
-     Observe any value at `index` in the collection. 
+     Observe any value at `index` in the collection.
+     - note:
+        Thread safe.
      */
     public func observeIndex(index: Collection.Index) -> ObserverOf<Collection.Generator.Element?> {
         let observer = ObserverOf<Collection.Generator.Element?>(initalValue: nil)
@@ -47,6 +49,8 @@ public extension CollectionTypeObserver where Collection: CollectionType, Collec
     /**
      Observe any value at `index` in the collection. If `collection.count` becomes less than `index` 
      the updated value will become nil.
+     - note:
+        Thread safe.
      */
     public func observeIndex(index: Collection.Index) -> ObserverOf<Collection.Generator.Element?> {
         let observer = ObserverOf<Collection.Generator.Element?>(initalValue: nil)

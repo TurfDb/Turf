@@ -11,6 +11,7 @@ public class ObserverOf<T>: TypedObservable {
 
     private var observers: [UInt64: (thread: CallbackThread, callback: Callback)]
     private var nextObserverToken = UInt64(0)
+    private var lock: OSSpinLock = OS_SPINLOCK_INIT
 
     // MARK: Object lifecycle
 
@@ -26,18 +27,36 @@ public class ObserverOf<T>: TypedObservable {
 
     // MARK: Public methods
 
+    /**
+     - note:
+        Thread safe.
+     */
     public func didChange(thread: CallbackThread = .CallingThread, callback: (T, ReadTransaction?) -> Void) -> Disposable {
+        OSSpinLockLock(&lock)
 
         let token = nextObserverToken
         observers[token] = (thread, callback)
         nextObserverToken += 1
 
+        OSSpinLockUnlock(&lock)
+
         return BasicDisposable { [weak self] in
+            guard let strongSelf = self else { return }
+            defer { OSSpinLockUnlock(&strongSelf.lock) }
+            OSSpinLockLock(&strongSelf.lock)
+
             self?.observers.removeValueForKey(token)
         }
     }
 
+    /**
+     - note:
+        Thread safe
+     */
     public func setValue(value: T, fromTransaction transaction: ReadTransaction?) {
+        defer { OSSpinLockUnlock(&lock) }
+        OSSpinLockLock(&lock)
+
         self.value = value
         onValueSet(value, transaction: transaction)
     }
