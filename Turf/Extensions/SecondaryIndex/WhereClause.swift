@@ -19,7 +19,7 @@ public class WhereClause: PredicateExpression {
     // MARK: Public functions
 
     public func and(clause: WhereClause) -> WhereClause {
-        return WhereClause(sql: "\(sql) AND \(clause.sql)", bindStatements: { (stmt, firstColumnIndex) -> Int32 in
+        return WhereClause(sql: "(\(sql)) AND (\(clause.sql))", bindStatements: { (stmt, firstColumnIndex) -> Int32 in
             let selfColumnCount = try self.bindStatements(stmt: stmt, firstColumnIndex: firstColumnIndex)
             let nextColumnIndex = selfColumnCount + firstColumnIndex
             let orColumnCount = try clause.bindStatements(stmt: stmt, firstColumnIndex: nextColumnIndex)
@@ -28,7 +28,7 @@ public class WhereClause: PredicateExpression {
     }
 
     public func or(clause: WhereClause) -> WhereClause {
-        return WhereClause(sql: "\(sql) OR \(clause.sql)", bindStatements: { (stmt, firstColumnIndex) -> Int32 in
+        return WhereClause(sql: "(\(sql)) OR (\(clause.sql))", bindStatements: { (stmt, firstColumnIndex) -> Int32 in
             let selfColumnCount = try self.bindStatements(stmt: stmt, firstColumnIndex: firstColumnIndex)
             let nextColumnIndex = selfColumnCount + firstColumnIndex
             let orColumnCount = try clause.bindStatements(stmt: stmt, firstColumnIndex: nextColumnIndex)

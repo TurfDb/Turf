@@ -82,7 +82,41 @@ public extension ReadCollection where TCollection: IndexedCollection {
         }
         
         return values
+    }
 
+    /**
+     Count all values that matches the given predicate using the collection's secondary index
+     - parameter predicate: Query on secondary indexed properties
+     - returns: Number of values that match the predicate
+     */
+    public func countValuesWhere(clause: WhereClause) -> Int {
+        var count = 0
+        var stmt: COpaquePointer = nil
+        defer { sqlite3_finalize(stmt) }
+
+        do {
+            let connection = extensionConnection()
+            let db = sqlite3_db_handle(connection.insertStmt)
+
+            let sql = "SELECT COUNT(targetPrimaryKey) FROM \(connection.index.tableName) WHERE \(clause.sql)"
+            guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil).isOK else {
+                throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            }
+
+            try! clause.bindStatements(stmt: stmt, firstColumnIndex: SQLITE_FIRST_BIND_COLUMN)
+
+            let result = sqlite3_step(stmt)
+            if result.hasRow {
+                count = Int(sqlite3_column_int64(stmt, SQLITE_FIRST_COLUMN))
+            } else if !result.isDone {
+                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            }
+        } catch {
+            print(error)
+            print("TODO Better logging")
+        }
+
+        return count
     }
 
     /**
@@ -107,9 +141,20 @@ public extension ReadCollection where TCollection: IndexedCollection {
         }))
     }
 
+    /**
+     Count all values that matches the given predicate using the collection's secondary index
+     - parameter predicate: Query on secondary indexed properties
+     - returns: Number of values that match the predicate
+     */
+    public func countValuesWhere(predicate: String) -> Int {
+        return countValuesWhere(WhereClause(sql: predicate, bindStatements: { (stmt, firstColumnIndex) -> Int32 in
+            return 0
+        }))
+    }
+
     // MARK: Private methods
 
-    private func extensionConnection() -> SecondaryIndexConnection<TCollection, TCollection.IndexProperties> {
+    internal func extensionConnection() -> SecondaryIndexConnection<TCollection, TCollection.IndexProperties> {
         return try! readTransaction.connection.connectionForExtension(collection.index) as! SecondaryIndexConnection<TCollection, TCollection.IndexProperties>
     }
 }

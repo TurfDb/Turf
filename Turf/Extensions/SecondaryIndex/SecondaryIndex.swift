@@ -20,6 +20,9 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
 
     // MARK: Internal properties
 
+    /// Table name of the collection that is indexed
+    internal let collectionTableName: String
+
     /// Table name in which the secondary indexed properties are written
     internal let tableName: String
 
@@ -33,6 +36,7 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
      - parameter properties: A list of collection properties that will be indexed
      */
     public init(collectionName: String, properties: Properties, version: UInt64) {
+        self.collectionTableName = collectionName
         self.uniqueName = "index_\(collectionName)"
         self.version = version
         self.tableName = "index_\(collectionName)"

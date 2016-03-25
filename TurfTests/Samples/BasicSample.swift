@@ -56,6 +56,9 @@ class BasicSample: XCTestCase {
             check = Check(uuid: "ABC", name: "ABC", isOpen: true, isCurrent: false, lineItemUuids: [])
             checksCollection.setValue(check, forKey: "1234")
 
+            checksCollection.countValuesWhere(checksCollection.indexed.isOpen.equals(true))
+            print("all: \(checksCollection.findValuesWhere(checksCollection.indexed.isOpen.equals(true)))")
+
             print(checksCollection.valueForKey("1234")?.uuid)
         }
 
