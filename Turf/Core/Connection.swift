@@ -93,7 +93,7 @@ public final class Connection {
         - `closure` is executed on the connection's queue.
      - parameter closure: Operations to perform within the read transaction.
      */
-    public func readTransaction(closure: (ReadTransaction -> Void)) {
+    public func readTransaction(closure: ReadTransaction -> Void) {
         Dispatch.synchronouslyOn(connectionQueue) {
             let transaction = ReadTransaction(connection: self)
             self.preReadTransaction(transaction)
@@ -109,7 +109,7 @@ public final class Connection {
         - `closure` is executed on the connection's queue and global write queue.
      - parameter closure: Operations to perform within the read-write transaction.
      */
-    public func readWriteTransaction(closure: (ReadWriteTransaction -> Void)) {
+    public func readWriteTransaction(closure: ReadWriteTransaction -> Void) {
         Dispatch.synchronouslyOn(connectionQueue) {
             Dispatch.synchronouslyOn(self.databaseWriteQueue) {
                 Dispatch.Queues.setContext(
@@ -120,6 +120,31 @@ public final class Connection {
                 let transaction = ReadWriteTransaction(connection: self)
                 self.preReadWriteTransaction(transaction)
                 closure(transaction)
+                self.postReadWriteTransaction(transaction)
+
+                Dispatch.Queues.setContext(nil, key: connectionQueueKey, forQueue: self.databaseWriteQueue)
+            }
+        }
+    }
+
+    /**
+     Pass a new read-write transaction into `closure` that will be executed asynchronously on the write queue.
+     - note:
+     - Thread safe
+     - `closure` is executed on the connection's queue and global write queue.
+     - parameter closure: Operations to perform within the read-write transaction.
+     */
+    public func readWriteTransaction(closure: ReadWriteTransaction throws -> Void) throws {
+        try Dispatch.synchronouslyOn(connectionQueue) {
+            try Dispatch.synchronouslyOn(self.databaseWriteQueue) {
+                Dispatch.Queues.setContext(
+                    Dispatch.Queues.makeContext(self.connectionQueue),
+                    key: connectionQueueKey,
+                    forQueue: self.databaseWriteQueue)
+
+                let transaction = ReadWriteTransaction(connection: self)
+                self.preReadWriteTransaction(transaction)
+                try closure(transaction)
                 self.postReadWriteTransaction(transaction)
 
                 Dispatch.Queues.setContext(nil, key: connectionQueueKey, forQueue: self.databaseWriteQueue)

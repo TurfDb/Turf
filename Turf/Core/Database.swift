@@ -263,8 +263,8 @@ public final class Database {
         let connection = try newConnection()
         connection.sqlite.setSnapshot(0)
 
-        connection.readWriteTransaction { transaction in
-            collections.setUpCollections(transaction: transaction)
+        try connection.readWriteTransaction { transaction in
+            try collections.setUpCollections(transaction: transaction)
         }
     }
 }

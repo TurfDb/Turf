@@ -20,5 +20,5 @@ public protocol CollectionsContainer {
      Called when initializing a `Database`
      - parameter transaction: Can be used to register new collections and extensions
      */
-    func setUpCollections(transaction transaction: ReadWriteTransaction)
+    func setUpCollections(transaction transaction: ReadWriteTransaction) throws
 }
