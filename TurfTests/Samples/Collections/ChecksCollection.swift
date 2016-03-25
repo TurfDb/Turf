@@ -26,7 +26,6 @@ final class ChecksCollection: Collection, IndexedCollection {
     }
 
     func serializeValue(value: Value) -> NSData {
-        //TODO
         return value.uuid.dataUsingEncoding(NSUTF8StringEncoding)!
     }
 
@@ -44,7 +43,6 @@ final class ChecksCollection: Collection, IndexedCollection {
         let isCurrent = IndexedProperty<ChecksCollection, Bool>(name: "isCurrent") { return $0.isCurrent }
 
         var allProperties: [IndexedPropertyFromCollection<ChecksCollection>] {
-            //TODO remove need for lift()
             return [isOpen.lift(), name.lift(), isCurrent.lift()]
         }
 

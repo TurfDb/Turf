@@ -35,7 +35,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
                 throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
             }
         } catch {
-            print("TODO Handle errors")
+            print("TODO Better logging")
         }
         
         return value
@@ -74,7 +74,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
             }
         } catch {
             print(error)
-            print("TODO Handle errors")
+            print("TODO Better logging")
         }
         
         return values
@@ -83,7 +83,6 @@ public extension ReadCollection where TCollection: IndexedCollection {
     // MARK: Private methods
 
     private func extensionConnection() -> SecondaryIndexConnection<TCollection, TCollection.IndexProperties> {
-        //TODO handle error
         return try! readTransaction.connection.connectionForExtension(collection.index) as! SecondaryIndexConnection<TCollection, TCollection.IndexProperties>
     }
 }

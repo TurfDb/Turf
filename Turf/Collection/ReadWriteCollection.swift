@@ -29,7 +29,7 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
      - parameter key: Primary key for `value`
      */
     public func setValue(value: Value, forKey key: String) {
-        commonSetValue(value, forKey: key)
+        try! commonSetValue(value, forKey: key)
     }
 
     /**
@@ -37,22 +37,22 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
      - parameter keys: Primary keys of the values to remove
      */
     public func removeValuesWithKeys(keys: [String]) {
-        commonRemoveValuesWithKeys(keys)
+        try! commonRemoveValuesWithKeys(keys)
     }
 
     /**
      Remove all values in the collection
      */
     public func removeAllValues() {
-        commonRemoveAllValues()
+        try! commonRemoveAllValues()
     }
 
     // MARK: Private methods
 
-    private func commonSetValue(value: Value, forKey key: String) -> SQLiteRowChangeType {
+    private func commonSetValue(value: Value, forKey key: String) throws -> SQLiteRowChangeType {
         let valueData = serializeValue(value)
 
-        let rowChange = try! localStorage.sql.setValueData(valueData, valueSchemaVersion: schemaVersion, forKey: key)
+        let rowChange = try localStorage.sql.setValueData(valueData, valueSchemaVersion: schemaVersion, forKey: key)
         switch rowChange {
         case .Insert(_): localStorage.changeSet.recordValueInsertedWithKey(key)
         case .Update(_): localStorage.changeSet.recordValueUpdatedWithKey(key)
@@ -64,9 +64,9 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
         return rowChange
     }
 
-    private func commonRemoveValuesWithKeys(keys: [String]) {
+    private func commonRemoveValuesWithKeys(keys: [String]) throws {
         for key in keys {
-            try! localStorage.sql.removeValueWithKey(key)
+            try localStorage.sql.removeValueWithKey(key)
             localStorage.valueCache.removeValueForKey(key)
             localStorage.changeSet.recordValueRemovedWithKey(key)
             localStorage.cacheUpdates.recordValueRemovedWithKey(key)
@@ -74,8 +74,8 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
         readWriteTransaction.connection.recordModifiedCollection(collection)
     }
 
-    private func commonRemoveAllValues() {
-        try! localStorage.sql.removeAllValues()
+    private func commonRemoveAllValues() throws {
+        try localStorage.sql.removeAllValues()
         localStorage.valueCache.removeAllValues()
         localStorage.changeSet.recordAllValuesRemoved()
         localStorage.cacheUpdates.recordAllValuesRemoved()
@@ -91,7 +91,7 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
      - parameter key: Primary key for `value`
      */
     public func setValue(value: Value, forKey key: String) {
-        let rowChange: SQLiteRowChangeType = commonSetValue(value, forKey: key)
+        let rowChange: SQLiteRowChangeType = try! commonSetValue(value, forKey: key)
         
         let connection = readWriteTransaction.connection
         switch rowChange {
@@ -121,7 +121,7 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
      - parameter keys: Primary keys of the values to remove
      */
     public func removeValuesWithKeys(keys: [String]) {
-        commonRemoveValuesWithKeys(keys)
+        try! commonRemoveValuesWithKeys(keys)
 
         let connection = readWriteTransaction.connection
         for ext in collection.associatedExtensions {
@@ -137,7 +137,7 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
      - note: Executes any associated extensions
      */
     public func removeAllValues() {
-        commonRemoveAllValues()
+        try! commonRemoveAllValues()
 
         let connection = readWriteTransaction.connection
         for ext in collection.associatedExtensions {

@@ -65,8 +65,4 @@ public final class ReadWriteTransaction: ReadTransaction {
     public func registerExtension<Ext: Extension>(ext: Ext) throws {
         try connection.registerExtension(ext, onTransaction: self)
     }
-
-    // MARK: Internal methods
-
-    // MARK: Private methods
 }
