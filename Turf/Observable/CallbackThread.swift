@@ -7,7 +7,7 @@ public enum CallbackThread {
 
     public var queue: dispatch_queue_t? {
         switch self {
-        case .MainThread: return dispatch_get_main_queue()
+        case .MainThread: return NSThread.isMainThread() ? nil : dispatch_get_main_queue()
         case .OtherThread(let queue): return queue
         case .CallingThread: return nil
         }
