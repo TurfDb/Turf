@@ -11,7 +11,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
      - parameter predicate: Query on secondary indexed properties
      - returns: Value if there is a match
      */
-    public func findFirstValueWhere(predicate: String) -> Value? {
+    public func findFirstValueWhere(clause: WhereClause) -> Value? {
         var value: Value? = nil
 
         var stmt: COpaquePointer = nil
@@ -21,10 +21,12 @@ public extension ReadCollection where TCollection: IndexedCollection {
             let connection = extensionConnection()
             let db = sqlite3_db_handle(connection.insertStmt)
 
-            let sql = "SELECT targetPrimaryKey FROM \(connection.index.tableName) \(predicate) LIMIT 1"
+            let sql = "SELECT targetPrimaryKey FROM \(connection.index.tableName) WHERE \(clause.sql) LIMIT 1"
             guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil).isOK else {
                 throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
             }
+
+            try! clause.bindStatements(stmt: stmt, firstColumnIndex: SQLITE_FIRST_BIND_COLUMN)
 
             let result = sqlite3_step(stmt)
             if result.hasRow {
@@ -41,6 +43,11 @@ public extension ReadCollection where TCollection: IndexedCollection {
         return value
     }
 
+    /**
+     Find all values that matches the given predicate using the collection's secondary index
+     - parameter predicate: Query on secondary indexed properties
+     - returns: Values that match the predicate
+     */
     public func findValuesWhere(clause: WhereClause) -> [Value] {
         var values = [Value]()
 
@@ -79,42 +86,25 @@ public extension ReadCollection where TCollection: IndexedCollection {
     }
 
     /**
+     Find the first value that matches the given predicate using the collection's secondary index
+     - parameter predicate: Query on secondary indexed properties
+     - returns: Value if there is a match
+     */
+    public func findFirstValueWhere(predicate: String) -> Value? {
+        return findFirstValueWhere(WhereClause(sql: predicate, bindStatements: { (stmt, firstColumnIndex) -> Int32 in
+            return 0
+        }))
+    }
+
+    /**
      Find all values that matches the given predicate using the collection's secondary index
      - parameter predicate: Query on secondary indexed properties
      - returns: Values that match the predicate
      */
     public func findValuesWhere(predicate: String) -> [Value] {
-        var values = [Value]()
-
-        var stmt: COpaquePointer = nil
-        defer { sqlite3_finalize(stmt) }
-
-        do {
-            let connection = extensionConnection()
-            let db = sqlite3_db_handle(connection.insertStmt)
-
-            let sql = "SELECT targetPrimaryKey FROM \(connection.index.tableName) \(predicate)"
-            guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil).isOK else {
-                throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
-            }
-
-            var result = sqlite3_step(stmt)
-            while result.hasRow {
-                if let key = String(stmt: stmt, columnIndex: SQLITE_FIRST_COLUMN), value = valueForKey(key) {
-                    values.append(value)
-                }
-                result = sqlite3_step(stmt)
-            }
-
-            if !result.isDone {
-                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
-            }
-        } catch {
-            print(error)
-            print("TODO Better logging")
-        }
-        
-        return values
+        return findValuesWhere(WhereClause(sql: predicate, bindStatements: { (stmt, firstColumnIndex) -> Int32 in
+            return 0
+        }))
     }
 
     // MARK: Private methods

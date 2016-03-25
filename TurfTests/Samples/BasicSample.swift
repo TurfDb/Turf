@@ -45,13 +45,8 @@ class BasicSample: XCTestCase {
             print("connection 1 write 2")
             let checksCollection = transaction.readWrite(self.collections.Checks)
 
-            print("all: \(checksCollection.findValuesWhere("WHERE isOpen=1"))")
-            print("first: \(checksCollection.findFirstValueWhere("WHERE isOpen=1"))")
-
-            checksCollection.indexed.isOpen.equals(true)
-                .or(
-                    checksCollection.indexed.isOpen.equals(false))
-                .and(checksCollection.indexed.name.equals(""))
+            print("all: \(checksCollection.findValuesWhere(checksCollection.indexed.isOpen.equals(true)))")
+            print("first: \(checksCollection.findFirstValueWhere(checksCollection.indexed.isOpen.equals(true)))")
 
             print(checksCollection.valueForKey("1234")?.uuid)
 
