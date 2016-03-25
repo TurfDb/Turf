@@ -83,6 +83,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
     // MARK: Private methods
 
     private func extensionConnection() -> SecondaryIndexConnection<TCollection, TCollection.IndexProperties> {
-        return readTransaction.connection.connectionForExtension(collection.index) as! SecondaryIndexConnection<TCollection, TCollection.IndexProperties>
+        //TODO handle error
+        return try! readTransaction.connection.connectionForExtension(collection.index) as! SecondaryIndexConnection<TCollection, TCollection.IndexProperties>
     }
 }

@@ -9,7 +9,7 @@ public protocol ExtensionWriteTransaction {
      - parameter primaryKey: The primary key of the value inserted
      - parameter collection: The collection the value was inserted into
      */
-    func handleValueInsertion<TCollection: Collection>(value: TCollection.Value, forKey primaryKey: String, inCollection collection: TCollection)
+    func handleValueInsertion<TCollection: Collection>(value: TCollection.Value, forKey primaryKey: String, inCollection collection: TCollection) throws
 
     /**
      Process a value update
@@ -17,7 +17,7 @@ public protocol ExtensionWriteTransaction {
      - parameter primaryKey: The primary key of the updated value
      - parameter collection: The collection the value was updated in
      */
-    func handleValueUpdate<TCollection: Collection>(value: TCollection.Value, forKey primaryKey: String, inCollection collection: TCollection)
+    func handleValueUpdate<TCollection: Collection>(value: TCollection.Value, forKey primaryKey: String, inCollection collection: TCollection) throws
 
     /**
      Process the removal of multiple rows
@@ -25,7 +25,7 @@ public protocol ExtensionWriteTransaction {
      - parameter primaryKeys: The keys of the values removed
      - parameter collection: The collection from which the values were removed
      */
-    func handleRemovalOfRowsWithKeys<TCollection: Collection>(primaryKeys: [String], inCollection collection: TCollection)
+    func handleRemovalOfRowsWithKeys<TCollection: Collection>(primaryKeys: [String], inCollection collection: TCollection) throws
 
     /**
      A handler for more efficiently handling the removal of all values in a collection
@@ -34,6 +34,6 @@ public protocol ExtensionWriteTransaction {
         - rowids and keys are not given here for efficency reasons
      - parameter collection: The collection from which all values were removed
      */
-    func handleRemovalOfAllRowsInCollection<TCollection: Collection>(collection: TCollection)
+    func handleRemovalOfAllRowsInCollection<TCollection: Collection>(collection: TCollection) throws
 
 }

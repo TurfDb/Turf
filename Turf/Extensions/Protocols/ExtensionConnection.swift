@@ -6,7 +6,7 @@ public protocol ExtensionConnection {
     /**
      Can be used to prepare any sqlite3_stmts for better performance
      */
-    func prepare(db: SQLitePtr)
+    func prepare(db: SQLitePtr) throws
 
     /**
      Factory to create a new write transaction to process collection modifications

@@ -15,7 +15,7 @@ public final class Connection {
     internal let id: Int
 
     /// Wrapper around an open sqlite3 connection
-    internal let sqlite: SQLiteAdapter!
+    internal var sqlite: SQLiteAdapter!
 
     /// Has the sqlite connection been closed
     internal var isClosed: Bool { return sqlite?.isClosed ?? true }
@@ -65,7 +65,7 @@ public final class Connection {
 
         do {
             self.sqlite = try SQLiteAdapter(sqliteDatabaseUrl: database.url)
-            self.createExtensionConnections()
+            try self.createExtensionConnections()
         } catch {
             self.sqlite = nil
             throw error
@@ -185,14 +185,14 @@ public final class Connection {
             - In the average use case this method should do no work so a lightweight synchronization method is required
      - warning: Must be called from a read or read-write transaction
      */
-    func connectionForExtension(ext: Extension) -> ExtensionConnection {
+    func connectionForExtension(ext: Extension) throws -> ExtensionConnection {
         assert(isOnConnectionQueue(), "Must be called from a read or read-write transaction")
         defer { OSSpinLockUnlock(&connectionModificationLock) }
         OSSpinLockLock(&connectionModificationLock)
 
         guard let connectionForExtension = extensionConnections[ext.uniqueName] else {
             let connectionForExtension = ext.newConnection(self)
-            connectionForExtension.prepare(self.sqlite.db)
+            try connectionForExtension.prepare(self.sqlite.db)
             extensionConnections[ext.uniqueName] = connectionForExtension
             return connectionForExtension
         }
@@ -377,11 +377,11 @@ public final class Connection {
         - Thread safe
             - Prepares extension connections on the connection queue
      */
-    private func createExtensionConnections() {
-        Dispatch.synchronouslyOn(connectionQueue) {
+    private func createExtensionConnections() throws {
+        try Dispatch.synchronouslyOn(connectionQueue) {
             for (uniqueName, ext) in self.database.extensions {
                 let connection = ext.newConnection(self)
-                connection.prepare(self.sqlite.db)
+                try connection.prepare(self.sqlite.db)
                 
                 self.extensionConnections[uniqueName] = connection
             }

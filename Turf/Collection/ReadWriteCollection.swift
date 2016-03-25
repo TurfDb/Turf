@@ -97,19 +97,20 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
         switch rowChange {
         case .Insert(_):
             for ext in collection.associatedExtensions {
-                let extConnection = connection.connectionForExtension(ext)
+                //TODO Aggregate try! errors and throw at a commit level
+                let extConnection = try! connection.connectionForExtension(ext)
                 let extTransaction = extConnection.writeTransaction(readWriteTransaction)
 
-                extTransaction.handleValueInsertion(value, forKey: key, inCollection: collection)
+                try! extTransaction.handleValueInsertion(value, forKey: key, inCollection: collection)
             }
 
         case .Update(_):
             for ext in collection.associatedExtensions {
-                let extConnection = connection.connectionForExtension(ext)
+                let extConnection = try! connection.connectionForExtension(ext)
                 //TODO Investigate the potential of caching extension write transactions on the connection
                 let extTransaction = extConnection.writeTransaction(readWriteTransaction)
 
-                extTransaction.handleValueUpdate(value, forKey: key, inCollection: collection)
+                try! extTransaction.handleValueUpdate(value, forKey: key, inCollection: collection)
             }
         }
     }
@@ -124,10 +125,10 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
 
         let connection = readWriteTransaction.connection
         for ext in collection.associatedExtensions {
-            let extConnection = connection.connectionForExtension(ext)
+            let extConnection = try! connection.connectionForExtension(ext)
             let extTransaction = extConnection.writeTransaction(readWriteTransaction)
 
-            extTransaction.handleRemovalOfRowsWithKeys(keys, inCollection: collection)
+            try! extTransaction.handleRemovalOfRowsWithKeys(keys, inCollection: collection)
         }
     }
 
@@ -140,10 +141,10 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
 
         let connection = readWriteTransaction.connection
         for ext in collection.associatedExtensions {
-            let extConnection = connection.connectionForExtension(ext)
+            let extConnection = try! connection.connectionForExtension(ext)
             let extTransaction = extConnection.writeTransaction(readWriteTransaction)
 
-            extTransaction.handleRemovalOfAllRowsInCollection(collection)
+            try! extTransaction.handleRemovalOfAllRowsInCollection(collection)
         }
     }
 }

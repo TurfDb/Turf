@@ -1,3 +1,8 @@
+public enum SecondaryIndexError: ErrorType {
+    case IndexTableCreationFailed(code: Int32, reason: String?)
+    case IndexTableRemovalFailed(code: Int32, reason: String?)
+}
+
 /**
  Extension to enable secondary indexing one or more properties on a collection
  */
@@ -10,7 +15,8 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
 
     public static var turfVersion: UInt64 { return 1 }
 
-    public weak var collection: TCollection?
+    /// Required to perform inital/re population of secondary index table
+    public weak var collection: TCollection!
 
     // MARK: Internal properties
 
@@ -38,16 +44,16 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
     }
 
     public func install(transaction: ReadWriteTransaction, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) throws {
-        let requiresRepopulation = handleExistingInstallation(existingInstallationDetails, db: db)
+        let requiresRepopulation = try handleExistingInstallation(existingInstallationDetails, db: db)
 
         let sql = createTableSql()
         if sqlite3_exec(db, sql, nil, nil, nil).isNotOK {
-            print("ERROR: TODO HANDLE SOME ERRORS")
-            return
+            throw SecondaryIndexError.IndexTableCreationFailed(
+                code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
 
         if requiresRepopulation {
-            repopulate(transaction, collection: collection!)
+            try repopulate(transaction, collection: collection)
         }
     }
 
@@ -55,29 +61,29 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
         let sql = "DROP TABLE IF EXISTS `\(tableName)`"
 
         if sqlite3_exec(db, sql, nil, nil, nil).isNotOK {
-            print("ERROR: TODO HANDLE SOME ERRORS")
+            throw SecondaryIndexError.IndexTableRemovalFailed(
+                code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
     }
 
     // MARK: Private methods
 
-    private func repopulate(transaction: ReadWriteTransaction, collection: TCollection) {
+    private func repopulate(transaction: ReadWriteTransaction, collection: TCollection) throws {
         let readOnlyCollection = transaction.readOnly(collection)
         let extensionTransaction = newConnection(transaction.connection).writeTransaction(transaction)
 
         for (key, value) in readOnlyCollection.allKeysAndValues {
-            extensionTransaction.handleValueInsertion(value, forKey: key, inCollection: collection)
+            try extensionTransaction.handleValueInsertion(value, forKey: key, inCollection: collection)
         }
     }
 
-    private func handleExistingInstallation(existingInstallationDetails: ExistingExtensionInstallation?, db: SQLitePtr) -> Bool {
+    private func handleExistingInstallation(existingInstallationDetails: ExistingExtensionInstallation?, db: SQLitePtr) throws -> Bool {
         let requiresRepopulation = existingInstallationDetails != nil ? (existingInstallationDetails!.version < version) : true
 
-        if requiresRepopulation {
-            if sqlite3_exec(db, "DROP TABLE IF EXISTS \(tableName)", nil, nil, nil).isNotOK {
-                print("ERROR: TODO HANDLE SOME ERRORS")
-                return false
-            }
+        if requiresRepopulation &&
+            sqlite3_exec(db, "DROP TABLE IF EXISTS \(tableName)", nil, nil, nil).isNotOK {
+                throw SecondaryIndexError.IndexTableRemovalFailed(
+                    code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
 
         return requiresRepopulation

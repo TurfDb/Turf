@@ -32,16 +32,11 @@ internal class SecondaryIndexConnection<TCollection: Collection, Properties: Ind
         return SecondaryIndexWriteTransaction(connection: self, transaction: transaction)
     }
 
-    func prepare(db: SQLitePtr) {
-        //TODO throw prepares
-        do {
-            try prepareInsertStmt(db: db)
-            try prepareUpdateStmt(db: db)
-            try prepareRemoveStmt(db: db)
-            try prepareRemoveAllStmt(db: db)
-        } catch {
-            print(error)
-        }
+    func prepare(db: SQLitePtr) throws {
+        try prepareInsertStmt(db: db)
+        try prepareUpdateStmt(db: db)
+        try prepareRemoveStmt(db: db)
+        try prepareRemoveAllStmt(db: db)
     }
 
     // MARK: Private methods
