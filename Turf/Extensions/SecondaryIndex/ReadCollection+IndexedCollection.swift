@@ -39,7 +39,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
         } catch {
             print("TODO Better logging")
         }
-        
+
         return value
     }
 
@@ -80,7 +80,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
             print(error)
             print("TODO Better logging")
         }
-        
+
         return values
     }
 
@@ -118,6 +118,117 @@ public extension ReadCollection where TCollection: IndexedCollection {
 
         return count
     }
+
+    // MARK: Prepared queries
+
+    /**
+     Find the first value that matches the given predicate using the collection's secondary index
+     - parameter predicate: Query on secondary indexed properties
+     - returns: Value if there is a match
+     */
+    public func findFirstValueWhere(preparedQuery: PreparedValueWhereQuery) -> Value? {
+        precondition(preparedQuery.connection === readTransaction.connection,
+                     "Prepared queries must be run on the same connection they were created from")
+
+        var value: Value? = nil
+
+        let stmt = preparedQuery.stmt
+        defer { sqlite3_reset(stmt) }
+
+        do {
+            let connection = extensionConnection()
+            let db = sqlite3_db_handle(connection.insertStmt)
+
+            try! preparedQuery.clause.bindStatements(stmt: stmt, firstColumnIndex: SQLITE_FIRST_BIND_COLUMN)
+
+            let result = sqlite3_step(stmt)
+            if result.hasRow {
+                if let key = String(stmt: stmt, columnIndex: SQLITE_FIRST_COLUMN), fetchedValue = valueForKey(key) {
+                    value = fetchedValue
+                }
+            } else if !result.isDone {
+                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            }
+        } catch {
+            print("TODO Better logging")
+        }
+
+        return value
+    }
+
+    /**
+     Find all values that matches the given predicate using the collection's secondary index
+     - parameter predicate: Query on secondary indexed properties
+     - returns: Values that match the predicate
+     */
+    public func findValuesWhere(preparedQuery: PreparedValuesWhereQuery) -> [Value] {
+        precondition(preparedQuery.connection === readTransaction.connection,
+                     "Prepared queries must be run on the same connection they were created from")
+
+        var values = [Value]()
+
+        let stmt = preparedQuery.stmt
+        defer { sqlite3_reset(stmt) }
+
+        do {
+            let connection = extensionConnection()
+            let db = sqlite3_db_handle(connection.insertStmt)
+
+            try! preparedQuery.clause.bindStatements(stmt: stmt, firstColumnIndex: SQLITE_FIRST_BIND_COLUMN)
+
+            var result = sqlite3_step(stmt)
+            while result.hasRow {
+                if let key = String(stmt: stmt, columnIndex: SQLITE_FIRST_COLUMN), value = valueForKey(key) {
+                    values.append(value)
+                }
+                result = sqlite3_step(stmt)
+            }
+
+            if !result.isDone {
+                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            }
+        } catch {
+            print(error)
+            print("TODO Better logging")
+        }
+
+        return values
+    }
+
+    /**
+     Count all values that matches the given predicate using the collection's secondary index
+     - parameter predicate: Query on secondary indexed properties
+     - returns: Number of values that match the predicate
+     */
+    public func countValuesWhere(preparedQuery: PreparedCountWhereQuery) -> Int {
+        precondition(preparedQuery.connection === readTransaction.connection,
+                     "Prepared queries must be run on the same connection they were created from")
+
+        var count = 0
+        let stmt = preparedQuery.stmt
+        defer { sqlite3_reset(stmt) }
+
+        do {
+            let connection = extensionConnection()
+            let db = sqlite3_db_handle(connection.insertStmt)
+
+            try! preparedQuery.clause.bindStatements(stmt: stmt, firstColumnIndex: SQLITE_FIRST_BIND_COLUMN)
+
+            let result = sqlite3_step(stmt)
+            if result.hasRow {
+                count = Int(sqlite3_column_int64(stmt, SQLITE_FIRST_COLUMN))
+            } else if !result.isDone {
+                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            }
+        } catch {
+            print(error)
+            print("TODO Better logging")
+        }
+
+        return count
+    }
+
+    // MARK: Raw SQL queries
 
     /**
      Find the first value that matches the given predicate using the collection's secondary index

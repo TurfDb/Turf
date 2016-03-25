@@ -26,6 +26,10 @@ class BasicSample: XCTestCase {
             print(changeSet?.changes)
         }
 
+        let openChecksCountQuery =
+            try!connection.prepareQueryFor(collections.Checks,
+                                           countWhere: collections.Checks.indexed.isOpen.equals(true))
+        
         connection.readWriteTransaction { transaction in
             print("connection 1 write 1")
             let checksCollection = transaction.readWrite(self.collections.Checks)
@@ -56,7 +60,7 @@ class BasicSample: XCTestCase {
             check = Check(uuid: "ABC", name: "ABC", isOpen: true, isCurrent: false, lineItemUuids: [])
             checksCollection.setValue(check, forKey: "1234")
 
-            checksCollection.countValuesWhere(checksCollection.indexed.isOpen.equals(true))
+            checksCollection.countValuesWhere(openChecksCountQuery)
             print("all: \(checksCollection.findValuesWhere(checksCollection.indexed.isOpen.equals(true)))")
 
             print(checksCollection.valueForKey("1234")?.uuid)
