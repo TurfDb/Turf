@@ -175,7 +175,7 @@ extension IndexedProperty where T: TurfSwiftString {
     }
 }
 
-extension IndexedProperty where T: TurfSQLiteOptional {
+extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType {
     /**
      Generates a SQL predicate
      - note: Property must be comparable within SQLite
@@ -194,5 +194,137 @@ extension IndexedProperty where T: TurfSQLiteOptional {
      */
     public func isNotNil() -> WhereClause {
         return WhereClauses.isNull(name: name, negate: true)
+    }
+
+    /**
+     Generates a SQL predicate
+     - note: Property must be comparable within SQLite
+     - parameter value
+     - returns: A predicate
+     */
+    public func equals(value: T._Wrapped) -> WhereClause {
+        return WhereClauses.equals(name: name, value: value)
+    }
+
+    /**
+     Generates a SQL predicate
+     - note: Property must be comparable within SQLite
+     - parameter value
+     - returns: A predicate
+     */
+    public func doesNotEqual(value: T._Wrapped) -> WhereClause {
+        return WhereClauses.notEquals(name: name, value: value)
+    }
+
+    /**
+     Generates a SQL predicate
+     - note: Property must be comparable within SQLite
+     - parameter value
+     - returns: A predicate
+     */
+    public func isIn(values: [T._Wrapped]) -> WhereClause {
+        return WhereClauses.IN(name: name, values: values)
+    }
+
+    /**
+     Generates a SQL predicate
+     - note: Property must be comparable within SQLite
+     - parameter value
+     - returns: A predicate
+     */
+    public func isNotIn(values: [T._Wrapped]) -> WhereClause {
+        return WhereClauses.IN(name: name, values: values, negate: true)
+    }
+
+    /**
+     Generates a SQL predicate
+     - note: Property must be comparable within SQLite
+     - parameter value
+     - returns: A predicate
+     */
+    public func isBetween(left: T._Wrapped, right: T._Wrapped) -> WhereClause {
+        return WhereClauses.between(name: name, left: left, right: right)
+    }
+
+    /**
+     Generates a SQL predicate
+     - note: Property must be comparable within SQLite
+     - parameter value
+     - returns: A predicate
+     */
+    public func isLessThan(value: T._Wrapped) -> WhereClause {
+        return WhereClauses.lessThan(name: name, value: value)
+    }
+
+    /**
+     Generates a SQL predicate
+     - note: Property must be comparable within SQLite
+     - parameter value
+     - returns: A predicate
+     */
+    public func isLessThanOrEqualTo(value: T._Wrapped) -> WhereClause {
+        return WhereClauses.lessThanOrEqual(name: name, value: value)
+    }
+
+    /**
+     Generates a SQL predicate
+     - note: Property must be comparable within SQLite
+     - parameter value
+     - returns: A predicate
+     */
+    public func isGreaterThan(value: T._Wrapped) -> WhereClause {
+        return WhereClauses.greaterThan(name: name, value: value)
+    }
+
+    /**
+     Generates a SQL predicate
+     - note: Property must be comparable within SQLite
+     - parameter value
+     - returns: A predicate
+     */
+    public func isGreaterThanOrEqualTo(value: T._Wrapped) -> WhereClause {
+        return WhereClauses.greaterThanOrEqual(name: name, value: value)
+    }
+}
+
+extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType, T._Wrapped: TurfSwiftString {
+    /**
+     Generates a SQL predicate
+     - note: Property must be comparable within SQLite
+     - parameter value
+     - returns: A predicate
+     */
+    public func isLike(value: T._Wrapped) -> WhereClause {
+        return WhereClauses.like(name: name, value: value._turfSwiftString)
+    }
+
+    /**
+     Generates a SQL predicate
+     - note: Property must be comparable within SQLite
+     - parameter value
+     - returns: A predicate
+     */
+    public func isNotLike(value: T._Wrapped) -> WhereClause {
+        return WhereClauses.like(name: name, value: value._turfSwiftString, negate: true)
+    }
+
+    /**
+     Generates a SQL predicate
+     - note: Property must be comparable within SQLite
+     - parameter regex
+     - returns: A predicate
+     */
+    public func matchesRegex(regex: NSRegularExpression) -> WhereClause {
+        return WhereClauses.regexp(name: name, regex: regex.pattern)
+    }
+
+    /**
+     Generates a SQL predicate
+     - note: Property must be comparable within SQLite
+     - parameter regex
+     - returns: A predicate
+     */
+    public func doesNotMatcheRegex(regex: NSRegularExpression) -> WhereClause {
+        return WhereClauses.regexp(name: name, regex: regex.pattern, negate: true)
     }
 }
