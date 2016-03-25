@@ -52,28 +52,28 @@ class BasicObservableSample: XCTestCase {
         }
 
 
-        let currentCheck = observableChecksCollection
-            .valuesWhere(collections.Checks.indexed.isOpen.equals(true),
-                prefilterChangeSet: {
-                    return hasChangeForPreviousValue($0, $1, key: { check in return check.uuid })
-                }
-            ).first
-
-        let currentLineItems = CollectionTypeObserver<[LineItem]>(initalValue: [])
-        currentCheck.didChange { check, transaction in
-            guard let check = check else { return }
-
-            let lineItems = lineItemsForCheck(check, transaction: transaction!)
-            currentLineItems.setValue(lineItems, fromTransaction: transaction!)
-        }
-
-        currentCheck.didChange(.MainThread) { (check, transaction) in
-            print("check: \(check)")
-        }
-
-        currentLineItems.didChange(.MainThread) { (lineItems, transaction) in
-            print("line items: \(lineItems)")
-        }
+//        let currentCheck = observableChecksCollection
+//            .valuesWhere(collections.Checks.indexed.isOpen.equals(true),
+//                prefilterChangeSet: {
+//                    return hasChangeForPreviousValue($0, $1, key: { check in return check.uuid })
+//                }
+//            ).first
+//
+//        let currentLineItems = CollectionTypeObserver<[LineItem]>(initalValue: [])
+//        currentCheck.didChange { check, transaction in
+//            guard let check = check else { return }
+//
+//            let lineItems = lineItemsForCheck(check, transaction: transaction!)
+//            currentLineItems.setValue(lineItems, fromTransaction: transaction!)
+//        }
+//
+//        currentCheck.didChange(.MainThread) { (check, transaction) in
+//            print("check: \(check)")
+//        }
+//
+//        currentLineItems.didChange(.MainThread) { (lineItems, transaction) in
+//            print("line items: \(lineItems)")
+//        }
 
         connection.readWriteTransaction({ transaction in
             let checksCollection = transaction.readWrite(self.collections.Checks)
@@ -94,7 +94,7 @@ class BasicObservableSample: XCTestCase {
         connection.readTransaction({ transaction in
             let checksCollection = transaction.readOnly(self.collections.Checks)
             print(checksCollection.valueForKey("1234")?.uuid)
-            currentLineItems.disposeBag.dispose(disposeAncestors: true)
+//            currentLineItems.disposeBag.dispose(disposeAncestors: true)
             expectation.fulfill()
         })
         
