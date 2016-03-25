@@ -42,6 +42,9 @@ class BasicObservableSample: XCTestCase {
         let connection = try! db.newConnection()
 
         let observingConnection = try! db.newObservingConnection()
+        let openChecksQuery =
+            try! observingConnection.prepareQueryFor(collections.Checks,
+                                                     valuesWhere: collections.Checks.indexed.isOpen.equals(true))
 
         let observableChecksCollection = observingConnection
             .observeCollection(collections.Checks)
@@ -53,7 +56,7 @@ class BasicObservableSample: XCTestCase {
 
 
         let currentCheck = observableChecksCollection
-            .valuesWhere(collections.Checks.indexed.isOpen.equals(true),
+            .valuesWhere(openChecksQuery,
                 prefilterChangeSet: {
                     return hasChangeForPreviousValue($0, $1, key: { check in return check.uuid })
                 }
