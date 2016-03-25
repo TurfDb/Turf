@@ -1,31 +1,11 @@
-public class PreparedQuery {
-    // MARK: Public properties
-
-    public let clause: WhereClause
-
-    // MARK: Internal properties
-
-    let stmt: COpaquePointer
-    weak var connection: Connection?
-
-    // MARK: Object lifecycle
-
-    init(clause: WhereClause, stmt: COpaquePointer, connection: Connection) {
-        self.clause = clause
-        self.stmt = stmt
-        self.connection = connection
-    }
-
-    deinit {
-        sqlite3_finalize(stmt)
-    }
-}
-
-public class PreparedValueWhereQuery: PreparedQuery { }
-public class PreparedValuesWhereQuery: PreparedQuery { }
-public class PreparedCountWhereQuery: PreparedQuery { }
-
 extension Connection {
+    /**
+     Prepare a query for retrieving a single value from `collection`.
+     Use a prepared query for performance critcal areas where a query will be executed regularly.
+     - warning: Prepared queries can only be used on the `Connection` they were created from.
+     - parameter collection: Secondary indexed collection where a matching value will be searched for.
+     - parameter valueWhere: Query clause.
+     */
     public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, valueWhere clause: WhereClause) throws -> PreparedValueWhereQuery {
         var stmt: COpaquePointer = nil
 
@@ -38,6 +18,13 @@ extension Connection {
         return PreparedValueWhereQuery(clause: clause, stmt: stmt, connection: self)
     }
 
+    /**
+     Prepare a query for retrieving values from `collection`.
+     Use a prepared query for performance critcal areas where a query will be executed regularly.
+     - warning: Prepared queries can only be used on the `Connection` they were created from.
+     - parameter collection: Secondary indexed collection where matching values will be searched for.
+     - parameter valuesWhere: Query clause.
+     */
     public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, valuesWhere clause: WhereClause) throws -> PreparedValuesWhereQuery {
         var stmt: COpaquePointer = nil
 
@@ -50,6 +37,13 @@ extension Connection {
         return PreparedValuesWhereQuery(clause: clause, stmt: stmt, connection: self)
     }
 
+    /**
+     Prepare a query for retrieving a count of values matching `countWhere` in `collection`.
+     Use a prepared query for performance critcal areas where a query will be executed regularly.
+     - warning: Prepared queries can only be used on the `Connection` they were created from.
+     - parameter collection: Secondary indexed collection where matching values will be counted.
+     - parameter countWhere: Query clause.
+     */
     public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, countWhere clause: WhereClause) throws -> PreparedCountWhereQuery {
         var stmt: COpaquePointer = nil
 

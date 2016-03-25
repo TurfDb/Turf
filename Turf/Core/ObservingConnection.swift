@@ -1,7 +1,10 @@
 public final class ObservingConnection {
+    // MARK: Internal properties
+
+    let connection: Connection
+
     // MARK: Private properties
 
-    private let connection: Connection
     private let shouldAdvanceWhenDatabaseChanges: () -> Bool
     private var observableCollections: [String: TypeErasedObservableCollection]
     private var collectionUpdateProcessors: [String: (ReadTransaction, ChangeSet<String>) -> Void]

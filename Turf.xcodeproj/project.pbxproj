@@ -54,8 +54,10 @@
 		724C9B5C1C2575D700E9AD79 /* CollectionLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C9B5B1C2575D700E9AD79 /* CollectionLocalStorage.swift */; };
 		724C9B5E1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C9B5D1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift */; };
 		724E758A1CA5A04C0082841B /* ReadWriteCollection+IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75891CA5A04C0082841B /* ReadWriteCollection+IndexedCollection.swift */; };
-		724E758C1CA5B2FD0082841B /* PreparedQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E758B1CA5B2FD0082841B /* PreparedQuery.swift */; };
 		724E758E1CA5BA400082841B /* ObservableCollection+IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E758D1CA5BA400082841B /* ObservableCollection+IndexedCollection.swift */; };
+		724E75911CA5BD0B0082841B /* PreparedQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75901CA5BD0B0082841B /* PreparedQuery.swift */; };
+		724E75931CA5BD160082841B /* ObservingConnection+PreparedQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75921CA5BD160082841B /* ObservingConnection+PreparedQuery.swift */; };
+		724E75951CA5BD330082841B /* Connection+PreparedQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75941CA5BD330082841B /* Connection+PreparedQuery.swift */; };
 		725E9E0F1C24B3A800364CE1 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E0E1C24B3A800364CE1 /* Cache.swift */; };
 		725E9E111C24B45E00364CE1 /* CacheEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E101C24B45E00364CE1 /* CacheEntry.swift */; };
 		72610B581C5272BC0010D5B1 /* CallbackThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72610B571C5272BC0010D5B1 /* CallbackThread.swift */; };
@@ -136,8 +138,10 @@
 		724C9B5B1C2575D700E9AD79 /* CollectionLocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionLocalStorage.swift; sourceTree = "<group>"; };
 		724C9B5D1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeErasedCollectionLocalStorage.swift; sourceTree = "<group>"; };
 		724E75891CA5A04C0082841B /* ReadWriteCollection+IndexedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReadWriteCollection+IndexedCollection.swift"; sourceTree = "<group>"; };
-		724E758B1CA5B2FD0082841B /* PreparedQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreparedQuery.swift; sourceTree = "<group>"; };
 		724E758D1CA5BA400082841B /* ObservableCollection+IndexedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ObservableCollection+IndexedCollection.swift"; sourceTree = "<group>"; };
+		724E75901CA5BD0B0082841B /* PreparedQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreparedQuery.swift; sourceTree = "<group>"; };
+		724E75921CA5BD160082841B /* ObservingConnection+PreparedQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ObservingConnection+PreparedQuery.swift"; sourceTree = "<group>"; };
+		724E75941CA5BD330082841B /* Connection+PreparedQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Connection+PreparedQuery.swift"; sourceTree = "<group>"; };
 		725E9E0E1C24B3A800364CE1 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		725E9E101C24B45E00364CE1 /* CacheEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheEntry.swift; sourceTree = "<group>"; };
 		72610B571C5272BC0010D5B1 /* CallbackThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallbackThread.swift; sourceTree = "<group>"; };
@@ -252,11 +256,11 @@
 			isa = PBXGroup;
 			children = (
 				72345EA41C1E1B680001A136 /* Internals */,
+				724E758F1CA5BCD90082841B /* PreparedQueries */,
 				72088FB01C1CEB8400127EA0 /* IndexedCollection.swift */,
 				72088FB21C1CEB9500127EA0 /* IndexedProperties.swift */,
 				72662B5E1C57E7FE0058F6EF /* IndexedProperty.swift */,
 				723178C91CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift */,
-				724E758B1CA5B2FD0082841B /* PreparedQuery.swift */,
 				720470C21C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift */,
 				724E75891CA5A04C0082841B /* ReadWriteCollection+IndexedCollection.swift */,
 				72088FAE1C1CEB6500127EA0 /* SecondaryIndex.swift */,
@@ -362,6 +366,16 @@
 				72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */,
 			);
 			path = Internals;
+			sourceTree = "<group>";
+		};
+		724E758F1CA5BCD90082841B /* PreparedQueries */ = {
+			isa = PBXGroup;
+			children = (
+				724E75941CA5BD330082841B /* Connection+PreparedQuery.swift */,
+				724E75921CA5BD160082841B /* ObservingConnection+PreparedQuery.swift */,
+				724E75901CA5BD0B0082841B /* PreparedQuery.swift */,
+			);
+			path = PreparedQueries;
 			sourceTree = "<group>";
 		};
 		72B616D61BAF474A00CFE67C = {
@@ -562,16 +576,17 @@
 				720470C31C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift in Sources */,
 				7269F0351C56DD7C007FF29B /* CollectionTypeObserver.swift in Sources */,
 				72297A8E1C257CDB0001BE40 /* CollectionRowChange.swift in Sources */,
+				724E75911CA5BD0B0082841B /* PreparedQuery.swift in Sources */,
 				72610B581C5272BC0010D5B1 /* CallbackThread.swift in Sources */,
 				725E9E0F1C24B3A800364CE1 /* Cache.swift in Sources */,
 				72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */,
 				72088FAA1C1CE70800127EA0 /* CollectionsContainer.swift in Sources */,
 				72662B591C57BF310058F6EF /* SQLiteType.swift in Sources */,
 				72345EAA1C1E254C0001A136 /* SQLiteAdapter.swift in Sources */,
-				724E758C1CA5B2FD0082841B /* PreparedQuery.swift in Sources */,
 				72345EA61C1E1B840001A136 /* SecondaryIndexConnection.swift in Sources */,
 				720558401C51900E00B0847E /* TypedObservable.swift in Sources */,
 				72088FB31C1CEB9500127EA0 /* IndexedProperties.swift in Sources */,
+				724E75951CA5BD330082841B /* Connection+PreparedQuery.swift in Sources */,
 				7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */,
 				72E1D9DF1C260C4B007335A1 /* SQLStatementCache.swift in Sources */,
 				7206AFC01C4EF99A004E04D4 /* ObservingConnection.swift in Sources */,
@@ -593,6 +608,7 @@
 				72088FAF1C1CEB6500127EA0 /* SecondaryIndex.swift in Sources */,
 				72088F981C1CE0B400127EA0 /* WritableCollection.swift in Sources */,
 				72088F921C1CD9FA00127EA0 /* Collection.swift in Sources */,
+				724E75931CA5BD160082841B /* ObservingConnection+PreparedQuery.swift in Sources */,
 				7218C9661C274D94004457DB /* Dispatch.swift in Sources */,
 				72088F901C1CD97A00127EA0 /* ExtensionWriteTransaction.swift in Sources */,
 				72088FB11C1CEB8400127EA0 /* IndexedCollection.swift in Sources */,
