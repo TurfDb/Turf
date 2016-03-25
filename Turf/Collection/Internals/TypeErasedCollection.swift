@@ -11,7 +11,7 @@ public protocol TypeErasedCollection: class {
     /**
      - parameter transaction
      */
-    func setUp(transaction: ReadWriteTransaction)
+    func setUp(transaction: ReadWriteTransaction) throws
 }
 
 internal extension TypeErasedCollection where Self: Collection {

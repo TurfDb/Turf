@@ -5,7 +5,7 @@ class Collections: CollectionsContainer {
     let LineItems = LineItemsCollection()
 
     func setUpCollections(transaction transaction: ReadWriteTransaction) throws {
-        Checks.setUp(transaction)
-        LineItems.setUp(transaction)
+        try Checks.setUp(transaction)
+        try LineItems.setUp(transaction)
     }
 }

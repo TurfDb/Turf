@@ -161,7 +161,7 @@ public final class Connection {
          - Thread safe
      - warning: Must be called from a read-write transaction
      */
-    func registerExtension<Ext: Extension>(ext: Ext, onTransaction transaction: ReadWriteTransaction) {
+    func registerExtension<Ext: Extension>(ext: Ext, onTransaction transaction: ReadWriteTransaction) throws {
         assert(database.isOnWriteQueue(), "Must be called from a read-write transaction")
         self.database.registerExtension(ext)
 
@@ -170,7 +170,7 @@ public final class Connection {
             existingInstallation = details
         }
 
-        ext.install(transaction, db: self.sqlite.db, existingInstallationDetails: existingInstallation)
+        try ext.install(transaction, db: self.sqlite.db, existingInstallationDetails: existingInstallation)
 
         sqlite.setDetailsForExtension(name: ext.uniqueName, version: ext.version, turfVersion: ext.turfVersion, data: NSData())
     }

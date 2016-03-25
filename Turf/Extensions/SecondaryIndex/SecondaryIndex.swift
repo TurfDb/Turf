@@ -37,7 +37,7 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
         return SecondaryIndexConnection(index: self, connection: connection)
     }
 
-    public func install(transaction: ReadWriteTransaction, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) {
+    public func install(transaction: ReadWriteTransaction, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) throws {
         let requiresRepopulation = handleExistingInstallation(existingInstallationDetails, db: db)
 
         let sql = createTableSql()
@@ -51,7 +51,7 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
         }
     }
 
-    public func uninstall(db db: SQLitePtr) {
+    public func uninstall(db db: SQLitePtr) throws {
         let sql = "DROP TABLE IF EXISTS `\(tableName)`"
 
         if sqlite3_exec(db, sql, nil, nil, nil).isNotOK {

@@ -46,24 +46,24 @@ public final class ReadWriteTransaction: ReadTransaction {
     }
 
     /**
-     Register `collection` with the databsae to ensure uniqueness
+     Register `collection` with the database to create a table.
      - note:
         - Thread safe
      - parameter collection
      */
-    public func registerCollection<TCollection: Collection>(collection: TCollection) {
-        try! SQLiteCollection.createCollectionTableNamed(collection.name, db: connection.sqlite.db)
+    public func registerCollection<TCollection: Collection>(collection: TCollection) throws {
+        try SQLiteCollection.createCollectionTableNamed(collection.name, db: connection.sqlite.db)
         connection.database.registerCollection(collection)
     }
 
     /**
      Register and install (if required) a database extension
      - note:
-     - Thread safe
+         - Thread safe
      - parameter extension An installable extension
      */
-    public func registerExtension<Ext: Extension>(ext: Ext) {
-        connection.registerExtension(ext, onTransaction: self)
+    public func registerExtension<Ext: Extension>(ext: Ext) throws {
+        try connection.registerExtension(ext, onTransaction: self)
     }
 
     // MARK: Internal methods

@@ -35,7 +35,7 @@ public protocol Collection: class, TypeErasedCollection {
      - note:
         Example implementation for a collection with a secondary index extension
         ```swift
-         func setUp(transaction: ReadWriteTransaction) {
+         func setUp(transaction: ReadWriteTransaction) throws {
              transaction.registerCollection(self)
              transaction.registerExtension(index)
          }

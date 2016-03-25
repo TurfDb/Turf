@@ -20,9 +20,9 @@ final class ChecksCollection: Collection, IndexedCollection {
         index.collection = self
     }
 
-    func setUp(transaction: ReadWriteTransaction) {
-        transaction.registerCollection(self)
-        transaction.registerExtension(index)
+    func setUp(transaction: ReadWriteTransaction) throws {
+        try transaction.registerCollection(self)
+        try transaction.registerExtension(index)
     }
 
     func serializeValue(value: Value) -> NSData {

@@ -8,8 +8,8 @@ class LineItemsCollection: Collection {
     let schemaVersion = UInt64(1)
     let valueCacheSize: Int? = 50
 
-    func setUp(transaction: ReadWriteTransaction) {
-        transaction.registerCollection(self)
+    func setUp(transaction: ReadWriteTransaction) throws {
+        try transaction.registerCollection(self)
     }
 
     func serializeValue(value: Value) -> NSData {
