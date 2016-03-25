@@ -2,7 +2,7 @@ import Foundation
 
 public protocol ReadableCollection {
     /// Collection row type
-    typealias Value
+    associatedtype Value
 
     /**
      - returns: Number of keys in the collection

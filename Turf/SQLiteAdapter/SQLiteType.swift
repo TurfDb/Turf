@@ -89,7 +89,7 @@ extension Bool: SQLiteType {
 }
 
 public protocol TurfSQLiteOptional {
-    typealias _Wrapped: SQLiteType
+    associatedtype _Wrapped: SQLiteType
 }
 
 public enum SQLiteOptional<Wrapped: SQLiteType>: SQLiteType, TurfSQLiteOptional {

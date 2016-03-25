@@ -5,7 +5,7 @@ import Foundation
  */
 public protocol Collection: class, TypeErasedCollection {
     /// Collection row type
-    typealias Value
+    associatedtype Value
 
     /// Collection name
     var name: String { get }

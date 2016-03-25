@@ -38,7 +38,7 @@
  ```
  */
 public protocol IndexedCollection: Collection, ExtendedCollection {
-    typealias IndexProperties: IndexedProperties
+    associatedtype IndexProperties: IndexedProperties
 
     var index: SecondaryIndex<Self, IndexProperties> { get }
     var indexed: IndexProperties { get }

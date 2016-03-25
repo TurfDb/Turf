@@ -1,7 +1,7 @@
 import Foundation
 
 public protocol WritableCollection {
-    typealias Value
+    associatedtype Value
 
     /**
      - parameter value: Value

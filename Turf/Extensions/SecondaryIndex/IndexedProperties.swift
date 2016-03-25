@@ -17,7 +17,7 @@
  */
 
 public protocol IndexedProperties {
-    typealias IndexedCollection: Collection
+    associatedtype IndexedCollection: Collection
 
     /// All indexed properties
     /// - warning: Do not mutate this after registering a SecondaryIndex extension

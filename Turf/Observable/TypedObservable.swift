@@ -1,5 +1,5 @@
 public protocol TypedObservable {
-    typealias Value
+    associatedtype Value
 
     var value: Value { get }
 }
