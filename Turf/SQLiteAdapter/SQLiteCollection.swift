@@ -167,7 +167,7 @@ internal final class SQLiteCollection {
         return keys
     }
 
-    func enumerateKeySchemaVersionAndValueDataInCollection(enumerate: (String, UInt64, NSData) -> Void) {
+    func enumerateKeySchemaVersionAndValueDataInCollection(enumerate: (String, UInt64, NSData) -> Bool) {
         defer { sqlite3_reset(allKeysAndValuesStmt) }
 
         let keyColumnIndex = SQLITE_FIRST_COLUMN
@@ -184,7 +184,9 @@ internal final class SQLiteCollection {
 
                 let schemaVersion = UInt64(sqlite3_column_int64(valueDataForKeyStmt, schemaVersionColumnIndex))
 
-                enumerate(key, schemaVersion, valueData)
+                if !enumerate(key, schemaVersion, valueData) {
+                    break
+                }
             }
             result = sqlite3_step(keysInCollectionStmt)
         }

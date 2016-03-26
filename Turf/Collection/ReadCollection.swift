@@ -73,6 +73,7 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
                 "Collection \(self.name) requires a migration")
 
             result[key] = self.deserializeValue(valueData)
+            return true
         }
         return result
     }
