@@ -77,7 +77,7 @@ public class DatabaseMigrator {
         switch migrationForIndex(index) {
         case .Success(let migration):
             sqlite.beginDeferredTransaction()
-            migration.migrate(index: index, operations: migrationOperations, onProgress: migrationProgress)
+            migration.migrate(migrationId: index, operations: migrationOperations, onProgress: migrationProgress)
             break
         case .Failure(let error):
             migrationProgress(index: index, state: MigrationState.Completed(.Failure(error)))
@@ -88,7 +88,7 @@ public class DatabaseMigrator {
         switch state {
         case .Unstarted(totalRows: let total):
             onNextMigration?(index: index, total: total)
-        case .Migrating(progress: let currentPosition, let total):
+        case .Migrating(let currentPosition, let total):
             onMigrationProgressChanged?(index: index, progress: currentPosition, of: total)
         case .Completed(let result):
             switch result {

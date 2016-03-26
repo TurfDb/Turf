@@ -23,14 +23,14 @@ public class MigrationList {
         self.migrations = [:]
     }
 
-    public convenience init(builder: (register: (Migration, UInt) -> Void) -> Void) {
-        self.init()
-        builder(register: self.register)
-    }
-
     // MARK: Public methods
 
     public func register(migration: Migration, index: UInt) {
+        precondition(migrations[index] == nil, "Already register migration for \(index)")
+        migrations[index] = migration
+    }
 
+    public func register(collectionMigration: CollectionMigration, index: UInt) {
+        register(CollectionMigrationOperator(migration: collectionMigration), index: index)
     }
 }

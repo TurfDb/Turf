@@ -1,3 +1,3 @@
 public protocol Migration {
-    func migrate(index index: UInt, operations: MigrationOperations, onProgress: (index: UInt, MigrationState) -> Void)
+    func migrate(migrationId migrationId: UInt, operations: MigrationOperations, onProgress: (migrationId: UInt, MigrationState) -> Void)
 }
