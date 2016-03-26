@@ -63,6 +63,8 @@
 		724E759E1CA69BEF0082841B /* Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E759D1CA69BEF0082841B /* Migration.swift */; };
 		724E75A01CA6B54D0082841B /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E759F1CA6B54D0082841B /* Result.swift */; };
 		724E75A21CA6BDFE0082841B /* MigrationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75A11CA6BDFE0082841B /* MigrationState.swift */; };
+		724E75A41CA6C0AD0082841B /* MigrationOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75A31CA6C0AD0082841B /* MigrationOperations.swift */; };
+		724E75A61CA6C2890082841B /* CollectionMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75A51CA6C2890082841B /* CollectionMigration.swift */; };
 		725E9E0F1C24B3A800364CE1 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E0E1C24B3A800364CE1 /* Cache.swift */; };
 		725E9E111C24B45E00364CE1 /* CacheEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E101C24B45E00364CE1 /* CacheEntry.swift */; };
 		72610B581C5272BC0010D5B1 /* CallbackThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72610B571C5272BC0010D5B1 /* CallbackThread.swift */; };
@@ -152,6 +154,8 @@
 		724E759D1CA69BEF0082841B /* Migration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Migration.swift; sourceTree = "<group>"; };
 		724E759F1CA6B54D0082841B /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		724E75A11CA6BDFE0082841B /* MigrationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MigrationState.swift; sourceTree = "<group>"; };
+		724E75A31CA6C0AD0082841B /* MigrationOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MigrationOperations.swift; sourceTree = "<group>"; };
+		724E75A51CA6C2890082841B /* CollectionMigration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionMigration.swift; sourceTree = "<group>"; };
 		725E9E0E1C24B3A800364CE1 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		725E9E101C24B45E00364CE1 /* CacheEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheEntry.swift; sourceTree = "<group>"; };
 		72610B571C5272BC0010D5B1 /* CallbackThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallbackThread.swift; sourceTree = "<group>"; };
@@ -391,9 +395,11 @@
 		724E75961CA69B010082841B /* Migrations */ = {
 			isa = PBXGroup;
 			children = (
-				724E759D1CA69BEF0082841B /* Migration.swift */,
+				724E75A51CA6C2890082841B /* CollectionMigration.swift */,
 				724E75991CA69BD00082841B /* DatabaseMigrator.swift */,
+				724E759D1CA69BEF0082841B /* Migration.swift */,
 				724E759B1CA69BE40082841B /* MigrationList.swift */,
+				724E75A31CA6C0AD0082841B /* MigrationOperations.swift */,
 				724E75A11CA6BDFE0082841B /* MigrationState.swift */,
 				724E759F1CA6B54D0082841B /* Result.swift */,
 			);
@@ -590,6 +596,7 @@
 				72662B5B1C57C0310058F6EF /* SQLiteTypeName.swift in Sources */,
 				723178CA1CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift in Sources */,
 				72E7F4EA1C3433D9009C1D9D /* SQLiteError.swift in Sources */,
+				724E75A61CA6C2890082841B /* CollectionMigration.swift in Sources */,
 				7205583A1C518D5100B0847E /* ObserverOf.swift in Sources */,
 				727B02481CA55B3B006D245A /* WhereClause.swift in Sources */,
 				72F6F7001C24622A0059D72C /* ExtendedCollection.swift in Sources */,
@@ -610,6 +617,7 @@
 				72345EA61C1E1B840001A136 /* SecondaryIndexConnection.swift in Sources */,
 				720558401C51900E00B0847E /* TypedObservable.swift in Sources */,
 				72088FB31C1CEB9500127EA0 /* IndexedProperties.swift in Sources */,
+				724E75A41CA6C0AD0082841B /* MigrationOperations.swift in Sources */,
 				724E75951CA5BD330082841B /* Connection+PreparedQuery.swift in Sources */,
 				724E759E1CA69BEF0082841B /* Migration.swift in Sources */,
 				7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */,

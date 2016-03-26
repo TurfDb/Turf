@@ -19,13 +19,15 @@ public class DatabaseMigrator {
 
     // MARK: Private properties
 
-    private var startTimestamp: NSDate
+    private var sqlite: SQLiteAdapter!
+    private var migrationOperations: MigrationOperations!
+    private var startTimestamp: NSDate?
     private var stopTimestamp: NSDate?
 
     private var migrating: Bool {
         didSet {
-            if migrating { startTimestamp = NSDate() }
-            else { stopTimestamp = NSDate() }
+            if !oldValue && migrating { startTimestamp = NSDate() }
+            else if oldValue && !migrating { stopTimestamp = NSDate() }
         }
     }
 
@@ -33,10 +35,18 @@ public class DatabaseMigrator {
 
     // MARK: Object lifecycle
 
-    init(migrationList: MigrationList) {
+    public init(databaseUrl: NSURL, migrationList: MigrationList) throws {
         self.migrationList = migrationList
-        self.startTimestamp = NSDate()
         self.migrating = false
+
+        do {
+            self.sqlite = try SQLiteAdapter(sqliteDatabaseUrl: databaseUrl)
+            self.migrationOperations = MigrationOperations(sqlite: self.sqlite)
+        } catch {
+            self.sqlite = nil
+            self.migrationOperations = nil
+            throw error
+        }
     }
 
     // MARK: Internal methods
@@ -50,6 +60,7 @@ public class DatabaseMigrator {
         migrating = true
 
         guard migrationRequired else {
+            sqlite.close()
             migrating = false
             onCompletion(.Success(totalMigrationTime()))
             return
@@ -65,7 +76,9 @@ public class DatabaseMigrator {
     private func migrate(index: UInt) {
         switch migrationForIndex(index) {
         case .Success(let migration):
-            migration.migrate(index: index, onProgress: migrationProgress)
+            sqlite.beginDeferredTransaction()
+            migration.migrate(index: index, operations: migrationOperations, onProgress: migrationProgress)
+            break
         case .Failure(let error):
             migrationProgress(index: index, state: MigrationState.Completed(.Failure(error)))
         }
@@ -88,8 +101,11 @@ public class DatabaseMigrator {
     }
 
     private func migrationSuccess(index: UInt, totalRowsMigrated: UInt) {
+        sqlite.commitTransaction()
+
         onMigrationProgressChanged?(index: index, progress: totalRowsMigrated, of: totalRowsMigrated)
         guard index != self.migrationList.lastMigrationIndex else {
+            sqlite.close()
             migrating = false
             onMigrationsCompleted!(.Success(totalMigrationTime()))
             return
@@ -99,6 +115,8 @@ public class DatabaseMigrator {
     }
 
     private func migrationFailure(index: UInt, error: ErrorType) {
+        sqlite.rollbackTransaction()
+        sqlite.close()
         onMigrationsCompleted!(.Failure(error))
     }
 
@@ -111,6 +129,6 @@ public class DatabaseMigrator {
     }
 
     private func totalMigrationTime() -> NSTimeInterval {
-        return stopTimestamp!.timeIntervalSinceDate(startTimestamp)
+        return stopTimestamp!.timeIntervalSinceDate(startTimestamp!)
     }
 }
