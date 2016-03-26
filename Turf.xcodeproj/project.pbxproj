@@ -378,6 +378,13 @@
 			path = PreparedQueries;
 			sourceTree = "<group>";
 		};
+		724E75961CA69B010082841B /* Migrations */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Migrations;
+			sourceTree = "<group>";
+		};
 		72B616D61BAF474A00CFE67C = {
 			isa = PBXGroup;
 			children = (
@@ -409,6 +416,7 @@
 				7218C9641C274D6D004457DB /* GCDWrapper */,
 				72B616E51BAF474A00CFE67C /* Info.plist */,
 				72D37B7E1BC326770087153A /* iOS.modulemap */,
+				724E75961CA69B010082841B /* Migrations */,
 				720558321C518CF000B0847E /* Observable */,
 				72088F7B1C1CD75800127EA0 /* SQLiteAdapter */,
 				72B616E31BAF474A00CFE67C /* Turf.h */,
