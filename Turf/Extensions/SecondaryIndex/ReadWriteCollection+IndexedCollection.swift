@@ -47,7 +47,7 @@ public extension ReadWriteCollection where TCollection: IndexedCollection {
                 throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
             }
         } catch {
-            print("TODO Better logging")
+            Logger.log(warning: "SQLite error", error)
         }
     }
 }

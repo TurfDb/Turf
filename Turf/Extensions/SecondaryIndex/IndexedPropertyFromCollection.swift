@@ -19,7 +19,6 @@ public struct IndexedPropertyFromCollection<IndexedCollection: Collection> {
 
     func bindPropertyValue(value: IndexedCollection.Value, toSQLiteStmt stmt: COpaquePointer, atIndex index: Int32) -> Int32 {
         let value = propertyValueForValue(value)
-        print("\(index) \(name) = \(value)")
         return value.sqliteBind(stmt, index: index)
     }
 }

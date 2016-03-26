@@ -59,7 +59,7 @@ public class MigrationOperations {
     }
 
     public func countOfValuesInCollection(name: String, atVersion version: UInt64) -> UInt {
-        
+        // TODO
         return 0
     }
 

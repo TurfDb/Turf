@@ -92,7 +92,8 @@ internal final class SQLiteAdapter {
     func beginDeferredTransaction() {
         sqlite3_reset(beginDeferredTransactionStmt)
         if sqlite3_step(beginDeferredTransactionStmt).isNotDone {
-            print("ERROR: Could not begin transaction")
+            Logger.log(error: "Could not begin transaction - SQLite error")
+
             print(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
         sqlite3_reset(beginDeferredTransactionStmt)
@@ -105,7 +106,7 @@ internal final class SQLiteAdapter {
     func commitTransaction() {
         sqlite3_reset(self.commitTransactionStmt)
         if sqlite3_step(commitTransactionStmt).isNotDone {
-            print("ERROR: Could not commit transaction")
+            Logger.log(error: "Could not commit transaction - SQLite error")
             print(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
         sqlite3_reset(beginDeferredTransactionStmt)
@@ -118,7 +119,7 @@ internal final class SQLiteAdapter {
     func rollbackTransaction() {
         sqlite3_reset(beginDeferredTransactionStmt)
         if sqlite3_step(rollbackTransactionStmt).isNotDone {
-            print("ERROR: Could not rollback transaction")
+            Logger.log(error: "Could not rollback transaction - SQLite error")
             print(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
     }

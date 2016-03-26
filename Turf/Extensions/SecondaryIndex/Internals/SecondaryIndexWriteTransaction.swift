@@ -31,7 +31,7 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: Collection, Pro
         }
 
         if sqlite3_step(stmt).isNotDone {
-            print("TODO better logging")
+            Logger.log(warning: "SQLite error")
             let db = sqlite3_db_handle(stmt)
             throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
@@ -52,7 +52,7 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: Collection, Pro
         }
 
         if sqlite3_step(stmt).isNotDone {
-            print("TODO better logging")
+            Logger.log(warning: "SQLite error")
             let db = sqlite3_db_handle(stmt)
             throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
@@ -62,7 +62,7 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: Collection, Pro
         defer { sqlite3_reset(connection.removeAllStmt) }
 
         if sqlite3_step(connection.removeAllStmt).isNotDone {
-            print("TODO better logging")
+            Logger.log(warning: "SQLite error")
             let db = sqlite3_db_handle(connection.removeAllStmt)
             throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
@@ -75,7 +75,7 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: Collection, Pro
             sqlite3_bind_text(connection.removeStmt, primaryKeyIndex, primaryKey, -1, SQLITE_TRANSIENT)
 
             if sqlite3_step(connection.removeStmt).isNotDone {
-                print("TODO better logging")
+                Logger.log(warning: "SQLite error")
                 let db = sqlite3_db_handle(connection.removeStmt)
                 throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
             }
