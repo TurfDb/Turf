@@ -15,10 +15,10 @@ public final class Connection {
     internal let id: Int
 
     /// Wrapper around an open sqlite3 connection
-    internal var sqlite: SQLiteAdapter!
+    internal var sqlite: SQLiteAdapter
 
     /// Has the sqlite connection been closed
-    internal var isClosed: Bool { return sqlite?.isClosed ?? true }
+    internal var isClosed: Bool { return sqlite.isClosed }
 
     /// Non-thread safe snapshot number
     internal private(set) var localSnapshot: UInt64
@@ -63,13 +63,8 @@ public final class Connection {
             key: connectionQueueKey,
             forQueue: self.connectionQueue)
 
-        do {
-            self.sqlite = try SQLiteAdapter(sqliteDatabaseUrl: database.url)
-            try self.createExtensionConnections()
-        } catch {
-            self.sqlite = nil
-            throw error
-        }
+        self.sqlite = try SQLiteAdapter(sqliteDatabaseUrl: database.url)
+        try self.createExtensionConnections()
     }
 
     /**
@@ -79,7 +74,7 @@ public final class Connection {
      */
     deinit {
         Dispatch.synchronouslyOn(connectionQueue) {
-            self.sqlite?.close()
+            self.sqlite.close()
         }
         database.removeConnection(self)
     }
