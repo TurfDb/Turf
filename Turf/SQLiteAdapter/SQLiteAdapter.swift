@@ -87,40 +87,36 @@ internal final class SQLiteAdapter {
 
     /**
      SQL: BEGIN DEFERRED TRANSACTION;
-     - warning: Error handling yet to come
      */
-    func beginDeferredTransaction() {
+    func beginDeferredTransaction() throws {
         sqlite3_reset(beginDeferredTransactionStmt)
         if sqlite3_step(beginDeferredTransactionStmt).isNotDone {
             Logger.log(error: "Could not begin transaction - SQLite error")
-
-            print(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
         sqlite3_reset(beginDeferredTransactionStmt)
     }
 
     /**
      SQL: COMMIT TRANSACTION;
-     - warning: Error handling yet to come
      */
-    func commitTransaction() {
+    func commitTransaction() throws {
         sqlite3_reset(self.commitTransactionStmt)
         if sqlite3_step(commitTransactionStmt).isNotDone {
             Logger.log(error: "Could not commit transaction - SQLite error")
-            print(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
         sqlite3_reset(beginDeferredTransactionStmt)
     }
 
     /**
      SQL: ROLLBACK TRANSACTION;
-     - warning: Error handling yet to come
      */
-    func rollbackTransaction() {
+    func rollbackTransaction() throws {
         sqlite3_reset(beginDeferredTransactionStmt)
         if sqlite3_step(rollbackTransactionStmt).isNotDone {
             Logger.log(error: "Could not rollback transaction - SQLite error")
-            print(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
     }
 
@@ -131,17 +127,19 @@ internal final class SQLiteAdapter {
     func databaseSnapshotOnCurrentSqliteTransaction() -> UInt64 {
         defer { sqlite3_reset(getSnapshotStmt) }
         guard sqlite3_step(getSnapshotStmt).hasRow else { return 0 }
-//
+
         return UInt64(sqlite3_column_int64(getSnapshotStmt, SQLITE_FIRST_COLUMN))
     }
 
     /**
      Set snapshot number in the runtime table
-     - warning: Error handling yet to come
      */
-    func setSnapshot(snapshot: UInt64) {
+    func setSnapshot(snapshot: UInt64) throws {
         sqlite3_bind_int64(setSnapshotStmt, SQLITE_FIRST_BIND_COLUMN, Int64(snapshot))
-        sqlite3_step(setSnapshotStmt)
+        if sqlite3_step(setSnapshotStmt).isNotDone {
+            Logger.log(error: "Could not set snapshot - SQLite error")
+            throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+        }
         sqlite3_reset(setSnapshotStmt)
     }
 

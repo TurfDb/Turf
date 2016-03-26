@@ -68,15 +68,19 @@ public class DatabaseMigrator {
 
         onMigrationsCompleted = onCompletion
 
-        migrate(migrationList.firstMigrationIndex)
+        do {
+            try migrate(migrationList.firstMigrationIndex)
+        } catch {
+            onCompletion(.Failure(error))
+        }
     }
 
     // MARK: Private methods
 
-    private func migrate(index: UInt) {
+    private func migrate(index: UInt) throws {
         switch migrationForIndex(index) {
         case .Success(let migration):
-            sqlite.beginDeferredTransaction()
+            try sqlite.beginDeferredTransaction()
             migration.migrate(migrationId: index, operations: migrationOperations, onProgress: migrationProgress)
             break
         case .Failure(let error):
@@ -101,7 +105,11 @@ public class DatabaseMigrator {
     }
 
     private func migrationSuccess(index: UInt, totalRowsMigrated: UInt) {
-        sqlite.commitTransaction()
+        do {
+            try sqlite.commitTransaction()
+        } catch {
+            migrationFailure(index, error: error)
+        }
 
         onMigrationProgressChanged?(index: index, progress: totalRowsMigrated, of: totalRowsMigrated)
         guard index != self.migrationList.lastMigrationIndex else {
@@ -111,11 +119,15 @@ public class DatabaseMigrator {
             return
         }
 
-        self.migrate(index + 1)
+        do {
+            try migrate(index + 1)
+        } catch {
+            migrationFailure(index, error: error)
+        }
     }
 
     private func migrationFailure(index: UInt, error: ErrorType) {
-        sqlite.rollbackTransaction()
+        let _ = try? sqlite.rollbackTransaction()
         sqlite.close()
         onMigrationsCompleted!(.Failure(error))
     }

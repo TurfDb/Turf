@@ -23,9 +23,9 @@ public final class ObservingConnection {
     }
 
     deinit {
-        Dispatch.synchronouslyOn(connection.connectionQueue) {
+        let _ = try? Dispatch.synchronouslyOn(connection.connectionQueue) {
             if let longLivedReadTransaction = self.longLivedReadTransaction {
-                self.connection.postReadTransaction(longLivedReadTransaction)
+                try self.connection.postReadTransaction(longLivedReadTransaction)
             }
         }
     }
@@ -77,7 +77,7 @@ public final class ObservingConnection {
      - note: 
         - Thread safe
      */
-    public func advanceToLatestSnapshot() {
+    public func advanceToLatestSnapshot() throws {
         var changeSets = [String: ChangeSet<String>]()
 
         Dispatch.synchronouslyOn(connection.connectionQueue) {
@@ -92,7 +92,7 @@ public final class ObservingConnection {
             }
         }
 
-        advanceToLatestSnapshot(changeSets: changeSets)
+        try advanceToLatestSnapshot(changeSets: changeSets)
     }
 
     // MARK: Internal methods
@@ -107,7 +107,7 @@ public final class ObservingConnection {
         - Thread safe due to being called on the write queue.
      - warning: This method should only ever be called from at the end of a commit on the write queue.
      */
-    func processModifiedCollections(changeSets changeSets: [String: ChangeSet<String>]) {
+    func processModifiedCollections(changeSets changeSets: [String: ChangeSet<String>]) throws {
         assert(connection.database.isOnWriteQueue(), "Must be called from write queue")
 
         guard shouldAdvanceWhenDatabaseChanges() else {
@@ -115,7 +115,7 @@ public final class ObservingConnection {
             return
         }
 
-        advanceToLatestSnapshot(changeSets: changeSets)
+        try advanceToLatestSnapshot(changeSets: changeSets)
     }
 
     // MARK: Private methods
@@ -129,19 +129,19 @@ public final class ObservingConnection {
      - note:
         - Thread safe.
      */
-    private func advanceToLatestSnapshot(changeSets changeSets: [String: ChangeSet<String>])  {
-        Dispatch.synchronouslyOn(connection.connectionQueue) {
+    private func advanceToLatestSnapshot(changeSets changeSets: [String: ChangeSet<String>]) throws  {
+        try Dispatch.synchronouslyOn(connection.connectionQueue) {
             self.pendingChangeSets = []
 
             // End previous read transaction
             if let longLivedReadTransaction = self.longLivedReadTransaction {
-                self.connection.postReadTransaction(longLivedReadTransaction)
+                try self.connection.postReadTransaction(longLivedReadTransaction)
             }
 
             let readTransaction = ReadTransaction(connection: self.connection)
             self.longLivedReadTransaction = readTransaction
             // Start new read transaction
-            self.connection.preReadTransaction(readTransaction)
+            try self.connection.preReadTransaction(readTransaction)
 
             // Update observers
             for collectionName in self.observableCollections.keys {

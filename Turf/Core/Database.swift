@@ -247,9 +247,9 @@ public final class Database {
         }
     }
 
-    func notifyObservingConnectionsOfModifiedCollectionsWithChangeSets(changeSets: [String: ChangeSet<String>]) {
+    func notifyObservingConnectionsOfModifiedCollectionsWithChangeSets(changeSets: [String: ChangeSet<String>]) throws {
         for (_, observingConnection) in observingConnections {
-            observingConnection.value?.processModifiedCollections(changeSets: changeSets)
+            try observingConnection.value?.processModifiedCollections(changeSets: changeSets)
         }
     }
 
@@ -261,7 +261,7 @@ public final class Database {
 
     private func setUpCollections(collections: CollectionsContainer) throws {
         let connection = try newConnection()
-        connection.sqlite.setSnapshot(0)
+        try connection.sqlite.setSnapshot(0)
 
         try connection.readWriteTransaction { transaction in
             try collections.setUpCollections(transaction: transaction)

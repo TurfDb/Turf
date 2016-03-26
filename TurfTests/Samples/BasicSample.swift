@@ -30,7 +30,7 @@ class BasicSample: XCTestCase {
             try!connection.prepareQueryFor(collections.Checks,
                                            countWhere: collections.Checks.indexed.isOpen.equals(true))
         
-        connection.readWriteTransaction { transaction in
+        try! connection.readWriteTransaction { transaction in
             print("connection 1 write 1")
             let checksCollection = transaction.readWrite(self.collections.Checks)
             checksCollection.removeAllValues()
@@ -45,7 +45,7 @@ class BasicSample: XCTestCase {
 
         }
 
-        connection.readWriteTransaction { transaction in
+        try! connection.readWriteTransaction { transaction in
             print("connection 1 write 2")
             let checksCollection = transaction.readWrite(self.collections.Checks)
 
@@ -66,7 +66,7 @@ class BasicSample: XCTestCase {
             print(checksCollection.valueForKey("1234")?.uuid)
         }
 
-        connection2.readWriteTransaction { transaction in
+        try! connection2.readWriteTransaction { transaction in
             print("connection 2 write 1")
 
             let checksCollection = transaction.readWrite(self.collections.Checks)
@@ -77,7 +77,7 @@ class BasicSample: XCTestCase {
             print(checksCollection.valueForKey("1234"))
         }
 
-        connection.readWriteTransaction { transaction in
+        try! connection.readWriteTransaction { transaction in
             expectation.fulfill()
         }
 

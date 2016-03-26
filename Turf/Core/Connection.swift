@@ -88,37 +88,12 @@ public final class Connection {
         - `closure` is executed on the connection's queue.
      - parameter closure: Operations to perform within the read transaction.
      */
-    public func readTransaction(closure: ReadTransaction -> Void) {
-        Dispatch.synchronouslyOn(connectionQueue) {
+    public func readTransaction(closure: ReadTransaction -> Void) throws {
+        try Dispatch.synchronouslyOn(connectionQueue) {
             let transaction = ReadTransaction(connection: self)
-            self.preReadTransaction(transaction)
+            try self.preReadTransaction(transaction)
             closure(transaction)
-            self.postReadTransaction(transaction)
-        }
-    }
-
-    /**
-     Pass a new read-write transaction into `closure` that will be executed asynchronously on the write queue.
-     - note:
-     - Thread safe
-        - `closure` is executed on the connection's queue and global write queue.
-     - parameter closure: Operations to perform within the read-write transaction.
-     */
-    public func readWriteTransaction(closure: ReadWriteTransaction -> Void) {
-        Dispatch.synchronouslyOn(connectionQueue) {
-            Dispatch.synchronouslyOn(self.databaseWriteQueue) {
-                Dispatch.Queues.setContext(
-                    Dispatch.Queues.makeContext(self.connectionQueue),
-                    key: connectionQueueKey,
-                    forQueue: self.databaseWriteQueue)
-
-                let transaction = ReadWriteTransaction(connection: self)
-                self.preReadWriteTransaction(transaction)
-                closure(transaction)
-                self.postReadWriteTransaction(transaction)
-
-                Dispatch.Queues.setContext(nil, key: connectionQueueKey, forQueue: self.databaseWriteQueue)
-            }
+            try self.postReadTransaction(transaction)
         }
     }
 
@@ -138,9 +113,9 @@ public final class Connection {
                     forQueue: self.databaseWriteQueue)
 
                 let transaction = ReadWriteTransaction(connection: self)
-                self.preReadWriteTransaction(transaction)
+                try self.preReadWriteTransaction(transaction)
                 try closure(transaction)
-                self.postReadWriteTransaction(transaction)
+                try self.postReadWriteTransaction(transaction)
 
                 Dispatch.Queues.setContext(nil, key: connectionQueueKey, forQueue: self.databaseWriteQueue)
             }
@@ -238,11 +213,11 @@ public final class Connection {
         **Not thread safe**
      - warning: This must be called from the connection queue.
      */
-    func preReadTransaction(transaction: ReadTransaction) {
+    func preReadTransaction(transaction: ReadTransaction) throws {
         assert(isOnConnectionQueue(), "Must be called from a read transaction")
 
         connectionState = .ActiveReadTransaction
-        sqlite.beginDeferredTransaction()
+        try sqlite.beginDeferredTransaction()
         ensureLocalCacheSnapshotConsistency()
     }
 
@@ -251,10 +226,10 @@ public final class Connection {
         **Not thread safe**
      - warning: This must be called from the connection queue.
      */
-    func postReadTransaction(transaction: ReadTransaction) {
+    func postReadTransaction(transaction: ReadTransaction) throws {
         assert(isOnConnectionQueue(), "Must be called from a read-write transaction")
 
-        sqlite.commitTransaction()
+        try sqlite.commitTransaction()
         database.removeUnneededCacheUpdates()
         connectionState = .Inactive
     }
@@ -266,11 +241,11 @@ public final class Connection {
         **Not thread safe**
      - warning: This must be called from the write queue.
      */
-    private func preReadWriteTransaction(transaction: ReadWriteTransaction) {
+    private func preReadWriteTransaction(transaction: ReadWriteTransaction) throws {
         assert(database.isOnWriteQueue(), "Must be called from write queue")
 
         connectionState = .ActiveReadWriteTransaction
-        sqlite.beginDeferredTransaction()
+        try sqlite.beginDeferredTransaction()
         ensureLocalCacheSnapshotConsistency()
     }
 
@@ -279,13 +254,13 @@ public final class Connection {
         **Not thread safe**
      - warning: This must be called from the write queue.
      */
-    private func postReadWriteTransaction(transaction: ReadWriteTransaction) {
+    private func postReadWriteTransaction(transaction: ReadWriteTransaction) throws {
         assert(database.isOnWriteQueue(), "Must be called from write queue")
 
         if transaction.shouldRollback {
-            rollbackTransaction(transaction)
+            try rollbackTransaction(transaction)
         } else {
-            commitWriteTransaction(transaction)
+            try commitWriteTransaction(transaction)
         }
 
         database.removeUnneededCacheUpdates()
@@ -324,10 +299,10 @@ public final class Connection {
         - **Not thread safe**
      - warning: This must be called from the write queue.
      */
-    private func rollbackTransaction(transaction: ReadWriteTransaction) {
+    private func rollbackTransaction(transaction: ReadWriteTransaction) throws {
         assert(database.isOnWriteQueue(), "Must be called from write queue")
 
-        sqlite.rollbackTransaction()
+        try sqlite.rollbackTransaction()
         for collectionLocalStorage in collectionsLocalStorage.values {
             collectionLocalStorage.resetChangeSet()
             collectionLocalStorage.resetValueCache()
@@ -342,11 +317,11 @@ public final class Connection {
         - **Not thread safe**
      - warning: This must be called from the write queue.
      */
-    private func commitWriteTransaction(transaction: ReadWriteTransaction) {
+    private func commitWriteTransaction(transaction: ReadWriteTransaction) throws {
         assert(database.isOnWriteQueue(), "Must be called from write queue")
 
         localSnapshot += 1
-        sqlite.setSnapshot(localSnapshot)
+        try sqlite.setSnapshot(localSnapshot)
 
         for (name, _) in modifiedCollections {
             let collectionLocalStorage = collectionsLocalStorage[name]!
@@ -354,7 +329,7 @@ public final class Connection {
             collectionLocalStorage.resetCacheUpdates()
         }
 
-        sqlite.commitTransaction()
+        try sqlite.commitTransaction()
 
         var changeSets = [String: ChangeSet<String>]()
         for (name, collection) in modifiedCollections {
@@ -364,7 +339,7 @@ public final class Connection {
             collectionLocalStorage.resetChangeSet()
         }
 
-        database.notifyObservingConnectionsOfModifiedCollectionsWithChangeSets(changeSets)
+        try database.notifyObservingConnectionsOfModifiedCollectionsWithChangeSets(changeSets)
     }
 
     /**

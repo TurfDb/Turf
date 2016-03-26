@@ -78,14 +78,14 @@ class BasicObservableSample: XCTestCase {
             print("line items: \(lineItems)")
         }
 
-        connection.readWriteTransaction({ transaction in
+        try! connection.readWriteTransaction({ transaction in
             let checksCollection = transaction.readWrite(self.collections.Checks)
             checksCollection.removeAllValues()
             let check = Check(uuid: "A", name: "A", isOpen: true, isCurrent: false, lineItemUuids: [])
             checksCollection.setValue(check, forKey: "1234")
         })
 
-        connection.readWriteTransaction({ transaction in
+        try! connection.readWriteTransaction({ transaction in
             let checksCollection = transaction.readWrite(self.collections.Checks)
 
             print(checksCollection.valueForKey("1234")?.uuid)
@@ -94,7 +94,7 @@ class BasicObservableSample: XCTestCase {
             checksCollection.setValue(check, forKey: "1234")
         })
 
-        connection.readTransaction({ transaction in
+        try! connection.readTransaction({ transaction in
             let checksCollection = transaction.readOnly(self.collections.Checks)
             print(checksCollection.valueForKey("1234")?.uuid)
             currentLineItems.disposeBag.dispose(disposeAncestors: true)
