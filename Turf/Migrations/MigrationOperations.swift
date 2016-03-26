@@ -58,9 +58,8 @@ public class MigrationOperations {
         return try sqliteCollectionFor(name).numberOfKeysInCollection()
     }
 
-    public func countOfValuesInCollection(name: String, atVersion version: UInt64) -> UInt {
-        // TODO
-        return 0
+    public func countOfValuesInCollection(name: String, atSchemaVersion version: UInt64) throws -> UInt {
+        return try sqliteCollectionFor(name).numberOfKeysInCollectionAtSchemaVersion(version)
     }
 
     // MARK: Private methods

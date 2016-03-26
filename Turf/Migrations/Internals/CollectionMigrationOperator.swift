@@ -13,10 +13,10 @@ internal class CollectionMigrationOperator {
 extension CollectionMigrationOperator: Migration {
     func migrate(migrationId migrationId: UInt, operations: MigrationOperations, onProgress: (migrationId: UInt, MigrationState) -> Void) {
 
-        let totalRows = totalNumberOfRows(operations)
-        onProgress(migrationId: migrationId, .Unstarted(totalRows: totalRows))
-
         do {
+            let totalRows = try totalNumberOfRows(operations)
+            onProgress(migrationId: migrationId, .Unstarted(totalRows: totalRows))
+
             let collectionOperations = CollectionMigrationOperations(
                 operations: operations,
                 collectionName: migration.collectionName,
@@ -40,7 +40,7 @@ extension CollectionMigrationOperator: Migration {
         }
     }
 
-    private func totalNumberOfRows(operations: MigrationOperations) -> UInt {
-        return operations.countOfValuesInCollection(migration.collectionName, atVersion: migration.fromSchemaVersion)
+    private func totalNumberOfRows(operations: MigrationOperations) throws -> UInt {
+        return try operations.countOfValuesInCollection(migration.collectionName, atSchemaVersion: migration.fromSchemaVersion)
     }
 }

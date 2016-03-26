@@ -10,6 +10,7 @@ internal final class SQLiteCollection {
     private let collectionName: String
 
     private var numberOfKeysInCollectionStmt: COpaquePointer = nil
+    private var numberOfKeysAtVersionInCollectionStmt: COpaquePointer = nil
     private var keysInCollectionStmt: COpaquePointer = nil
     private var valueDataForKeyStmt: COpaquePointer = nil
     private var rowIdForKeyStmt: COpaquePointer = nil
@@ -26,6 +27,7 @@ internal final class SQLiteCollection {
         self.collectionName = collectionName
         try setUpAllValuesInCollectionStmt()
         try setUpNumberOfKeysInCollectionStmt()
+        try setUpNumberOfKeysAtVersionInCollectionStmt()
         try setUpKeysInCollectionStmt()
         try setUpValueDataForKeyStmt()
         try setUpRowIdForKeyStmt()
@@ -38,6 +40,7 @@ internal final class SQLiteCollection {
     deinit {
         sqlite3_finalize(allValuesInCollectionStmt)
         sqlite3_finalize(numberOfKeysInCollectionStmt)
+        sqlite3_finalize(numberOfKeysAtVersionInCollectionStmt)
         sqlite3_finalize(keysInCollectionStmt)
         sqlite3_finalize(valueDataForKeyStmt)
         sqlite3_finalize(rowIdForKeyStmt)
@@ -137,6 +140,25 @@ internal final class SQLiteCollection {
         defer { sqlite3_reset(numberOfKeysInCollectionStmt) }
 
         let numberOfKeysIndex = SQLITE_FIRST_COLUMN
+
+        var numberOfKeys: UInt = 0
+        if sqlite3_step(numberOfKeysInCollectionStmt).hasRow {
+            numberOfKeys =  UInt(sqlite3_column_int64(numberOfKeysInCollectionStmt, numberOfKeysIndex))
+        }
+
+        return numberOfKeys
+    }
+
+    /**
+     - returns: Number of keys in `collection`.
+     */
+    func numberOfKeysInCollectionAtSchemaVersion(schemaVersion: UInt64) -> UInt {
+        defer { sqlite3_reset(numberOfKeysAtVersionInCollectionStmt) }
+
+        let schemaVersionIndex = SQLITE_FIRST_BIND_COLUMN
+        let numberOfKeysIndex = SQLITE_FIRST_COLUMN
+
+        sqlite3_bind_int64(numberOfKeysAtVersionInCollectionStmt, schemaVersionIndex, Int64(schemaVersion))
 
         var numberOfKeys: UInt = 0
         if sqlite3_step(numberOfKeysInCollectionStmt).hasRow {
@@ -343,6 +365,15 @@ internal final class SQLiteCollection {
             throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
         self.numberOfKeysInCollectionStmt = stmt
+    }
+
+    private func setUpNumberOfKeysAtVersionInCollectionStmt() throws {
+        var stmt: COpaquePointer = nil
+
+        guard sqlite3_prepare_v2(db, "SELECT COUNT(key) FROM `\(collectionName)` WHERE schemaVersion=?", -1, &stmt, nil).isOK else {
+            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+        }
+        self.numberOfKeysAtVersionInCollectionStmt = stmt
     }
 
     private func setUpKeysInCollectionStmt() throws {
