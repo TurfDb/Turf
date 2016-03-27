@@ -4,19 +4,19 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
 
     // MARK: Public properties
 
-    /// Collection name
-    var name: String { return collection.name }
+    /// Reference to read transaction from which this collection reads on
+    public unowned let readTransaction: ReadTransaction
 
-    /// Collection schema version - This must be incremented when the serialization structure changes
-    var schemaVersion: UInt64 { return collection.schemaVersion }
+    /// Reference to user defined collection
+    public unowned let collection: TCollection
 
     // MARK: Internal properties
 
-    /// Reference to user defined collection
-    internal unowned let collection: TCollection
+    /// Collection name
+    public var name: String { return collection.name }
 
-    /// Reference to read transaction from which this collection reads on
-    internal unowned let readTransaction: ReadTransaction
+    /// Collection schema version - This must be incremented when the serialization structure changes
+    var schemaVersion: UInt64 { return collection.schemaVersion }
 
     /// Internal attributes required for functionality
     internal let localStorage: CollectionLocalStorage<Value>
