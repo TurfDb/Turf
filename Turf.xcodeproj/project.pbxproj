@@ -38,6 +38,15 @@
 		72088FB11C1CEB8400127EA0 /* IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FB01C1CEB8400127EA0 /* IndexedCollection.swift */; };
 		72088FB31C1CEB9500127EA0 /* IndexedProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FB21C1CEB9500127EA0 /* IndexedProperties.swift */; };
 		72088FD71C1E10EF00127EA0 /* CollectionProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FD61C1E10EF00127EA0 /* CollectionProperty.swift */; };
+		720C69DF1CA957EA005C12E3 /* ObservableRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69DE1CA957EA005C12E3 /* ObservableRegressionTests.swift */; };
+		720C69E11CA957FD005C12E3 /* SecondaryIndexingRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69E01CA957FD005C12E3 /* SecondaryIndexingRegressionTests.swift */; };
+		720C69E31CA9580B005C12E3 /* MigrationRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69E21CA9580B005C12E3 /* MigrationRegressionTests.swift */; };
+		720C69E61CA95848005C12E3 /* Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69E51CA95848005C12E3 /* Collections.swift */; };
+		720C69E81CA95865005C12E3 /* CarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69E71CA95865005C12E3 /* CarModel.swift */; };
+		720C69EA1CA958BF005C12E3 /* CarsCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69E91CA958BF005C12E3 /* CarsCollection.swift */; };
+		720C69EC1CA95A10005C12E3 /* TestDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69EB1CA95A10005C12E3 /* TestDatabase.swift */; };
+		720C69EE1CA95E19005C12E3 /* WheelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69ED1CA95E19005C12E3 /* WheelModel.swift */; };
+		720C69F01CA95E66005C12E3 /* WheelsCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69EF1CA95E66005C12E3 /* WheelsCollection.swift */; };
 		720FA9B11C259D2000BEF295 /* ValuesSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720FA9B01C259D2000BEF295 /* ValuesSequence.swift */; };
 		7218C9631C274778004457DB /* WeakBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9621C274778004457DB /* WeakBox.swift */; };
 		7218C9661C274D94004457DB /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9651C274D94004457DB /* Dispatch.swift */; };
@@ -68,7 +77,7 @@
 		724E75A81CA6E3A80082841B /* CollectionMigrationOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75A71CA6E3A80082841B /* CollectionMigrationOperations.swift */; };
 		724E75AB1CA6E3ED0082841B /* CollectionMigrationOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75AA1CA6E3ED0082841B /* CollectionMigrationOperator.swift */; };
 		724E75AE1CA6F76F0082841B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75AD1CA6F76F0082841B /* Logger.swift */; };
-		724E75B91CA945270082841B /* TurfRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75B81CA945270082841B /* TurfRegressionTests.swift */; };
+		724E75B91CA945270082841B /* BasicRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75B81CA945270082841B /* BasicRegressionTests.swift */; };
 		724E75BB1CA945270082841B /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B616E01BAF474A00CFE67C /* Turf.framework */; };
 		725E9E0F1C24B3A800364CE1 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E0E1C24B3A800364CE1 /* Cache.swift */; };
 		725E9E111C24B45E00364CE1 /* CacheEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E101C24B45E00364CE1 /* CacheEntry.swift */; };
@@ -141,6 +150,15 @@
 		72088FB01C1CEB8400127EA0 /* IndexedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedCollection.swift; sourceTree = "<group>"; };
 		72088FB21C1CEB9500127EA0 /* IndexedProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedProperties.swift; sourceTree = "<group>"; };
 		72088FD61C1E10EF00127EA0 /* CollectionProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionProperty.swift; sourceTree = "<group>"; };
+		720C69DE1CA957EA005C12E3 /* ObservableRegressionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableRegressionTests.swift; sourceTree = "<group>"; };
+		720C69E01CA957FD005C12E3 /* SecondaryIndexingRegressionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondaryIndexingRegressionTests.swift; sourceTree = "<group>"; };
+		720C69E21CA9580B005C12E3 /* MigrationRegressionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MigrationRegressionTests.swift; sourceTree = "<group>"; };
+		720C69E51CA95848005C12E3 /* Collections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collections.swift; sourceTree = "<group>"; };
+		720C69E71CA95865005C12E3 /* CarModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarModel.swift; sourceTree = "<group>"; };
+		720C69E91CA958BF005C12E3 /* CarsCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarsCollection.swift; sourceTree = "<group>"; };
+		720C69EB1CA95A10005C12E3 /* TestDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDatabase.swift; sourceTree = "<group>"; };
+		720C69ED1CA95E19005C12E3 /* WheelModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WheelModel.swift; sourceTree = "<group>"; };
+		720C69EF1CA95E66005C12E3 /* WheelsCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WheelsCollection.swift; sourceTree = "<group>"; };
 		720FA9B01C259D2000BEF295 /* ValuesSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValuesSequence.swift; sourceTree = "<group>"; };
 		7218C9621C274778004457DB /* WeakBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakBox.swift; sourceTree = "<group>"; };
 		7218C9651C274D94004457DB /* Dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
@@ -172,7 +190,7 @@
 		724E75AA1CA6E3ED0082841B /* CollectionMigrationOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionMigrationOperator.swift; sourceTree = "<group>"; };
 		724E75AD1CA6F76F0082841B /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		724E75B61CA945270082841B /* TurfRegressionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TurfRegressionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		724E75B81CA945270082841B /* TurfRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurfRegressionTests.swift; sourceTree = "<group>"; };
+		724E75B81CA945270082841B /* BasicRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRegressionTests.swift; sourceTree = "<group>"; };
 		724E75BA1CA945270082841B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		725E9E0E1C24B3A800364CE1 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		725E9E101C24B45E00364CE1 /* CacheEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheEntry.swift; sourceTree = "<group>"; };
@@ -353,6 +371,19 @@
 			name = Values;
 			sourceTree = "<group>";
 		};
+		720C69E41CA9582A005C12E3 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				720C69E51CA95848005C12E3 /* Collections.swift */,
+				720C69E71CA95865005C12E3 /* CarModel.swift */,
+				720C69E91CA958BF005C12E3 /* CarsCollection.swift */,
+				720C69EB1CA95A10005C12E3 /* TestDatabase.swift */,
+				720C69ED1CA95E19005C12E3 /* WheelModel.swift */,
+				720C69EF1CA95E66005C12E3 /* WheelsCollection.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		7218C9611C274760004457DB /* Weak */ = {
 			isa = PBXGroup;
 			children = (
@@ -453,8 +484,12 @@
 		724E75B71CA945270082841B /* TurfRegressionTests */ = {
 			isa = PBXGroup;
 			children = (
-				724E75B81CA945270082841B /* TurfRegressionTests.swift */,
+				720C69E41CA9582A005C12E3 /* Common */,
+				724E75B81CA945270082841B /* BasicRegressionTests.swift */,
 				724E75BA1CA945270082841B /* Info.plist */,
+				720C69E21CA9580B005C12E3 /* MigrationRegressionTests.swift */,
+				720C69DE1CA957EA005C12E3 /* ObservableRegressionTests.swift */,
+				720C69E01CA957FD005C12E3 /* SecondaryIndexingRegressionTests.swift */,
 			);
 			path = TurfRegressionTests;
 			sourceTree = "<group>";
@@ -675,7 +710,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				724E75B91CA945270082841B /* TurfRegressionTests.swift in Sources */,
+				724E75B91CA945270082841B /* BasicRegressionTests.swift in Sources */,
+				720C69E11CA957FD005C12E3 /* SecondaryIndexingRegressionTests.swift in Sources */,
+				720C69EC1CA95A10005C12E3 /* TestDatabase.swift in Sources */,
+				720C69E81CA95865005C12E3 /* CarModel.swift in Sources */,
+				720C69DF1CA957EA005C12E3 /* ObservableRegressionTests.swift in Sources */,
+				720C69EA1CA958BF005C12E3 /* CarsCollection.swift in Sources */,
+				720C69EE1CA95E19005C12E3 /* WheelModel.swift in Sources */,
+				720C69E31CA9580B005C12E3 /* MigrationRegressionTests.swift in Sources */,
+				720C69E61CA95848005C12E3 /* Collections.swift in Sources */,
+				720C69F01CA95E66005C12E3 /* WheelsCollection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -978,6 +1022,7 @@
 				724E75BF1CA945270082841B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		72B616DA1BAF474A00CFE67C /* Build configuration list for PBXProject "Turf" */ = {
 			isa = XCConfigurationList;
