@@ -32,9 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "72B616E91BAF474A00CFE67C"
-               BuildableName = "TurfTests.xctest"
-               BlueprintName = "TurfTests"
+               BlueprintIdentifier = "724E75B51CA945270082841B"
+               BuildableName = "TurfRegressionTests.xctest"
+               BlueprintName = "TurfRegressionTests"
                ReferencedContainer = "container:Turf.xcodeproj">
             </BuildableReference>
          </TestableReference>
