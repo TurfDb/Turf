@@ -11,7 +11,17 @@ public class DatabaseMigrator {
     public let migrationList: MigrationList
 
     public var migrationRequired: Bool {
-        return migrationList.count > 0 && false
+        return migrationList.count > 0 && migrationList.lastMigrationIndex > lastRunMigrationIndex
+    }
+
+    public private(set) var lastRunMigrationIndex: UInt {
+        get {
+            return UInt(userDefaults.integerForKey(lastRunMigrationKey))
+        }
+        set {
+            userDefaults.setInteger(Int(newValue), forKey: lastRunMigrationKey)
+            userDefaults.synchronize()
+        }
     }
 
     public var onNextMigration: ((index: UInt, total: UInt) -> Void)?
@@ -19,6 +29,7 @@ public class DatabaseMigrator {
 
     // MARK: Private properties
 
+    private let userDefaults: NSUserDefaults
     private var sqlite: SQLiteAdapter!
     private var migrationOperations: MigrationOperations!
     private var startTimestamp: NSDate?
@@ -35,18 +46,16 @@ public class DatabaseMigrator {
 
     // MARK: Object lifecycle
 
-    public init(databaseUrl: NSURL, migrationList: MigrationList) throws {
+    /**
+     Open a database for migration. The last run migration will be stored in `userDefaults`.
+     */
+    public init(databaseUrl: NSURL, migrationList: MigrationList, userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()) throws {
+        self.userDefaults = userDefaults
         self.migrationList = migrationList
         self.migrating = false
 
-        do {
-            self.sqlite = try SQLiteAdapter(sqliteDatabaseUrl: databaseUrl)
-            self.migrationOperations = MigrationOperations(sqlite: self.sqlite)
-        } catch {
-            self.sqlite = nil
-            self.migrationOperations = nil
-            throw error
-        }
+        self.sqlite = try SQLiteAdapter(sqliteDatabaseUrl: databaseUrl)
+        self.migrationOperations = MigrationOperations(sqlite: self.sqlite)
     }
 
     // MARK: Internal methods
@@ -69,7 +78,8 @@ public class DatabaseMigrator {
         onMigrationsCompleted = onCompletion
 
         do {
-            try migrate(migrationList.firstMigrationIndex)
+            // MigrationList.migrations use 1 based indexing so this also covers the first ever migration
+            try migrate(lastRunMigrationIndex + 1)
         } catch {
             onCompletion(.Failure(error))
         }
@@ -107,6 +117,7 @@ public class DatabaseMigrator {
     private func migrationSuccess(index: UInt, totalRowsMigrated: UInt) {
         do {
             try sqlite.commitTransaction()
+            lastRunMigrationIndex = index
         } catch {
             migrationFailure(index, error: error)
         }
@@ -144,3 +155,5 @@ public class DatabaseMigrator {
         return stopTimestamp!.timeIntervalSinceDate(startTimestamp!)
     }
 }
+
+private let lastRunMigrationKey = "TurfLastRunMigration"
