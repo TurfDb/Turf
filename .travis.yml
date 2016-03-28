@@ -1,0 +1,4 @@
+language: objective-c
+osx_image: xcode7.3
+xcode_project: Turf.xcodeproj
+xcode_scheme: TurfRegressionTests
