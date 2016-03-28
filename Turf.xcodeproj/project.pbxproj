@@ -68,6 +68,8 @@
 		724E75A81CA6E3A80082841B /* CollectionMigrationOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75A71CA6E3A80082841B /* CollectionMigrationOperations.swift */; };
 		724E75AB1CA6E3ED0082841B /* CollectionMigrationOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75AA1CA6E3ED0082841B /* CollectionMigrationOperator.swift */; };
 		724E75AE1CA6F76F0082841B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75AD1CA6F76F0082841B /* Logger.swift */; };
+		724E75B91CA945270082841B /* TurfRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75B81CA945270082841B /* TurfRegressionTests.swift */; };
+		724E75BB1CA945270082841B /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B616E01BAF474A00CFE67C /* Turf.framework */; };
 		725E9E0F1C24B3A800364CE1 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E0E1C24B3A800364CE1 /* Cache.swift */; };
 		725E9E111C24B45E00364CE1 /* CacheEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E101C24B45E00364CE1 /* CacheEntry.swift */; };
 		72610B581C5272BC0010D5B1 /* CallbackThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72610B571C5272BC0010D5B1 /* CallbackThread.swift */; };
@@ -91,6 +93,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		724E75BC1CA945270082841B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 72B616D71BAF474A00CFE67C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 72B616DF1BAF474A00CFE67C;
+			remoteInfo = Turf;
+		};
 		72B616EC1BAF474A00CFE67C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 72B616D71BAF474A00CFE67C /* Project object */;
@@ -162,6 +171,9 @@
 		724E75A71CA6E3A80082841B /* CollectionMigrationOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionMigrationOperations.swift; sourceTree = "<group>"; };
 		724E75AA1CA6E3ED0082841B /* CollectionMigrationOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionMigrationOperator.swift; sourceTree = "<group>"; };
 		724E75AD1CA6F76F0082841B /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		724E75B61CA945270082841B /* TurfRegressionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TurfRegressionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		724E75B81CA945270082841B /* TurfRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurfRegressionTests.swift; sourceTree = "<group>"; };
+		724E75BA1CA945270082841B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		725E9E0E1C24B3A800364CE1 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		725E9E101C24B45E00364CE1 /* CacheEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheEntry.swift; sourceTree = "<group>"; };
 		72610B571C5272BC0010D5B1 /* CallbackThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallbackThread.swift; sourceTree = "<group>"; };
@@ -188,6 +200,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		724E75B31CA945270082841B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				724E75BB1CA945270082841B /* Turf.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		72B616DC1BAF474A00CFE67C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -430,12 +450,22 @@
 			path = Logger;
 			sourceTree = "<group>";
 		};
+		724E75B71CA945270082841B /* TurfRegressionTests */ = {
+			isa = PBXGroup;
+			children = (
+				724E75B81CA945270082841B /* TurfRegressionTests.swift */,
+				724E75BA1CA945270082841B /* Info.plist */,
+			);
+			path = TurfRegressionTests;
+			sourceTree = "<group>";
+		};
 		72B616D61BAF474A00CFE67C = {
 			isa = PBXGroup;
 			children = (
 				726D24521C767D5C003CE68C /* libsqlite3.tbd */,
 				72B616E21BAF474A00CFE67C /* Turf */,
 				72B616EE1BAF474A00CFE67C /* TurfTests */,
+				724E75B71CA945270082841B /* TurfRegressionTests */,
 				72B616E11BAF474A00CFE67C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -445,6 +475,7 @@
 			children = (
 				72B616E01BAF474A00CFE67C /* Turf.framework */,
 				72B616EA1BAF474A00CFE67C /* TurfTests.xctest */,
+				724E75B61CA945270082841B /* TurfRegressionTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -504,6 +535,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		724E75B51CA945270082841B /* TurfRegressionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 724E75C01CA945270082841B /* Build configuration list for PBXNativeTarget "TurfRegressionTests" */;
+			buildPhases = (
+				724E75B21CA945270082841B /* Sources */,
+				724E75B31CA945270082841B /* Frameworks */,
+				724E75B41CA945270082841B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				724E75BD1CA945270082841B /* PBXTargetDependency */,
+			);
+			name = TurfRegressionTests;
+			productName = TurfRegressionTests;
+			productReference = 724E75B61CA945270082841B /* TurfRegressionTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		72B616DF1BAF474A00CFE67C /* Turf */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 72B616F41BAF474A00CFE67C /* Build configuration list for PBXNativeTarget "Turf" */;
@@ -551,6 +600,9 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = JordanHamill;
 				TargetAttributes = {
+					724E75B51CA945270082841B = {
+						CreatedOnToolsVersion = 7.3;
+					};
 					72B616DF1BAF474A00CFE67C = {
 						CreatedOnToolsVersion = 7.0;
 					};
@@ -573,11 +625,19 @@
 			targets = (
 				72B616DF1BAF474A00CFE67C /* Turf */,
 				72B616E91BAF474A00CFE67C /* TurfTests */,
+				724E75B51CA945270082841B /* TurfRegressionTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		724E75B41CA945270082841B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		72B616DE1BAF474A00CFE67C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -611,6 +671,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		724E75B21CA945270082841B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				724E75B91CA945270082841B /* TurfRegressionTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		72B616DB1BAF474A00CFE67C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -705,6 +773,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		724E75BD1CA945270082841B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 72B616DF1BAF474A00CFE67C /* Turf */;
+			targetProxy = 724E75BC1CA945270082841B /* PBXContainerItemProxy */;
+		};
 		72B616ED1BAF474A00CFE67C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 72B616DF1BAF474A00CFE67C /* Turf */;
@@ -713,6 +786,30 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		724E75BE1CA945270082841B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				INFOPLIST_FILE = TurfRegressionTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.TurfRegressionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		724E75BF1CA945270082841B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				INFOPLIST_FILE = TurfRegressionTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.TurfRegressionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		72B616F21BAF474A00CFE67C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -874,6 +971,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		724E75C01CA945270082841B /* Build configuration list for PBXNativeTarget "TurfRegressionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				724E75BE1CA945270082841B /* Debug */,
+				724E75BF1CA945270082841B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		72B616DA1BAF474A00CFE67C /* Build configuration list for PBXProject "Turf" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
