@@ -1,84 +1,52 @@
 # Turf
 
-Really strongly typed document store built upon SQLite.
+Turf is a document store database built entirely in Swift using SQLite.
+
+Built from the ground up to take advantage of Swift's type system, it has fully support for persisting any `struct`, `class`, `enum` or even `tuple`.
+
+Turf makes heavy use of generics and Swift 2's protocol constraints to provide a very safe API for reading, writing and query collections.
 
 
-## Example benchmark
 
-```swift
-import Turf
+# Features
 
-final class ChecksCollection: Collection {
-    typealias Value = Check
-
-    let name = "Checks"
-    let schemaVersion = UInt(1)
-    let valueCacheSize: Int? = 50
-
-    init() { }
-
-    func setUp(transaction: ReadWriteTransaction) {
-        transaction.registerCollection(self)
-    }
-
-    func serializeValue(value: Value) -> NSData {
-        return NSData()//TODO
-    }
-
-    func deserializeValue(data: NSData) -> Value? {
-        return nil//TODO
-    }
-}
-
-final class LineItemsCollection: Collection {
-    typealias Value = LineItem
-
-    let name = "LineItems"
-    let schemaVersion = UInt(1)
-    let valueCacheSize: Int? = 50
-
-    func setUp(transaction: ReadWriteTransaction) {
-        transaction.registerCollection(self)
-    }
-
-    func serializeValue(value: Value) -> NSData {
-        return NSData()
-    }
-
-    func deserializeValue(data: NSData) -> Value? {
-        return nil
-    }
-}
-
-final class Collections: CollectionsContainer {
-    let Checks = ChecksCollection()
-    let LineItems = LineItemsCollection()
-
-    func setUpCollections(transaction transaction: ReadWriteTransaction) {
-        Checks.setUp(transaction)
-        LineItems.setUp(transaction)
-    }
-}
+- 100% support for Swift value types (`struct`, `enum`, `tuple`).
+- Type safe collections.
+- Non-invasive approach to persisting any model - no subclasses, no protocols.
+- Multiple connection support.
+- Object caching - Skip deserializing objects if they have previously been deserialized on the same connection
+- Thread safety. Turf is safe even across multiple connections. Only one connection can write to the database at any given time yet you can read from multiple threads at the same time!
+- Secondary indexing. Index any persisted or computed properties of your models for fast querying.
+- Strongly typed queries - No more strings and `NSPredicate`s
+- Reactive - Observe changes to any collection with the ability to filter down and watch a specific row change.
+- Migrations framework built in. Your requirements change, so rather than forcing you to devise your own migration framework, Turf already has one.
 
 
-class TurfTests: XCTestCase {
-    var database: Database!
-    var connection: Turf.Connection!
-    var collections: Collections!
+You can play with Turf in [these Playgrounds](https://github.com/TurfDb/Playgrounds).
 
-    override func setUp() {
-        super.setUp()
-        collections = Collections()
-        database = try! Database(path: "basic.sqlite", collections: collections)
-        connection = try! db.newConnection()
+# Example
 
-        connection.readWriteTransaction { transaction in
-            let checksCollection = transaction.readOnly(collections.Checks)
-            let lineItemsCollection = transaction.readWrite(collections.LineItems)
+*Coming soon*
 
-            lineItemsCollection.setValue(LineItem(uuid: "1234", name: "A", price: 10.0), forKey: "1234")
-            let check = checksCollection.valueForKey("9876")
-    }
-}
+# Installation
 
-```
+**Requirements:** Swift 2.2
+
+## Carthage
+
+1. Add the following to your `Cartfile`
+> github "TurfDb/Turf"
+
+2. Run `cartage update`
+
+## CocoaPods
+
+*Coming soon*
+
+# Usage
+
+*Coming soon*
+
+# License
+
+Turf is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
