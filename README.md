@@ -2,7 +2,7 @@
 
 Turf is a document store database built entirely in Swift using SQLite.
 
-Built from the ground up to take advantage of Swift's type system, it has fully support for persisting any `struct`, `class`, `enum` or even `tuple`.
+Built from the ground up to take advantage of Swift's type system, it has full support for persisting any `struct`, `class`, `enum` or even `tuple`.
 
 Turf makes heavy use of generics and Swift 2's protocol constraints to provide a very safe API for reading, writing and query collections.
 
