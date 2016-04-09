@@ -6,7 +6,7 @@ public final class Database {
     // MARK: Public properties
 
     public static let CollectionChangedNotification = "TurfCollectionChanged"
-    public static let CollectionChangedNotificationChangeSetKey = "changeSet"
+    public static let CollectionChangedNotificationChangeSetKey = "ChangeSet"
 
     /// Database file url
     public let url: NSURL
@@ -35,9 +35,9 @@ public final class Database {
     // MARK: Object lifecycle
 
     /**
-     Instanciate a database. This will create a file at the path if it does not exist.
-     - parameter path Path to store the database
-     - parameter: collections Container of collections associated with this database
+    Instantiate a database. This will create a file at the path if one does not exist.
+    - parameter path: Path to where the database should be stored
+    - parameter collections: Container of collections associated with this database
      - throws: Any error thrown during `collections.setUpCollections(transaction:)` or one of `SQLiteError.FailedToOpenDatabase` or `SQLiteError.Error(code, reason)` if the database failed to open.
     */
     public convenience init(path: String, collections: CollectionsContainer) throws {
@@ -45,9 +45,9 @@ public final class Database {
     }
 
     /**
-     Instanciate a database. This will create a file at the url if it does not exist.
-     - parameter url Url to store the database
-     - parameter: collections Container of collections associated with this database
+     Instantiate a database. This will create a file at the url if one does not exist.
+     - parameter url: Url to where the database should be stored
+     - parameter collections: Container of collections associated with this database
      - throws: Any error thrown during `collections.setUpCollections(transaction:)` or one of `SQLiteError.FailedToOpenDatabase` or `SQLiteError.Error(code, reason)` if the database failed to open.
      */
     public init(url: NSURL, collections: CollectionsContainer) throws {
@@ -99,7 +99,7 @@ public final class Database {
         let connection = try Connection(id: nextConnectionId, database: self, databaseWriteQueue: databaseWriteQueue)
 
         OSSpinLockLock(&connectionManipulationLock)
-            //TODO Tidy up connections on dealloc of Connection 
+            //TODO Tidy up connections on deinit of Connection
             connections[nextConnectionId] = WeakBox(value: connection)
             lastConnectionId = nextConnectionId
 
@@ -165,7 +165,7 @@ public final class Database {
      - note:
         - Thread safe
             - Uses a spin lock for thread safe registration and unregistration of extensions.
-     - parameter extension: A uniquely named database extension to register.
+     - parameter ext: A uniquely named database extension to register.
      */
     func registerExtension(ext: Extension) {
         precondition(extensions[ext.uniqueName] == nil,
