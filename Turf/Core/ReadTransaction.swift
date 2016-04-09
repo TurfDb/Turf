@@ -24,7 +24,7 @@ public class ReadTransaction {
     /**
      Returns a queryable readonly view of `collection` on the transaction's snapshot
      - returns: Read only view of `collection`
-     - parameter collection
+     - parameter collection: The Collection we want a readonly view of
      */
     public func readOnly<TCollection: Collection>(collection: TCollection) -> ReadCollection<TCollection> {
         return ReadCollection(collection: collection, transaction: self)

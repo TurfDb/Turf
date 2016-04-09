@@ -39,7 +39,7 @@ public final class ReadWriteTransaction: ReadTransaction {
      - note:
         - Thread safe
      - returns: Read-write view of `collection`
-     - parameter collection
+     - parameter collection: The Collection we want a read-write view of
     */
     public func readWrite<TCollection: Collection>(collection: TCollection) -> ReadWriteCollection<TCollection> {
         return ReadWriteCollection(collection: collection, transaction: self)
@@ -49,7 +49,7 @@ public final class ReadWriteTransaction: ReadTransaction {
      Register `collection` with the database to create a table.
      - note:
         - Thread safe
-     - parameter collection
+     - parameter collection: The Collection we want to register. This creates a table in the database with the same name as the collection's 'name' property
      */
     public func registerCollection<TCollection: Collection>(collection: TCollection) throws {
         try SQLiteCollection.createCollectionTableNamed(collection.name, db: connection.sqlite.db)
@@ -60,7 +60,7 @@ public final class ReadWriteTransaction: ReadTransaction {
      Register and install (if required) a database extension
      - note:
          - Thread safe
-     - parameter extension An installable extension
+     - parameter ext: An installable extension
      */
     public func registerExtension<Ext: Extension>(ext: Ext) throws {
         try connection.registerExtension(ext, onTransaction: self)

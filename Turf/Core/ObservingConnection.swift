@@ -138,9 +138,9 @@ public final class ObservingConnection {
                 try self.connection.postReadTransaction(longLivedReadTransaction)
             }
 
+            // Start new read transaction
             let readTransaction = ReadTransaction(connection: self.connection)
             self.longLivedReadTransaction = readTransaction
-            // Start new read transaction
             try self.connection.preReadTransaction(readTransaction)
 
             // Update observers
@@ -154,4 +154,3 @@ public final class ObservingConnection {
         }
     }
 }
-

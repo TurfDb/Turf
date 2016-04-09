@@ -6,7 +6,7 @@ public final class Connection {
     /// Reference to parent database
     public unowned let database: Database
 
-    /// Default value cahce size when a collection does not provide its own size
+    /// Default value cache size when a collection does not provide its own size
     public let defaultValueCacheSize: Int
 
     // MARK: Internal properties
@@ -40,7 +40,7 @@ public final class Connection {
     /**
      Opens a new connection to the sqlite database.
      - note:
-        - This does not have to be instantiated in a thread safe manor
+        - This does not have to be instantiated in a thread safe manner
      - parameter id: Unique id for the connection
      - parameter database: Reference (unowned) to the parent Turf database
      - parameter databaseWriteQueue: A common serial queue used for write transactions
@@ -84,8 +84,8 @@ public final class Connection {
     /**
      Pass a new read transaction into `closure` that will be executed asynchronously on a read queue.
      - note:
-     - Thread safe
-        - `closure` is executed on the connection's queue.
+         - Thread safe
+            - `closure` is executed on the connection's queue.
      - parameter closure: Operations to perform within the read transaction.
      */
     public func readTransaction(closure: ReadTransaction -> Void) throws {
@@ -100,8 +100,8 @@ public final class Connection {
     /**
      Pass a new read-write transaction into `closure` that will be executed asynchronously on the write queue.
      - note:
-     - Thread safe
-     - `closure` is executed on the connection's queue and global write queue.
+         - Thread safe
+             - `closure` is executed on the connection's queue and global write queue.
      - parameter closure: Operations to perform within the read-write transaction.
      */
     public func readWriteTransaction(closure: ReadWriteTransaction throws -> Void) throws {
@@ -205,8 +205,6 @@ public final class Connection {
     func isOnConnectionQueue() -> Bool {
         return Dispatch.Queues.queueHasContext(Dispatch.Queues.makeContext(connectionQueue), forKey: connectionQueueKey)
     }
-
-    // MARK: Internal methods
 
     /**
      - Note:
