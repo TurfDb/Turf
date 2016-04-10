@@ -2,14 +2,15 @@ import XCTest
 import Quick
 import Nimble
 
-class Quick_BasicRegressionTests: QuickSpec {
+class BasicRegressionTests: QuickSpec {
     override func spec() {
         describe("Basic regression tests") {
             var tester: TestDatabase!
             beforeEach {
                 tester = try! TestDatabase(databasePath: "BasicRegressionTests.sqlite")
                 try! tester.connection1.readWriteTransaction { transaction in
-                    transaction.removeAllCollections()
+                    transaction.readWrite(tester.collections.cars).removeAllValues()
+                    transaction.readWrite(tester.collections.wheels).removeAllValues()
                 }
             }
 

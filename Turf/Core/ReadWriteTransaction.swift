@@ -26,15 +26,6 @@ public final class ReadWriteTransaction: ReadTransaction {
     }
 
     /**
-     Removes all values in all collections
-     - note:
-        - Thread safe
-     */
-    public func removeAllCollections() {
-        //TODO remove all collections
-    }
-
-    /**
      Returns a mutable read-write view of `collection` on the transaction
      - note:
         - Thread safe
@@ -42,6 +33,7 @@ public final class ReadWriteTransaction: ReadTransaction {
      - parameter collection: The Collection we want a read-write view of
     */
     public func readWrite<TCollection: Collection>(collection: TCollection) -> ReadWriteCollection<TCollection> {
+        //TODO Cache 
         return ReadWriteCollection(collection: collection, transaction: self)
     }
 

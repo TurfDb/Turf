@@ -81,6 +81,19 @@ internal final class SQLiteCollection {
     }
 
     /**
+     Drop all collection tables, leaving only Turf tables
+     - returns: Names of dropped tables
+     */
+    static func dropAllCollectionTables(db db: COpaquePointer) throws -> [String] {
+        let collectionTableNames = collectionNames(db: db)
+        for name in collectionTableNames {
+            try dropCollectionTableNamed(name, db: db)
+        }
+
+        return collectionTableNames
+    }
+
+    /**
      - returns: Count of user collections in the database.
      */
     static func numberOfCollections(db: COpaquePointer) -> UInt {
