@@ -85,6 +85,8 @@
 		7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277F5471C4C01040081118D /* SQLiteCollection.swift */; };
 		727B02481CA55B3B006D245A /* WhereClause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727B02471CA55B3B006D245A /* WhereClause.swift */; };
 		727B024A1CA56BC5006D245A /* WhereClauses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727B02491CA56BC5006D245A /* WhereClauses.swift */; };
+		72856A391CBA898000700650 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72856A371CBA898000700650 /* Nimble.framework */; };
+		72856A3A1CBA898000700650 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72856A381CBA898000700650 /* Quick.framework */; };
 		728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728C235B1C3B121E0033D986 /* CacheUpdates.swift */; };
 		72B616E41BAF474A00CFE67C /* Turf.h in Headers */ = {isa = PBXBuildFile; fileRef = 72B616E31BAF474A00CFE67C /* Turf.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */; };
@@ -183,6 +185,8 @@
 		7277F5471C4C01040081118D /* SQLiteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteCollection.swift; sourceTree = "<group>"; };
 		727B02471CA55B3B006D245A /* WhereClause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhereClause.swift; sourceTree = "<group>"; };
 		727B02491CA56BC5006D245A /* WhereClauses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhereClauses.swift; sourceTree = "<group>"; };
+		72856A371CBA898000700650 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
+		72856A381CBA898000700650 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
 		728C235B1C3B121E0033D986 /* CacheUpdates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheUpdates.swift; sourceTree = "<group>"; };
 		72B616E01BAF474A00CFE67C /* Turf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Turf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B616E31BAF474A00CFE67C /* Turf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Turf.h; sourceTree = "<group>"; };
@@ -199,6 +203,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72856A391CBA898000700650 /* Nimble.framework in Frameworks */,
+				72856A3A1CBA898000700650 /* Quick.framework in Frameworks */,
 				724E75BB1CA945270082841B /* Turf.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -436,6 +442,8 @@
 		72B616D61BAF474A00CFE67C = {
 			isa = PBXGroup;
 			children = (
+				72856A371CBA898000700650 /* Nimble.framework */,
+				72856A381CBA898000700650 /* Quick.framework */,
 				726D24521C767D5C003CE68C /* libsqlite3.tbd */,
 				72B616E21BAF474A00CFE67C /* Turf */,
 				724E75B71CA945270082841B /* TurfRegressionTests */,
@@ -506,6 +514,7 @@
 				724E75B21CA945270082841B /* Sources */,
 				724E75B31CA945270082841B /* Frameworks */,
 				724E75B41CA945270082841B /* Resources */,
+				72856A3B1CBA89B000700650 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -587,6 +596,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		72856A3B1CBA89B000700650 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Quick.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Nimble.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		724E75B21CA945270082841B /* Sources */ = {
@@ -698,6 +725,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = TurfRegressionTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -710,6 +741,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = TurfRegressionTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
