@@ -62,6 +62,7 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
     }
 
     public func uninstall(db db: SQLitePtr) throws {
+        //TODO
         let sql = "DROP TABLE IF EXISTS `\(tableName)`"
 
         if sqlite3_exec(db, sql, nil, nil, nil).isNotOK {
@@ -102,6 +103,16 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
             return "\(property.name) \(property.sqliteTypeName.rawValue) \(nullNotation)"
         }
 
-        return "CREATE TABLE IF NOT EXISTS `\(tableName)` (\(propertyTypes.joinWithSeparator(",")))"
+        var createIndexes = [createPropertyIndexSql("targetPrimaryKey")]
+        createIndexes += typeErasedProperties.map { property in
+            return createPropertyIndexSql(property.name)
+        }
+
+        return "CREATE TABLE IF NOT EXISTS `\(tableName)` (\(propertyTypes.joinWithSeparator(",")));"
+            + createIndexes.joinWithSeparator(";")
+    }
+
+    private func createPropertyIndexSql(propertyName: String) -> String {
+        return "CREATE INDEX IF NOT EXISTS `\(tableName)_\(propertyName)_idx` ON `\(tableName)` (\(propertyName))"
     }
 }
