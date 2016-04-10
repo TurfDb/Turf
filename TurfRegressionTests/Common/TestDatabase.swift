@@ -5,7 +5,7 @@ final class TestDatabase {
     let collections: Collections
     let connection1: Connection
     let connection2: Connection
-    let observingConnection: ObservingConnection
+    private(set) var observingConnection: ObservingConnection!
 
     init(databasePath: String) throws {
         self.collections = Collections()
@@ -13,5 +13,11 @@ final class TestDatabase {
         self.connection1 = try self.database.newConnection()
         self.connection2 = try self.database.newConnection()
         self.observingConnection = try self.database.newObservingConnection()
+    }
+
+    deinit {
+        //Work around to control the deinit sequence.
+        // Observing connection needs shutdown before `database` is dealloc'd
+        observingConnection = nil
     }
 }

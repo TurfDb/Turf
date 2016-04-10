@@ -4,7 +4,7 @@ public final class Connection {
     // MARK: Public properties
 
     /// Reference to parent database
-    public unowned let database: Database
+    public weak var database: Database!
 
     /// Default value cache size when a collection does not provide its own size
     public let defaultValueCacheSize: Int
@@ -76,7 +76,7 @@ public final class Connection {
         Dispatch.synchronouslyOn(connectionQueue) {
             self.sqlite.close()
         }
-        database.removeConnection(self)
+        database?.removeConnection(self)
     }
 
     // MARK: Public methods
