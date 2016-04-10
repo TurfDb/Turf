@@ -1,8 +1,8 @@
-public class ObservableCollection<TCollection: Collection>: TypedObservable, TypeErasedObservableCollection {
-    public typealias Callback = (ReadCollection<TCollection>?, ChangeSet<String>) -> Void
+public class ObservableCollection<TCollection: Collection, DatabaseCollections: CollectionsContainer>: TypedObservable, TypeErasedObservableCollection {
+    public typealias Callback = (ReadCollection<TCollection, DatabaseCollections>?, ChangeSet<String>) -> Void
 
     // MARK: Public properties
-    public private(set) var value: ReadCollection<TCollection>?
+    public private(set) var value: ReadCollection<TCollection, DatabaseCollections>?
 
     public let disposeBag: DisposeBag
 
@@ -58,7 +58,7 @@ public class ObservableCollection<TCollection: Collection>: TypedObservable, Typ
      - parameter changeSet: The changes applied to bring `collection` to its current point.
      - parameter cacheUpdates: Updates made to the cache to bring `collection` to its current point.
      */
-    func processCollectionChanges(collection: ReadCollection<TCollection>, changeSet: ChangeSet<String>) {
+    func processCollectionChanges(collection: ReadCollection<TCollection, DatabaseCollections>, changeSet: ChangeSet<String>) {
         defer { OSSpinLockUnlock(&lock) }
         OSSpinLockLock(&lock)
 

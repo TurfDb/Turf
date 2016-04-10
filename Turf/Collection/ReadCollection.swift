@@ -1,11 +1,11 @@
-public class ReadCollection<TCollection: Collection>: ReadableCollection {
+public class ReadCollection<TCollection: Collection, DatabaseCollections: CollectionsContainer>: ReadableCollection {
     /// Collection row type
     public typealias Value = TCollection.Value
 
     // MARK: Public properties
 
     /// Reference to read transaction from which this collection reads on
-    public unowned let readTransaction: ReadTransaction
+    public unowned let readTransaction: ReadTransaction<DatabaseCollections>
 
     /// Reference to user defined collection
     public unowned let collection: TCollection
@@ -30,7 +30,7 @@ public class ReadCollection<TCollection: Collection>: ReadableCollection {
      - parameter collection: Collection this read-only view wraps
      - parameter transaction: Read transaction the read-only view reads on
      */
-    internal init(collection: TCollection, transaction: ReadTransaction) {
+    internal init(collection: TCollection, transaction: ReadTransaction<DatabaseCollections>) {
         self.collection = collection
         self.readTransaction = transaction
         self.localStorage = readTransaction.connection.localStorageForCollection(collection)

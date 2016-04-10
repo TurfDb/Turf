@@ -1,8 +1,8 @@
-public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<TCollection>, WritableCollection {
+public final class ReadWriteCollection<TCollection: Collection, DatabaseCollections: CollectionsContainer>: ReadCollection<TCollection, DatabaseCollections>, WritableCollection {
     // MARK: Internal properties
 
     /// Reference to read-write transaction from which this collection operates on
-    internal unowned let readWriteTransaction: ReadWriteTransaction
+    internal unowned let readWriteTransaction: ReadWriteTransaction<DatabaseCollections>
 
     // MARK: Private properties
 
@@ -15,7 +15,7 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
      - parameter collection: Collection this read-write view wraps
      - parameter transaction: Read-write transaction the read-write view operates on
     */
-    internal init(collection: TCollection, transaction: ReadWriteTransaction) {
+    internal init(collection: TCollection, transaction: ReadWriteTransaction<DatabaseCollections>) {
         self.readWriteTransaction = transaction
         self.serializeValue = collection.serializeValue
         super.init(collection: collection, transaction: transaction)

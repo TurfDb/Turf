@@ -1,4 +1,4 @@
-public final class ReadWriteTransaction: ReadTransaction {
+public final class ReadWriteTransaction<DatabaseCollections: CollectionsContainer>: ReadTransaction<DatabaseCollections> {
     // MARK: Public properties
 
     // MARK: Internal properties
@@ -9,7 +9,7 @@ public final class ReadWriteTransaction: ReadTransaction {
 
     // MARK: Object life cycle
 
-    internal override init(connection: Connection) {
+    internal override init(connection: Connection<DatabaseCollections>) {
         self.shouldRollback = false
         super.init(connection: connection)
     }
@@ -32,7 +32,7 @@ public final class ReadWriteTransaction: ReadTransaction {
      - returns: Read-write view of `collection`
      - parameter collection: The Collection we want a read-write view of
     */
-    public func readWrite<TCollection: Collection>(collection: TCollection) -> ReadWriteCollection<TCollection> {
+    public func readWrite<TCollection: Collection>(collection: TCollection) -> ReadWriteCollection<TCollection, DatabaseCollections> {
         //TODO Cache 
         return ReadWriteCollection(collection: collection, transaction: self)
     }
