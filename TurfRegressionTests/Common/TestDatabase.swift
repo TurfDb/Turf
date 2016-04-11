@@ -1,11 +1,11 @@
 import Turf
 
 final class TestDatabase {
-    let database: Database
+    let database: Database<Collections>
     let collections: Collections
-    let connection1: Connection
-    let connection2: Connection
-    private(set) var observingConnection: ObservingConnection!
+    let connection1: Connection<Collections>
+    let connection2: Connection<Collections>
+    private(set) var observingConnection: ObservingConnection<Collections>!
 
     init(databasePath: String) throws {
         self.collections = Collections()
