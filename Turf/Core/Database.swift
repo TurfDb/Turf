@@ -2,12 +2,12 @@ import Foundation
 
 private let databaseWriteQueueKey = "databaseWriteQueueKey".UTF8String
 
+public let CollectionChangedNotification = "TurfCollectionChanged"
+public let CollectionChangedNotificationChangeSetKey = "ChangeSet"
+
+
 public final class Database<DatabaseCollections: CollectionsContainer> {
     // MARK: Public properties
-
-    //TODO static
-    public let CollectionChangedNotification = "TurfCollectionChanged"
-    public let CollectionChangedNotificationChangeSetKey = "ChangeSet"
 
     /// Database file url
     public let url: NSURL

@@ -41,7 +41,7 @@ public final class ObservingConnection<DatabaseCollections: CollectionsContainer
             guard let strongSelf = self else { return }
 
             let observableCollection = strongSelf.observableCollections[collection.name] as! ObservableCollection<TCollection, DatabaseCollections>
-            let readCollection = collection.readOnly(transaction)
+            let readCollection = transaction.readOnly(collection)
             observableCollection.processCollectionChanges(readCollection, changeSet: changeSet)
         }
 
