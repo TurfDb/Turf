@@ -88,11 +88,11 @@ public final class Connection<Collections: CollectionsContainer> {
             - `closure` is executed on the connection's queue.
      - parameter closure: Operations to perform within the read transaction.
      */
-    public func readTransaction(closure: ReadTransaction<Collections> -> Void) throws {
+    public func readTransaction(closure: (ReadTransaction<Collections>, Collections) -> Void) throws {
         try Dispatch.synchronouslyOn(connectionQueue) {
             let transaction = ReadTransaction(connection: self)
             try self.preReadTransaction(transaction)
-            closure(transaction)
+            closure(transaction, self.database.collections)
             try self.postReadTransaction(transaction)
         }
     }
@@ -104,7 +104,7 @@ public final class Connection<Collections: CollectionsContainer> {
              - `closure` is executed on the connection's queue and global write queue.
      - parameter closure: Operations to perform within the read-write transaction.
      */
-    public func readWriteTransaction(closure: ReadWriteTransaction<Collections> throws -> Void) throws {
+    public func readWriteTransaction(closure: (ReadWriteTransaction<Collections>, Collections) throws -> Void) throws {
         try Dispatch.synchronouslyOn(connectionQueue) {
             try Dispatch.synchronouslyOn(self.databaseWriteQueue) {
                 Dispatch.Queues.setContext(
@@ -114,7 +114,7 @@ public final class Connection<Collections: CollectionsContainer> {
 
                 let transaction = ReadWriteTransaction(connection: self)
                 try self.preReadWriteTransaction(transaction)
-                try closure(transaction)
+                try closure(transaction, self.database.collections)
                 try self.postReadWriteTransaction(transaction)
 
                 Dispatch.Queues.setContext(nil, key: connectionQueueKey, forQueue: self.databaseWriteQueue)

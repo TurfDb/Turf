@@ -4,6 +4,9 @@ public class ReadTransaction<DatabaseCollections: CollectionsContainer> {
     /// Reference to parent connection
     public unowned let connection: Connection<DatabaseCollections>
 
+    /// Available collections associated with this database transaction
+    public var collections: DatabaseCollections { return connection.database.collections }
+
     // MARK: Internal properties
 
     // MARK: Private properties

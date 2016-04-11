@@ -11,6 +11,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
 
     /// Database file url
     public let url: NSURL
+    public let collections: DatabaseCollections
 
     // MARK: Internal properties
 
@@ -19,7 +20,6 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
 
     // MARK: Private properties
 
-    private let collections: DatabaseCollections
     private var registeredCollectionNames: [String]
     private var connections: [Int: WeakBox<Connection<DatabaseCollections>>]
     private var observingConnections: [Int: WeakBox<ObservingConnection<DatabaseCollections>>]
@@ -264,7 +264,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
         let connection = try newConnection()
         try connection.sqlite.setSnapshot(0)
 
-        try connection.readWriteTransaction { transaction in
+        try connection.readWriteTransaction { transaction, _ in
             try collections.setUpCollections(transaction: transaction)
         }
     }
