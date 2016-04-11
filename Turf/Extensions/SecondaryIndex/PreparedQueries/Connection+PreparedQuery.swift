@@ -6,7 +6,7 @@ extension Connection {
      - parameter collection: Secondary indexed collection where a matching value will be searched for.
      - parameter valueWhere: Query clause.
      */
-    public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, valueWhere clause: WhereClause) throws -> PreparedValueWhereQuery {
+    public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, valueWhere clause: WhereClause) throws -> PreparedValueWhereQuery<Collections> {
         var stmt: COpaquePointer = nil
 
         let sql = "SELECT targetPrimaryKey FROM \(collection.index.tableName) WHERE \(clause.sql)"
@@ -25,7 +25,7 @@ extension Connection {
      - parameter collection: Secondary indexed collection where matching values will be searched for.
      - parameter valuesWhere: Query clause.
      */
-    public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, valuesWhere clause: WhereClause) throws -> PreparedValuesWhereQuery {
+    public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, valuesWhere clause: WhereClause) throws -> PreparedValuesWhereQuery<Collections> {
         var stmt: COpaquePointer = nil
 
         let sql = "SELECT targetPrimaryKey FROM \(collection.index.tableName) WHERE \(clause.sql)"
@@ -44,7 +44,7 @@ extension Connection {
      - parameter collection: Secondary indexed collection where matching values will be counted.
      - parameter countWhere: Query clause.
      */
-    public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, countWhere clause: WhereClause) throws -> PreparedCountWhereQuery {
+    public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, countWhere clause: WhereClause) throws -> PreparedCountWhereQuery<Collections> {
         var stmt: COpaquePointer = nil
 
         let sql = "SELECT COUNT(targetPrimaryKey) FROM \(collection.index.tableName) WHERE \(clause.sql)"

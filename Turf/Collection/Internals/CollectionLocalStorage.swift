@@ -81,10 +81,10 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
         Dispatch.asynchronouslyOn(Dispatch.Queues.Main) {
             NSNotificationCenter.defaultCenter()
                 .postNotificationName(
-                    Database.CollectionChangedNotification,
+                    CollectionChangedNotification,
                     object: collection,
                     userInfo: [
-                        Database.CollectionChangedNotificationChangeSetKey: changeSetCopy
+                        CollectionChangedNotificationChangeSetKey: changeSetCopy
                     ])
         }
 
@@ -100,7 +100,7 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
      - parameter database: The database changes were made on
      - parameter snapshot: The connection's snapshot number at which the changes were made
      */
-    func recordPendingCacheUpdatesOnSnapshot(snapshot: UInt64, withDatabase database: Database){
+    func recordPendingCacheUpdatesOnSnapshot<DatabaseCollections: CollectionsContainer>(snapshot: UInt64, withDatabase database: Database<DatabaseCollections>) {
         database.recordPendingCacheUpdates(cacheUpdates.copy(), onSnapshot: snapshot, forCollectionNamed: collectionName)
     }
 
@@ -113,9 +113,9 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
      - parameter maxSnapshot: upper bound snapshot number
      - parameter database: The database the cache updates were recorded on
      */
-    func applyChangeSetsToValueCacheAfterSnapshot(minSnapshot: UInt64, upToSnapshot: UInt64, withDatabase database: Database) {
+    func applyChangeSetsToValueCacheAfterSnapshot<DatabaseCollections: CollectionsContainer>(minSnapshot: UInt64, upToSnapshot maxSnapshot: UInt64, withDatabase database: Database<DatabaseCollections>) {
         let cacheChanges: CacheUpdates<String, Value> = database
-            .cacheChangesAfterSnapshot(minSnapshot, upToSnapshot: upToSnapshot, forCollectionNamed: collectionName)
+            .cacheChangesAfterSnapshot(minSnapshot, upToSnapshot: maxSnapshot, forCollectionNamed: collectionName)
         cacheChanges.applyUpdatesToCache(valueCache)
     }
 }

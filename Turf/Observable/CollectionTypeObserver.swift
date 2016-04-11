@@ -1,9 +1,9 @@
-public class CollectionTypeObserver<Collection: CollectionType where Collection.Index : BidirectionalIndexType>: ObserverOf<Collection> {
+public class CollectionTypeObserver<Collection: CollectionType, DatabaseCollections: CollectionsContainer where Collection.Index : BidirectionalIndexType>: ObserverOf<Collection, DatabaseCollections> {
 
     // MARK: Public properties
 
-    public let first: ObserverOf<Collection.Generator.Element?>
-    public let last: ObserverOf<Collection.Generator.Element?>
+    public let first: ObserverOf<Collection.Generator.Element?, DatabaseCollections>
+    public let last: ObserverOf<Collection.Generator.Element?, DatabaseCollections>
 
     // MARK: Object lifecycle
 
@@ -26,8 +26,8 @@ public class CollectionTypeObserver<Collection: CollectionType where Collection.
      - note:
         Thread safe.
      */
-    public func observeIndex(index: Collection.Index) -> ObserverOf<Collection.Generator.Element?> {
-        let observer = ObserverOf<Collection.Generator.Element?>(initalValue: nil)
+    public func observeIndex(index: Collection.Index) -> ObserverOf<Collection.Generator.Element?, DatabaseCollections> {
+        let observer = ObserverOf<Collection.Generator.Element?, DatabaseCollections>(initalValue: nil)
 
         let disposeable =
         didChange { (newCollection, transaction) in
@@ -52,8 +52,8 @@ public extension CollectionTypeObserver where Collection: CollectionType, Collec
      - note:
         Thread safe.
      */
-    public func observeIndex(index: Collection.Index) -> ObserverOf<Collection.Generator.Element?> {
-        let observer = ObserverOf<Collection.Generator.Element?>(initalValue: nil)
+    public func observeIndex(index: Collection.Index) -> ObserverOf<Collection.Generator.Element?, DatabaseCollections> {
+        let observer = ObserverOf<Collection.Generator.Element?, DatabaseCollections>(initalValue: nil)
 
         let disposeable =
         didChange { (newCollection, transaction) in

@@ -2,14 +2,16 @@ import Foundation
 
 private let databaseWriteQueueKey = "databaseWriteQueueKey".UTF8String
 
-public final class Database {
-    // MARK: Public properties
+public let CollectionChangedNotification = "TurfCollectionChanged"
+public let CollectionChangedNotificationChangeSetKey = "ChangeSet"
 
-    public static let CollectionChangedNotification = "TurfCollectionChanged"
-    public static let CollectionChangedNotificationChangeSetKey = "ChangeSet"
+
+public final class Database<DatabaseCollections: CollectionsContainer> {
+    // MARK: Public properties
 
     /// Database file url
     public let url: NSURL
+    public let collections: DatabaseCollections
 
     // MARK: Internal properties
 
@@ -18,10 +20,9 @@ public final class Database {
 
     // MARK: Private properties
 
-    private let collections: CollectionsContainer
     private var registeredCollectionNames: [String]
-    private var connections: [Int: WeakBox<Connection>]
-    private var observingConnections: [Int: WeakBox<ObservingConnection>]
+    private var connections: [Int: WeakBox<Connection<DatabaseCollections>>]
+    private var observingConnections: [Int: WeakBox<ObservingConnection<DatabaseCollections>>]
     private var lastConnectionId: Int
     private var cacheUpdatesBySnapshot: [UInt64: [String: TypeErasedCacheUpdates]]
     private var minCacheUpdatesSnapshot: UInt64
@@ -40,7 +41,7 @@ public final class Database {
     - parameter collections: Container of collections associated with this database
      - throws: Any error thrown during `collections.setUpCollections(transaction:)` or one of `SQLiteError.FailedToOpenDatabase` or `SQLiteError.Error(code, reason)` if the database failed to open.
     */
-    public convenience init(path: String, collections: CollectionsContainer) throws {
+    public convenience init(path: String, collections: DatabaseCollections) throws {
         try self.init(url: NSURL(string: path)!, collections: collections)
     }
 
@@ -50,7 +51,7 @@ public final class Database {
      - parameter collections: Container of collections associated with this database
      - throws: Any error thrown during `collections.setUpCollections(transaction:)` or one of `SQLiteError.FailedToOpenDatabase` or `SQLiteError.Error(code, reason)` if the database failed to open.
      */
-    public init(url: NSURL, collections: CollectionsContainer) throws {
+    public init(url: NSURL, collections: DatabaseCollections) throws {
         self.url = url
         self.collections = collections
         self.extensions = [:]
@@ -86,7 +87,7 @@ public final class Database {
      - returns: A new sqlite database connection
      - throws: `SQLiteError.FailedToOpenDatabase` or `SQLiteError.Error(code, reason)`
     */
-    public func newConnection() throws -> Connection {
+    public func newConnection() throws -> Connection<DatabaseCollections> {
         defer { OSSpinLockUnlock(&connectionManipulationLock) }
 
         // Since `Connection(...)` can throw, it will dealloc immediately triggering a `deinit`
@@ -106,13 +107,13 @@ public final class Database {
         return connection
     }
 
-    public func newObservingConnection(shouldAdvanceWhenDatabaseChanges shouldAdvanceWhenDatabaseChanges: () -> Bool = { return true }) throws -> ObservingConnection {
+    public func newObservingConnection(shouldAdvanceWhenDatabaseChanges shouldAdvanceWhenDatabaseChanges: () -> Bool = { return true }) throws -> ObservingConnection<DatabaseCollections> {
         let connection = try newConnection()
 
         defer { OSSpinLockUnlock(&connectionManipulationLock) }
         OSSpinLockLock(&connectionManipulationLock)
 
-        let observingConnection = ObservingConnection(
+        let observingConnection = ObservingConnection<DatabaseCollections>(
             connection: connection, shouldAdvanceWhenDatabaseChanges: shouldAdvanceWhenDatabaseChanges)
 
         observingConnections[connection.id] = WeakBox(value: observingConnection)
@@ -132,7 +133,7 @@ public final class Database {
              - Downside is some wasted CPU cycles, but you should not be creating/destroying many connections anyway.
      - parameter connection: A uniquely named database collection to register.
      */
-    func removeConnection(connection: Connection) {
+    func removeConnection(connection: Connection<DatabaseCollections>) {
         precondition(connection.isClosed, "Connection must be closed before removing")
 
         defer { OSSpinLockUnlock(&connectionManipulationLock) }
@@ -259,11 +260,11 @@ public final class Database {
 
     // MARK: Private methods
 
-    private func setUpCollections(collections: CollectionsContainer) throws {
+    private func setUpCollections(collections: DatabaseCollections) throws {
         let connection = try newConnection()
         try connection.sqlite.setSnapshot(0)
 
-        try connection.readWriteTransaction { transaction in
+        try connection.readWriteTransaction { transaction, _ in
             try collections.setUpCollections(transaction: transaction)
         }
     }

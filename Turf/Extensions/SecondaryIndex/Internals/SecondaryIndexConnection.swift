@@ -10,13 +10,10 @@ internal class SecondaryIndexConnection<TCollection: Collection, Properties: Ind
 
     // MARK: Private properties
 
-    private unowned let connection: Connection
-
     // MARK: Object lifecycle
 
-    internal init(index: SecondaryIndex<TCollection, Properties>, connection: Connection) {
+    internal init(index: SecondaryIndex<TCollection, Properties>) {
         self.index = index
-        self.connection = connection
     }
 
     deinit {
@@ -28,8 +25,8 @@ internal class SecondaryIndexConnection<TCollection: Collection, Properties: Ind
 
     // MARK: Internal methods
 
-    func writeTransaction(transaction: ReadWriteTransaction) -> ExtensionWriteTransaction {
-        return SecondaryIndexWriteTransaction(connection: self, transaction: transaction)
+    func writeTransaction<DatabaseCollections: CollectionsContainer>(transaction: ReadWriteTransaction<DatabaseCollections>) -> ExtensionWriteTransaction {
+        return SecondaryIndexWriteTransaction(connection: self)
     }
 
     func prepare(db: SQLitePtr) throws {

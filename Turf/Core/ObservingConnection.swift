@@ -1,20 +1,20 @@
-public final class ObservingConnection {
+public final class ObservingConnection<Collections: CollectionsContainer> {
     // MARK: Internal properties
 
-    let connection: Connection
+    let connection: Connection<Collections>
 
     // MARK: Private properties
 
     private let shouldAdvanceWhenDatabaseChanges: () -> Bool
     private var observableCollections: [String: TypeErasedObservableCollection]
-    private var collectionUpdateProcessors: [String: (ReadTransaction, ChangeSet<String>) -> Void]
+    private var collectionUpdateProcessors: [String: (ReadTransaction<Collections>, ChangeSet<String>) -> Void]
 
-    private var longLivedReadTransaction: ReadTransaction?
+    private var longLivedReadTransaction: ReadTransaction<Collections>?
     private var pendingChangeSets: [[String: ChangeSet<String>]]
 
     // MARK: Object lifecycle
 
-    internal init(connection: Connection, shouldAdvanceWhenDatabaseChanges: () -> Bool) {
+    internal init(connection: Connection<Collections>, shouldAdvanceWhenDatabaseChanges: () -> Bool) {
         self.connection = connection
         self.shouldAdvanceWhenDatabaseChanges = shouldAdvanceWhenDatabaseChanges
         self.observableCollections = [:]
@@ -36,23 +36,23 @@ public final class ObservingConnection {
      - note: 
         Thread safe.
      */
-    public func observeCollection<TCollection: Collection>(collection: TCollection) -> ObservableCollection<TCollection> {
-        let collectionDidChange = { [weak self] (transaction: ReadTransaction, changeSet: ChangeSet<String>) in
+    public func observeCollection<TCollection: Collection>(collection: TCollection) -> ObservableCollection<TCollection, Collections> {
+        let collectionDidChange = { [weak self] (transaction: ReadTransaction<Collections>, changeSet: ChangeSet<String>) in
             guard let strongSelf = self else { return }
 
-            let observableCollection = strongSelf.observableCollections[collection.name] as! ObservableCollection<TCollection>
-            let readCollection = collection.readOnly(transaction)
+            let observableCollection = strongSelf.observableCollections[collection.name] as! ObservableCollection<TCollection, Collections>
+            let readCollection = transaction.readOnly(collection)
             observableCollection.processCollectionChanges(readCollection, changeSet: changeSet)
         }
 
-        var observed: ObservableCollection<TCollection>!
+        var observed: ObservableCollection<TCollection, Collections>!
 
         Dispatch.synchronouslyOn(connection.connectionQueue) {
-            if let observedCollection = self.observableCollections[collection.name] as? ObservableCollection<TCollection> {
+            if let observedCollection = self.observableCollections[collection.name] as? ObservableCollection<TCollection, Collections> {
                 observed = observedCollection
             } else {
 
-                let observedCollection = ObservableCollection<TCollection>()
+                let observedCollection = ObservableCollection<TCollection, Collections>()
                 self.observableCollections[collection.name] = observedCollection
                 self.collectionUpdateProcessors[collection.name] = collectionDidChange
 
