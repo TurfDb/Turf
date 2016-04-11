@@ -265,7 +265,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
         try connection.sqlite.setSnapshot(0)
 
         try connection.readWriteTransaction { transaction, _ in
-            try collections.setUpCollections(transaction: transaction)
+            try collections.setUpCollections(using: transaction)
         }
     }
 }

@@ -11,5 +11,5 @@ public protocol TypeErasedCollection: class {
     /**
      - parameter transaction
      */
-    func setUp<DatabaseCollections: CollectionsContainer>(transaction: ReadWriteTransaction<DatabaseCollections>) throws
+    func setUp<DatabaseCollections: CollectionsContainer>(using transaction: ReadWriteTransaction<DatabaseCollections>) throws
 }

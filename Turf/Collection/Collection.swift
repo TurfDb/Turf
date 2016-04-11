@@ -43,5 +43,5 @@ public protocol Collection: class, TypeErasedCollection {
      - warning: You must call `transaction.registerCollection(self)`
      - parameter transaction
      */
-    func setUp<DatabaseCollections: CollectionsContainer>(transaction: ReadWriteTransaction<DatabaseCollections>) throws
+    func setUp<Collections: CollectionsContainer>(using transaction: ReadWriteTransaction<Collections>) throws
 }
