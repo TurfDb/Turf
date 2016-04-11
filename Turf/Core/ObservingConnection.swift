@@ -1,20 +1,20 @@
-public final class ObservingConnection<DatabaseCollections: CollectionsContainer> {
+public final class ObservingConnection<Collections: CollectionsContainer> {
     // MARK: Internal properties
 
-    let connection: Connection<DatabaseCollections>
+    let connection: Connection<Collections>
 
     // MARK: Private properties
 
     private let shouldAdvanceWhenDatabaseChanges: () -> Bool
     private var observableCollections: [String: TypeErasedObservableCollection]
-    private var collectionUpdateProcessors: [String: (ReadTransaction<DatabaseCollections>, ChangeSet<String>) -> Void]
+    private var collectionUpdateProcessors: [String: (ReadTransaction<Collections>, ChangeSet<String>) -> Void]
 
-    private var longLivedReadTransaction: ReadTransaction<DatabaseCollections>?
+    private var longLivedReadTransaction: ReadTransaction<Collections>?
     private var pendingChangeSets: [[String: ChangeSet<String>]]
 
     // MARK: Object lifecycle
 
-    internal init(connection: Connection<DatabaseCollections>, shouldAdvanceWhenDatabaseChanges: () -> Bool) {
+    internal init(connection: Connection<Collections>, shouldAdvanceWhenDatabaseChanges: () -> Bool) {
         self.connection = connection
         self.shouldAdvanceWhenDatabaseChanges = shouldAdvanceWhenDatabaseChanges
         self.observableCollections = [:]
@@ -36,23 +36,23 @@ public final class ObservingConnection<DatabaseCollections: CollectionsContainer
      - note: 
         Thread safe.
      */
-    public func observeCollection<TCollection: Collection>(collection: TCollection) -> ObservableCollection<TCollection, DatabaseCollections> {
-        let collectionDidChange = { [weak self] (transaction: ReadTransaction<DatabaseCollections>, changeSet: ChangeSet<String>) in
+    public func observeCollection<TCollection: Collection>(collection: TCollection) -> ObservableCollection<TCollection, Collections> {
+        let collectionDidChange = { [weak self] (transaction: ReadTransaction<Collections>, changeSet: ChangeSet<String>) in
             guard let strongSelf = self else { return }
 
-            let observableCollection = strongSelf.observableCollections[collection.name] as! ObservableCollection<TCollection, DatabaseCollections>
+            let observableCollection = strongSelf.observableCollections[collection.name] as! ObservableCollection<TCollection, Collections>
             let readCollection = transaction.readOnly(collection)
             observableCollection.processCollectionChanges(readCollection, changeSet: changeSet)
         }
 
-        var observed: ObservableCollection<TCollection, DatabaseCollections>!
+        var observed: ObservableCollection<TCollection, Collections>!
 
         Dispatch.synchronouslyOn(connection.connectionQueue) {
-            if let observedCollection = self.observableCollections[collection.name] as? ObservableCollection<TCollection, DatabaseCollections> {
+            if let observedCollection = self.observableCollections[collection.name] as? ObservableCollection<TCollection, Collections> {
                 observed = observedCollection
             } else {
 
-                let observedCollection = ObservableCollection<TCollection, DatabaseCollections>()
+                let observedCollection = ObservableCollection<TCollection, Collections>()
                 self.observableCollections[collection.name] = observedCollection
                 self.collectionUpdateProcessors[collection.name] = collectionDidChange
 

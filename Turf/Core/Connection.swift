@@ -1,10 +1,10 @@
 private let connectionQueueKey = "connectionQueueKey".UTF8String
 
-public final class Connection<DatabaseCollections: CollectionsContainer> {
+public final class Connection<Collections: CollectionsContainer> {
     // MARK: Public properties
 
     /// Reference to parent database
-    public weak var database: Database<DatabaseCollections>!
+    public weak var database: Database<Collections>!
 
     /// Default value cache size when a collection does not provide its own size
     public let defaultValueCacheSize: Int
@@ -47,7 +47,7 @@ public final class Connection<DatabaseCollections: CollectionsContainer> {
      - parameter defaultValueCacheSize: The default when a collection does not provide its own cache size. Default = 50.
      - throws: SQLiteError.FailedToOpenDatabase or SQLiteError.Error(code, reason)
      */
-    internal init(id: Int, database: Database<DatabaseCollections>, databaseWriteQueue: Dispatch.Queue, defaultValueCacheSize: Int = 50) throws {
+    internal init(id: Int, database: Database<Collections>, databaseWriteQueue: Dispatch.Queue, defaultValueCacheSize: Int = 50) throws {
         self.id = id
         self.database = database
         self.databaseWriteQueue = databaseWriteQueue
@@ -88,7 +88,7 @@ public final class Connection<DatabaseCollections: CollectionsContainer> {
             - `closure` is executed on the connection's queue.
      - parameter closure: Operations to perform within the read transaction.
      */
-    public func readTransaction(closure: ReadTransaction<DatabaseCollections> -> Void) throws {
+    public func readTransaction(closure: ReadTransaction<Collections> -> Void) throws {
         try Dispatch.synchronouslyOn(connectionQueue) {
             let transaction = ReadTransaction(connection: self)
             try self.preReadTransaction(transaction)
@@ -104,7 +104,7 @@ public final class Connection<DatabaseCollections: CollectionsContainer> {
              - `closure` is executed on the connection's queue and global write queue.
      - parameter closure: Operations to perform within the read-write transaction.
      */
-    public func readWriteTransaction(closure: ReadWriteTransaction<DatabaseCollections> throws -> Void) throws {
+    public func readWriteTransaction(closure: ReadWriteTransaction<Collections> throws -> Void) throws {
         try Dispatch.synchronouslyOn(connectionQueue) {
             try Dispatch.synchronouslyOn(self.databaseWriteQueue) {
                 Dispatch.Queues.setContext(
@@ -131,7 +131,7 @@ public final class Connection<DatabaseCollections: CollectionsContainer> {
          - Thread safe
      - warning: Must be called from a read-write transaction
      */
-    func registerExtension<Ext: Extension>(ext: Ext, onTransaction transaction: ReadWriteTransaction<DatabaseCollections>) throws {
+    func registerExtension<Ext: Extension>(ext: Ext, onTransaction transaction: ReadWriteTransaction<Collections>) throws {
         assert(database.isOnWriteQueue(), "Must be called from a read-write transaction")
         self.database.registerExtension(ext)
 
@@ -211,7 +211,7 @@ public final class Connection<DatabaseCollections: CollectionsContainer> {
         **Not thread safe**
      - warning: This must be called from the connection queue.
      */
-    func preReadTransaction(transaction: ReadTransaction<DatabaseCollections>) throws {
+    func preReadTransaction(transaction: ReadTransaction<Collections>) throws {
         assert(isOnConnectionQueue(), "Must be called from a read transaction")
 
         connectionState = .ActiveReadTransaction
@@ -224,7 +224,7 @@ public final class Connection<DatabaseCollections: CollectionsContainer> {
         **Not thread safe**
      - warning: This must be called from the connection queue.
      */
-    func postReadTransaction(transaction: ReadTransaction<DatabaseCollections>) throws {
+    func postReadTransaction(transaction: ReadTransaction<Collections>) throws {
         assert(isOnConnectionQueue(), "Must be called from a read-write transaction")
 
         try sqlite.commitTransaction()
@@ -239,7 +239,7 @@ public final class Connection<DatabaseCollections: CollectionsContainer> {
         **Not thread safe**
      - warning: This must be called from the write queue.
      */
-    private func preReadWriteTransaction(transaction: ReadWriteTransaction<DatabaseCollections>) throws {
+    private func preReadWriteTransaction(transaction: ReadWriteTransaction<Collections>) throws {
         assert(database.isOnWriteQueue(), "Must be called from write queue")
 
         connectionState = .ActiveReadWriteTransaction
@@ -252,7 +252,7 @@ public final class Connection<DatabaseCollections: CollectionsContainer> {
         **Not thread safe**
      - warning: This must be called from the write queue.
      */
-    private func postReadWriteTransaction(transaction: ReadWriteTransaction<DatabaseCollections>) throws {
+    private func postReadWriteTransaction(transaction: ReadWriteTransaction<Collections>) throws {
         assert(database.isOnWriteQueue(), "Must be called from write queue")
 
         if transaction.shouldRollback {
@@ -297,7 +297,7 @@ public final class Connection<DatabaseCollections: CollectionsContainer> {
         - **Not thread safe**
      - warning: This must be called from the write queue.
      */
-    private func rollbackTransaction(transaction: ReadWriteTransaction<DatabaseCollections>) throws {
+    private func rollbackTransaction(transaction: ReadWriteTransaction<Collections>) throws {
         assert(database.isOnWriteQueue(), "Must be called from write queue")
 
         try sqlite.rollbackTransaction()
@@ -315,7 +315,7 @@ public final class Connection<DatabaseCollections: CollectionsContainer> {
         - **Not thread safe**
      - warning: This must be called from the write queue.
      */
-    private func commitWriteTransaction(transaction: ReadWriteTransaction<DatabaseCollections>) throws {
+    private func commitWriteTransaction(transaction: ReadWriteTransaction<Collections>) throws {
         assert(database.isOnWriteQueue(), "Must be called from write queue")
 
         localSnapshot += 1
