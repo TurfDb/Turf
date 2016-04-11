@@ -2,13 +2,11 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: Collection, Pro
     // MARK: Private properties
 
     private unowned let connection: SecondaryIndexConnection<IndexedCollection, Properties>
-    private unowned let transaction: ReadWriteTransaction
 
     // MARK: Object lifecycle
 
-    internal init(connection: SecondaryIndexConnection<IndexedCollection, Properties>, transaction: ReadWriteTransaction) {
+    internal init(connection: SecondaryIndexConnection<IndexedCollection, Properties>) {
         self.connection = connection
-        self.transaction = transaction
     }
 
     // MARK: Internal methods
