@@ -51,17 +51,56 @@ class SecondaryIndexingRegressionTests: QuickSpec {
                     }
 
                     it("allows us to search on the IndexedTreeCollections 'type' property") {
-
-                        var fetchedTrees: [Tree] = []
+                        var oakTrees: [Tree] = []
 
                         try! tester.connection1.readTransaction({ (transaction, collections) in
 
                             let treesCollection = transaction.readOnly(collections.indexedTrees)
 
-                            fetchedTrees = treesCollection.findValuesWhere(treesCollection.indexed.type.equals("Oak"))
+                            oakTrees = treesCollection.findValuesWhere(treesCollection.indexed.type.equals("Oak"))
                         })
 
-                        expect(fetchedTrees.count) == 2
+                        expect(oakTrees.count) == 2
+                    }
+
+                    it("allows us to search on the IndexedTreeCollections 'species' property") {
+                        var beechTrees: [Tree] = []
+
+                        try! tester.connection1.readTransaction({ (transaction, collections) in
+
+                            let treesCollection = transaction.readOnly(collections.indexedTrees)
+
+                            beechTrees = treesCollection.findValuesWhere(treesCollection.indexed.species.equals("Ilex aquifolium"))
+                        })
+
+                        expect(beechTrees.count) == 3
+                    }
+
+                    it("allows us to search on the IndexedTreeCollections 'height' property") {
+                        var tallTrees: [Tree] = []
+
+                        try! tester.connection1.readTransaction({ (transaction, collections) in
+
+                            let treesCollection = transaction.readOnly(collections.indexedTrees)
+
+                            tallTrees = treesCollection.findValuesWhere(treesCollection.indexed.height.isGreaterThan(20))
+                        })
+
+                        expect(tallTrees.count) == 3
+                    }
+
+                    it("allows us to search on the IndexedTreeCollections 'age' property") {
+                        var oldTrees: [Tree] = []
+
+                        try! tester.connection1.readTransaction({ (transaction, collections) in
+
+                            let treesCollection = transaction.readOnly(collections.indexedTrees)
+
+                            oldTrees = treesCollection.findValuesWhere(treesCollection.indexed.age.isGreaterThanOrEqualTo(TreeAge.Mature.rawValue))
+                        })
+
+                        print(oldTrees)
+                        expect(oldTrees.count) == 6
                     }
                 }
             }
