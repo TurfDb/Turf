@@ -93,7 +93,6 @@
 		72E1D9DF1C260C4B007335A1 /* SQLStatementCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E1D9DE1C260C4B007335A1 /* SQLStatementCache.swift */; };
 		72E7F4EA1C3433D9009C1D9D /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */; };
 		72F6F7001C24622A0059D72C /* ExtendedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F6F6FF1C24622A0059D72C /* ExtendedCollection.swift */; };
-		F198DD211CC292E0008E9464 /* UnindexedTreesCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F198DD201CC292E0008E9464 /* UnindexedTreesCollection.swift */; };
 		F198DD231CC297A8008E9464 /* IndexedTreesCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F198DD221CC297A8008E9464 /* IndexedTreesCollection.swift */; };
 		F198DD251CC297CF008E9464 /* TreeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F198DD241CC297CF008E9464 /* TreeModel.swift */; };
 /* End PBXBuildFile section */
@@ -199,7 +198,6 @@
 		72E1D9DE1C260C4B007335A1 /* SQLStatementCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLStatementCache.swift; sourceTree = "<group>"; };
 		72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteError.swift; sourceTree = "<group>"; };
 		72F6F6FF1C24622A0059D72C /* ExtendedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedCollection.swift; sourceTree = "<group>"; };
-		F198DD201CC292E0008E9464 /* UnindexedTreesCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnindexedTreesCollection.swift; sourceTree = "<group>"; };
 		F198DD221CC297A8008E9464 /* IndexedTreesCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedTreesCollection.swift; sourceTree = "<group>"; };
 		F198DD241CC297CF008E9464 /* TreeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -332,7 +330,6 @@
 				720C69ED1CA95E19005C12E3 /* WheelModel.swift */,
 				720C69EF1CA95E66005C12E3 /* WheelsCollection.swift */,
 				F198DD241CC297CF008E9464 /* TreeModel.swift */,
-				F198DD201CC292E0008E9464 /* UnindexedTreesCollection.swift */,
 				F198DD221CC297A8008E9464 /* IndexedTreesCollection.swift */,
 			);
 			path = Common;
@@ -632,7 +629,6 @@
 				724E75B91CA945270082841B /* BasicRegressionTests.swift in Sources */,
 				720C69E11CA957FD005C12E3 /* SecondaryIndexingRegressionTests.swift in Sources */,
 				720C69EC1CA95A10005C12E3 /* TestDatabase.swift in Sources */,
-				F198DD211CC292E0008E9464 /* UnindexedTreesCollection.swift in Sources */,
 				720C69E81CA95865005C12E3 /* CarModel.swift in Sources */,
 				720C69DF1CA957EA005C12E3 /* ObservableRegressionTests.swift in Sources */,
 				F198DD251CC297CF008E9464 /* TreeModel.swift in Sources */,
