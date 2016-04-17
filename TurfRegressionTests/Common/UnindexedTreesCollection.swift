@@ -1,5 +1,7 @@
 import Foundation
 
+import Turf
+
 final class UnindexedTreesCollection: Collection {
 
     typealias Value = Tree
@@ -10,13 +12,11 @@ final class UnindexedTreesCollection: Collection {
 
     let valueCacheSize: Int? = nil
 
-    func serializeValue(value: User) -> NSData {
+    func serializeValue(value: Tree) -> NSData {
         let dictionaryRepresentation: [String: AnyObject] = [
             "uuid": value.uuid,
             "species": value.species,
-            "height": value.height,
-            "longitude": value.longitude,
-            "latitude": value.latitude
+            "height": value.height
         ]
 
         return try! NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options: [])
@@ -28,16 +28,18 @@ final class UnindexedTreesCollection: Collection {
         guard let
             uuid = json["uuid"] as? String,
             species = json["species"] as? String,
-            height = json["height"] as? Int,
-            longitude = json["longitude"] as? Double,
-            latitude = json["latitude"] as? Double
+            height = json["height"] as? Int
             else {
                 return nil
         }
-        return Tree(uuid: uuid, species: species, height: height, longitude: longitude, latitude: latitude)
+        return Tree(uuid: uuid, species: species, height: height)
     }
 
-    func setUp<Collections: CollectionsContainer>(using transaction: ReadWriteTransaction<Collections>) throws {
+    func setUp(transaction: ReadWriteTransaction) throws {
         try transaction.registerCollection(self)
     }
+
+//    func setUp<Collections: CollectionsContainer>(using transaction: ReadWriteTransaction<Collections>) throws {
+//        try transaction.registerCollection(self)
+//    }
 }
