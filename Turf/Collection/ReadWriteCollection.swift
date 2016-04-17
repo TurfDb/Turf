@@ -1,8 +1,8 @@
-public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<TCollection>, WritableCollection {
+public final class ReadWriteCollection<TCollection: Collection, Collections: CollectionsContainer>: ReadCollection<TCollection, Collections>, WritableCollection {
     // MARK: Internal properties
 
     /// Reference to read-write transaction from which this collection operates on
-    internal unowned let readWriteTransaction: ReadWriteTransaction
+    internal unowned let readWriteTransaction: ReadWriteTransaction<Collections>
 
     // MARK: Private properties
 
@@ -15,7 +15,7 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
      - parameter collection: Collection this read-write view wraps
      - parameter transaction: Read-write transaction the read-write view operates on
     */
-    internal init(collection: TCollection, transaction: ReadWriteTransaction) {
+    internal init(collection: TCollection, transaction: ReadWriteTransaction<Collections>) {
         self.readWriteTransaction = transaction
         self.serializeValue = collection.serializeValue
         super.init(collection: collection, transaction: transaction)
@@ -60,7 +60,9 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
         localStorage.valueCache[key] = value
         localStorage.cacheUpdates.recordValue(value, upsertedWithKey: key)
 
-        readWriteTransaction.connection.recordModifiedCollection(collection)
+        //FIXME segfault
+        let connection: Connection<Collections> = readWriteTransaction.connection
+        connection.recordModifiedCollection(collection)
         return rowChange
     }
 
@@ -71,7 +73,9 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
             localStorage.changeSet.recordValueRemovedWithKey(key)
             localStorage.cacheUpdates.recordValueRemovedWithKey(key)
         }
-        readWriteTransaction.connection.recordModifiedCollection(collection)
+        //FIXME segfault
+        let connection: Connection<Collections> = readWriteTransaction.connection
+        connection.recordModifiedCollection(collection)
     }
 
     private func commonRemoveAllValues() throws {
@@ -79,7 +83,9 @@ public final class ReadWriteCollection<TCollection: Collection>: ReadCollection<
         localStorage.valueCache.removeAllValues()
         localStorage.changeSet.recordAllValuesRemoved()
         localStorage.cacheUpdates.recordAllValuesRemoved()
-        readWriteTransaction.connection.recordModifiedCollection(collection)
+        //FIXME segfault
+        let connection: Connection<Collections> = readWriteTransaction.connection
+        connection.recordModifiedCollection(collection)
     }
 }
 

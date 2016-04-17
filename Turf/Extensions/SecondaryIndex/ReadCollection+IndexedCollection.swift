@@ -124,7 +124,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
      - parameter predicate: Query on secondary indexed properties
      - returns: Value if there is a match
      */
-    public func findFirstValueWhere(preparedQuery: PreparedValueWhereQuery) -> Value? {
+    public func findFirstValueWhere(preparedQuery: PreparedValueWhereQuery<Collections>) -> Value? {
         precondition(preparedQuery.connection === readTransaction.connection,
                      "Prepared queries must be run on the same connection they were created from")
 
@@ -159,7 +159,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
      - parameter predicate: Query on secondary indexed properties
      - returns: Values that match the predicate
      */
-    public func findValuesWhere(preparedQuery: PreparedValuesWhereQuery) -> [Value] {
+    public func findValuesWhere(preparedQuery: PreparedValuesWhereQuery<Collections>) -> [Value] {
         precondition(preparedQuery.connection === readTransaction.connection,
                      "Prepared queries must be run on the same connection they were created from")
 
@@ -197,7 +197,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
      - parameter predicate: Query on secondary indexed properties
      - returns: Number of values that match the predicate
      */
-    public func countValuesWhere(preparedQuery: PreparedCountWhereQuery) -> Int {
+    public func countValuesWhere(preparedQuery: PreparedCountWhereQuery<Collections>) -> Int {
         precondition(preparedQuery.connection === readTransaction.connection,
                      "Prepared queries must be run on the same connection they were created from")
 
@@ -262,6 +262,8 @@ public extension ReadCollection where TCollection: IndexedCollection {
     // MARK: Private methods
 
     internal func extensionConnection() -> SecondaryIndexConnection<TCollection, TCollection.IndexProperties> {
-        return try! readTransaction.connection.connectionForExtension(collection.index) as! SecondaryIndexConnection<TCollection, TCollection.IndexProperties>
+        //FIXME segfault
+        let connection: Connection<Collections> = readTransaction.connection
+        return try! connection.connectionForExtension(collection.index) as! SecondaryIndexConnection<TCollection, TCollection.IndexProperties>
     }
 }

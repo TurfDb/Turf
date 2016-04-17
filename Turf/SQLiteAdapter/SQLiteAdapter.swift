@@ -322,6 +322,7 @@ postfix operator *** {}
 postfix func *** <T>(object : T) -> T {
     if let i = object as? Int32 {
         switch i {
+        case SQLITE_ERROR: print("SQLITE_ERROR")
         case SQLITE_OK: print("SQLITE_OK")
         case SQLITE_DONE: print("SQLITE_DONE")
         case SQLITE_ROW: print("SQLITE_ROW")

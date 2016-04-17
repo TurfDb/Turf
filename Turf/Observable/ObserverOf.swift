@@ -1,7 +1,7 @@
-public class ObserverOf<T>: TypedObservable {
+public class ObserverOf<T, DatabaseCollections: CollectionsContainer>: TypedObservable {
     // MARK: Public properties
     public typealias Value = T
-    public typealias Callback = (T, ReadTransaction?) -> Void
+    public typealias Callback = (T, ReadTransaction<DatabaseCollections>?) -> Void
 
     public private(set) var value: T
 
@@ -31,7 +31,7 @@ public class ObserverOf<T>: TypedObservable {
      - note:
         Thread safe.
      */
-    public func didChange(thread: CallbackThread = .CallingThread, callback: (T, ReadTransaction?) -> Void) -> Disposable {
+    public func didChange(thread: CallbackThread = .CallingThread, callback: (T, ReadTransaction<DatabaseCollections>?) -> Void) -> Disposable {
         OSSpinLockLock(&lock)
 
         let token = nextObserverToken
@@ -53,7 +53,7 @@ public class ObserverOf<T>: TypedObservable {
      - note:
         Thread safe
      */
-    public func setValue(value: T, fromTransaction transaction: ReadTransaction?) {
+    public func setValue(value: T, fromTransaction transaction: ReadTransaction<DatabaseCollections>?) {
         defer { OSSpinLockUnlock(&lock) }
         OSSpinLockLock(&lock)
 
@@ -63,7 +63,7 @@ public class ObserverOf<T>: TypedObservable {
 
     // MARK: Private methods
 
-    private func onValueSet(newValue: T, transaction: ReadTransaction?) {
+    private func onValueSet(newValue: T, transaction: ReadTransaction<DatabaseCollections>?) {
         for (_, observer) in observers {
             observer.thread.dispatchSynchronously {
                 observer.callback(newValue, transaction)

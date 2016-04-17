@@ -6,7 +6,7 @@ extension ObservingConnection {
      - parameter collection: Secondary indexed collection where a matching value will be searched for.
      - parameter valueWhere: Query clause.
      */
-    public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, valueWhere clause: WhereClause) throws -> PreparedValueWhereQuery {
+    public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, valueWhere clause: WhereClause) throws -> PreparedValueWhereQuery<Collections> {
         return try connection.prepareQueryFor(collection, valueWhere: clause)
     }
 
@@ -17,7 +17,7 @@ extension ObservingConnection {
      - parameter collection: Secondary indexed collection where matching values will be searched for.
      - parameter valuesWhere: Query clause.
      */
-    public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, valuesWhere clause: WhereClause) throws -> PreparedValuesWhereQuery {
+    public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, valuesWhere clause: WhereClause) throws -> PreparedValuesWhereQuery<Collections> {
         return try connection.prepareQueryFor(collection, valuesWhere: clause)
     }
 
@@ -28,7 +28,7 @@ extension ObservingConnection {
      - parameter collection: Secondary indexed collection where matching values will be counted.
      - parameter countWhere: Query clause.
      */
-    public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, countWhere clause: WhereClause) throws -> PreparedCountWhereQuery {
+    public func prepareQueryFor<TCollection: IndexedCollection>(collection: TCollection, countWhere clause: WhereClause) throws -> PreparedCountWhereQuery<Collections> {
         return try connection.prepareQueryFor(collection, countWhere: clause)
     }
 }

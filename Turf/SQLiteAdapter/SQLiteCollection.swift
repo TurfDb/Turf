@@ -62,7 +62,8 @@ internal final class SQLiteCollection {
                 "    `key` TEXT NOT NULL UNIQUE," +
                 "    `valueData` BLOB," +
                 "    `schemaVersion` INTEGER DEFAULT 0" +
-            ");",
+            ");" +
+            "CREATE INDEX IF NOT EXISTS \(name)_schemaVersion_idx ON \(name) (schemaVersion);",
             nil, nil, nil).isNotOK {
                 throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
@@ -77,6 +78,19 @@ internal final class SQLiteCollection {
             nil, nil, nil).isNotOK {
                 throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
+    }
+
+    /**
+     Drop all collection tables, leaving only Turf tables
+     - returns: Names of dropped tables
+     */
+    static func dropAllCollectionTables(db db: COpaquePointer) throws -> [String] {
+        let collectionTableNames = collectionNames(db: db)
+        for name in collectionTableNames {
+            try dropCollectionTableNamed(name, db: db)
+        }
+
+        return collectionTableNames
     }
 
     /**

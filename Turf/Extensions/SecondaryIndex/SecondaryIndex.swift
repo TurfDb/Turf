@@ -43,11 +43,11 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
         self.properties = properties
     }
 
-    public func newConnection(connection: Connection) -> ExtensionConnection {
-        return SecondaryIndexConnection(index: self, connection: connection)
+    public func newConnection<DatabaseCollections: CollectionsContainer>(connection: Connection<DatabaseCollections>) -> ExtensionConnection {
+        return SecondaryIndexConnection(index: self)
     }
 
-    public func install(transaction: ReadWriteTransaction, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) throws {
+    public func install<DatabaseCollections: CollectionsContainer>(transaction: ReadWriteTransaction<DatabaseCollections>, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) throws {
         let requiresRepopulation = try handleExistingInstallation(existingInstallationDetails, db: db)
 
         let sql = createTableSql()
@@ -62,6 +62,7 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
     }
 
     public func uninstall(db db: SQLitePtr) throws {
+        //TODO
         let sql = "DROP TABLE IF EXISTS `\(tableName)`"
 
         if sqlite3_exec(db, sql, nil, nil, nil).isNotOK {
@@ -72,7 +73,7 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
 
     // MARK: Private methods
 
-    private func repopulate(transaction: ReadWriteTransaction, collection: TCollection) throws {
+    private func repopulate<DatabaseCollections: CollectionsContainer>(transaction: ReadWriteTransaction<DatabaseCollections>, collection: TCollection) throws {
         let readOnlyCollection = transaction.readOnly(collection)
         let extensionTransaction = newConnection(transaction.connection).writeTransaction(transaction)
 
@@ -102,6 +103,16 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
             return "\(property.name) \(property.sqliteTypeName.rawValue) \(nullNotation)"
         }
 
-        return "CREATE TABLE IF NOT EXISTS `\(tableName)` (\(propertyTypes.joinWithSeparator(",")))"
+        var createIndexes = [createPropertyIndexSql("targetPrimaryKey")]
+        createIndexes += typeErasedProperties.map { property in
+            return createPropertyIndexSql(property.name)
+        }
+
+        return "CREATE TABLE IF NOT EXISTS `\(tableName)` (\(propertyTypes.joinWithSeparator(",")));"
+            + createIndexes.joinWithSeparator(";")
+    }
+
+    private func createPropertyIndexSql(propertyName: String) -> String {
+        return "CREATE INDEX IF NOT EXISTS `\(tableName)_\(propertyName)_idx` ON `\(tableName)` (\(propertyName))"
     }
 }

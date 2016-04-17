@@ -1,4 +1,4 @@
-public class PreparedQuery {
+public class PreparedQuery<Collections: CollectionsContainer> {
     // MARK: Public properties
 
     public let clause: WhereClause
@@ -6,11 +6,11 @@ public class PreparedQuery {
     // MARK: Internal properties
 
     let stmt: COpaquePointer
-    weak var connection: Connection?
+    weak var connection: Connection<Collections>?
 
     // MARK: Object lifecycle
 
-    init(clause: WhereClause, stmt: COpaquePointer, connection: Connection) {
+    init(clause: WhereClause, stmt: COpaquePointer, connection: Connection<Collections>) {
         self.clause = clause
         self.stmt = stmt
         self.connection = connection
@@ -21,6 +21,20 @@ public class PreparedQuery {
     }
 }
 
-public class PreparedValueWhereQuery: PreparedQuery { }
-public class PreparedValuesWhereQuery: PreparedQuery { }
-public class PreparedCountWhereQuery: PreparedQuery { }
+public class PreparedValueWhereQuery<Collections: CollectionsContainer>: PreparedQuery<Collections> {
+    override init(clause: WhereClause, stmt: COpaquePointer, connection: Connection<Collections>) {
+        super.init(clause: clause, stmt: stmt, connection: connection)
+    }
+}
+
+public class PreparedValuesWhereQuery<Collections: CollectionsContainer>: PreparedQuery<Collections> {
+    override init(clause: WhereClause, stmt: COpaquePointer, connection: Connection<Collections>) {
+        super.init(clause: clause, stmt: stmt, connection: connection)
+    }
+}
+
+public class PreparedCountWhereQuery<Collections: CollectionsContainer>: PreparedQuery<Collections> {
+    override init(clause: WhereClause, stmt: COpaquePointer, connection: Connection<Collections>) {
+        super.init(clause: clause, stmt: stmt, connection: connection)
+    }
+}

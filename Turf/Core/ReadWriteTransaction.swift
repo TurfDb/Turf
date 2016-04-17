@@ -1,4 +1,4 @@
-public final class ReadWriteTransaction: ReadTransaction {
+public final class ReadWriteTransaction<Collections: CollectionsContainer>: ReadTransaction<Collections> {
     // MARK: Public properties
 
     // MARK: Internal properties
@@ -9,7 +9,7 @@ public final class ReadWriteTransaction: ReadTransaction {
 
     // MARK: Object life cycle
 
-    internal override init(connection: Connection) {
+    internal override init(connection: Connection<Collections>) {
         self.shouldRollback = false
         super.init(connection: connection)
     }
@@ -26,22 +26,14 @@ public final class ReadWriteTransaction: ReadTransaction {
     }
 
     /**
-     Removes all values in all collections
-     - note:
-        - Thread safe
-     */
-    public func removeAllCollections() {
-        //TODO remove all collections
-    }
-
-    /**
      Returns a mutable read-write view of `collection` on the transaction
      - note:
         - Thread safe
      - returns: Read-write view of `collection`
-     - parameter collection
+     - parameter collection: The Collection we want a read-write view of
     */
-    public func readWrite<TCollection: Collection>(collection: TCollection) -> ReadWriteCollection<TCollection> {
+    public func readWrite<TCollection: Collection>(collection: TCollection) -> ReadWriteCollection<TCollection, Collections> {
+        //TODO Cache 
         return ReadWriteCollection(collection: collection, transaction: self)
     }
 
@@ -49,7 +41,7 @@ public final class ReadWriteTransaction: ReadTransaction {
      Register `collection` with the database to create a table.
      - note:
         - Thread safe
-     - parameter collection
+     - parameter collection: The Collection we want to register. This creates a table in the database with the same name as the collection's 'name' property
      */
     public func registerCollection<TCollection: Collection>(collection: TCollection) throws {
         try SQLiteCollection.createCollectionTableNamed(collection.name, db: connection.sqlite.db)
@@ -60,9 +52,11 @@ public final class ReadWriteTransaction: ReadTransaction {
      Register and install (if required) a database extension
      - note:
          - Thread safe
-     - parameter extension An installable extension
+     - parameter ext: An installable extension
      */
     public func registerExtension<Ext: Extension>(ext: Ext) throws {
-        try connection.registerExtension(ext, onTransaction: self)
+        //FIXME segfault
+        let localConnection: Connection<Collections> = connection
+        try localConnection.registerExtension(ext, onTransaction: self)
     }
 }

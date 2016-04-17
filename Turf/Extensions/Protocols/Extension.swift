@@ -4,6 +4,7 @@ public typealias SQLitePtr = COpaquePointer
  Defines a basic database extension.
  */
 public protocol Extension {
+
     /// Each exension instance must have a unique name
     var uniqueName: String { get }
 
@@ -19,7 +20,7 @@ public protocol Extension {
      - parameter connection: Turf.Connection that can be passed to the extension's connection if required
      - returns: An extension's connection
      */
-    func newConnection(connection: Connection) -> ExtensionConnection
+    func newConnection<DatabaseCollections: CollectionsContainer>(connection: Connection<DatabaseCollections>) -> ExtensionConnection
 
     /**
      Called when the extension is registered.
@@ -27,7 +28,7 @@ public protocol Extension {
      - warning: Do no begin/commit/rollback any transactions - a transaction has already been opened for this db and will be commited at a point after `install(db:)`
      - parameter db: sqlite3* pointer which can be used to modify the database.
      */
-    func install(transaction: ReadWriteTransaction, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) throws
+    func install<DatabaseCollections: CollectionsContainer>(transaction: ReadWriteTransaction<DatabaseCollections>, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) throws
 
     /**
      Called when the extension is unregistered.

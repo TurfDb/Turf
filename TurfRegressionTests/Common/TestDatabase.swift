@@ -1,11 +1,11 @@
 import Turf
 
 final class TestDatabase {
-    let database: Database
+    let database: Database<Collections>
     let collections: Collections
-    let connection1: Connection
-    let connection2: Connection
-    let observingConnection: ObservingConnection
+    let connection1: Connection<Collections>
+    let connection2: Connection<Collections>
+    private(set) var observingConnection: ObservingConnection<Collections>!
 
     init(databasePath: String) throws {
         self.collections = Collections()
@@ -13,5 +13,11 @@ final class TestDatabase {
         self.connection1 = try self.database.newConnection()
         self.connection2 = try self.database.newConnection()
         self.observingConnection = try self.database.newObservingConnection()
+    }
+
+    deinit {
+        //Work around to control the deinit sequence.
+        // Observing connection needs shutdown before `database` is dealloc'd
+        observingConnection = nil
     }
 }

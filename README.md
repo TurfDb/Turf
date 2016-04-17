@@ -37,7 +37,7 @@ You can play with Turf in [these Playgrounds](https://github.com/TurfDb/Playgrou
 1. Add the following to your `Cartfile`
 > github "TurfDb/Turf"
 
-2. Run `cartage update`
+2. Run `carthage update`
 
 ## CocoaPods
 

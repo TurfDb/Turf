@@ -42,7 +42,7 @@ internal protocol TypeErasedCollectionLocalStorage {
      - parameter snapshot: The connection's snapshot number at which the changes were made
      - parameter database: The database changes were made on
      */
-    func recordPendingCacheUpdatesOnSnapshot(snapshot: UInt64, withDatabase database: Database)
+    func recordPendingCacheUpdatesOnSnapshot<DatabaseCollections: CollectionsContainer>(snapshot: UInt64, withDatabase database: Database<DatabaseCollections>)
 
     /**
      Gets all pending and commited cache changes *after* `minSnapshot` up to *and including* `maxSnapshot` from
@@ -53,5 +53,5 @@ internal protocol TypeErasedCollectionLocalStorage {
      - parameter maxSnapshot: upper bound snapshot number
      - parameter database: The database the cache updates were recorded on
      */
-    func applyChangeSetsToValueCacheAfterSnapshot(minSnapshot: UInt64, upToSnapshot maxSnapshot: UInt64, withDatabase database: Database)
+    func applyChangeSetsToValueCacheAfterSnapshot<DatabaseCollections: CollectionsContainer>(minSnapshot: UInt64, upToSnapshot maxSnapshot: UInt64, withDatabase database: Database<DatabaseCollections>)
 }

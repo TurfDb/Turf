@@ -8,7 +8,7 @@ class CarsCollection: Collection {
     let schemaVersion = UInt64(1)
     let valueCacheSize: Int? = nil
 
-    func setUp(transaction: ReadWriteTransaction) throws {
+    func setUp<DatabaseCollections: CollectionsContainer>(using transaction: ReadWriteTransaction<DatabaseCollections>) throws {
         try transaction.registerCollection(self)
     }
 

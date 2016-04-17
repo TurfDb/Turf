@@ -7,9 +7,9 @@ final class Collections: CollectionsContainer {
 //    let unidexedTrees = UnindexedTreesCollection()
     let indexedTrees = IndexedTreesCollection()
 
-    func setUpCollections(transaction transaction: ReadWriteTransaction) throws {
-        try cars.setUp(transaction)
-        try wheels.setUp(transaction)
+    func setUpCollections(using transaction: ReadWriteTransaction<Collections>) throws {
+        try cars.setUp(using: transaction)
+        try wheels.setUp(using: transaction)
         try indexedTrees.setUp(transaction)
-    }
+
 }
