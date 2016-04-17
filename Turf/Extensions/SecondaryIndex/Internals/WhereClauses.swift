@@ -79,7 +79,7 @@ internal struct WhereClauses {
     }
 
     static func greaterThanOrEqual<Value: SQLiteType>(name name: String, value: Value) -> WhereClause {
-        return WhereClause(sql: "\(name) > ?",
+        return WhereClause(sql: "\(name) >= ?",
             bindStatements: { (stmt, firstColumnIndex) -> Int32 in
                 value.sqliteBind(stmt, index: firstColumnIndex)
                 return 1
