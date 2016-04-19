@@ -6,7 +6,9 @@ Built from the ground up to take advantage of Swift's type system, it has full s
 
 Turf makes heavy use of generics and Swift 2's protocol constraints to provide a very safe API for reading, writing and query collections.
 
-
+[![Build Status](https://travis-ci.org/TurfDb/Turf.svg?branch=master)](https://travis-ci.org/TurfDb/Turf)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![MIT License](https://img.shields.io/cocoapods/l/BrightFutures.svg)](LICENSE)
 
 # Features
 
@@ -24,9 +26,69 @@ Turf makes heavy use of generics and Swift 2's protocol constraints to provide a
 
 You can play with Turf in [these Playgrounds](https://github.com/TurfDb/Playgrounds).
 
-# Example
+# Quick Example
 
-*Coming soon*
+```swift
+
+// Set up a collection to persist a tuple
+final class PeopleCollection: Collection {
+    typealias Value = (name: String, age: UInt)
+
+    let name = "People"
+    let schemaVersion: UInt64 = 1
+    let valueCacheSize: Int? = nil
+
+    func setUp<Collections: CollectionsContainer>(using transaction: ReadWriteTransaction<Collections>) throws {
+        try transaction.registerCollection(self)
+    }
+
+    func serializeValue(value: Value) -> NSData {
+        let dict = [
+            "name": value.name,
+            "age": value.age
+        ]
+
+        return try! NSJSONSerialization.dataWithJSONObject(dict, options: [])
+    }
+
+    func deserializeValue(data: NSData) -> Value? {
+        let dict = try! NSJSONSerialization.JSONObjectWithData(data, options: [])
+        return (name: dict["name"] as! String, age: dict["age"] as! UInt)
+    }
+}
+
+// List our available collections
+
+final class Collections: CollectionsContainer {
+	let people = PeopleCollection()
+
+	func setUpCollections<Collections: CollectionsContainer>(using transaction: ReadWriteTransaction<Collections>) throws {
+		try people.setUp(using: transaction)
+	}
+}
+
+// Open a database connection
+
+let collections = Collections()
+let database = try Database(path: "test.sqlite", collections: collections)
+let connection = try database.newConnection()
+
+// Write a person to the people collection
+
+try connection.readWriteTransaction { transaction, collections in
+    transaction.readWrite(collections.people)
+        .setValue(("Kelsey", 30), forKey: "kelsey")
+}
+
+// Read a person back
+
+try connection.readWriteTransaction { transaction, collections in
+    let kelsey = transaction.readOnly(collections.people)
+        .valueForKey("kelsey")
+    print(kelsey)
+}
+
+```
 
 # Installation
 
