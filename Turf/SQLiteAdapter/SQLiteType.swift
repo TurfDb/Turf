@@ -88,6 +88,42 @@ extension Bool: SQLiteType {
     }
 }
 
+extension Double: SQLiteType {
+    public static var sqliteTypeName: SQLiteTypeName {
+        return .Real
+    }
+
+    public init?(stmt: COpaquePointer, columnIndex: Int32) {
+        self = sqlite3_column_double(stmt, columnIndex)
+    }
+
+    public func sqliteBind(stmt: COpaquePointer, index: Int32) -> Int32 {
+        return sqlite3_bind_double(stmt, index, self)
+    }
+
+    public func sqliteValue() -> SQLiteType {
+        return self
+    }
+}
+
+extension Float: SQLiteType {
+    public static var sqliteTypeName: SQLiteTypeName {
+        return .Real
+    }
+
+    public init?(stmt: COpaquePointer, columnIndex: Int32) {
+        self = Float(sqlite3_column_double(stmt, columnIndex))
+    }
+
+    public func sqliteBind(stmt: COpaquePointer, index: Int32) -> Int32 {
+        return sqlite3_bind_double(stmt, index, Double(self))
+    }
+
+    public func sqliteValue() -> SQLiteType {
+        return self
+    }
+}
+
 public protocol TurfSQLiteOptional {
     associatedtype _Wrapped: SQLiteType
 }
