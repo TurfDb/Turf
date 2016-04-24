@@ -10,7 +10,14 @@ public struct IndexedPropertyFromCollection<IndexedCollection: Collection> {
 
     public init<T: SQLiteType>(property: IndexedProperty<IndexedCollection, T>) {
         self.sqliteTypeName = T.sqliteTypeName
-        self.isNullable = T.isNullable
+        self.isNullable = false
+        self.propertyValueForValue = property.propertyValueForValue
+        self.name = property.name
+    }
+
+    public init<T: TurfSQLiteOptional where T: SQLiteType>(property: IndexedProperty<IndexedCollection, T>) {
+        self.sqliteTypeName = T.sqliteTypeName
+        self.isNullable = true
         self.propertyValueForValue = property.propertyValueForValue
         self.name = property.name
     }

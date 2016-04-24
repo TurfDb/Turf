@@ -1,6 +1,5 @@
 public protocol SQLiteType {
     static var sqliteTypeName: SQLiteTypeName { get }
-    static var isNullable: Bool { get }
 
     /**
      Extract the type from a (sqlite3_stmt *).
@@ -22,8 +21,6 @@ public protocol SQLiteType {
 }
 
 extension SQLiteType {
-    public static var isNullable: Bool { return false }
-
     public var sqliteTypeName: SQLiteTypeName { return Self.sqliteTypeName }
 }
 
@@ -71,9 +68,6 @@ extension Bool: SQLiteType {
     public static var sqliteTypeName: SQLiteTypeName {
         return .Integer
     }
-
-    /// Bool cannot be null
-    public static var isNullable: Bool { return true }
 
     public init?(stmt: COpaquePointer, columnIndex: Int32) {
         self = sqlite3_column_int64(stmt, columnIndex) != 0
@@ -133,8 +127,6 @@ public enum SQLiteOptional<Wrapped: SQLiteType>: SQLiteType, TurfSQLiteOptional 
 
     case Some(Wrapped)
     case None
-
-    public static var isNullable: Bool { return true }
 
     public static var sqliteTypeName: SQLiteTypeName {
         return Wrapped.sqliteTypeName
