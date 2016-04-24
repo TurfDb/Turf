@@ -86,7 +86,7 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
         let requiresRepopulation = existingInstallationDetails != nil ? (existingInstallationDetails!.version < version) : true
 
         if requiresRepopulation &&
-            sqlite3_exec(db, "DROP TABLE IF EXISTS \(tableName)", nil, nil, nil).isNotOK {
+            sqlite3_exec(db, "DROP TABLE IF EXISTS `\(tableName)`", nil, nil, nil).isNotOK {
                 throw SecondaryIndexError.IndexTableRemovalFailed(
                     code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
@@ -100,7 +100,7 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
 
         propertyTypes += typeErasedProperties.map { property -> String in
             let nullNotation = property.isNullable ? "" : "NOT NULL"
-            return "\(property.name) \(property.sqliteTypeName.rawValue) \(nullNotation)"
+            return "`\(property.name)` \(property.sqliteTypeName.rawValue) \(nullNotation)"
         }
 
         var createIndexes = [createPropertyIndexSql("targetPrimaryKey")]
@@ -113,6 +113,6 @@ public class SecondaryIndex<TCollection: Collection, Properties: IndexedProperti
     }
 
     private func createPropertyIndexSql(propertyName: String) -> String {
-        return "CREATE INDEX IF NOT EXISTS `\(tableName)_\(propertyName)_idx` ON `\(tableName)` (\(propertyName))"
+        return "CREATE INDEX IF NOT EXISTS `\(tableName)_\(propertyName)_idx` ON `\(tableName)` (`\(propertyName)`)"
     }
 }

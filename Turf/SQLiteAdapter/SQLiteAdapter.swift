@@ -210,25 +210,25 @@ internal final class SQLiteAdapter {
         self.rollbackTransactionStmt = commitTransactionStmt
 
         var getSnapshotStmt: COpaquePointer = nil
-        if sqlite3_prepare_v2(db, "SELECT snapshot FROM \(TurfRuntimeTableName) WHERE key=1;",  -1, &getSnapshotStmt, nil).isNotOK {
+        if sqlite3_prepare_v2(db, "SELECT snapshot FROM `\(TurfRuntimeTableName)` WHERE key=1;",  -1, &getSnapshotStmt, nil).isNotOK {
             throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
         self.getSnapshotStmt = getSnapshotStmt
 
         var setSnapshotStmt: COpaquePointer = nil
-        if sqlite3_prepare_v2(db, "INSERT OR REPLACE INTO \(TurfRuntimeTableName) (key, snapshot) VALUES (1, ?);",  -1, &setSnapshotStmt, nil).isNotOK {
+        if sqlite3_prepare_v2(db, "INSERT OR REPLACE INTO `\(TurfRuntimeTableName)` (key, snapshot) VALUES (1, ?);",  -1, &setSnapshotStmt, nil).isNotOK {
             throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
         self.setSnapshotStmt = setSnapshotStmt
 
         var getExtensionDetailsStmt: COpaquePointer = nil
-        if sqlite3_prepare_v2(db, "SELECT version, data, turf_version FROM \(TurfExtensionsTableName) WHERE name=?;",  -1, &getExtensionDetailsStmt, nil).isNotOK {
+        if sqlite3_prepare_v2(db, "SELECT version, data, turfVersion FROM `\(TurfExtensionsTableName)` WHERE name=?;",  -1, &getExtensionDetailsStmt, nil).isNotOK {
             throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
         self.getExtensionDetailsStmt = getExtensionDetailsStmt
 
         var setExtensionDetailsStmt: COpaquePointer = nil
-        if sqlite3_prepare_v2(db, "INSERT OR REPLACE INTO \(TurfExtensionsTableName) (name, version, data, turf_version) VALUES (?, ?, ?, 0);",  -1, &setExtensionDetailsStmt, nil).isNotOK {
+        if sqlite3_prepare_v2(db, "INSERT OR REPLACE INTO `\(TurfExtensionsTableName)` (name, version, data, turfVersion) VALUES (?, ?, ?, 0);",  -1, &setExtensionDetailsStmt, nil).isNotOK {
             throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
         self.setExtensionDetailsStmt = setExtensionDetailsStmt
@@ -261,7 +261,7 @@ internal final class SQLiteAdapter {
 
     private func createMetadataTable() throws {
         if sqlite3_exec(db,
-            "CREATE TABLE IF NOT EXISTS `\(TurfMetadataTableName)` (`schema_version` INTEGER NOT NULL DEFAULT '(1)' );", nil, nil, nil).isNotOK {
+            "CREATE TABLE IF NOT EXISTS `\(TurfMetadataTableName)` (schemaVersion INTEGER NOT NULL DEFAULT '(1)' );", nil, nil, nil).isNotOK {
                 throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
     }
@@ -269,10 +269,10 @@ internal final class SQLiteAdapter {
     private func createExtensionsTable() throws {
         if sqlite3_exec(db,
             "CREATE TABLE IF NOT EXISTS `\(TurfExtensionsTableName)` (" +
-                "`name` TEXT NOT NULL UNIQUE," +
-                "`version` INTEGER NOT NULL DEFAULT '(0)'," +
-                "`data` BLOB," +
-                "`turf_version` INTEGER NOT NULL DEFAULT '(0)'," +
+                "name TEXT NOT NULL UNIQUE," +
+                "version INTEGER NOT NULL DEFAULT '(0)'," +
+                "data BLOB," +
+                "turfVersion INTEGER NOT NULL DEFAULT '(0)'," +
                 "PRIMARY KEY(name)" +
             ");", nil, nil, nil).isNotOK {
                 throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
@@ -282,8 +282,8 @@ internal final class SQLiteAdapter {
     private func createRuntimeOperationsTable() throws {
         if sqlite3_exec(db,
             "CREATE TABLE IF NOT EXISTS `\(TurfRuntimeTableName)`" +
-                "(`key` INTEGER NOT NULL UNIQUE," +
-                "`snapshot` INTEGER NOT NULL DEFAULT '(0)'" +
+                "(key INTEGER NOT NULL UNIQUE," +
+                "snapshot INTEGER NOT NULL DEFAULT '(0)'" +
             ");", nil, nil, nil).isNotOK {
             throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }

@@ -59,11 +59,11 @@ internal final class SQLiteCollection {
     static func createCollectionTableNamed(name: String, db: COpaquePointer) throws {
         if sqlite3_exec(db,
             "CREATE TABLE IF NOT EXISTS `\(name)` (" +
-                "    `key` TEXT NOT NULL UNIQUE," +
-                "    `valueData` BLOB," +
-                "    `schemaVersion` INTEGER DEFAULT 0" +
+                "    key TEXT NOT NULL UNIQUE," +
+                "    valueData BLOB," +
+                "    schemaVersion INTEGER DEFAULT 0" +
             ");" +
-            "CREATE INDEX IF NOT EXISTS \(name)_schemaVersion_idx ON \(name) (schemaVersion);",
+            "CREATE INDEX IF NOT EXISTS `\(name)_schemaVersion_idx` ON \(name) (schemaVersion);",
             nil, nil, nil).isNotOK {
                 throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
@@ -74,7 +74,7 @@ internal final class SQLiteCollection {
      */
     static func dropCollectionTableNamed(name: String, db: COpaquePointer) throws {
         if sqlite3_exec(db,
-            "DROP TABLE IF EXISTS \(name);",
+            "DROP TABLE IF EXISTS `\(name)`;",
             nil, nil, nil).isNotOK {
                 throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
         }
@@ -423,7 +423,7 @@ internal final class SQLiteCollection {
     private func setUpInsertValueDataStmt() throws {
         var stmt: COpaquePointer = nil
 
-        guard sqlite3_prepare_v2(db, "INSERT INTO `\(collectionName)` (`key`,`valueData`, `schemaVersion`) VALUES (?,?,?);", -1, &stmt, nil).isOK else {
+        guard sqlite3_prepare_v2(db, "INSERT INTO `\(collectionName)` (key, valueData, schemaVersion) VALUES (?,?,?);", -1, &stmt, nil).isOK else {
             throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
 
@@ -433,7 +433,7 @@ internal final class SQLiteCollection {
     private func setUpUpdateValueDataStmt() throws {
         var stmt: COpaquePointer = nil
 
-        guard sqlite3_prepare_v2(db, "UPDATE `\(collectionName)` SET `valueData`=?,`schemaVersion`=? WHERE key=?;", -1, &stmt, nil).isOK else {
+        guard sqlite3_prepare_v2(db, "UPDATE `\(collectionName)` SET valueData=?,schemaVersion=? WHERE key=?;", -1, &stmt, nil).isOK else {
             throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
         

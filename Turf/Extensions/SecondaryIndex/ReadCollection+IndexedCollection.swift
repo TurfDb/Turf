@@ -21,7 +21,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
             let connection = extensionConnection()
             let db = sqlite3_db_handle(connection.insertStmt)
 
-            let sql = "SELECT targetPrimaryKey FROM \(connection.index.tableName) WHERE \(clause.sql) LIMIT 1"
+            let sql = "SELECT targetPrimaryKey FROM `\(connection.index.tableName)` WHERE \(clause.sql) LIMIT 1"
             guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil).isOK else {
                 throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
             }
@@ -58,7 +58,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
             let connection = extensionConnection()
             let db = sqlite3_db_handle(connection.insertStmt)
 
-            let sql = "SELECT targetPrimaryKey FROM \(connection.index.tableName) WHERE \(clause.sql)"
+            let sql = "SELECT targetPrimaryKey FROM `\(connection.index.tableName)` WHERE \(clause.sql)"
             guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil).isOK else {
                 throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
             }
@@ -97,7 +97,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
             let connection = extensionConnection()
             let db = sqlite3_db_handle(connection.insertStmt)
 
-            let sql = "SELECT COUNT(targetPrimaryKey) FROM \(connection.index.tableName) WHERE \(clause.sql)"
+            let sql = "SELECT COUNT(targetPrimaryKey) FROM `\(connection.index.tableName)` WHERE \(clause.sql)"
             guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil).isOK else {
                 throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
             }
