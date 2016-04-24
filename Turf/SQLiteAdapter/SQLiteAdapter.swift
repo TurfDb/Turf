@@ -43,9 +43,9 @@ internal final class SQLiteAdapter {
         var internalDb: COpaquePointer = nil
         let flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_PRIVATECACHE
 
+        self.isClosed = true
         let success = sqlite3_open_v2(sqliteDatabaseUrl.absoluteString, &internalDb, flags, nil).isOK
         self.db = internalDb
-        self.isClosed = false
 
         if success {
             sqlite3_busy_timeout(self.db, 0/*ms*/)
@@ -57,8 +57,8 @@ internal final class SQLiteAdapter {
             try createRuntimeOperationsTable()
             try createExtensionsTable()
             try prepareStatements()
+            self.isClosed = false
         } else {
-            self.isClosed = true
             self.beginDeferredTransactionStmt = nil
             self.commitTransactionStmt = nil
             self.rollbackTransactionStmt = nil
