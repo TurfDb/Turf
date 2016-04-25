@@ -207,7 +207,7 @@ internal final class SQLiteAdapter {
         if sqlite3_prepare_v2(db, "ROLLBACK TRANSACTION;",  -1, &rollbackTransactionStmt, nil).isNotOK {
             throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
         }
-        self.rollbackTransactionStmt = commitTransactionStmt
+        self.rollbackTransactionStmt = rollbackTransactionStmt
 
         var getSnapshotStmt: COpaquePointer = nil
         if sqlite3_prepare_v2(db, "SELECT snapshot FROM `\(TurfRuntimeTableName)` WHERE key=1;",  -1, &getSnapshotStmt, nil).isNotOK {
@@ -241,10 +241,9 @@ internal final class SQLiteAdapter {
         if let stmt = commitTransactionStmt {
             sqlite3_finalize(stmt)
         }
-        //TODO Work out why this statement causes bad access
-//        if let stmt = rollbackTransactionStmt {
-//            sqlite3_finalize(stmt)
-//        }
+        if let stmt = rollbackTransactionStmt {
+            sqlite3_finalize(stmt)
+        }
         if let stmt = getSnapshotStmt {
             sqlite3_finalize(stmt)
         }
