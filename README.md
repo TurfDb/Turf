@@ -17,7 +17,7 @@ Turf makes heavy use of generics and Swift 2's protocol constraints to provide a
 - Non-invasive approach to persisting any model - no subclasses, no protocols.
 - Multiple connection support.
 - Object caching - Skip deserializing objects if they have previously been deserialized on the same connection
-- Thread safety. Turf is safe even across multiple connections. Only one connection can write to the database at any given time yet you can read from multiple threads at the same time!
+- Thread safety. Turf is safe even across multiple connections. Only one connection can write to the database at any given time yet you can read from multiple threads at the same time.
 - Secondary indexing. Index any persisted or computed properties of your models for fast querying.
 - Strongly typed queries - No more strings and `NSPredicate`s
 - Reactive - Observe changes to any collection with the ability to filter down and watch a specific row change.
@@ -26,7 +26,7 @@ Turf makes heavy use of generics and Swift 2's protocol constraints to provide a
 
 You can play with Turf in [these Playgrounds](https://github.com/TurfDb/Playgrounds).
 
-# Quick Example
+# Example
 
 ```swift
 
@@ -57,7 +57,7 @@ final class PeopleCollection: Collection {
     }
 }
 
-// List our available collections
+// List the available collections
 
 final class Collections: CollectionsContainer {
 	let people = PeopleCollection()
