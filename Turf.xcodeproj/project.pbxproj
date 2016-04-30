@@ -1026,6 +1026,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.TurfOSX;
+				PRODUCT_MODULE_NAME = Turf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -1048,6 +1049,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.TurfOSX;
+				PRODUCT_MODULE_NAME = Turf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -1258,6 +1260,7 @@
 				723555FC1CD512B100EAB32D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		723556001CD512B100EAB32D /* Build configuration list for PBXNativeTarget "TurfOSXTests" */ = {
 			isa = XCConfigurationList;
@@ -1266,6 +1269,7 @@
 				723555FE1CD512B100EAB32D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		724E75C01CA945270082841B /* Build configuration list for PBXNativeTarget "TurfRegressionTests" */ = {
 			isa = XCConfigurationList;
