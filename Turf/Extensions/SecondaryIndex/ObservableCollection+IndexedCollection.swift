@@ -12,8 +12,8 @@ extension ObservableCollection where TCollection: IndexedCollection {
      - parameter thread: Thread to execute the prefilter and potential query on.
      - parameter prefilterChangeSet: Executed before querying the collection to determine if the query is required.
      */
-    public func valuesWhere(clause: WhereClause, thread: CallbackThread = .CallingThread, prefilterChangeSet: Prefilter = nil) -> CollectionTypeObserver<[TCollection.Value], Collections> {
-        let queryResultsObserver = CollectionTypeObserver<[TCollection.Value], Collections>(initalValue: [])
+    public func valuesWhere(clause: WhereClause, thread: CallbackThread = .CallingThread, prefilterChangeSet: Prefilter = nil) -> CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>> {
+        let queryResultsObserver = CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>>(initalValue: [])
 
         let disposable =
             didChange(thread) { (collection, changeSet) in
@@ -22,7 +22,7 @@ extension ObservableCollection where TCollection: IndexedCollection {
 
                 if shouldRequery {
                     let queryResults = collection!.findValuesWhere(clause)
-                    queryResultsObserver.setValue(queryResults, fromTransaction: collection!.readTransaction)
+                    queryResultsObserver.setValue(queryResults, userInfo: collection!.readTransaction)
                 }
         }
 
@@ -44,8 +44,8 @@ extension ObservableCollection where TCollection: IndexedCollection {
      - parameter thread: Thread to execute the prefilter and potential query on.
      - parameter prefilterChangeSet: Executed before querying the collection to determine if the query is required.
      */
-    public func valuesWhere(preparedQuery: PreparedValuesWhereQuery<Collections>, thread: CallbackThread = .CallingThread, prefilterChangeSet: Prefilter = nil) -> CollectionTypeObserver<[TCollection.Value], Collections> {
-        let queryResultsObserver = CollectionTypeObserver<[TCollection.Value], Collections>(initalValue: [])
+    public func valuesWhere(preparedQuery: PreparedValuesWhereQuery<Collections>, thread: CallbackThread = .CallingThread, prefilterChangeSet: Prefilter = nil) -> CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>> {
+        let queryResultsObserver = CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>>(initalValue: [])
 
         let disposable =
             didChange(thread) { (collection, changeSet) in
@@ -54,7 +54,7 @@ extension ObservableCollection where TCollection: IndexedCollection {
 
                 if shouldRequery {
                     let queryResults = collection!.findValuesWhere(preparedQuery)
-                    queryResultsObserver.setValue(queryResults, fromTransaction: collection!.readTransaction)
+                    queryResultsObserver.setValue(queryResults, userInfo: collection!.readTransaction)
                 }
         }
 
@@ -76,8 +76,8 @@ extension ObservableCollection where TCollection: IndexedCollection {
      - parameter thread: Thread to execute the prefilter and potential query on.
      - parameter prefilterChangeSet: Executed before querying the collection to determine if the query is required.
      */
-    public func valuesWhere(predicate: String, thread: CallbackThread = .CallingThread, prefilterChangeSet: Prefilter = nil) -> CollectionTypeObserver<[TCollection.Value], Collections> {
-        let queryResultsObserver = CollectionTypeObserver<[TCollection.Value], Collections>(initalValue: [])
+    public func valuesWhere(predicate: String, thread: CallbackThread = .CallingThread, prefilterChangeSet: Prefilter = nil) -> CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>> {
+        let queryResultsObserver = CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>>(initalValue: [])
 
         let disposable =
             didChange(thread) { (collection, changeSet) in
@@ -86,7 +86,7 @@ extension ObservableCollection where TCollection: IndexedCollection {
 
                 if shouldRequery {
                     let queryResults = collection!.findValuesWhere(predicate)
-                    queryResultsObserver.setValue(queryResults, fromTransaction: collection!.readTransaction)
+                    queryResultsObserver.setValue(queryResults, userInfo: collection!.readTransaction)
                 }
         }
 

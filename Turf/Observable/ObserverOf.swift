@@ -1,9 +1,8 @@
-public class ObserverOf<T, DatabaseCollections: CollectionsContainer>: TypedObservable {
+public class ObserverOf<Value, UserInfo>: TypedObservable {
     // MARK: Public properties
-    public typealias Value = T
-    public typealias Callback = (T, ReadTransaction<DatabaseCollections>?) -> Void
+    public typealias Callback = (Value, UserInfo) -> Void
 
-    public private(set) var value: T
+    public private(set) var value: Value
 
     public let disposeBag: DisposeBag
 
@@ -15,7 +14,7 @@ public class ObserverOf<T, DatabaseCollections: CollectionsContainer>: TypedObse
 
     // MARK: Object lifecycle
 
-    public init(initalValue: T) {
+    public init(initalValue: Value) {
         self.value = initalValue
         self.disposeBag = DisposeBag()
         self.observers = [:]
@@ -31,7 +30,7 @@ public class ObserverOf<T, DatabaseCollections: CollectionsContainer>: TypedObse
      - note:
         Thread safe.
      */
-    public func didChange(thread: CallbackThread = .CallingThread, callback: (T, ReadTransaction<DatabaseCollections>?) -> Void) -> Disposable {
+    public func didChange(thread: CallbackThread = .CallingThread, callback: Callback) -> Disposable {
         OSSpinLockLock(&lock)
 
         let token = nextObserverToken
@@ -53,20 +52,20 @@ public class ObserverOf<T, DatabaseCollections: CollectionsContainer>: TypedObse
      - note:
         Thread safe
      */
-    public func setValue(value: T, fromTransaction transaction: ReadTransaction<DatabaseCollections>?) {
+    public func setValue(value: Value, userInfo: UserInfo) {
         defer { OSSpinLockUnlock(&lock) }
         OSSpinLockLock(&lock)
 
         self.value = value
-        onValueSet(value, transaction: transaction)
+        onValueSet(value, userInfo: userInfo)
     }
 
     // MARK: Private methods
 
-    private func onValueSet(newValue: T, transaction: ReadTransaction<DatabaseCollections>?) {
+    private func onValueSet(newValue: Value, userInfo: UserInfo) {
         for (_, observer) in observers {
             observer.thread.dispatchSynchronously {
-                observer.callback(newValue, transaction)
+                observer.callback(newValue, userInfo)
             }
         }
     }
