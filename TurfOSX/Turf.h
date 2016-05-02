@@ -14,4 +14,6 @@ FOUNDATION_EXPORT double TurfVersionNumber;
 //! Project version string for Turf.
 FOUNDATION_EXPORT const unsigned char TurfVersionString[];
 
+#ifndef COCOAPODS
 #import "sqlite3.h"
+#endif
