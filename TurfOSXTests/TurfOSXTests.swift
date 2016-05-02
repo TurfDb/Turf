@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import TurfOSX
+@testable import Turf
 
 class TurfOSXTests: XCTestCase {
     

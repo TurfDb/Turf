@@ -54,8 +54,8 @@
 		72345EA61C1E1B840001A136 /* SecondaryIndexConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72345EA51C1E1B840001A136 /* SecondaryIndexConnection.swift */; };
 		72345EA81C1E1BA20001A136 /* SecondaryIndexWriteTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72345EA71C1E1BA20001A136 /* SecondaryIndexWriteTransaction.swift */; };
 		72345EAA1C1E254C0001A136 /* SQLiteAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72345EA91C1E254C0001A136 /* SQLiteAdapter.swift */; };
-		723555ED1CD512B100EAB32D /* TurfOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 723555EC1CD512B100EAB32D /* TurfOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		723555F41CD512B100EAB32D /* TurfOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 723555EA1CD512B100EAB32D /* TurfOSX.framework */; };
+		723555ED1CD512B100EAB32D /* Turf.h in Headers */ = {isa = PBXBuildFile; fileRef = 723555EC1CD512B100EAB32D /* Turf.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		723555F41CD512B100EAB32D /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 723555EA1CD512B100EAB32D /* Turf.framework */; };
 		723555F91CD512B100EAB32D /* TurfOSXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723555F81CD512B100EAB32D /* TurfOSXTests.swift */; };
 		723556011CD5238F00EAB32D /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E0E1C24B3A800364CE1 /* Cache.swift */; };
 		723556021CD5238F00EAB32D /* CacheEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E101C24B45E00364CE1 /* CacheEntry.swift */; };
@@ -235,8 +235,8 @@
 		72345EA51C1E1B840001A136 /* SecondaryIndexConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondaryIndexConnection.swift; sourceTree = "<group>"; };
 		72345EA71C1E1BA20001A136 /* SecondaryIndexWriteTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondaryIndexWriteTransaction.swift; sourceTree = "<group>"; };
 		72345EA91C1E254C0001A136 /* SQLiteAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteAdapter.swift; sourceTree = "<group>"; };
-		723555EA1CD512B100EAB32D /* TurfOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TurfOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		723555EC1CD512B100EAB32D /* TurfOSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TurfOSX.h; sourceTree = "<group>"; };
+		723555EA1CD512B100EAB32D /* Turf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Turf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		723555EC1CD512B100EAB32D /* Turf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Turf.h; sourceTree = "<group>"; };
 		723555EE1CD512B100EAB32D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		723555F31CD512B100EAB32D /* TurfOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TurfOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		723555F81CD512B100EAB32D /* TurfOSXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurfOSXTests.swift; sourceTree = "<group>"; };
@@ -302,7 +302,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				723555F41CD512B100EAB32D /* TurfOSX.framework in Frameworks */,
+				723555F41CD512B100EAB32D /* Turf.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,7 +486,7 @@
 		723555EB1CD512B100EAB32D /* TurfOSX */ = {
 			isa = PBXGroup;
 			children = (
-				723555EC1CD512B100EAB32D /* TurfOSX.h */,
+				723555EC1CD512B100EAB32D /* Turf.h */,
 				7235564B1CD524E800EAB32D /* sqlite3.h */,
 				723555EE1CD512B100EAB32D /* Info.plist */,
 			);
@@ -587,7 +587,7 @@
 			children = (
 				72B616E01BAF474A00CFE67C /* Turf.framework */,
 				724E75B61CA945270082841B /* TurfRegressionTests.xctest */,
-				723555EA1CD512B100EAB32D /* TurfOSX.framework */,
+				723555EA1CD512B100EAB32D /* Turf.framework */,
 				723555F31CD512B100EAB32D /* TurfOSXTests.xctest */,
 			);
 			name = Products;
@@ -631,7 +631,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				723555ED1CD512B100EAB32D /* TurfOSX.h in Headers */,
+				723555ED1CD512B100EAB32D /* Turf.h in Headers */,
 				7235564C1CD524E800EAB32D /* sqlite3.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -663,7 +663,7 @@
 			);
 			name = TurfOSX;
 			productName = TurfOSX;
-			productReference = 723555EA1CD512B100EAB32D /* TurfOSX.framework */;
+			productReference = 723555EA1CD512B100EAB32D /* Turf.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		723555F21CD512B100EAB32D /* TurfOSXTests */ = {
@@ -1027,7 +1027,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.TurfOSX;
 				PRODUCT_MODULE_NAME = Turf;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Turf;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -1050,7 +1050,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.TurfOSX;
 				PRODUCT_MODULE_NAME = Turf;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Turf;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
