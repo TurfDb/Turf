@@ -173,6 +173,8 @@
 		72857BF01CD7668600B8FA43 /* SecondaryIndexingRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69E01CA957FD005C12E3 /* SecondaryIndexingRegressionTests.swift */; };
 		72857BF31CD766A000B8FA43 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72857BF11CD766A000B8FA43 /* Nimble.framework */; };
 		72857BF41CD766A000B8FA43 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72857BF21CD766A000B8FA43 /* Quick.framework */; };
+		72857BFB1CD769CE00B8FA43 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 72857BF11CD766A000B8FA43 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		72857BFC1CD769CE00B8FA43 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 72857BF21CD766A000B8FA43 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728C235B1C3B121E0033D986 /* CacheUpdates.swift */; };
 		72B616E41BAF474A00CFE67C /* Turf.h in Headers */ = {isa = PBXBuildFile; fileRef = 72B616E31BAF474A00CFE67C /* Turf.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */; };
@@ -200,6 +202,20 @@
 			remoteInfo = Turf;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		72857BFA1CD769B800B8FA43 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				72857BFB1CD769CE00B8FA43 /* Nimble.framework in CopyFiles */,
+				72857BFC1CD769CE00B8FA43 /* Quick.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		720470C21C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReadCollection+IndexedCollection.swift"; sourceTree = "<group>"; };
@@ -704,6 +720,7 @@
 				723555EF1CD512B100EAB32D /* Sources */,
 				723555F01CD512B100EAB32D /* Frameworks */,
 				723555F11CD512B100EAB32D /* Resources */,
+				72857BFA1CD769B800B8FA43 /* CopyFiles */,
 			);
 			buildRules = (
 			);
