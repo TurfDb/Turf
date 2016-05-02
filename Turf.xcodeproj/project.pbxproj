@@ -159,6 +159,20 @@
 		7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277F5471C4C01040081118D /* SQLiteCollection.swift */; };
 		727B02481CA55B3B006D245A /* WhereClause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727B02471CA55B3B006D245A /* WhereClause.swift */; };
 		727B024A1CA56BC5006D245A /* WhereClauses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727B02491CA56BC5006D245A /* WhereClauses.swift */; };
+		72857BE51CD7668600B8FA43 /* Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69E51CA95848005C12E3 /* Collections.swift */; };
+		72857BE61CD7668600B8FA43 /* CarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69E71CA95865005C12E3 /* CarModel.swift */; };
+		72857BE71CD7668600B8FA43 /* CarsCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69E91CA958BF005C12E3 /* CarsCollection.swift */; };
+		72857BE81CD7668600B8FA43 /* TestDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69EB1CA95A10005C12E3 /* TestDatabase.swift */; };
+		72857BE91CD7668600B8FA43 /* WheelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69ED1CA95E19005C12E3 /* WheelModel.swift */; };
+		72857BEA1CD7668600B8FA43 /* WheelsCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69EF1CA95E66005C12E3 /* WheelsCollection.swift */; };
+		72857BEB1CD7668600B8FA43 /* TreeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F198DD241CC297CF008E9464 /* TreeModel.swift */; };
+		72857BEC1CD7668600B8FA43 /* IndexedTreesCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F198DD221CC297A8008E9464 /* IndexedTreesCollection.swift */; };
+		72857BED1CD7668600B8FA43 /* BasicRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75B81CA945270082841B /* BasicRegressionTests.swift */; };
+		72857BEE1CD7668600B8FA43 /* MigrationRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69E21CA9580B005C12E3 /* MigrationRegressionTests.swift */; };
+		72857BEF1CD7668600B8FA43 /* ObservableRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69DE1CA957EA005C12E3 /* ObservableRegressionTests.swift */; };
+		72857BF01CD7668600B8FA43 /* SecondaryIndexingRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69E01CA957FD005C12E3 /* SecondaryIndexingRegressionTests.swift */; };
+		72857BF31CD766A000B8FA43 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72857BF11CD766A000B8FA43 /* Nimble.framework */; };
+		72857BF41CD766A000B8FA43 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72857BF21CD766A000B8FA43 /* Quick.framework */; };
 		728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728C235B1C3B121E0033D986 /* CacheUpdates.swift */; };
 		72B616E41BAF474A00CFE67C /* Turf.h in Headers */ = {isa = PBXBuildFile; fileRef = 72B616E31BAF474A00CFE67C /* Turf.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */; };
@@ -275,6 +289,8 @@
 		7277F5471C4C01040081118D /* SQLiteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteCollection.swift; sourceTree = "<group>"; };
 		727B02471CA55B3B006D245A /* WhereClause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhereClause.swift; sourceTree = "<group>"; };
 		727B02491CA56BC5006D245A /* WhereClauses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhereClauses.swift; sourceTree = "<group>"; };
+		72857BF11CD766A000B8FA43 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = ../Carthage/Build/Mac/Nimble.framework; sourceTree = "<group>"; };
+		72857BF21CD766A000B8FA43 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = ../Carthage/Build/Mac/Quick.framework; sourceTree = "<group>"; };
 		728C235B1C3B121E0033D986 /* CacheUpdates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheUpdates.swift; sourceTree = "<group>"; };
 		72B616E01BAF474A00CFE67C /* Turf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Turf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B616E31BAF474A00CFE67C /* Turf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Turf.h; sourceTree = "<group>"; };
@@ -302,6 +318,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72857BF31CD766A000B8FA43 /* Nimble.framework in Frameworks */,
+				72857BF41CD766A000B8FA43 /* Quick.framework in Frameworks */,
 				723555F41CD512B100EAB32D /* Turf.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -486,6 +504,8 @@
 		723555EB1CD512B100EAB32D /* TurfOSX */ = {
 			isa = PBXGroup;
 			children = (
+				72857BF11CD766A000B8FA43 /* Nimble.framework */,
+				72857BF21CD766A000B8FA43 /* Quick.framework */,
 				723555EC1CD512B100EAB32D /* Turf.h */,
 				7235564B1CD524E800EAB32D /* sqlite3.h */,
 				723555EE1CD512B100EAB32D /* Info.plist */,
@@ -895,7 +915,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72857BE71CD7668600B8FA43 /* CarsCollection.swift in Sources */,
 				723555F91CD512B100EAB32D /* TurfOSXTests.swift in Sources */,
+				72857BE51CD7668600B8FA43 /* Collections.swift in Sources */,
+				72857BEB1CD7668600B8FA43 /* TreeModel.swift in Sources */,
+				72857BEE1CD7668600B8FA43 /* MigrationRegressionTests.swift in Sources */,
+				72857BEC1CD7668600B8FA43 /* IndexedTreesCollection.swift in Sources */,
+				72857BE91CD7668600B8FA43 /* WheelModel.swift in Sources */,
+				72857BEF1CD7668600B8FA43 /* ObservableRegressionTests.swift in Sources */,
+				72857BEA1CD7668600B8FA43 /* WheelsCollection.swift in Sources */,
+				72857BE61CD7668600B8FA43 /* CarModel.swift in Sources */,
+				72857BE81CD7668600B8FA43 /* TestDatabase.swift in Sources */,
+				72857BF01CD7668600B8FA43 /* SecondaryIndexingRegressionTests.swift in Sources */,
+				72857BED1CD7668600B8FA43 /* BasicRegressionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1062,6 +1094,10 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = TurfOSXTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
@@ -1077,6 +1113,10 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = TurfOSXTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
