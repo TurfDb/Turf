@@ -1,15 +1,14 @@
 //
-//  TurfOSXTests.swift
-//  TurfOSXTests
+//  TurfRegressionTests_OSX.swift
+//  TurfRegressionTests-OSX
 //
-//  Created by Jordan Hamill on 30/04/2016.
+//  Created by Jordan Hamill on 02/05/2016.
 //  Copyright © 2016 JordanHamill. All rights reserved.
 //
 
 import XCTest
-@testable import Turf
 
-class TurfOSXTests: XCTestCase {
+class TurfRegressionTests_OSX: XCTestCase {
     
     override func setUp() {
         super.setUp()

@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "723555F21CD512B100EAB32D"
+               BlueprintIdentifier = "729C5C4E1CD76D0700EE1B6E"
                BuildableName = "TurfRegressionTests-OSX.xctest"
                BlueprintName = "TurfRegressionTests-OSX"
                ReferencedContainer = "container:Turf.xcodeproj">
