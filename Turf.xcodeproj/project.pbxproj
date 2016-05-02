@@ -252,7 +252,7 @@
 		723555EA1CD512B100EAB32D /* Turf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Turf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		723555EC1CD512B100EAB32D /* Turf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Turf.h; sourceTree = "<group>"; };
 		723555EE1CD512B100EAB32D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		723555F31CD512B100EAB32D /* TurfOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TurfOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		723555F31CD512B100EAB32D /* TurfRegressionTests-OSX.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TurfRegressionTests-OSX.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		723555F81CD512B100EAB32D /* TurfOSXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurfOSXTests.swift; sourceTree = "<group>"; };
 		723555FA1CD512B100EAB32D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		723556471CD5243100EAB32D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libsqlite3.tbd; sourceTree = DEVELOPER_DIR; };
@@ -274,7 +274,7 @@
 		724E75A71CA6E3A80082841B /* CollectionMigrationOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionMigrationOperations.swift; sourceTree = "<group>"; };
 		724E75AA1CA6E3ED0082841B /* CollectionMigrationOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionMigrationOperator.swift; sourceTree = "<group>"; };
 		724E75AD1CA6F76F0082841B /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
-		724E75B61CA945270082841B /* TurfRegressionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TurfRegressionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		724E75B61CA945270082841B /* TurfRegressionTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TurfRegressionTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		724E75B81CA945270082841B /* BasicRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRegressionTests.swift; sourceTree = "<group>"; };
 		724E75BA1CA945270082841B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		725E9E0E1C24B3A800364CE1 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
@@ -606,9 +606,9 @@
 			isa = PBXGroup;
 			children = (
 				72B616E01BAF474A00CFE67C /* Turf.framework */,
-				724E75B61CA945270082841B /* TurfRegressionTests.xctest */,
+				724E75B61CA945270082841B /* TurfRegressionTests-iOS.xctest */,
 				723555EA1CD512B100EAB32D /* Turf.framework */,
-				723555F31CD512B100EAB32D /* TurfOSXTests.xctest */,
+				723555F31CD512B100EAB32D /* TurfRegressionTests-OSX.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -668,9 +668,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		723555E91CD512B100EAB32D /* TurfOSX */ = {
+		723555E91CD512B100EAB32D /* Turf-OSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 723555FF1CD512B100EAB32D /* Build configuration list for PBXNativeTarget "TurfOSX" */;
+			buildConfigurationList = 723555FF1CD512B100EAB32D /* Build configuration list for PBXNativeTarget "Turf-OSX" */;
 			buildPhases = (
 				723555E51CD512B100EAB32D /* Sources */,
 				723555E61CD512B100EAB32D /* Frameworks */,
@@ -681,14 +681,14 @@
 			);
 			dependencies = (
 			);
-			name = TurfOSX;
+			name = "Turf-OSX";
 			productName = TurfOSX;
 			productReference = 723555EA1CD512B100EAB32D /* Turf.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		723555F21CD512B100EAB32D /* TurfOSXTests */ = {
+		723555F21CD512B100EAB32D /* TurfRegressionTests-OSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 723556001CD512B100EAB32D /* Build configuration list for PBXNativeTarget "TurfOSXTests" */;
+			buildConfigurationList = 723556001CD512B100EAB32D /* Build configuration list for PBXNativeTarget "TurfRegressionTests-OSX" */;
 			buildPhases = (
 				723555EF1CD512B100EAB32D /* Sources */,
 				723555F01CD512B100EAB32D /* Frameworks */,
@@ -699,14 +699,14 @@
 			dependencies = (
 				723555F61CD512B100EAB32D /* PBXTargetDependency */,
 			);
-			name = TurfOSXTests;
+			name = "TurfRegressionTests-OSX";
 			productName = TurfOSXTests;
-			productReference = 723555F31CD512B100EAB32D /* TurfOSXTests.xctest */;
+			productReference = 723555F31CD512B100EAB32D /* TurfRegressionTests-OSX.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		724E75B51CA945270082841B /* TurfRegressionTests */ = {
+		724E75B51CA945270082841B /* TurfRegressionTests-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 724E75C01CA945270082841B /* Build configuration list for PBXNativeTarget "TurfRegressionTests" */;
+			buildConfigurationList = 724E75C01CA945270082841B /* Build configuration list for PBXNativeTarget "TurfRegressionTests-iOS" */;
 			buildPhases = (
 				724E75B21CA945270082841B /* Sources */,
 				724E75B31CA945270082841B /* Frameworks */,
@@ -718,14 +718,14 @@
 			dependencies = (
 				724E75BD1CA945270082841B /* PBXTargetDependency */,
 			);
-			name = TurfRegressionTests;
+			name = "TurfRegressionTests-iOS";
 			productName = TurfRegressionTests;
-			productReference = 724E75B61CA945270082841B /* TurfRegressionTests.xctest */;
+			productReference = 724E75B61CA945270082841B /* TurfRegressionTests-iOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		72B616DF1BAF474A00CFE67C /* Turf */ = {
+		72B616DF1BAF474A00CFE67C /* Turf-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 72B616F41BAF474A00CFE67C /* Build configuration list for PBXNativeTarget "Turf" */;
+			buildConfigurationList = 72B616F41BAF474A00CFE67C /* Build configuration list for PBXNativeTarget "Turf-iOS" */;
 			buildPhases = (
 				72B616DB1BAF474A00CFE67C /* Sources */,
 				72B616DC1BAF474A00CFE67C /* Frameworks */,
@@ -736,7 +736,7 @@
 			);
 			dependencies = (
 			);
-			name = Turf;
+			name = "Turf-iOS";
 			productName = Turf;
 			productReference = 72B616E01BAF474A00CFE67C /* Turf.framework */;
 			productType = "com.apple.product-type.framework";
@@ -777,10 +777,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				72B616DF1BAF474A00CFE67C /* Turf */,
-				724E75B51CA945270082841B /* TurfRegressionTests */,
-				723555E91CD512B100EAB32D /* TurfOSX */,
-				723555F21CD512B100EAB32D /* TurfOSXTests */,
+				72B616DF1BAF474A00CFE67C /* Turf-iOS */,
+				724E75B51CA945270082841B /* TurfRegressionTests-iOS */,
+				723555E91CD512B100EAB32D /* Turf-OSX */,
+				723555F21CD512B100EAB32D /* TurfRegressionTests-OSX */,
 			);
 		};
 /* End PBXProject section */
@@ -1031,12 +1031,12 @@
 /* Begin PBXTargetDependency section */
 		723555F61CD512B100EAB32D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 723555E91CD512B100EAB32D /* TurfOSX */;
+			target = 723555E91CD512B100EAB32D /* Turf-OSX */;
 			targetProxy = 723555F51CD512B100EAB32D /* PBXContainerItemProxy */;
 		};
 		724E75BD1CA945270082841B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 72B616DF1BAF474A00CFE67C /* Turf */;
+			target = 72B616DF1BAF474A00CFE67C /* Turf-iOS */;
 			targetProxy = 724E75BC1CA945270082841B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1264,7 +1264,8 @@
 				MODULEMAP_FILE = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.Turf;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = Turf;
+				PRODUCT_NAME = Turf;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1285,7 +1286,8 @@
 				MODULEMAP_FILE = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.Turf;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = Turf;
+				PRODUCT_NAME = Turf;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -1293,7 +1295,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		723555FF1CD512B100EAB32D /* Build configuration list for PBXNativeTarget "TurfOSX" */ = {
+		723555FF1CD512B100EAB32D /* Build configuration list for PBXNativeTarget "Turf-OSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				723555FB1CD512B100EAB32D /* Debug */,
@@ -1302,7 +1304,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		723556001CD512B100EAB32D /* Build configuration list for PBXNativeTarget "TurfOSXTests" */ = {
+		723556001CD512B100EAB32D /* Build configuration list for PBXNativeTarget "TurfRegressionTests-OSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				723555FD1CD512B100EAB32D /* Debug */,
@@ -1311,7 +1313,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		724E75C01CA945270082841B /* Build configuration list for PBXNativeTarget "TurfRegressionTests" */ = {
+		724E75C01CA945270082841B /* Build configuration list for PBXNativeTarget "TurfRegressionTests-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				724E75BE1CA945270082841B /* Debug */,
@@ -1329,7 +1331,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		72B616F41BAF474A00CFE67C /* Build configuration list for PBXNativeTarget "Turf" */ = {
+		72B616F41BAF474A00CFE67C /* Build configuration list for PBXNativeTarget "Turf-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				72B616F51BAF474A00CFE67C /* Debug */,
