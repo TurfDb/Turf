@@ -293,12 +293,12 @@
 		72857BF21CD766A000B8FA43 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = ../Carthage/Build/Mac/Quick.framework; sourceTree = "<group>"; };
 		728C235B1C3B121E0033D986 /* CacheUpdates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheUpdates.swift; sourceTree = "<group>"; };
 		72B616E01BAF474A00CFE67C /* Turf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Turf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		72B616E31BAF474A00CFE67C /* Turf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Turf.h; sourceTree = "<group>"; };
-		72B616E51BAF474A00CFE67C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		72B616E31BAF474A00CFE67C /* Turf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Turf.h; path = ../Turf/Turf.h; sourceTree = "<group>"; };
+		72B616E51BAF474A00CFE67C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Turf/Info.plist; sourceTree = "<group>"; };
 		72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeErasedCollection.swift; sourceTree = "<group>"; };
-		72D10FDE1CBBEF8800401FFE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
-		72D10FDF1CBBEF8800401FFE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
-		72D37B7E1BC326770087153A /* iOS.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = iOS.modulemap; sourceTree = "<group>"; };
+		72D10FDE1CBBEF8800401FFE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = ../Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
+		72D10FDF1CBBEF8800401FFE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = ../Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
+		72D37B7E1BC326770087153A /* iOS.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = iOS.modulemap; path = ../Turf/iOS.modulemap; sourceTree = "<group>"; };
 		72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteError.swift; sourceTree = "<group>"; };
 		72F6F6FF1C24622A0059D72C /* ExtendedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedCollection.swift; sourceTree = "<group>"; };
 		F198DD221CC297A8008E9464 /* IndexedTreesCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedTreesCollection.swift; sourceTree = "<group>"; };
@@ -501,24 +501,26 @@
 			path = Internals;
 			sourceTree = "<group>";
 		};
-		723555EB1CD512B100EAB32D /* TurfOSX */ = {
+		723555EB1CD512B100EAB32D /* Turf-OSX */ = {
 			isa = PBXGroup;
 			children = (
+				723555EE1CD512B100EAB32D /* Info.plist */,
 				72857BF11CD766A000B8FA43 /* Nimble.framework */,
 				72857BF21CD766A000B8FA43 /* Quick.framework */,
-				723555EC1CD512B100EAB32D /* Turf.h */,
 				7235564B1CD524E800EAB32D /* sqlite3.h */,
-				723555EE1CD512B100EAB32D /* Info.plist */,
+				723555EC1CD512B100EAB32D /* Turf.h */,
 			);
+			name = "Turf-OSX";
 			path = TurfOSX;
 			sourceTree = "<group>";
 		};
-		723555F71CD512B100EAB32D /* TurfOSXTests */ = {
+		723555F71CD512B100EAB32D /* TurfRegressionTests-OSX */ = {
 			isa = PBXGroup;
 			children = (
 				723555F81CD512B100EAB32D /* TurfOSXTests.swift */,
 				723555FA1CD512B100EAB32D /* Info.plist */,
 			);
+			name = "TurfRegressionTests-OSX";
 			path = TurfOSXTests;
 			sourceTree = "<group>";
 		};
@@ -574,7 +576,7 @@
 			path = Logger;
 			sourceTree = "<group>";
 		};
-		724E75B71CA945270082841B /* TurfRegressionTests */ = {
+		724E75B71CA945270082841B /* TurfRegressionTests-iOS */ = {
 			isa = PBXGroup;
 			children = (
 				720C69E41CA9582A005C12E3 /* Common */,
@@ -584,21 +586,34 @@
 				720C69DE1CA957EA005C12E3 /* ObservableRegressionTests.swift */,
 				720C69E01CA957FD005C12E3 /* SecondaryIndexingRegressionTests.swift */,
 			);
+			name = "TurfRegressionTests-iOS";
 			path = TurfRegressionTests;
+			sourceTree = "<group>";
+		};
+		72857BF51CD7677D00B8FA43 /* Turf-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				72B616E51BAF474A00CFE67C /* Info.plist */,
+				72D37B7E1BC326770087153A /* iOS.modulemap */,
+				72D10FDE1CBBEF8800401FFE /* Nimble.framework */,
+				72D10FDF1CBBEF8800401FFE /* Quick.framework */,
+				726D24541C767F02003CE68C /* sqlite3.h */,
+				72B616E31BAF474A00CFE67C /* Turf.h */,
+			);
+			path = "Turf-iOS";
 			sourceTree = "<group>";
 		};
 		72B616D61BAF474A00CFE67C = {
 			isa = PBXGroup;
 			children = (
 				723556471CD5243100EAB32D /* libsqlite3.tbd */,
-				72D10FDE1CBBEF8800401FFE /* Nimble.framework */,
-				72D10FDF1CBBEF8800401FFE /* Quick.framework */,
 				726D24521C767D5C003CE68C /* libsqlite3.tbd */,
-				72B616E21BAF474A00CFE67C /* Turf */,
-				724E75B71CA945270082841B /* TurfRegressionTests */,
-				723555EB1CD512B100EAB32D /* TurfOSX */,
-				723555F71CD512B100EAB32D /* TurfOSXTests */,
 				72B616E11BAF474A00CFE67C /* Products */,
+				72B616E21BAF474A00CFE67C /* Turf */,
+				72857BF51CD7677D00B8FA43 /* Turf-iOS */,
+				723555EB1CD512B100EAB32D /* Turf-OSX */,
+				724E75B71CA945270082841B /* TurfRegressionTests-iOS */,
+				723555F71CD512B100EAB32D /* TurfRegressionTests-OSX */,
 			);
 			sourceTree = "<group>";
 		};
@@ -616,20 +631,16 @@
 		72B616E21BAF474A00CFE67C /* Turf */ = {
 			isa = PBXGroup;
 			children = (
-				726D24541C767F02003CE68C /* sqlite3.h */,
 				72EA32681C24B353003CEAFA /* Cache */,
 				72297A8A1C257AF90001BE40 /* ChangeSet */,
 				72088F7C1C1CD76400127EA0 /* Collection */,
 				72088F821C1CD7C900127EA0 /* Core */,
 				72088F7F1C1CD7B400127EA0 /* Extensions */,
 				7218C9641C274D6D004457DB /* GCDWrapper */,
-				72B616E51BAF474A00CFE67C /* Info.plist */,
-				72D37B7E1BC326770087153A /* iOS.modulemap */,
 				724E75AC1CA6F74C0082841B /* Logger */,
 				724E75961CA69B010082841B /* Migrations */,
 				720558321C518CF000B0847E /* Observable */,
 				72088F7B1C1CD75800127EA0 /* SQLiteAdapter */,
-				72B616E31BAF474A00CFE67C /* Turf.h */,
 				7218C9611C274760004457DB /* Weak */,
 			);
 			path = Turf;

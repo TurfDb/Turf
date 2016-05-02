@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "72B616DF1BAF474A00CFE67C"
-               BuildableName = "Turf-iOS.framework"
+               BuildableName = "Turf.framework"
                BlueprintName = "Turf-iOS"
                ReferencedContainer = "container:Turf.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "72B616DF1BAF474A00CFE67C"
-            BuildableName = "Turf-iOS.framework"
+            BuildableName = "Turf.framework"
             BlueprintName = "Turf-iOS"
             ReferencedContainer = "container:Turf.xcodeproj">
          </BuildableReference>
@@ -65,7 +65,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "72B616DF1BAF474A00CFE67C"
-            BuildableName = "Turf-iOS.framework"
+            BuildableName = "Turf.framework"
             BlueprintName = "Turf-iOS"
             ReferencedContainer = "container:Turf.xcodeproj">
          </BuildableReference>
@@ -83,7 +83,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "72B616DF1BAF474A00CFE67C"
-            BuildableName = "Turf-iOS.framework"
+            BuildableName = "Turf.framework"
             BlueprintName = "Turf-iOS"
             ReferencedContainer = "container:Turf.xcodeproj">
          </BuildableReference>
