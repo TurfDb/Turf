@@ -6,6 +6,10 @@ public class ObservableCollection<TCollection: Collection, Collections: Collecti
 
     public let disposeBag: DisposeBag
 
+    // MARK: Internal properties
+
+    var currentSnapshotOfCollection: (() -> ReadCollection<TCollection, Collections>)?
+
     // MARK: Private properties
 
     private var nextObserverToken = UInt64(0)
@@ -25,6 +29,23 @@ public class ObservableCollection<TCollection: Collection, Collections: Collecti
     }
 
     // MARK: Public methods
+
+    /**
+     Can be used to trigger observers initially.
+     */
+    public func triggerObservers() {
+        defer { OSSpinLockUnlock(&lock) }
+        OSSpinLockLock(&lock)
+
+        if let collectionSnapshot = currentSnapshotOfCollection  {
+            value = collectionSnapshot()//This shouldn't have changed
+            for (_, observer) in observers {
+                observer.thread.dispatchSynchronously {
+                    observer.callback(self.value, ChangeSet())
+                }
+            }
+        }
+    }
 
     /**
      - note:

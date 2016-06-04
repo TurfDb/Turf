@@ -30,4 +30,12 @@ public enum CallbackThread {
             try closure()
         }
     }
+
+    public func dispatchAsynchronously(closure: () -> Void) {
+        if let queue = self.queue {
+            Dispatch.asynchronouslyOn(queue, closure: closure)
+        } else {
+            closure()
+        }
+    }
 }

@@ -9,17 +9,19 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
     private var observableCollections: [String: TypeErasedObservableCollection]
     private var collectionUpdateProcessors: [String: (ReadTransaction<Collections>, ChangeSet<String>) -> Void]
 
-    private var longLivedReadTransaction: ReadTransaction<Collections>?
+    private var longLivedReadTransaction: ReadTransaction<Collections>!
     private var pendingChangeSets: [[String: ChangeSet<String>]]
 
     // MARK: Object lifecycle
 
-    internal init(connection: Connection<Collections>, shouldAdvanceWhenDatabaseChanges: () -> Bool) {
+    internal init(connection: Connection<Collections>, shouldAdvanceWhenDatabaseChanges: () -> Bool) throws {
         self.connection = connection
         self.shouldAdvanceWhenDatabaseChanges = shouldAdvanceWhenDatabaseChanges
         self.observableCollections = [:]
         self.collectionUpdateProcessors = [:]
         self.pendingChangeSets = []
+
+        try self.advanceToLatestSnapshot(changeSets: [:])
     }
 
     deinit {
@@ -55,6 +57,14 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
                 let observedCollection = ObservableCollection<TCollection, Collections>()
                 self.observableCollections[collection.name] = observedCollection
                 self.collectionUpdateProcessors[collection.name] = collectionDidChange
+
+                observedCollection.currentSnapshotOfCollection = { [unowned self] in
+                    var collectionSnapshot: ReadCollection<TCollection, Collections>!
+                    Dispatch.synchronouslyOn(self.connection.connectionQueue) {
+                        collectionSnapshot = self.longLivedReadTransaction.readOnly(collection)
+                    }
+                    return collectionSnapshot
+                }
 
                 observedCollection.disposeBag.add(
                     BasicDisposable { [weak self] in

@@ -113,7 +113,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
         defer { OSSpinLockUnlock(&connectionManipulationLock) }
         OSSpinLockLock(&connectionManipulationLock)
 
-        let observingConnection = ObservingConnection<DatabaseCollections>(
+        let observingConnection = try ObservingConnection<DatabaseCollections>(
             connection: connection, shouldAdvanceWhenDatabaseChanges: shouldAdvanceWhenDatabaseChanges)
 
         observingConnections[connection.id] = WeakBox(value: observingConnection)
