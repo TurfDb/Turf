@@ -70,6 +70,23 @@ public class ObservableCollection<TCollection: Collection, Collections: Collecti
         }
     }
 
+    public var allValues: CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>> {
+        let queryResultsObserver = CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>>(initalValue: [])
+
+        let disposable =
+            didChange() { (collection, changeSet) in
+                let results = Array(collection!.allValues)
+                queryResultsObserver.setValue(results, userInfo: collection!.readTransaction)
+            }
+
+        queryResultsObserver.disposeBag.add(disposable)
+        // If disposing ancestors, dispose this collection and all its child observers by removing from ObservingConnection
+        queryResultsObserver.disposeBag.parent = self.disposeBag
+
+        return queryResultsObserver
+
+    }
+
     // MARK: Internal methods
 
     /**
