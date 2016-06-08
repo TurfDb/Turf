@@ -54,17 +54,9 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
                 observed = observedCollection
             } else {
 
-                let observedCollection = ObservableCollection<TCollection, Collections>()
+                let observedCollection = ObservableCollection<TCollection, Collections>(collection: self.longLivedReadTransaction.readOnly(collection))
                 self.observableCollections[collection.name] = observedCollection
                 self.collectionUpdateProcessors[collection.name] = collectionDidChange
-
-                observedCollection.currentSnapshotOfCollection = { [unowned self] in
-                    var collectionSnapshot: ReadCollection<TCollection, Collections>!
-                    Dispatch.synchronouslyOn(self.connection.connectionQueue) {
-                        collectionSnapshot = self.longLivedReadTransaction.readOnly(collection)
-                    }
-                    return collectionSnapshot
-                }
 
                 observedCollection.disposeBag.add(
                     BasicDisposable { [weak self] in

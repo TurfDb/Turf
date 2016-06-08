@@ -21,11 +21,12 @@ class ObservablesRegressionTests: QuickSpec {
                 }
 
                 context("and a value is written to the wheels collection") {
-                    it("does not call didChange") {
+                    it("does not call didChange with any changes") {
 
                         var didChangeCalled = false
                         observableCarsCollection.didChange { carsCollection, changes in
-                            didChangeCalled = true
+                            //TODO Rename didChange to onNext since it fires immediately
+                            didChangeCalled = changes.changes.count > 0 || changes.allValuesRemoved
                         }
 
                         try! tester.connection1.readWriteTransaction { transaction, collections in

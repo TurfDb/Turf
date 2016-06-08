@@ -1,14 +1,10 @@
 public class ObservableCollection<TCollection: Collection, Collections: CollectionsContainer>: TypedObservable, TypeErasedObservableCollection {
-    public typealias Callback = (ReadCollection<TCollection, Collections>?, ChangeSet<String>) -> Void
+    public typealias Callback = (ReadCollection<TCollection, Collections>, ChangeSet<String>) -> Void
 
     // MARK: Public properties
-    public private(set) var value: ReadCollection<TCollection, Collections>?
+    public private(set) var value: ReadCollection<TCollection, Collections>
 
     public let disposeBag: DisposeBag
-
-    // MARK: Internal properties
-
-    var currentSnapshotOfCollection: (() -> ReadCollection<TCollection, Collections>)?
 
     // MARK: Private properties
 
@@ -18,8 +14,8 @@ public class ObservableCollection<TCollection: Collection, Collections: Collecti
 
     // MARK: Object lifecycle
 
-    init() {
-        self.value = nil
+    init(collection: ReadCollection<TCollection, Collections>) {
+        self.value = collection
         self.disposeBag = DisposeBag()
         self.observers = [:]
     }
@@ -29,23 +25,6 @@ public class ObservableCollection<TCollection: Collection, Collections: Collecti
     }
 
     // MARK: Public methods
-
-    /**
-     Can be used to trigger observers initially.
-     */
-    public func triggerObservers() {
-        defer { OSSpinLockUnlock(&lock) }
-        OSSpinLockLock(&lock)
-
-        if let collectionSnapshot = currentSnapshotOfCollection  {
-            value = collectionSnapshot()//This shouldn't have changed
-            for (_, observer) in observers {
-                observer.thread.dispatchSynchronously {
-                    observer.callback(self.value, ChangeSet())
-                }
-            }
-        }
-    }
 
     /**
      - note:
@@ -61,6 +40,10 @@ public class ObservableCollection<TCollection: Collection, Collections: Collecti
 
         OSSpinLockUnlock(&lock)
 
+        thread.dispatchAsynchronously { 
+            callback(self.value, ChangeSet())
+        }
+
         return BasicDisposable { [weak self] in
             guard let strongSelf = self else { return }
             defer { OSSpinLockUnlock(&strongSelf.lock) }
@@ -75,8 +58,8 @@ public class ObservableCollection<TCollection: Collection, Collections: Collecti
 
         let disposable =
             didChange() { (collection, changeSet) in
-                let results = Array(collection!.allValues)
-                queryResultsObserver.setValue(results, userInfo: collection!.readTransaction)
+                let results = Array(collection.allValues)
+                queryResultsObserver.setValue(results, userInfo: collection.readTransaction)
             }
 
         queryResultsObserver.disposeBag.add(disposable)

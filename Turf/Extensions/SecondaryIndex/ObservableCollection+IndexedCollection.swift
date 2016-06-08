@@ -21,8 +21,8 @@ extension ObservableCollection where TCollection: IndexedCollection {
                 let shouldRequery = canCheckPreviousValue ? prefilterChangeSet!(queryResultsObserver.value, changeSet) : true
 
                 if shouldRequery {
-                    let queryResults = collection!.findValuesWhere(clause)
-                    queryResultsObserver.setValue(queryResults, userInfo: collection!.readTransaction)
+                    let queryResults = collection.findValuesWhere(clause)
+                    queryResultsObserver.setValue(queryResults, userInfo: collection.readTransaction)
                 }
         }
 
@@ -53,8 +53,8 @@ extension ObservableCollection where TCollection: IndexedCollection {
                 let shouldRequery = canCheckPreviousValue ? prefilterChangeSet!(queryResultsObserver.value, changeSet) : true
 
                 if shouldRequery {
-                    let queryResults = collection!.findValuesWhere(preparedQuery)
-                    queryResultsObserver.setValue(queryResults, userInfo: collection!.readTransaction)
+                    let queryResults = collection.findValuesWhere(preparedQuery)
+                    queryResultsObserver.setValue(queryResults, userInfo: collection.readTransaction)
                 }
         }
 
@@ -85,8 +85,8 @@ extension ObservableCollection where TCollection: IndexedCollection {
                 let shouldRequery = canCheckPreviousValue ? prefilterChangeSet!(queryResultsObserver.value, changeSet) : true
 
                 if shouldRequery {
-                    let queryResults = collection!.findValuesWhere(predicate)
-                    queryResultsObserver.setValue(queryResults, userInfo: collection!.readTransaction)
+                    let queryResults = collection.findValuesWhere(predicate)
+                    queryResultsObserver.setValue(queryResults, userInfo: collection.readTransaction)
                 }
         }
 

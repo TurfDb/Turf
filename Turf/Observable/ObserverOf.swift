@@ -1,6 +1,6 @@
 public class ObserverOf<Value, UserInfo>: TypedObservable {
     // MARK: Public properties
-    public typealias Callback = (Value, UserInfo) -> Void
+    public typealias Callback = (Value, UserInfo?) -> Void
 
     public private(set) var value: Value
 
@@ -39,6 +39,10 @@ public class ObserverOf<Value, UserInfo>: TypedObservable {
 
         OSSpinLockUnlock(&lock)
 
+        thread.dispatchAsynchronously {
+            callback(self.value, nil)//TODO pass through real value
+        }
+
         return BasicDisposable { [weak self] in
             guard let strongSelf = self else { return }
             defer { OSSpinLockUnlock(&strongSelf.lock) }
@@ -52,7 +56,7 @@ public class ObserverOf<Value, UserInfo>: TypedObservable {
      - note:
         Thread safe
      */
-    public func setValue(value: Value, userInfo: UserInfo) {
+    public func setValue(value: Value, userInfo: UserInfo?) {
         defer { OSSpinLockUnlock(&lock) }
         OSSpinLockLock(&lock)
 
@@ -62,7 +66,7 @@ public class ObserverOf<Value, UserInfo>: TypedObservable {
 
     // MARK: Private methods
 
-    private func onValueSet(newValue: Value, userInfo: UserInfo) {
+    private func onValueSet(newValue: Value, userInfo: UserInfo?) {
         for (_, observer) in observers {
             observer.thread.dispatchSynchronously {
                 observer.callback(newValue, userInfo)
