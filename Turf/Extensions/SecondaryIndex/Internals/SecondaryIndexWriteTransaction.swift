@@ -43,7 +43,7 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: Collection, Pro
 
         let properties = connection.index.properties
         let primaryKeyIndex = SQLITE_FIRST_BIND_COLUMN + properties.allProperties.count
-        sqlite3_bind_text(stmt, primaryKeyIndex, primaryKey, -1, SQLITE_TRANSIENT)***
+        sqlite3_bind_text(stmt, primaryKeyIndex, primaryKey, -1, SQLITE_TRANSIENT)
 
         for (index, property) in properties.allProperties.enumerate() {
             property.bindPropertyValue(indexedCollectionValue, toSQLiteStmt: stmt, atIndex: index + SQLITE_FIRST_BIND_COLUMN)

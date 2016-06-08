@@ -8,12 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		720470C31C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720470C21C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift */; };
-		720558341C518D1300B0847E /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720558331C518D1300B0847E /* Disposable.swift */; };
-		720558361C518D2100B0847E /* DisposeBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720558351C518D2100B0847E /* DisposeBag.swift */; };
 		720558381C518D2F00B0847E /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720558371C518D2F00B0847E /* ObservableCollection.swift */; };
-		7205583A1C518D5100B0847E /* ObserverOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720558391C518D5100B0847E /* ObserverOf.swift */; };
-		7205583E1C518E0600B0847E /* BasicDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7205583D1C518E0600B0847E /* BasicDisposable.swift */; };
-		720558401C51900E00B0847E /* TypedObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7205583F1C51900E00B0847E /* TypedObservable.swift */; };
 		7206AFC01C4EF99A004E04D4 /* ObservingConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7206AFBF1C4EF99A004E04D4 /* ObservingConnection.swift */; };
 		72088F841C1CD8C500127EA0 /* ReadTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F831C1CD8C500127EA0 /* ReadTransaction.swift */; };
 		72088F861C1CD8E200127EA0 /* ReadWriteTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F851C1CD8E200127EA0 /* ReadWriteTransaction.swift */; };
@@ -48,6 +43,9 @@
 		72297A8C1C257B290001BE40 /* SQLiteRowChangeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72297A8B1C257B290001BE40 /* SQLiteRowChangeType.swift */; };
 		72297A8E1C257CDB0001BE40 /* CollectionRowChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72297A8D1C257CDB0001BE40 /* CollectionRowChange.swift */; };
 		72297A901C257CE00001BE40 /* ChangeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72297A8F1C257CE00001BE40 /* ChangeSet.swift */; };
+		722D725A1D29B27500BCD234 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 722D72591D29B27500BCD234 /* RxSwift.framework */; };
+		722D725C1D29BCE600BCD234 /* RxSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 722D72591D29B27500BCD234 /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		722D725D1D29BD5B00BCD234 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 722D72591D29B27500BCD234 /* RxSwift.framework */; };
 		722DCF651C5EAE020011C1EF /* ExistingExtensionInstallation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722DCF641C5EAE020011C1EF /* ExistingExtensionInstallation.swift */; };
 		723178CA1CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723178C91CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift */; };
 		723178CD1CA0A9040089E7A8 /* TypeErasedObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723178CC1CA0A9040089E7A8 /* TypeErasedObservableCollection.swift */; };
@@ -109,14 +107,7 @@
 		723556341CD5238F00EAB32D /* MigrationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75A11CA6BDFE0082841B /* MigrationState.swift */; };
 		723556351CD5238F00EAB32D /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E759F1CA6B54D0082841B /* Result.swift */; };
 		723556361CD5238F00EAB32D /* TypeErasedObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723178CC1CA0A9040089E7A8 /* TypeErasedObservableCollection.swift */; };
-		723556371CD5238F00EAB32D /* BasicDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7205583D1C518E0600B0847E /* BasicDisposable.swift */; };
-		723556381CD5238F00EAB32D /* CallbackThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72610B571C5272BC0010D5B1 /* CallbackThread.swift */; };
-		723556391CD5238F00EAB32D /* CollectionTypeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7269F0341C56DD7C007FF29B /* CollectionTypeObserver.swift */; };
-		7235563A1CD5238F00EAB32D /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720558331C518D1300B0847E /* Disposable.swift */; };
-		7235563B1CD5238F00EAB32D /* DisposeBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720558351C518D2100B0847E /* DisposeBag.swift */; };
 		7235563C1CD5238F00EAB32D /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720558371C518D2F00B0847E /* ObservableCollection.swift */; };
-		7235563D1CD5238F00EAB32D /* ObserverOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720558391C518D5100B0847E /* ObserverOf.swift */; };
-		7235563E1CD5238F00EAB32D /* TypedObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7205583F1C51900E00B0847E /* TypedObservable.swift */; };
 		7235563F1CD5238F00EAB32D /* SQLiteAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72345EA91C1E254C0001A136 /* SQLiteAdapter.swift */; };
 		723556401CD5238F00EAB32D /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */; };
 		723556411CD5238F00EAB32D /* SQLiteRowChangeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72297A8B1C257B290001BE40 /* SQLiteRowChangeType.swift */; };
@@ -147,11 +138,9 @@
 		724E75BB1CA945270082841B /* Turf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B616E01BAF474A00CFE67C /* Turf.framework */; };
 		725E9E0F1C24B3A800364CE1 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E0E1C24B3A800364CE1 /* Cache.swift */; };
 		725E9E111C24B45E00364CE1 /* CacheEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E9E101C24B45E00364CE1 /* CacheEntry.swift */; };
-		72610B581C5272BC0010D5B1 /* CallbackThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72610B571C5272BC0010D5B1 /* CallbackThread.swift */; };
 		72662B591C57BF310058F6EF /* SQLiteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B581C57BF310058F6EF /* SQLiteType.swift */; };
 		72662B5B1C57C0310058F6EF /* SQLiteTypeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B5A1C57C0310058F6EF /* SQLiteTypeName.swift */; };
 		72662B5F1C57E7FE0058F6EF /* IndexedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B5E1C57E7FE0058F6EF /* IndexedProperty.swift */; };
-		7269F0351C56DD7C007FF29B /* CollectionTypeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7269F0341C56DD7C007FF29B /* CollectionTypeObserver.swift */; };
 		726D24531C767D5C003CE68C /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 726D24521C767D5C003CE68C /* libsqlite3.tbd */; };
 		726D24551C767F02003CE68C /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 726D24541C767F02003CE68C /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277F5471C4C01040081118D /* SQLiteCollection.swift */; };
@@ -178,6 +167,18 @@
 		729C5C6A1CD76D8E00EE1B6E /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 72857BF21CD766A000B8FA43 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		729C5C6C1CD76E4B00EE1B6E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 729C5C6B1CD76E4B00EE1B6E /* Info.plist */; };
 		72B616E41BAF474A00CFE67C /* Turf.h in Headers */ = {isa = PBXBuildFile; fileRef = 72B616E31BAF474A00CFE67C /* Turf.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		72BCDD481D3009F6000AB623 /* TransactionalValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD471D3009F6000AB623 /* TransactionalValue.swift */; };
+		72BCDD4A1D301715000AB623 /* IndexableObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD491D301715000AB623 /* IndexableObservable.swift */; };
+		72BCDD561D3017A0000AB623 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4C1D3017A0000AB623 /* Observable.swift */; };
+		72BCDD571D3017A0000AB623 /* MapObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4D1D3017A0000AB623 /* MapObservable.swift */; };
+		72BCDD581D3017A0000AB623 /* BasicDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4E1D3017A0000AB623 /* BasicDisposable.swift */; };
+		72BCDD591D3017A0000AB623 /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4F1D3017A0000AB623 /* Subject.swift */; };
+		72BCDD5A1D3017A0000AB623 /* SharedObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD501D3017A0000AB623 /* SharedObservable.swift */; };
+		72BCDD5B1D3017A0000AB623 /* FilterObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD511D3017A0000AB623 /* FilterObservable.swift */; };
+		72BCDD5C1D3017A0000AB623 /* AnyObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD521D3017A0000AB623 /* AnyObserver.swift */; };
+		72BCDD5D1D3017A0000AB623 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD531D3017A0000AB623 /* Disposable.swift */; };
+		72BCDD5E1D3017A0000AB623 /* DisposeBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD541D3017A0000AB623 /* DisposeBag.swift */; };
+		72BCDD5F1D3017A0000AB623 /* CallbackThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD551D3017A0000AB623 /* CallbackThread.swift */; };
 		72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */; };
 		72D10FE01CBBEF8800401FFE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72D10FDE1CBBEF8800401FFE /* Nimble.framework */; };
 		72D10FE11CBBEF8800401FFE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72D10FDF1CBBEF8800401FFE /* Quick.framework */; };
@@ -205,6 +206,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		722D725B1D29BCDE00BCD234 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				722D725C1D29BCE600BCD234 /* RxSwift.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		729C5C681CD76D8500EE1B6E /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -220,12 +231,7 @@
 
 /* Begin PBXFileReference section */
 		720470C21C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReadCollection+IndexedCollection.swift"; sourceTree = "<group>"; };
-		720558331C518D1300B0847E /* Disposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disposable.swift; sourceTree = "<group>"; };
-		720558351C518D2100B0847E /* DisposeBag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisposeBag.swift; sourceTree = "<group>"; };
 		720558371C518D2F00B0847E /* ObservableCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableCollection.swift; sourceTree = "<group>"; };
-		720558391C518D5100B0847E /* ObserverOf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserverOf.swift; sourceTree = "<group>"; };
-		7205583D1C518E0600B0847E /* BasicDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicDisposable.swift; sourceTree = "<group>"; };
-		7205583F1C51900E00B0847E /* TypedObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedObservable.swift; sourceTree = "<group>"; };
 		7206AFBF1C4EF99A004E04D4 /* ObservingConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservingConnection.swift; sourceTree = "<group>"; };
 		72088F831C1CD8C500127EA0 /* ReadTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadTransaction.swift; sourceTree = "<group>"; };
 		72088F851C1CD8E200127EA0 /* ReadWriteTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadWriteTransaction.swift; sourceTree = "<group>"; };
@@ -260,6 +266,7 @@
 		72297A8B1C257B290001BE40 /* SQLiteRowChangeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteRowChangeType.swift; sourceTree = "<group>"; };
 		72297A8D1C257CDB0001BE40 /* CollectionRowChange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionRowChange.swift; sourceTree = "<group>"; };
 		72297A8F1C257CE00001BE40 /* ChangeSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeSet.swift; sourceTree = "<group>"; };
+		722D72591D29B27500BCD234 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = ../TurfRx/Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
 		722DCF641C5EAE020011C1EF /* ExistingExtensionInstallation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExistingExtensionInstallation.swift; sourceTree = "<group>"; };
 		723178C91CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedPropertyFromCollection.swift; sourceTree = "<group>"; };
 		723178CC1CA0A9040089E7A8 /* TypeErasedObservableCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeErasedObservableCollection.swift; sourceTree = "<group>"; };
@@ -292,11 +299,9 @@
 		724E75B81CA945270082841B /* BasicRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRegressionTests.swift; sourceTree = "<group>"; };
 		725E9E0E1C24B3A800364CE1 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		725E9E101C24B45E00364CE1 /* CacheEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheEntry.swift; sourceTree = "<group>"; };
-		72610B571C5272BC0010D5B1 /* CallbackThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallbackThread.swift; sourceTree = "<group>"; };
 		72662B581C57BF310058F6EF /* SQLiteType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteType.swift; sourceTree = "<group>"; };
 		72662B5A1C57C0310058F6EF /* SQLiteTypeName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteTypeName.swift; sourceTree = "<group>"; };
 		72662B5E1C57E7FE0058F6EF /* IndexedProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedProperty.swift; sourceTree = "<group>"; };
-		7269F0341C56DD7C007FF29B /* CollectionTypeObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTypeObserver.swift; sourceTree = "<group>"; };
 		726D24521C767D5C003CE68C /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		726D24541C767F02003CE68C /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = usr/include/sqlite3.h; sourceTree = SDKROOT; };
 		7277F5471C4C01040081118D /* SQLiteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteCollection.swift; sourceTree = "<group>"; };
@@ -312,6 +317,18 @@
 		72B616E01BAF474A00CFE67C /* Turf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Turf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B616E31BAF474A00CFE67C /* Turf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Turf.h; path = ../Turf/Turf.h; sourceTree = "<group>"; };
 		72B616E51BAF474A00CFE67C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Turf/Info.plist; sourceTree = "<group>"; };
+		72BCDD471D3009F6000AB623 /* TransactionalValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionalValue.swift; sourceTree = "<group>"; };
+		72BCDD491D301715000AB623 /* IndexableObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexableObservable.swift; sourceTree = "<group>"; };
+		72BCDD4C1D3017A0000AB623 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		72BCDD4D1D3017A0000AB623 /* MapObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapObservable.swift; sourceTree = "<group>"; };
+		72BCDD4E1D3017A0000AB623 /* BasicDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicDisposable.swift; sourceTree = "<group>"; };
+		72BCDD4F1D3017A0000AB623 /* Subject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subject.swift; sourceTree = "<group>"; };
+		72BCDD501D3017A0000AB623 /* SharedObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedObservable.swift; sourceTree = "<group>"; };
+		72BCDD511D3017A0000AB623 /* FilterObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterObservable.swift; sourceTree = "<group>"; };
+		72BCDD521D3017A0000AB623 /* AnyObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyObserver.swift; sourceTree = "<group>"; };
+		72BCDD531D3017A0000AB623 /* Disposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disposable.swift; sourceTree = "<group>"; };
+		72BCDD541D3017A0000AB623 /* DisposeBag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisposeBag.swift; sourceTree = "<group>"; };
+		72BCDD551D3017A0000AB623 /* CallbackThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallbackThread.swift; sourceTree = "<group>"; };
 		72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeErasedCollection.swift; sourceTree = "<group>"; };
 		72D10FDE1CBBEF8800401FFE /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = ../Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		72D10FDF1CBBEF8800401FFE /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = ../Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
@@ -335,6 +352,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				722D725D1D29BD5B00BCD234 /* RxSwift.framework in Frameworks */,
 				72D10FE01CBBEF8800401FFE /* Nimble.framework in Frameworks */,
 				72D10FE11CBBEF8800401FFE /* Quick.framework in Frameworks */,
 				724E75BB1CA945270082841B /* Turf.framework in Frameworks */,
@@ -355,6 +373,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				722D725A1D29B27500BCD234 /* RxSwift.framework in Frameworks */,
 				726D24531C767D5C003CE68C /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -366,14 +385,10 @@
 			isa = PBXGroup;
 			children = (
 				723178CB1CA0A8F00089E7A8 /* Internals */,
-				7205583D1C518E0600B0847E /* BasicDisposable.swift */,
-				72610B571C5272BC0010D5B1 /* CallbackThread.swift */,
-				7269F0341C56DD7C007FF29B /* CollectionTypeObserver.swift */,
-				720558331C518D1300B0847E /* Disposable.swift */,
-				720558351C518D2100B0847E /* DisposeBag.swift */,
+				72BCDD4B1D30173E000AB623 /* MiniRx */,
+				72BCDD491D301715000AB623 /* IndexableObservable.swift */,
 				720558371C518D2F00B0847E /* ObservableCollection.swift */,
-				720558391C518D5100B0847E /* ObserverOf.swift */,
-				7205583F1C51900E00B0847E /* TypedObservable.swift */,
+				72BCDD471D3009F6000AB623 /* TransactionalValue.swift */,
 			);
 			path = Observable;
 			sourceTree = "<group>";
@@ -628,6 +643,7 @@
 		72B616D61BAF474A00CFE67C = {
 			isa = PBXGroup;
 			children = (
+				722D72591D29B27500BCD234 /* RxSwift.framework */,
 				723556471CD5243100EAB32D /* libsqlite3.tbd */,
 				726D24521C767D5C003CE68C /* libsqlite3.tbd */,
 				72B616E11BAF474A00CFE67C /* Products */,
@@ -667,6 +683,23 @@
 				7218C9611C274760004457DB /* Weak */,
 			);
 			path = Turf;
+			sourceTree = "<group>";
+		};
+		72BCDD4B1D30173E000AB623 /* MiniRx */ = {
+			isa = PBXGroup;
+			children = (
+				72BCDD521D3017A0000AB623 /* AnyObserver.swift */,
+				72BCDD4E1D3017A0000AB623 /* BasicDisposable.swift */,
+				72BCDD551D3017A0000AB623 /* CallbackThread.swift */,
+				72BCDD531D3017A0000AB623 /* Disposable.swift */,
+				72BCDD541D3017A0000AB623 /* DisposeBag.swift */,
+				72BCDD511D3017A0000AB623 /* FilterObservable.swift */,
+				72BCDD4D1D3017A0000AB623 /* MapObservable.swift */,
+				72BCDD4C1D3017A0000AB623 /* Observable.swift */,
+				72BCDD501D3017A0000AB623 /* SharedObservable.swift */,
+				72BCDD4F1D3017A0000AB623 /* Subject.swift */,
+			);
+			path = MiniRx;
 			sourceTree = "<group>";
 		};
 		72EA32681C24B353003CEAFA /* Cache */ = {
@@ -766,6 +799,7 @@
 				72B616DC1BAF474A00CFE67C /* Frameworks */,
 				72B616DD1BAF474A00CFE67C /* Headers */,
 				72B616DE1BAF474A00CFE67C /* Resources */,
+				722D725B1D29BCDE00BCD234 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -861,6 +895,7 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Quick.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Nimble.framework",
+				/Users/jordanhamill/Documents/Projects/TurfDb/TurfRx/Carthage/Build/iOS/RxSwift.framework,
 			);
 			outputPaths = (
 			);
@@ -929,14 +964,7 @@
 				723556341CD5238F00EAB32D /* MigrationState.swift in Sources */,
 				723556351CD5238F00EAB32D /* Result.swift in Sources */,
 				723556361CD5238F00EAB32D /* TypeErasedObservableCollection.swift in Sources */,
-				723556371CD5238F00EAB32D /* BasicDisposable.swift in Sources */,
-				723556381CD5238F00EAB32D /* CallbackThread.swift in Sources */,
-				723556391CD5238F00EAB32D /* CollectionTypeObserver.swift in Sources */,
-				7235563A1CD5238F00EAB32D /* Disposable.swift in Sources */,
-				7235563B1CD5238F00EAB32D /* DisposeBag.swift in Sources */,
 				7235563C1CD5238F00EAB32D /* ObservableCollection.swift in Sources */,
-				7235563D1CD5238F00EAB32D /* ObserverOf.swift in Sources */,
-				7235563E1CD5238F00EAB32D /* TypedObservable.swift in Sources */,
 				7235563F1CD5238F00EAB32D /* SQLiteAdapter.swift in Sources */,
 				723556401CD5238F00EAB32D /* SQLiteError.swift in Sources */,
 				723556411CD5238F00EAB32D /* SQLiteRowChangeType.swift in Sources */,
@@ -991,24 +1019,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				724C9B5C1C2575D700E9AD79 /* CollectionLocalStorage.swift in Sources */,
+				72BCDD5D1D3017A0000AB623 /* Disposable.swift in Sources */,
+				72BCDD571D3017A0000AB623 /* MapObservable.swift in Sources */,
 				720FA9B11C259D2000BEF295 /* ValuesSequence.swift in Sources */,
 				72088FD71C1E10EF00127EA0 /* CollectionProperty.swift in Sources */,
 				72662B5B1C57C0310058F6EF /* SQLiteTypeName.swift in Sources */,
 				723178CA1CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift in Sources */,
 				72E7F4EA1C3433D9009C1D9D /* SQLiteError.swift in Sources */,
 				724E75A61CA6C2890082841B /* CollectionMigration.swift in Sources */,
-				7205583A1C518D5100B0847E /* ObserverOf.swift in Sources */,
 				727B02481CA55B3B006D245A /* WhereClause.swift in Sources */,
 				72F6F7001C24622A0059D72C /* ExtendedCollection.swift in Sources */,
+				72BCDD5C1D3017A0000AB623 /* AnyObserver.swift in Sources */,
+				72BCDD4A1D301715000AB623 /* IndexableObservable.swift in Sources */,
 				724E758A1CA5A04C0082841B /* ReadWriteCollection+IndexedCollection.swift in Sources */,
 				72088F881C1CD8FE00127EA0 /* Connection.swift in Sources */,
 				72088F9A1C1CE15100127EA0 /* ReadableCollection.swift in Sources */,
+				72BCDD481D3009F6000AB623 /* TransactionalValue.swift in Sources */,
 				720470C31C1E17B200EE0E63 /* ReadCollection+IndexedCollection.swift in Sources */,
-				7269F0351C56DD7C007FF29B /* CollectionTypeObserver.swift in Sources */,
 				72297A8E1C257CDB0001BE40 /* CollectionRowChange.swift in Sources */,
 				724E75911CA5BD0B0082841B /* PreparedQuery.swift in Sources */,
 				724E75A21CA6BDFE0082841B /* MigrationState.swift in Sources */,
-				72610B581C5272BC0010D5B1 /* CallbackThread.swift in Sources */,
 				725E9E0F1C24B3A800364CE1 /* Cache.swift in Sources */,
 				72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */,
 				72088FAA1C1CE70800127EA0 /* CollectionsContainer.swift in Sources */,
@@ -1017,23 +1047,23 @@
 				72345EAA1C1E254C0001A136 /* SQLiteAdapter.swift in Sources */,
 				724E75AE1CA6F76F0082841B /* Logger.swift in Sources */,
 				72345EA61C1E1B840001A136 /* SecondaryIndexConnection.swift in Sources */,
-				720558401C51900E00B0847E /* TypedObservable.swift in Sources */,
+				72BCDD561D3017A0000AB623 /* Observable.swift in Sources */,
 				72088FB31C1CEB9500127EA0 /* IndexedProperties.swift in Sources */,
 				724E75A41CA6C0AD0082841B /* MigrationOperations.swift in Sources */,
 				724E75951CA5BD330082841B /* Connection+PreparedQuery.swift in Sources */,
 				724E759E1CA69BEF0082841B /* Migration.swift in Sources */,
+				72BCDD591D3017A0000AB623 /* Subject.swift in Sources */,
 				7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */,
+				72BCDD5F1D3017A0000AB623 /* CallbackThread.swift in Sources */,
 				7206AFC01C4EF99A004E04D4 /* ObservingConnection.swift in Sources */,
 				7218C9631C274778004457DB /* WeakBox.swift in Sources */,
 				72088F841C1CD8C500127EA0 /* ReadTransaction.swift in Sources */,
 				72088F861C1CD8E200127EA0 /* ReadWriteTransaction.swift in Sources */,
 				723178CD1CA0A9040089E7A8 /* TypeErasedObservableCollection.swift in Sources */,
 				724E758E1CA5BA400082841B /* ObservableCollection+IndexedCollection.swift in Sources */,
-				7205583E1C518E0600B0847E /* BasicDisposable.swift in Sources */,
-				720558341C518D1300B0847E /* Disposable.swift in Sources */,
 				724E75A81CA6E3A80082841B /* CollectionMigrationOperations.swift in Sources */,
-				720558361C518D2100B0847E /* DisposeBag.swift in Sources */,
 				724E75A01CA6B54D0082841B /* Result.swift in Sources */,
+				72BCDD5E1D3017A0000AB623 /* DisposeBag.swift in Sources */,
 				728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */,
 				722DCF651C5EAE020011C1EF /* ExistingExtensionInstallation.swift in Sources */,
 				72297A8C1C257B290001BE40 /* SQLiteRowChangeType.swift in Sources */,
@@ -1054,9 +1084,12 @@
 				72088F941C1CDA1C00127EA0 /* ReadCollection.swift in Sources */,
 				72662B5F1C57E7FE0058F6EF /* IndexedProperty.swift in Sources */,
 				72297A901C257CE00001BE40 /* ChangeSet.swift in Sources */,
+				72BCDD5B1D3017A0000AB623 /* FilterObservable.swift in Sources */,
 				727B024A1CA56BC5006D245A /* WhereClauses.swift in Sources */,
 				724E759C1CA69BE40082841B /* MigrationList.swift in Sources */,
+				72BCDD5A1D3017A0000AB623 /* SharedObservable.swift in Sources */,
 				724E759A1CA69BD00082841B /* DatabaseMigrator.swift in Sources */,
+				72BCDD581D3017A0000AB623 /* BasicDisposable.swift in Sources */,
 				72345EA81C1E1BA20001A136 /* SecondaryIndexWriteTransaction.swift in Sources */,
 				72088F961C1CDA3200127EA0 /* ReadWriteCollection.swift in Sources */,
 			);
@@ -1132,6 +1165,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)Rx/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "TurfRegressionTests-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
@@ -1149,6 +1183,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)Rx/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "TurfRegressionTests-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
@@ -1295,7 +1330,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)Rx/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Turf/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1317,7 +1355,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)Rx/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Turf/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1358,6 +1399,7 @@
 				729C5C591CD76D0700EE1B6E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		72B616DA1BAF474A00CFE67C /* Build configuration list for PBXProject "Turf" */ = {
 			isa = XCConfigurationList;

@@ -1,5 +1,7 @@
+//
 extension ObservableCollection where TCollection: IndexedCollection {
-    public typealias Prefilter = (([TCollection.Value], ChangeSet<String>) -> Bool)?
+
+    //TODO Threading
 
     // MARK: Public methods
 
@@ -12,88 +14,47 @@ extension ObservableCollection where TCollection: IndexedCollection {
      - parameter thread: Thread to execute the prefilter and potential query on.
      - parameter prefilterChangeSet: Executed before querying the collection to determine if the query is required.
      */
-    public func valuesWhere(clause: WhereClause, thread: CallbackThread = .CallingThread, prefilterChangeSet: Prefilter = nil) -> CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>> {
-        let queryResultsObserver = CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>>(initalValue: [])
+    public func values(matching clause: WhereClause, prefilter: (changeSet: ChangeSet<String>, previousValues: [TCollection.Value]) -> Bool) -> Observable<TransactionalValue<[TCollection.Value], Collections>> {
+        var previous: [TCollection.Value] = []
 
-        let disposable =
-            didChange(thread) { (collection, changeSet) in
-                let canCheckPreviousValue = prefilterChangeSet != nil && queryResultsObserver.value.count > 0
-                let shouldRequery = canCheckPreviousValue ? prefilterChangeSet!(queryResultsObserver.value, changeSet) : true
+        return self.filterChangeSet { (changeSet) -> Bool in
+                return prefilter(changeSet: changeSet, previousValues: previous)
+            }.map { (collection, changeSet)  in
+                let newValues = collection.findValuesWhere(clause)
+                previous = newValues
+                return TransactionalValue(transaction: collection.readTransaction, value: newValues)
+            }
+    }
 
-                if shouldRequery {
-                    let queryResults = collection!.findValuesWhere(clause)
-                    queryResultsObserver.setValue(queryResults, userInfo: collection!.readTransaction)
-                }
+    //TODO PreparedValuesWhereQuery - could it conform to a protocol to make these generic or would that make the signature unwieldy and slow
+
+    public func values(matching clause: WhereClause) -> Observable<TransactionalValue<[TCollection.Value], Collections>> {
+        return self.map { (collection, changeSet)  in
+            let newValues = collection.findValuesWhere(clause)
+            return TransactionalValue(transaction: collection.readTransaction, value: newValues)
         }
+    }
 
-        queryResultsObserver.disposeBag.add(disposable)
-        // If disposing ancestors, dispose this collection and all its child observers by removing from ObservingConnection
-        queryResultsObserver.disposeBag.parent = self.disposeBag
+    public func indexableValues(matching clause: WhereClause) -> IndexableObservable<[TCollection.Value]> {
+        return IndexableObservable(observable: self.map { return $0.0.findValuesWhere(clause) })
+    }
 
-        return queryResultsObserver
+    public func indexableValues(matching clause: WhereClause, prefilter: (changeSet: ChangeSet<String>, previousValues: [TCollection.Value]) -> Bool) -> IndexableObservable<[TCollection.Value]> {
+        var previous: [TCollection.Value] = []
+
+        let observable = self.filterChangeSet { (changeSet) -> Bool in
+                return prefilter(changeSet: changeSet, previousValues: previous)
+            }.map { (collection, changeSet) -> [TCollection.Value] in
+                let newValues = collection.findValuesWhere(clause)
+                previous = newValues
+                return newValues
+            }
+        return IndexableObservable(observable: observable)
     }
 
     // MARK: Prepared query
 
-    /**
-     Observe the values returned by `predicate` after a collection change.
-     If the query is expensive, the collection change set can be examined first by using `prefilterChangeSet`.
-     - note:
-     - Thread safe.
-     - parameter preparedQuery: Prepared secondary indexed query to execute on collection change.
-     - parameter thread: Thread to execute the prefilter and potential query on.
-     - parameter prefilterChangeSet: Executed before querying the collection to determine if the query is required.
-     */
-    public func valuesWhere(preparedQuery: PreparedValuesWhereQuery<Collections>, thread: CallbackThread = .CallingThread, prefilterChangeSet: Prefilter = nil) -> CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>> {
-        let queryResultsObserver = CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>>(initalValue: [])
-
-        let disposable =
-            didChange(thread) { (collection, changeSet) in
-                let canCheckPreviousValue = prefilterChangeSet != nil && queryResultsObserver.value.count > 0
-                let shouldRequery = canCheckPreviousValue ? prefilterChangeSet!(queryResultsObserver.value, changeSet) : true
-
-                if shouldRequery {
-                    let queryResults = collection!.findValuesWhere(preparedQuery)
-                    queryResultsObserver.setValue(queryResults, userInfo: collection!.readTransaction)
-                }
-        }
-
-        queryResultsObserver.disposeBag.add(disposable)
-        // If disposing ancestors, dispose this collection and all its child observers by removing from ObservingConnection
-        queryResultsObserver.disposeBag.parent = self.disposeBag
-
-        return queryResultsObserver
-    }
 
     // MARK: Raw SQL query
 
-    /**
-     Observe the values returned by `predicate` after a collection change.
-     If the query is expensive, the collection change set can be examined first by using `prefilterChangeSet`.
-     - note:
-     - Thread safe.
-     - parameter predicate: Secondary indexed query to execute on collection change.
-     - parameter thread: Thread to execute the prefilter and potential query on.
-     - parameter prefilterChangeSet: Executed before querying the collection to determine if the query is required.
-     */
-    public func valuesWhere(predicate: String, thread: CallbackThread = .CallingThread, prefilterChangeSet: Prefilter = nil) -> CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>> {
-        let queryResultsObserver = CollectionTypeObserver<[TCollection.Value], ReadTransaction<Collections>>(initalValue: [])
-
-        let disposable =
-            didChange(thread) { (collection, changeSet) in
-                let canCheckPreviousValue = prefilterChangeSet != nil && queryResultsObserver.value.count > 0
-                let shouldRequery = canCheckPreviousValue ? prefilterChangeSet!(queryResultsObserver.value, changeSet) : true
-
-                if shouldRequery {
-                    let queryResults = collection!.findValuesWhere(predicate)
-                    queryResultsObserver.setValue(queryResults, userInfo: collection!.readTransaction)
-                }
-        }
-
-        queryResultsObserver.disposeBag.add(disposable)
-        // If disposing ancestors, dispose this collection and all its child observers by removing from ObservingConnection
-        queryResultsObserver.disposeBag.parent = self.disposeBag
-        
-        return queryResultsObserver
-    }
 }

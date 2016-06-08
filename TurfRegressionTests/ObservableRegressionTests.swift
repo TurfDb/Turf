@@ -1,6 +1,7 @@
 import Quick
 import Nimble
 import Turf
+import RxSwift
 
 class ObservablesRegressionTests: QuickSpec {
     override func spec() {
@@ -21,12 +22,15 @@ class ObservablesRegressionTests: QuickSpec {
                 }
 
                 context("and a value is written to the wheels collection") {
-                    it("does not call didChange") {
+                    it("does not call didChange with any changes") {
 
                         var didChangeCalled = false
-                        observableCarsCollection.didChange { carsCollection, changes in
+                        var didChangeCalledWithChanges = true
+                        let disposable = observableCarsCollection.subscribeNext { carsCollection, changes in
                             didChangeCalled = true
+                            didChangeCalledWithChanges = changes.changes.count > 0 || changes.allValuesRemoved
                         }
+
 
                         try! tester.connection1.readWriteTransaction { transaction, collections in
                             let wheel = WheelModel(uuid: "test_1", manufacturer: "Pirelli", size: 18.0)
@@ -34,7 +38,9 @@ class ObservablesRegressionTests: QuickSpec {
                                 .setValue(wheel, forKey: wheel.uuid)
                         }
 
-                        expect(didChangeCalled) == false
+                        expect(didChangeCalled) == true
+                        expect(didChangeCalledWithChanges) == false
+                        disposable.dispose()
                     }
                 }
 
@@ -42,7 +48,7 @@ class ObservablesRegressionTests: QuickSpec {
                     it("calls didChange with only an insert for test_1") {
 
                         var changeSet: ChangeSet<String>?
-                        observableCarsCollection.didChange { carsCollection, changes in
+                        let disposable = observableCarsCollection.subscribeNext { carsCollection, changes in
                             changeSet = changes
                         }
 
@@ -55,6 +61,7 @@ class ObservablesRegressionTests: QuickSpec {
                         expect(changeSet?.hasChangeForKey("test_1")) == true
                         expect(changeSet?.changes.count) == 1
                         expect(changeSet?.allValuesRemoved) == false
+                        disposable.dispose()
 
                         switch changeSet!.changes.first! {
                         case .Insert(let key):
@@ -75,7 +82,7 @@ class ObservablesRegressionTests: QuickSpec {
                         it("calls didChange with only an update for test_1") {
 
                             var changeSet: ChangeSet<String>?
-                            observableCarsCollection.didChange { carsCollection, changes in
+                            let disposable = observableCarsCollection.subscribeNext { carsCollection, changes in
                                 changeSet = changes
                             }
 
@@ -88,6 +95,7 @@ class ObservablesRegressionTests: QuickSpec {
                             expect(changeSet?.hasChangeForKey("test_1")) == true
                             expect(changeSet?.changes.count) == 1
                             expect(changeSet?.allValuesRemoved) == false
+                            disposable.dispose()
 
                             switch changeSet!.changes.first! {
                             case .Update(let key):
@@ -109,7 +117,7 @@ class ObservablesRegressionTests: QuickSpec {
                         it("calls didChange with only a remove for test_1") {
 
                             var changeSet: ChangeSet<String>?
-                            observableCarsCollection.didChange { carsCollection, changes in
+                            let disposable = observableCarsCollection.subscribeNext { carsCollection, changes in
                                 changeSet = changes
                             }
 
@@ -120,6 +128,7 @@ class ObservablesRegressionTests: QuickSpec {
                             expect(changeSet?.hasChangeForKey("test_1")) == true
                             expect(changeSet?.changes.count) == 1
                             expect(changeSet?.allValuesRemoved) == false
+                            disposable.dispose()
 
                             switch changeSet!.changes.first! {
                             case .Remove(let key):
@@ -141,7 +150,7 @@ class ObservablesRegressionTests: QuickSpec {
                         it("calls didChange with only allValuesRemoved set") {
 
                             var changeSet: ChangeSet<String>?
-                            observableCarsCollection.didChange { carsCollection, changes in
+                            let disposable = observableCarsCollection.subscribeNext { carsCollection, changes in
                                 changeSet = changes
                             }
 
@@ -152,6 +161,7 @@ class ObservablesRegressionTests: QuickSpec {
                             expect(changeSet?.hasChangeForKey("test_1")) == true
                             expect(changeSet?.changes.count) == 0
                             expect(changeSet?.allValuesRemoved) == true
+                            disposable.dispose()
                         }
                     }
                 }
