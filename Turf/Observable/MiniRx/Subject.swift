@@ -11,7 +11,7 @@ public class Subject<Value>: Observable<Value>, ObserverType {
 
     // MARK: Public methods
 
-    public override func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    override func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
         OSSpinLockLock(&lock)
         defer { OSSpinLockUnlock(&lock) }
 
@@ -33,7 +33,7 @@ public class Subject<Value>: Observable<Value>, ObserverType {
     }
 
     public func asObserver() -> AnyObserver<Value> {
-        return AnyObserver(handleNext: { self.handle(next: $0) })
+        return AnyObserver(thread: .CallingThread, handleNext: { self.handle(next: $0) })
     }
 
     // MARK: Internal methods
@@ -55,7 +55,7 @@ public class BehaviourSubject<Value>: Subject<Value> {
         super.init()
     }
 
-    public override func subscribe<Observer : ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    override func subscribe<Observer : ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
         OSSpinLockLock(&valueLock)
         defer { OSSpinLockUnlock(&valueLock) }
 

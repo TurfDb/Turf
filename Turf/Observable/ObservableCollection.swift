@@ -1,4 +1,4 @@
-//import RxSwift
+import Foundation
 
 public class ObservableCollection<TCollection: Collection, Collections: CollectionsContainer>: SharedObservable<(collection: ReadCollection<TCollection, Collections>, changeSet: ChangeSet<String>)>, TypeErasedObservableCollection {
     public typealias CollectionChanges = (collection: ReadCollection<TCollection, Collections>, changeSet: ChangeSet<String>)
@@ -32,34 +32,3 @@ public class ObservableCollection<TCollection: Collection, Collections: Collecti
         }
     }
 }
-
-// TODO Implement RxSwift extensions that map as close to 100% to my mini internal version.
-// TODO Implement specific value changes observing
-// TODO Test out zipping specific value change observables as producing change Events.
-// zip(checkUpdatedObservable, lineItemInsertedObservable).subscribeNext { (check, lineItem) in postEvent(LineItemAdded()) }
-
-//extension ObservableCollection: ObservableType {
-//    public typealias E = (collection: ReadCollection<TCollection, Collections>, changeSet: ChangeSet<String>)
-//
-//    public func asObservable() -> RxSwift.Observable<ObservableCollection.E> {
-//        return Observable.create { observer in
-//            return self.subscribe(observer)
-//        }
-//    }
-//
-//    public func subscribe<O : ObserverType where O.E == ObservableCollection.E>(observer: O) -> RxSwift.Disposable {
-//        let didChangeDisposable = self.didChange(callback: { (collection, changeSet) in
-//            observer.on(.Next((collection: collection, changeSet: changeSet)))
-//        })
-//
-//        return AnonymousDisposable {
-//            didChangeDisposable.dispose()
-//        }
-//    }
-//
-////    public func all() -> RxSwift.Observable<[TCollection.Value]> {
-////        return asObservable().map { collection, changeSet in
-////            return Array(collection.allValues)
-////        }
-////    }
-//}

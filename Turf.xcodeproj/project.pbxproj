@@ -43,9 +43,6 @@
 		72297A8C1C257B290001BE40 /* SQLiteRowChangeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72297A8B1C257B290001BE40 /* SQLiteRowChangeType.swift */; };
 		72297A8E1C257CDB0001BE40 /* CollectionRowChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72297A8D1C257CDB0001BE40 /* CollectionRowChange.swift */; };
 		72297A901C257CE00001BE40 /* ChangeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72297A8F1C257CE00001BE40 /* ChangeSet.swift */; };
-		722D725A1D29B27500BCD234 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 722D72591D29B27500BCD234 /* RxSwift.framework */; };
-		722D725C1D29BCE600BCD234 /* RxSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 722D72591D29B27500BCD234 /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		722D725D1D29BD5B00BCD234 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 722D72591D29B27500BCD234 /* RxSwift.framework */; };
 		722DCF651C5EAE020011C1EF /* ExistingExtensionInstallation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722DCF641C5EAE020011C1EF /* ExistingExtensionInstallation.swift */; };
 		723178CA1CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723178C91CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift */; };
 		723178CD1CA0A9040089E7A8 /* TypeErasedObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723178CC1CA0A9040089E7A8 /* TypeErasedObservableCollection.swift */; };
@@ -179,6 +176,18 @@
 		72BCDD5D1D3017A0000AB623 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD531D3017A0000AB623 /* Disposable.swift */; };
 		72BCDD5E1D3017A0000AB623 /* DisposeBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD541D3017A0000AB623 /* DisposeBag.swift */; };
 		72BCDD5F1D3017A0000AB623 /* CallbackThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD551D3017A0000AB623 /* CallbackThread.swift */; };
+		72BCDD601D32D353000AB623 /* IndexableObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD491D301715000AB623 /* IndexableObservable.swift */; };
+		72BCDD611D32D357000AB623 /* TransactionalValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD471D3009F6000AB623 /* TransactionalValue.swift */; };
+		72BCDD621D32D35B000AB623 /* AnyObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD521D3017A0000AB623 /* AnyObserver.swift */; };
+		72BCDD631D32D35B000AB623 /* BasicDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4E1D3017A0000AB623 /* BasicDisposable.swift */; };
+		72BCDD641D32D35B000AB623 /* CallbackThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD551D3017A0000AB623 /* CallbackThread.swift */; };
+		72BCDD651D32D35B000AB623 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD531D3017A0000AB623 /* Disposable.swift */; };
+		72BCDD661D32D35B000AB623 /* DisposeBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD541D3017A0000AB623 /* DisposeBag.swift */; };
+		72BCDD671D32D35B000AB623 /* FilterObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD511D3017A0000AB623 /* FilterObservable.swift */; };
+		72BCDD681D32D35B000AB623 /* MapObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4D1D3017A0000AB623 /* MapObservable.swift */; };
+		72BCDD691D32D35B000AB623 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4C1D3017A0000AB623 /* Observable.swift */; };
+		72BCDD6A1D32D35B000AB623 /* SharedObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD501D3017A0000AB623 /* SharedObservable.swift */; };
+		72BCDD6B1D32D35B000AB623 /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4F1D3017A0000AB623 /* Subject.swift */; };
 		72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */; };
 		72D10FE01CBBEF8800401FFE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72D10FDE1CBBEF8800401FFE /* Nimble.framework */; };
 		72D10FE11CBBEF8800401FFE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72D10FDF1CBBEF8800401FFE /* Quick.framework */; };
@@ -212,7 +221,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				722D725C1D29BCE600BCD234 /* RxSwift.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +274,6 @@
 		72297A8B1C257B290001BE40 /* SQLiteRowChangeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteRowChangeType.swift; sourceTree = "<group>"; };
 		72297A8D1C257CDB0001BE40 /* CollectionRowChange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionRowChange.swift; sourceTree = "<group>"; };
 		72297A8F1C257CE00001BE40 /* ChangeSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeSet.swift; sourceTree = "<group>"; };
-		722D72591D29B27500BCD234 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = ../TurfRx/Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
 		722DCF641C5EAE020011C1EF /* ExistingExtensionInstallation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExistingExtensionInstallation.swift; sourceTree = "<group>"; };
 		723178C91CA0A5230089E7A8 /* IndexedPropertyFromCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedPropertyFromCollection.swift; sourceTree = "<group>"; };
 		723178CC1CA0A9040089E7A8 /* TypeErasedObservableCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeErasedObservableCollection.swift; sourceTree = "<group>"; };
@@ -352,7 +359,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				722D725D1D29BD5B00BCD234 /* RxSwift.framework in Frameworks */,
 				72D10FE01CBBEF8800401FFE /* Nimble.framework in Frameworks */,
 				72D10FE11CBBEF8800401FFE /* Quick.framework in Frameworks */,
 				724E75BB1CA945270082841B /* Turf.framework in Frameworks */,
@@ -373,7 +379,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				722D725A1D29B27500BCD234 /* RxSwift.framework in Frameworks */,
 				726D24531C767D5C003CE68C /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -643,7 +648,6 @@
 		72B616D61BAF474A00CFE67C = {
 			isa = PBXGroup;
 			children = (
-				722D72591D29B27500BCD234 /* RxSwift.framework */,
 				723556471CD5243100EAB32D /* libsqlite3.tbd */,
 				726D24521C767D5C003CE68C /* libsqlite3.tbd */,
 				72B616E11BAF474A00CFE67C /* Products */,
@@ -895,7 +899,6 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Quick.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Nimble.framework",
-				/Users/jordanhamill/Documents/Projects/TurfDb/TurfRx/Carthage/Build/iOS/RxSwift.framework,
 			);
 			outputPaths = (
 			);
@@ -913,9 +916,12 @@
 				723556011CD5238F00EAB32D /* Cache.swift in Sources */,
 				723556021CD5238F00EAB32D /* CacheEntry.swift in Sources */,
 				723556031CD5238F00EAB32D /* CollectionRowChange.swift in Sources */,
+				72BCDD611D32D357000AB623 /* TransactionalValue.swift in Sources */,
+				72BCDD681D32D35B000AB623 /* MapObservable.swift in Sources */,
 				723556041CD5238F00EAB32D /* ChangeSet.swift in Sources */,
 				723556051CD5238F00EAB32D /* CacheUpdates.swift in Sources */,
 				723556061CD5238F00EAB32D /* CollectionLocalStorage.swift in Sources */,
+				72BCDD6B1D32D35B000AB623 /* Subject.swift in Sources */,
 				723556071CD5238F00EAB32D /* TypeErasedCollectionLocalStorage.swift in Sources */,
 				723556081CD5238F00EAB32D /* TypeErasedCollection.swift in Sources */,
 				723556091CD5238F00EAB32D /* Collection.swift in Sources */,
@@ -930,19 +936,25 @@
 				723556121CD5238F00EAB32D /* Database.swift in Sources */,
 				723556131CD5238F00EAB32D /* ObservingConnection.swift in Sources */,
 				723556141CD5238F00EAB32D /* ReadTransaction.swift in Sources */,
+				72BCDD651D32D35B000AB623 /* Disposable.swift in Sources */,
 				723556151CD5238F00EAB32D /* ReadWriteTransaction.swift in Sources */,
+				72BCDD621D32D35B000AB623 /* AnyObserver.swift in Sources */,
 				723556161CD5238F00EAB32D /* SecondaryIndexConnection.swift in Sources */,
+				72BCDD641D32D35B000AB623 /* CallbackThread.swift in Sources */,
 				723556171CD5238F00EAB32D /* SecondaryIndexWriteTransaction.swift in Sources */,
 				723556181CD5238F00EAB32D /* WhereClauses.swift in Sources */,
 				723556191CD5238F00EAB32D /* Connection+PreparedQuery.swift in Sources */,
 				7235561A1CD5238F00EAB32D /* ObservingConnection+PreparedQuery.swift in Sources */,
 				7235561B1CD5238F00EAB32D /* PreparedQuery.swift in Sources */,
 				7235561C1CD5238F00EAB32D /* IndexedCollection.swift in Sources */,
+				72BCDD601D32D353000AB623 /* IndexableObservable.swift in Sources */,
 				7235561D1CD5238F00EAB32D /* IndexedProperties.swift in Sources */,
+				72BCDD631D32D35B000AB623 /* BasicDisposable.swift in Sources */,
 				7235561E1CD5238F00EAB32D /* IndexedProperty.swift in Sources */,
 				7235561F1CD5238F00EAB32D /* IndexedPropertyFromCollection.swift in Sources */,
 				723556201CD5238F00EAB32D /* ReadCollection+IndexedCollection.swift in Sources */,
 				723556211CD5238F00EAB32D /* ReadWriteCollection+IndexedCollection.swift in Sources */,
+				72BCDD691D32D35B000AB623 /* Observable.swift in Sources */,
 				723556221CD5238F00EAB32D /* SecondaryIndex.swift in Sources */,
 				723556231CD5238F00EAB32D /* WhereClause.swift in Sources */,
 				723556241CD5238F00EAB32D /* ObservableCollection+IndexedCollection.swift in Sources */,
@@ -957,6 +969,7 @@
 				7235562D1CD5238F00EAB32D /* CollectionMigrationOperator.swift in Sources */,
 				7235562E1CD5238F00EAB32D /* CollectionMigration.swift in Sources */,
 				7235562F1CD5238F00EAB32D /* CollectionMigrationOperations.swift in Sources */,
+				72BCDD661D32D35B000AB623 /* DisposeBag.swift in Sources */,
 				723556301CD5238F00EAB32D /* DatabaseMigrator.swift in Sources */,
 				723556311CD5238F00EAB32D /* Migration.swift in Sources */,
 				723556321CD5238F00EAB32D /* MigrationList.swift in Sources */,
@@ -965,6 +978,8 @@
 				723556351CD5238F00EAB32D /* Result.swift in Sources */,
 				723556361CD5238F00EAB32D /* TypeErasedObservableCollection.swift in Sources */,
 				7235563C1CD5238F00EAB32D /* ObservableCollection.swift in Sources */,
+				72BCDD6A1D32D35B000AB623 /* SharedObservable.swift in Sources */,
+				72BCDD671D32D35B000AB623 /* FilterObservable.swift in Sources */,
 				7235563F1CD5238F00EAB32D /* SQLiteAdapter.swift in Sources */,
 				723556401CD5238F00EAB32D /* SQLiteError.swift in Sources */,
 				723556411CD5238F00EAB32D /* SQLiteRowChangeType.swift in Sources */,

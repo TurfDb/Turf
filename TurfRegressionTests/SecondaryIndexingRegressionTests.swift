@@ -103,23 +103,6 @@ class SecondaryIndexingRegressionTests: QuickSpec {
 
                         expect(oldTrees.count) == 6
                     }
-
-
-                    it("") {
-                        let cl = tester.collections.indexedTrees.indexed.age.equals(1)
-                        let coll = tester.observingConnection.observe(collection: tester.collections.indexedTrees)
-
-                        let _ = coll.indexableValues(matching: cl).subscribeNext { trees in
-                            print(trees.first)
-                        }
-
-                        //TODO Figure out hot-ness / shareable-ness (shouldn't be shared
-                        let firstTree = coll.indexableValues(matching: cl)[observableIndex: 0]
-                        let _ = firstTree.subscribeNext { tree in
-                            print(tree?.age)
-                        }
-                    }
-
                 }
             }
         }

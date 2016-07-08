@@ -1,7 +1,6 @@
 import Quick
 import Nimble
 import Turf
-import RxSwift
 
 class ObservablesRegressionTests: QuickSpec {
     override func spec() {
@@ -30,7 +29,6 @@ class ObservablesRegressionTests: QuickSpec {
                             didChangeCalled = true
                             didChangeCalledWithChanges = changes.changes.count > 0 || changes.allValuesRemoved
                         }
-
 
                         try! tester.connection1.readWriteTransaction { transaction, collections in
                             let wheel = WheelModel(uuid: "test_1", manufacturer: "Pirelli", size: 18.0)

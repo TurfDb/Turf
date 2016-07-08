@@ -24,8 +24,8 @@ public class Observable<Value> {
     }
 
     @warn_unused_result
-    public func subscribeNext(observer: (Value) -> Void) -> Disposable {
-        return subscribe(AnyObserver(handleNext: observer))
+    public func subscribeNext(on thread: CallbackThread = .CallingThread, observer: (Value) -> Void) -> Disposable {
+        return subscribe(AnyObserver(thread: thread, handleNext: observer))
     }
 }
 
@@ -36,7 +36,7 @@ public class AnyObservable<Value>: Observable<Value> {
         self.observableFactory = factory
     }
 
-    public override func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    override func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
         return observableFactory(observer.asObserver())
     }
 }

@@ -21,7 +21,7 @@ public class SharedObservable<Value>: Observable<Value> {
 
     // MARK: Public methods
 
-    public override func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    override func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
         let subscriberDisposable = subject.subscribe(observer)
 
         return BasicDisposable {
