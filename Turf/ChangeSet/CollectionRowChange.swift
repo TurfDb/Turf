@@ -12,11 +12,6 @@ public enum CollectionRowChange<Key: Equatable> {
     }
 }
 
-extension CollectionRowChange: Equatable {
-    public var hashValue: Int {
-        return 1
-    }
-}
 public func ==<Key: Equatable>(lhs: CollectionRowChange<Key>, rhs: CollectionRowChange<Key>) -> Bool {
     switch (lhs, rhs) {
     case (.Insert(let leftKey), .Insert(let rightKey)): return leftKey == rightKey
@@ -26,4 +21,3 @@ public func ==<Key: Equatable>(lhs: CollectionRowChange<Key>, rhs: CollectionRow
         return false
     }
 }
-
