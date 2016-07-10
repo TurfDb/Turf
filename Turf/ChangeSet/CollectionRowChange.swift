@@ -1,4 +1,4 @@
-public enum CollectionRowChange<Key> {
+public enum CollectionRowChange<Key: Equatable> {
     case Insert(key: Key)
     case Update(key: Key)
     case Remove(key: Key)
@@ -11,3 +11,19 @@ public enum CollectionRowChange<Key> {
         }
     }
 }
+
+extension CollectionRowChange: Equatable {
+    public var hashValue: Int {
+        return 1
+    }
+}
+public func ==<Key: Equatable>(lhs: CollectionRowChange<Key>, rhs: CollectionRowChange<Key>) -> Bool {
+    switch (lhs, rhs) {
+    case (.Insert(let leftKey), .Insert(let rightKey)): return leftKey == rightKey
+    case (.Update(let leftKey), .Update(let rightKey)): return leftKey == rightKey
+    case (.Remove(let leftKey), .Remove(let rightKey)): return leftKey == rightKey
+    default:
+        return false
+    }
+}
+

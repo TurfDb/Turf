@@ -35,44 +35,46 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
     // MARK: Public methods
 
     /**
-     - note: 
-        Thread safe.
+     - note:
+     Thread safe.
+     */
+    @warn_unused_result
+    public func observe<TCollection: Collection>(collection collection: TCollection) -> ObservableCollection<TCollection, Collections> {
+        var returnedObserable: ObservableCollection<TCollection, Collections>!
+
+        Dispatch.synchronouslyOn(self.connection.connectionQueue) {
+            guard self.observableCollections[collection.name] == nil else {
+                returnedObserable = self.observableCollections[collection.name]  as! ObservableCollection<TCollection, Collections>
+                return
+            }
+
+            returnedObserable =
+                ObservableCollection(collectionChangedObservable: Observable.create { [unowned self] observer in
+                    let collectionDidChange = { (transaction: ReadTransaction<Collections>, changeSet: ChangeSet<String>) in
+                        let readCollection = transaction.readOnly(collection)
+                        observer.handle(next: (readCollection, changeSet))
+                    }
+
+                    self.collectionUpdateProcessors[collection.name] = collectionDidChange
+                    return BasicDisposable { [weak self] in
+                        self?.collectionUpdateProcessors[collection.name] = nil
+                    }
+                }, collection: self.longLivedReadTransaction.readOnly(collection))
+
+
+            self.observableCollections[collection.name] = returnedObserable
+        }
+        
+        return returnedObserable
+    }
+
+
+    /**
+     - note:
+     Thread safe.
      */
     public func observeCollection<TCollection: Collection>(collection: TCollection) -> ObservableCollection<TCollection, Collections> {
-        let collectionDidChange = { [weak self] (transaction: ReadTransaction<Collections>, changeSet: ChangeSet<String>) in
-            guard let strongSelf = self else { return }
-
-            let observableCollection = strongSelf.observableCollections[collection.name] as! ObservableCollection<TCollection, Collections>
-            let readCollection = transaction.readOnly(collection)
-            observableCollection.processCollectionChanges(readCollection, changeSet: changeSet)
-        }
-
-        var observed: ObservableCollection<TCollection, Collections>!
-
-        Dispatch.synchronouslyOn(connection.connectionQueue) {
-            if let observedCollection = self.observableCollections[collection.name] as? ObservableCollection<TCollection, Collections> {
-                observed = observedCollection
-            } else {
-
-                let observedCollection = ObservableCollection<TCollection, Collections>(collection: self.longLivedReadTransaction.readOnly(collection))
-                self.observableCollections[collection.name] = observedCollection
-                self.collectionUpdateProcessors[collection.name] = collectionDidChange
-
-                observedCollection.disposeBag.add(
-                    BasicDisposable { [weak self] in
-                        self?.observableCollections.removeValueForKey(collection.name)
-                        self?.collectionUpdateProcessors.removeValueForKey(collection.name)
-                    }
-                )
-
-                //Don't dispose this connection
-                observedCollection.disposeBag.parent = nil
-                
-                observed = observedCollection
-            }
-        }
-
-        return observed
+        return observe(collection: collection)
     }
 
     /**

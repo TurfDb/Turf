@@ -1,15 +1,13 @@
 public class DisposeBag: Disposable {
+
     // MARK: Public properties
 
     public private(set) var disposed: Bool
 
-    // MARK: Internal properties
-
-    var parent: Disposable?
-
     // MARK: Private properties
 
     private var disposables: [Disposable]
+    private var lock: OSSpinLock = OS_SPINLOCK_INIT
 
     // MARK: Object lifecycle
 
@@ -20,27 +18,24 @@ public class DisposeBag: Disposable {
 
     // MARK: Public methods
 
-    public func add(disposable: Disposable) {
+    public func add(disposable disposable: Disposable) {
+        OSSpinLockLock(&lock)
+        defer { OSSpinLockUnlock(&lock) }
+
         disposables.append(disposable)
     }
 
-    public func dispose(disposeAncestors disposeAncestors: Bool = false) {
+    public func dispose() {
+        OSSpinLockLock(&lock)
+        defer { OSSpinLockUnlock(&lock) }
+
         guard !disposed else { return }
 
         for disposable in disposables {
-            disposable.dispose(disposeAncestors: disposeAncestors)
+            disposable.dispose()
         }
 
         disposables = []
-
-        if disposeAncestors {
-            parent?.dispose(disposeAncestors: disposeAncestors)
-        }
-        
         disposed = true
-    }
-
-    public func addToBag(disposeBag: DisposeBag) {
-        disposeBag.add(self)
     }
 }

@@ -1,6 +1,8 @@
 import Quick
 import Nimble
 
+import Turf
+
 class SecondaryIndexingRegressionTests: QuickSpec {
 
     override func spec() {
