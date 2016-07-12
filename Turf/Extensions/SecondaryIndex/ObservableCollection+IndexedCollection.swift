@@ -30,12 +30,12 @@ extension ObservableCollection where TCollection: IndexedCollection {
         var previous: [TCollection.Value] = []
 
         return self.filterChangeSet { (changeSet) -> Bool in
-            return prefilter(changeSet: changeSet, previousValues: previous)
+                return prefilter(changeSet: changeSet, previousValues: previous)
             }.map { (collection, changeSet)  in
                 let newValues = collection.findValuesWhere(clause)
                 previous = newValues
                 return TransactionalValue(transaction: collection.readTransaction, value: newValues)
-        }
+            }
     }
 
     /**
@@ -96,12 +96,12 @@ extension ObservableCollection where TCollection: IndexedCollection {
         var previous: [TCollection.Value] = []
 
         return self.filterChangeSet { (changeSet) -> Bool in
-            return prefilter(changeSet: changeSet, previousValues: previous)
+                return prefilter(changeSet: changeSet, previousValues: previous)
             }.map { (collection, changeSet)  in
                 let newValues = collection.findValuesWhere(clause)
                 previous = newValues
                 return TransactionalValue(transaction: collection.readTransaction, value: newValues)
-        }
+            }
     }
 
     /**
@@ -126,12 +126,12 @@ extension ObservableCollection where TCollection: IndexedCollection {
         var previous: [TCollection.Value] = []
 
         let observable = self.filterChangeSet { (changeSet) -> Bool in
-            return prefilter(changeSet: changeSet, previousValues: previous)
+                return prefilter(changeSet: changeSet, previousValues: previous)
             }.map { (collection, changeSet) -> [TCollection.Value] in
                 let newValues = collection.findValuesWhere(clause)
                 previous = newValues
                 return newValues
-        }
+            }
         return IndexableObservable(observable: observable)
     }
 
@@ -162,12 +162,12 @@ extension ObservableCollection where TCollection: IndexedCollection {
         var previous: [TCollection.Value] = []
 
         return self.filterChangeSet { (changeSet) -> Bool in
-            return prefilter(changeSet: changeSet, previousValues: previous)
+                return prefilter(changeSet: changeSet, previousValues: previous)
             }.map { (collection, changeSet)  in
                 let newValues = collection.findValuesWhere(clause)
                 previous = newValues
                 return TransactionalValue(transaction: collection.readTransaction, value: newValues)
-        }
+            }
     }
 
     /**
@@ -192,12 +192,12 @@ extension ObservableCollection where TCollection: IndexedCollection {
         var previous: [TCollection.Value] = []
 
         let observable = self.filterChangeSet { (changeSet) -> Bool in
-            return prefilter(changeSet: changeSet, previousValues: previous)
+                return prefilter(changeSet: changeSet, previousValues: previous)
             }.map { (collection, changeSet) -> [TCollection.Value] in
                 let newValues = collection.findValuesWhere(clause)
                 previous = newValues
                 return newValues
-        }
+            }
         return IndexableObservable(observable: observable)
     }
 }
