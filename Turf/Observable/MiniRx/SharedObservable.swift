@@ -4,7 +4,7 @@ import Foundation
 /// Reference counted multicast observable.
 /// Will only dispose of the source when all subscribers have been disposed.
 ///
-public class SharedObservable<Value>: Observable<Value> {
+public class SharedObservable<Value>: Producer<Value> {
     public typealias ValueType = Value
 
     // MARK: Private methods
@@ -21,7 +21,7 @@ public class SharedObservable<Value>: Observable<Value> {
 
     // MARK: Public methods
 
-    override func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    override func run<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
         let subscriberDisposable = subject.subscribe(observer)
 
         return BasicDisposable {
@@ -37,6 +37,10 @@ public class SharedObservable<Value>: Observable<Value> {
 
 extension Observable {
     public func share() -> SharedObservable<Value> {
-        return SharedObservable(source: self, subject: Subject())
+        return multicast(subject: Subject())
+    }
+
+    public func multicast(subject subject: Subject<Value>) -> SharedObservable<Value> {
+        return SharedObservable(source: self, subject: subject)
     }
 }

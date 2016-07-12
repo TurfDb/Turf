@@ -33,7 +33,7 @@ public class Subject<Value>: Observable<Value>, ObserverType {
     }
 
     public func asObserver() -> AnyObserver<Value> {
-        return AnyObserver(thread: .CallingThread, handleNext: {
+        return AnyObserver(handleNext: {
             self.handle(next: $0)
         })
     }

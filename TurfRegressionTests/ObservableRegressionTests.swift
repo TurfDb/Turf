@@ -15,42 +15,6 @@ class ObservablesRegressionTests: QuickSpec {
                 }
             }
 
-            context("indexed") {
-                var observableTreesCollection: ObservableCollection<IndexedTreesCollection, Collections>!
-                beforeEach {
-                    observableTreesCollection = tester.observingConnection
-                        .observeCollection(tester.collections.indexedTrees)
-                }
-
-                it("") {
-
-                    try! tester.connection1.readWriteTransaction { transaction, collections in
-                        let treesCollections = transaction.readWrite(collections.indexedTrees)
-                        let oakTree1 = Tree(uuid: "test_1", type: "Oak", species: "Quercus robur", height: 21, age: .Young)
-                        treesCollections.setValue(oakTree1, forKey: oakTree1.uuid)
-                    }
-                    
-                    var changeSet: ChangeSet<String>?
-                    let disposable = observableTreesCollection.subscribeNext { carsCollection, changes in
-                        changeSet = changes
-                    }
-
-                    let queryDis = observableTreesCollection
-                        .values(matching: tester.collections.indexedTrees.indexed.type.equals("Oak"))
-                        .subscribeNext { trees in
-                            print(trees)
-                        }
-
-
-
-                    expect(changeSet?.hasChangeForKey("test_1")).toEventually(beTrue())
-//                    expect(changeSet?.changes.count) == 1
-//                    expect(changeSet?.allValuesRemoved) == false
-                    disposable.dispose()
-                    queryDis.dispose()
-                }
-            }
-
             context("when observing the cars collection") {
                 var observableCarsCollection: ObservableCollection<CarsCollection, Collections>!
                 beforeEach {
@@ -196,6 +160,44 @@ class ObservablesRegressionTests: QuickSpec {
                             expect(changeSet?.hasChangeForKey("test_1")) == true
                             expect(changeSet?.changes.count) == 0
                             expect(changeSet?.allValuesRemoved) == true
+                            disposable.dispose()
+                        }
+                    }
+                }
+            }
+
+            context("Indexed observables") {
+                var observableTreesCollection: ObservableCollection<IndexedTreesCollection, Collections>!
+                beforeEach {
+                    observableTreesCollection = tester.observingConnection
+                        .observeCollection(tester.collections.indexedTrees)
+                }
+
+                context("when there are values in the trees collection") {
+                    beforeEach {
+                        try! tester.connection1.readWriteTransaction { transaction, collections in
+                            let treesCollections = transaction.readWrite(collections.indexedTrees)
+                            let oakTree1 = Tree(uuid: "test_1", type: "Oak", species: "Quercus robur", height: 21, age: .Young)
+                            let cypressTree1 = Tree(type: "Cypress", species: "Cupressocyparis leylandii", height: 23, age: .FullyMature)
+
+                            treesCollections.setValue(oakTree1, forKey: oakTree1.uuid)
+                            treesCollections.setValue(cypressTree1, forKey: cypressTree1.uuid)
+                        }
+                    }
+
+                    context("and an observable indexed query is subscribed to") {
+                        it("executes the subscriber with the tree 'test_1'") {
+                            var trees: [Tree] = []
+
+                            let disposable = observableTreesCollection
+                                .values(matching: tester.collections.indexedTrees.indexed.type.equals("Oak"))
+                                .subscribeNext { transactionalTrees in
+                                    trees = transactionalTrees.value
+                            }
+
+                            expect(trees).toEventually(haveCount(1))
+                            expect(trees.first?.uuid) == "test_1"
+                            expect(trees.first?.type) == "Oak"
                             disposable.dispose()
                         }
                     }

@@ -1,23 +1,32 @@
 import Foundation
 
-public class ObservableCollection<TCollection: Collection, Collections: CollectionsContainer>: SharedObservable<(collection: ReadCollection<TCollection, Collections>, changeSet: ChangeSet<String>)>, TypeErasedObservableCollection {
+public class ObservableCollection<TCollection: Collection, Collections: CollectionsContainer>: Producer<(collection: ReadCollection<TCollection, Collections>, changeSet: ChangeSet<String>)>, TypeErasedObservableCollection {
     public typealias CollectionChanges = (collection: ReadCollection<TCollection, Collections>, changeSet: ChangeSet<String>)
+
+    private let collectionChangedObservable: Observable<CollectionChanges>
 
     // MARK: Object lifecycle
 
     init(collectionChangedObservable: Observable<CollectionChanges>, collection: ReadCollection<TCollection, Collections>) {
         let connection = collection.readTransaction.connection
         let queue = connection.connectionQueue
-        
-        let noChanges = ChangeSet<String>()
-        let subject = BehaviourSubject<CollectionChanges>(initialValue: (collection, noChanges))
+
         // BehaviourSubject will immediately trigger a `next` value of the collection. Which won't get dispatched
         // on the connection queue so we must fix this.
-        let scheduler = QueueScheduler(queue: queue, isOnQueue: {
-            return connection.isOnConnectionQueue()
-        })        
+        let scheduler = QueueScheduler(queue: queue, requiresScheduling: { [weak connection] in
+            return !(connection?.isOnConnectionQueue() ?? false)
+        })
 
-        super.init(source: collectionChangedObservable.subscribeOn(scheduler), subject: subject)
+        let noChanges = ChangeSet<String>()
+        let subject = BehaviourSubject<CollectionChanges>(initialValue: (collection, noChanges))
+
+        self.collectionChangedObservable = collectionChangedObservable
+            .multicast(subject: subject)
+            .subscribeOn(scheduler)
+    }
+
+    override func run<Observer : ObserverType where Observer.Value == CollectionChanges>(observer: Observer) -> Disposable {
+        return collectionChangedObservable.subscribe(observer)
     }
 
     public func allValues() -> Observable<TransactionalValue<[TCollection.Value], Collections>> {

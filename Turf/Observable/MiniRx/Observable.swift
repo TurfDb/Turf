@@ -24,8 +24,8 @@ public class Observable<Value> {
     }
 
     @warn_unused_result
-    public func subscribeNext(on thread: CallbackThread = .CallingThread, observer: (Value) -> Void) -> Disposable {
-        return subscribe(AnyObserver(thread: thread, handleNext: observer))
+    public func subscribeNext(observer: (Value) -> Void) -> Disposable {
+        return subscribe(AnyObserver(handleNext: observer))
     }
 }
 

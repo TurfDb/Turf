@@ -1,49 +1,5 @@
 import Foundation
 
-class Sink<Observer : ObserverType>: Disposable {
-    var disposable: Disposable?
-
-    private let observer: Observer
-
-    init(observer: Observer) {
-        self.observer = observer
-    }
-
-    final func forwardOn(value value: Observer.Value) {
-        observer.handle(next: value)
-    }
-
-    func dispose() {
-        disposable?.dispose()
-    }
-}
-
-
-public protocol Scheduler {
-    func schedule(action action: () -> Disposable) -> Disposable
-}
-
-public class QueueScheduler: Scheduler {
-    private let queue: dispatch_queue_t
-    private let requiresScheduling: () -> Bool
-    public init(queue: dispatch_queue_t, isOnQueue: () -> Bool) {
-        self.queue = queue
-        self.requiresScheduling = isOnQueue
-    }
-
-    public func schedule(action action: () -> Disposable) -> Disposable {
-        let disposable = AssignableDisposable()
-        if requiresScheduling() {
-            dispatch_async(queue) {
-                disposable.disposable = action()
-            }
-        } else {
-            disposable.disposable = action()
-        }
-        return disposable
-    }
-}
-
 class SubscribeOnSink<Value, Observer: ObserverType where Observer.Value == Value>: Sink<Observer>, ObserverType {
     typealias Parent = SubscribeOn<Value>
 
@@ -59,7 +15,7 @@ class SubscribeOnSink<Value, Observer: ObserverType where Observer.Value == Valu
     }
 
     func asObserver() -> AnyObserver<Value> {
-        return AnyObserver(thread: .CallingThread, handleNext: { next in
+        return AnyObserver(handleNext: { next in
             self.handle(next: next)
         })
     }

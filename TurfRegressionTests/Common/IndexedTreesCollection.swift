@@ -37,13 +37,12 @@ final class IndexedTreesCollection: Collection, IndexedCollection {
 
     func deserializeValue(data: NSData) -> Value? {
         let json = try! NSJSONSerialization.JSONObjectWithData(data, options: [])
-
         guard let
             uuid = json["uuid"] as? String,
             type = json["type"] as? String,
             species = json["species"] as? String,
             height = json["height"] as? Int,
-            age = json["age"] as? TreeAge
+            age = (json["age"] as? Int).flatMap({ TreeAge(rawValue: $0) })
             else {
                 return nil
         }

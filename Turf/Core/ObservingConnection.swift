@@ -50,12 +50,11 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
 
             returnedObserable =
                 ObservableCollection(collectionChangedObservable: Observable.create { [unowned self] observer in
-                    let collectionDidChange = { (transaction: ReadTransaction<Collections>, changeSet: ChangeSet<String>) in
+                    self.collectionUpdateProcessors[collection.name] = { transaction, changeSet in
                         let readCollection = transaction.readOnly(collection)
                         observer.handle(next: (readCollection, changeSet))
                     }
 
-                    self.collectionUpdateProcessors[collection.name] = collectionDidChange
                     return BasicDisposable { [weak self] in
                         self?.collectionUpdateProcessors[collection.name] = nil
                     }

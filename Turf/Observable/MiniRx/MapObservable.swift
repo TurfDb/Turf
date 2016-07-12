@@ -1,9 +1,9 @@
 import Foundation
 
 extension Observable {
-    public func map<Mapped>(thread thread: CallbackThread = .CallingThread, map: (Value) -> Mapped) -> Observable<Mapped> {
+    public func map<Mapped>(map: (Value) -> Mapped) -> Observable<Mapped> {
         return AnyObservable<Mapped>.create { (observer) -> Disposable in
-            let mappedObserver = AnyObserver<Value>(thread: thread) { (value) in
+            let mappedObserver = AnyObserver<Value>() { (value) in
                 observer.handle(next: map(value))
             }
 
@@ -11,16 +11,16 @@ extension Observable {
         }
     }
 
-    public func flatMap<Mapped>(thread thread: CallbackThread = .CallingThread, map: (Value) -> Observable<Mapped>) -> Observable<Mapped> {
+    public func flatMap<Mapped>(map: (Value) -> Observable<Mapped>) -> Observable<Mapped> {
         return AnyObservable<Mapped>.create { (observer) -> Disposable in
 
             let disposeBag = DisposeBag()
 
-            let flatMappedObserver = AnyObserver<Mapped>(thread: thread) { (value) in
+            let flatMappedObserver = AnyObserver<Mapped>() { (value) in
                 observer.handle(next: value)
             }
 
-            let mappedObserver = AnyObserver<Value>(thread: thread) { (value) in
+            let mappedObserver = AnyObserver<Value>() { (value) in
                 let mappedValue = map(value)
                 mappedValue.subscribe(flatMappedObserver).addTo(bag: disposeBag)
             }
