@@ -33,7 +33,9 @@ public class Subject<Value>: Observable<Value>, ObserverType {
     }
 
     public func asObserver() -> AnyObserver<Value> {
-        return AnyObserver(thread: .CallingThread, handleNext: { self.handle(next: $0) })
+        return AnyObserver(thread: .CallingThread, handleNext: {
+            self.handle(next: $0)
+        })
     }
 
     // MARK: Internal methods

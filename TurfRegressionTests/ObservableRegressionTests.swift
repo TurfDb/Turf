@@ -11,6 +11,43 @@ class ObservablesRegressionTests: QuickSpec {
                 try! tester.connection1.readWriteTransaction{ transaction, collections in
                     transaction.readWrite(collections.cars).removeAllValues()
                     transaction.readWrite(collections.wheels).removeAllValues()
+                    transaction.readWrite(collections.indexedTrees).removeAllValues()
+                }
+            }
+
+            context("indexed") {
+                var observableTreesCollection: ObservableCollection<IndexedTreesCollection, Collections>!
+                beforeEach {
+                    observableTreesCollection = tester.observingConnection
+                        .observeCollection(tester.collections.indexedTrees)
+                }
+
+                it("") {
+
+                    try! tester.connection1.readWriteTransaction { transaction, collections in
+                        let treesCollections = transaction.readWrite(collections.indexedTrees)
+                        let oakTree1 = Tree(uuid: "test_1", type: "Oak", species: "Quercus robur", height: 21, age: .Young)
+                        treesCollections.setValue(oakTree1, forKey: oakTree1.uuid)
+                    }
+                    
+                    var changeSet: ChangeSet<String>?
+                    let disposable = observableTreesCollection.subscribeNext { carsCollection, changes in
+                        changeSet = changes
+                    }
+
+                    let queryDis = observableTreesCollection
+                        .values(matching: tester.collections.indexedTrees.indexed.type.equals("Oak"))
+                        .subscribeNext { trees in
+                            print(trees)
+                        }
+
+
+
+                    expect(changeSet?.hasChangeForKey("test_1")).toEventually(beTrue())
+//                    expect(changeSet?.changes.count) == 1
+//                    expect(changeSet?.allValuesRemoved) == false
+                    disposable.dispose()
+                    queryDis.dispose()
                 }
             }
 

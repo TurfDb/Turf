@@ -43,12 +43,73 @@ public class BasicDisposable: Disposable {
         self.action = action
     }
 
+    deinit {
+        dispose()
+    }
+
     // MARK: Public methods
 
     public func dispose() {
         guard hasBeenDisposed.ensureFalseThenSetTrue() else { return }
         action?()
         action = nil
+    }
+}
+
+public class AssignableDisposable: Disposable {
+    // MARK: Public properties
+
+    public private(set) var disposed: Bool = false
+
+    public var disposable: Disposable? {
+        get {
+            OSSpinLockLock(&lock)
+            defer { OSSpinLockUnlock(&lock) }
+            return _disposable ?? NoActionDisposable()
+        }
+        set {
+            OSSpinLockLock(&lock)
+            defer { OSSpinLockUnlock(&lock) }
+
+            guard !disposed else {
+                newValue?.dispose()
+                _disposable = nil
+                return
+            }
+
+            _disposable = newValue
+        }
+
+    }
+
+    // MARK: Private properties
+
+    private var lock = OSSpinLock()
+    private var _disposable: Disposable? = nil
+
+    // MARK: Object lifecycle
+
+    public init() {
+
+    }
+
+    deinit {
+        dispose()
+    }
+
+    // MARK: Public methods
+
+    public func dispose() {
+        OSSpinLockLock(&lock)
+        defer { OSSpinLockUnlock(&lock) }
+
+        guard !disposed else {
+            _disposable = nil
+            return
+        }
+
+        _disposable?.dispose()
+        disposed = true
     }
 }
 

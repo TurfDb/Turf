@@ -6,8 +6,18 @@ public class ObservableCollection<TCollection: Collection, Collections: Collecti
     // MARK: Object lifecycle
 
     init(collectionChangedObservable: Observable<CollectionChanges>, collection: ReadCollection<TCollection, Collections>) {
+        let connection = collection.readTransaction.connection
+        let queue = connection.connectionQueue
+        
         let noChanges = ChangeSet<String>()
-        super.init(source: collectionChangedObservable, subject: BehaviourSubject(initialValue: (collection, noChanges)))
+        let subject = BehaviourSubject<CollectionChanges>(initialValue: (collection, noChanges))
+        // BehaviourSubject will immediately trigger a `next` value of the collection. Which won't get dispatched
+        // on the connection queue so we must fix this.
+        let scheduler = QueueScheduler(queue: queue, isOnQueue: {
+            return connection.isOnConnectionQueue()
+        })        
+
+        super.init(source: collectionChangedObservable.subscribeOn(scheduler), subject: subject)
     }
 
     public func allValues() -> Observable<TransactionalValue<[TCollection.Value], Collections>> {

@@ -29,14 +29,29 @@ public class Observable<Value> {
     }
 }
 
-public class AnyObservable<Value>: Observable<Value> {
+public class Producer<Value>: Observable<Value> {
+    override init() {
+        super.init()
+    }
+
+    override func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+        return run(observer)
+    }
+
+    func run<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+        fatalError()
+    }
+
+}
+
+public class AnyObservable<Value>: Producer<Value> {
     private let observableFactory: (AnyObserver<Value>) -> Disposable
 
     init(factory: (observer: AnyObserver<Value>) -> Disposable) {
         self.observableFactory = factory
     }
 
-    override func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    override func run<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
         return observableFactory(observer.asObserver())
     }
 }
