@@ -5,7 +5,6 @@ import Foundation
 /// Will only dispose of the source when all subscribers have been disposed.
 ///
 public class SharedObservable<Value>: Producer<Value> {
-    public typealias ValueType = Value
 
     // MARK: Private methods
 

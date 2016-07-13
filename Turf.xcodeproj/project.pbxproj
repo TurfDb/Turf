@@ -40,6 +40,7 @@
 		7218C9631C274778004457DB /* WeakBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9621C274778004457DB /* WeakBox.swift */; };
 		7218C9661C274D94004457DB /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9651C274D94004457DB /* Dispatch.swift */; };
 		7218C9681C2809BB004457DB /* DispatchQueueType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9671C2809BB004457DB /* DispatchQueueType.swift */; };
+		721C88011D36EB6600F96E96 /* ShareReplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721C88001D36EB6600F96E96 /* ShareReplay.swift */; };
 		722597781D35A5B9009B38D6 /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722597771D35A5B9009B38D6 /* Scheduler.swift */; };
 		7225977A1D35A5D4009B38D6 /* Sink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722597791D35A5D4009B38D6 /* Sink.swift */; };
 		72297A8C1C257B290001BE40 /* SQLiteRowChangeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72297A8B1C257B290001BE40 /* SQLiteRowChangeType.swift */; };
@@ -274,6 +275,7 @@
 		7218C9621C274778004457DB /* WeakBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakBox.swift; sourceTree = "<group>"; };
 		7218C9651C274D94004457DB /* Dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		7218C9671C2809BB004457DB /* DispatchQueueType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchQueueType.swift; sourceTree = "<group>"; };
+		721C88001D36EB6600F96E96 /* ShareReplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareReplay.swift; sourceTree = "<group>"; };
 		722597771D35A5B9009B38D6 /* Scheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
 		722597791D35A5D4009B38D6 /* Sink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sink.swift; sourceTree = "<group>"; };
 		72297A8B1C257B290001BE40 /* SQLiteRowChangeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteRowChangeType.swift; sourceTree = "<group>"; };
@@ -711,6 +713,7 @@
 				722597791D35A5D4009B38D6 /* Sink.swift */,
 				72BCDD4F1D3017A0000AB623 /* Subject.swift */,
 				728ACFE51D358BC0009E75DC /* SubscribeOn.swift */,
+				721C88001D36EB6600F96E96 /* ShareReplay.swift */,
 			);
 			path = MiniRx;
 			sourceTree = "<group>";
@@ -1104,6 +1107,7 @@
 				7218C9661C274D94004457DB /* Dispatch.swift in Sources */,
 				72088F901C1CD97A00127EA0 /* ExtensionWriteTransaction.swift in Sources */,
 				72088FB11C1CEB8400127EA0 /* IndexedCollection.swift in Sources */,
+				721C88011D36EB6600F96E96 /* ShareReplay.swift in Sources */,
 				72088F8C1C1CD93E00127EA0 /* Extension.swift in Sources */,
 				725E9E111C24B45E00364CE1 /* CacheEntry.swift in Sources */,
 				724C9B5E1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift in Sources */,
