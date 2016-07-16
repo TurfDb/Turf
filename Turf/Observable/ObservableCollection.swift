@@ -35,7 +35,7 @@ public class ObservableCollection<TCollection: Collection, Collections: Collecti
         }
     }
 
-    public func allValues() -> IndexableObservable<[TCollection.Value]> {
+    public func observableIndexedValues() -> IndexableObservable<[TCollection.Value]> {
         return IndexableObservable(observable: self.map { collection, changeSet in
             return Array(collection.allValues)
         })
