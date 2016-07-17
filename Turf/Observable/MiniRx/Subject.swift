@@ -9,6 +9,10 @@ public class Subject<Value>: Observable<Value>, ObserverType {
     private var subscribers: [String: AnyObserver<Value>] = [:]
     private var lock: OSSpinLock = OS_SPINLOCK_INIT
 
+    public override init() {
+        
+    }
+
     // MARK: Public methods
 
     override func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {

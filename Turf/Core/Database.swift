@@ -2,10 +2,6 @@ import Foundation
 
 private let databaseWriteQueueKey = "databaseWriteQueueKey".UTF8String
 
-public let CollectionChangedNotification = "TurfCollectionChanged"
-public let CollectionChangedNotificationChangeSetKey = "ChangeSet"
-
-
 public final class Database<DatabaseCollections: CollectionsContainer> {
     // MARK: Public properties
 
@@ -26,6 +22,9 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
     private var lastConnectionId: Int
     private var cacheUpdatesBySnapshot: [UInt64: [String: TypeErasedCacheUpdates]]
     private var minCacheUpdatesSnapshot: UInt64
+
+    private let databaseWriteCompletedSubject: Subject<Void>
+    private let databaseWriteCompletedQueue: Dispatch.Queue
 
     private let databaseWriteQueue: Dispatch.Queue
     private let connectionSetUpQueue: Dispatch.Queue
@@ -63,6 +62,8 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
         self.minCacheUpdatesSnapshot = 0
         self.databaseWriteQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-queue")
         self.connectionSetUpQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.setup-queue")
+        self.databaseWriteCompletedQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-completed")
+        self.databaseWriteCompletedSubject = Subject<Void>()
 
         Dispatch.Queues.setContext(
             Dispatch.Queues.makeContext(self.databaseWriteQueue),
@@ -119,6 +120,10 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
         observingConnections[connection.id] = WeakBox(value: observingConnection)
 
         return observingConnection
+    }
+
+    public var databaseWriteSucceeded: Observable<Void> {
+        return databaseWriteCompletedSubject
     }
 
     // MARK: Internal methods
@@ -249,8 +254,13 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
     }
 
     func notifyObservingConnectionsOfModifiedCollectionsWithChangeSets(changeSets: [String: ChangeSet<String>]) throws {
+
         for (_, observingConnection) in observingConnections {
             try observingConnection.value?.processModifiedCollections(changeSets: changeSets)
+        }
+
+        Dispatch.asynchronouslyOn(databaseWriteCompletedQueue) {
+            self.databaseWriteCompletedSubject.handle(next: ())
         }
     }
 

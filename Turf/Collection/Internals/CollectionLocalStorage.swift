@@ -64,31 +64,19 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
     }
 
     /**
-     Notifies collection observers of any changes
+     Copies the collection's change set.
      - parameter collection: The `object` which the `NSNotification` is posted on. (This **must** be the same collection for which this is the local storage for).
      - returns: A copy of the collection's change set.
 
      - note:
          - **Not thread safe**
      */
-    func notifyObserversOfChangeSetForCollection(collection: TypeErasedCollection) -> ChangeSet<String> {
+    func copyChangeSetFor(collection collection: TypeErasedCollection) -> ChangeSet<String> {
         assert(collection.name == collectionName,
             "Incorrect collection - I will refactor CollectionLocalStorage to not allow this...")
 
         guard changeSet.changes.count > 0 || self.changeSet.allValuesRemoved else { return ChangeSet<String>() }
-
-        let changeSetCopy = self.changeSet.copy()
-        Dispatch.asynchronouslyOn(Dispatch.Queues.Main) {
-            NSNotificationCenter.defaultCenter()
-                .postNotificationName(
-                    CollectionChangedNotification,
-                    object: collection,
-                    userInfo: [
-                        CollectionChangedNotificationChangeSetKey: changeSetCopy
-                    ])
-        }
-
-        return changeSetCopy
+        return changeSet.copy()
     }
 
     /**

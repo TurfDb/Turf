@@ -332,7 +332,8 @@ public final class Connection<Collections: CollectionsContainer> {
         var changeSets = [String: ChangeSet<String>]()
         for (name, collection) in modifiedCollections {
             let collectionLocalStorage = collectionsLocalStorage[name]!
-            let changeSetCopy = collectionLocalStorage.notifyObserversOfChangeSetForCollection(collection)
+            //TODO Tidy up
+            let changeSetCopy = collectionLocalStorage.copyChangeSetFor(collection: collection)
             changeSets[name] = changeSetCopy
             collectionLocalStorage.resetChangeSet()
         }
