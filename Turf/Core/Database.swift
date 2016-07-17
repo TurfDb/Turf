@@ -23,7 +23,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
     private var cacheUpdatesBySnapshot: [UInt64: [String: TypeErasedCacheUpdates]]
     private var minCacheUpdatesSnapshot: UInt64
 
-    private let databaseWriteCompletedSubject: Subject<Void>
+    private let transactionEnded: Subject<Void>
     private let databaseTransactionEnded: Dispatch.Queue
 
     private let databaseWriteQueue: Dispatch.Queue
@@ -63,7 +63,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
         self.databaseWriteQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-queue")
         self.connectionSetUpQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.setup-queue")
         self.databaseTransactionEnded = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-completed")
-        self.databaseWriteCompletedSubject = Subject<Void>()
+        self.transactionEnded = Subject<Void>()
 
         Dispatch.Queues.setContext(
             Dispatch.Queues.makeContext(self.databaseWriteQueue),
@@ -123,7 +123,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
     }
 
     public var databaseWriteSucceeded: Observable<Void> {
-        return databaseWriteCompletedSubject
+        return transactionEnded
     }
 
     // MARK: Internal methods
@@ -263,7 +263,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
 
     func notifiyTransactionEnded(wasRolledBack wasRolledBack: Bool) {
         Dispatch.asynchronouslyOn(databaseTransactionEnded) {
-            self.databaseWriteCompletedSubject.handle(next: ())
+            self.transactionEnded.handle(next: ())
         }
     }
 
