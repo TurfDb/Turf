@@ -24,7 +24,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
     private var minCacheUpdatesSnapshot: UInt64
 
     private let databaseWriteCompletedSubject: Subject<Void>
-    private let databaseWriteCompletedQueue: Dispatch.Queue
+    private let databaseTransactionEnded: Dispatch.Queue
 
     private let databaseWriteQueue: Dispatch.Queue
     private let connectionSetUpQueue: Dispatch.Queue
@@ -62,7 +62,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
         self.minCacheUpdatesSnapshot = 0
         self.databaseWriteQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-queue")
         self.connectionSetUpQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.setup-queue")
-        self.databaseWriteCompletedQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-completed")
+        self.databaseTransactionEnded = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-completed")
         self.databaseWriteCompletedSubject = Subject<Void>()
 
         Dispatch.Queues.setContext(
@@ -259,7 +259,10 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
             try observingConnection.value?.processModifiedCollections(changeSets: changeSets)
         }
 
-        Dispatch.asynchronouslyOn(databaseWriteCompletedQueue) {
+    }
+
+    func notifiyTransactionEnded(wasRolledBack wasRolledBack: Bool) {
+        Dispatch.asynchronouslyOn(databaseTransactionEnded) {
             self.databaseWriteCompletedSubject.handle(next: ())
         }
     }

@@ -257,8 +257,10 @@ public final class Connection<Collections: CollectionsContainer> {
 
         if transaction.shouldRollback {
             try rollbackTransaction(transaction)
+            database.notifiyTransactionEnded(wasRolledBack: true)
         } else {
             try commitWriteTransaction(transaction)
+            database.notifiyTransactionEnded(wasRolledBack: false)
         }
 
         database.removeUnneededCacheUpdates()

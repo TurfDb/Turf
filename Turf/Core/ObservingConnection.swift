@@ -1,4 +1,11 @@
 public final class ObservingConnection<Collections: CollectionsContainer> {
+
+    // MARK: Public properties
+
+    public var database: Database<Collections> {
+        return connection.database
+    }
+
     // MARK: Internal properties
 
     let connection: Connection<Collections>
