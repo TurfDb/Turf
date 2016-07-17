@@ -23,8 +23,8 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
     private var cacheUpdatesBySnapshot: [UInt64: [String: TypeErasedCacheUpdates]]
     private var minCacheUpdatesSnapshot: UInt64
 
-    private let transactionEnded: Subject<Void>
-    private let databaseTransactionEnded: Dispatch.Queue
+    private let databaseWriteTransactionEnded: Subject<Void>
+    private let databaseWriteTransactionEndedQueue: Dispatch.Queue
 
     private let databaseWriteQueue: Dispatch.Queue
     private let connectionSetUpQueue: Dispatch.Queue
@@ -62,8 +62,8 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
         self.minCacheUpdatesSnapshot = 0
         self.databaseWriteQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-queue")
         self.connectionSetUpQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.setup-queue")
-        self.databaseTransactionEnded = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-completed")
-        self.transactionEnded = Subject<Void>()
+        self.databaseWriteTransactionEndedQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-ended")
+        self.databaseWriteTransactionEnded = Subject<Void>()
 
         Dispatch.Queues.setContext(
             Dispatch.Queues.makeContext(self.databaseWriteQueue),
@@ -122,8 +122,8 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
         return observingConnection
     }
 
-    public var databaseWriteSucceeded: Observable<Void> {
-        return transactionEnded
+    public var writeTransactionEnded: Observable<Void> {
+        return databaseWriteTransactionEnded
     }
 
     // MARK: Internal methods
@@ -262,8 +262,8 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
     }
 
     func notifiyTransactionEnded(wasRolledBack wasRolledBack: Bool) {
-        Dispatch.asynchronouslyOn(databaseTransactionEnded) {
-            self.transactionEnded.handle(next: ())
+        Dispatch.asynchronouslyOn(databaseWriteTransactionEndedQueue) {
+            self.databaseWriteTransactionEnded.handle(next: ())
         }
     }
 
