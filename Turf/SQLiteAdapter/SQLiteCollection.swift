@@ -214,9 +214,14 @@ internal final class SQLiteCollection {
 
         while(result.hasRow) {
             if let key = String(validatingUTF8: UnsafePointer(sqlite3_column_text(keysInCollectionStmt, keyColumnIndex))) {
-                let bytes = sqlite3_column_blob(valueDataForKeyStmt, valueDataColumnIndex)
-                let bytesLength = Int(sqlite3_column_bytes(valueDataForKeyStmt, valueDataColumnIndex))
-                let valueData = Data(bytes: bytes!, count: bytesLength)
+
+                let valueData: Data
+                if let bytes = sqlite3_column_blob(valueDataForKeyStmt, valueDataColumnIndex){
+                    let bytesLength = Int(sqlite3_column_bytes(valueDataForKeyStmt, valueDataColumnIndex))
+                    valueData = Data(bytes: bytes, count: bytesLength)
+                } else {
+                    valueData = Data()
+                }
 
                 let schemaVersion = UInt64(sqlite3_column_int64(valueDataForKeyStmt, schemaVersionColumnIndex))
 
@@ -243,9 +248,13 @@ internal final class SQLiteCollection {
         sqlite3_bind_text(valueDataForKeyStmt, keyIndex, key, -1, SQLITE_TRANSIENT)
 
         if sqlite3_step(valueDataForKeyStmt).hasRow {
-            let bytes = sqlite3_column_blob(valueDataForKeyStmt, valueDataColumnIndex)
-            let bytesLength = Int(sqlite3_column_bytes(valueDataForKeyStmt, valueDataColumnIndex))
-            let valueData = Data(bytes: bytes!, count: bytesLength)
+            let valueData: Data
+            if let bytes = sqlite3_column_blob(valueDataForKeyStmt, valueDataColumnIndex){
+                let bytesLength = Int(sqlite3_column_bytes(valueDataForKeyStmt, valueDataColumnIndex))
+                valueData = Data(bytes: bytes, count: bytesLength)
+            } else {
+                valueData = Data()
+            }
 
             let schemaVersion = UInt64(sqlite3_column_int64(valueDataForKeyStmt, schemaVersionColumnIndex))
             return (valueData: valueData, schemaVersion: schemaVersion)

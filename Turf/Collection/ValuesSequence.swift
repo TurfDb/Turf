@@ -38,9 +38,13 @@ public final class ValuesSequence<Value>: Sequence {
                 return nil
             }
 
-            let bytes = sqlite3_column_blob(self.stmt, self.valueDataColumnIndex)
-            let bytesLength = Int(sqlite3_column_bytes(self.stmt, self.valueDataColumnIndex))
-            let data = Data(bytes: bytes!, count: bytesLength)
+            let data: Data
+            if let bytes = sqlite3_column_blob(self.stmt, self.valueDataColumnIndex){
+                let bytesLength = Int(sqlite3_column_bytes(self.stmt, self.valueDataColumnIndex))
+                data = Data(bytes: bytes, count: bytesLength)
+            } else {
+                data = Data()
+            }
 
             let schemaVersion = UInt64(sqlite3_column_int64(self.stmt, self.schemaVersionColumnIndex))
             precondition(schemaVersion == self.collectionSchemaVersion, "Collection requires a migration")

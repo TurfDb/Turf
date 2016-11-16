@@ -161,9 +161,13 @@ internal final class SQLiteAdapter {
 
         let version = UInt64(sqlite3_column_int64(getExtensionDetailsStmt, versionIndex))
 
-        let bytes = sqlite3_column_blob(getExtensionDetailsStmt, dataIndex)
-        let bytesLength = Int(sqlite3_column_bytes(getExtensionDetailsStmt, dataIndex))
-        let data = Data(bytes: bytes!, count: bytesLength)
+        let data: Data
+        if let bytes = sqlite3_column_blob(getExtensionDetailsStmt, dataIndex){
+            let bytesLength = Int(sqlite3_column_bytes(getExtensionDetailsStmt, dataIndex))
+            data = Data(bytes: bytes, count: bytesLength)
+        } else {
+            data = Data()
+        }
 
         let turfVersion = UInt64(sqlite3_column_int64(getExtensionDetailsStmt, turfVersionIndex))
 
