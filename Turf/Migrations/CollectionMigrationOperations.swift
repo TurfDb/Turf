@@ -1,8 +1,8 @@
-public class CollectionMigrationOperations {
+open class CollectionMigrationOperations {
     // MARK: Private properties
-    private let operations: MigrationOperations
-    private let collectionName: String
-    private let toSchemaVersion: UInt64
+    fileprivate let operations: MigrationOperations
+    fileprivate let collectionName: String
+    fileprivate let toSchemaVersion: UInt64
 
     // MARK: Object lifecycle
 
@@ -12,15 +12,15 @@ public class CollectionMigrationOperations {
         self.toSchemaVersion = toSchemaVersion
     }
 
-    public func removeValueWithKey(key: String) throws {
+    open func removeValueWithKey(_ key: String) throws {
         try operations.removeValueWithKey(key, inCollection: collectionName)
     }
 
-    public func setSerializedValue(serializedValue: NSData, key: String) throws {
+    open func setSerializedValue(_ serializedValue: Data, key: String) throws {
         try operations.setSerializedValue(serializedValue, key: key, version: toSchemaVersion, inCollection: collectionName)
     }
 
-    public func getSerializedValueWithKey(key: String, inCollection name: String) throws -> (valueData: NSData, schemaVersion: UInt64)? {
+    open func getSerializedValueWithKey(_ key: String, inCollection name: String) throws -> (valueData: Data, schemaVersion: UInt64)? {
         return try operations.getSerializedValueWithKey(key, inCollection: name)
     }
 }

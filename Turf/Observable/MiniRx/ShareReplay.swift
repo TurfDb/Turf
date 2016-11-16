@@ -1,13 +1,13 @@
 import Foundation
 
-public class ReplaySubject<Value>: Observable<Value>, ObserverType {
+open class ReplaySubject<Value>: Observable<Value>, ObserverType {
 
     // MARK: Private properties
 
-    private var subscribers: [String: AnyObserver<Value>] = [:]
-    private var lock: OSSpinLock = OS_SPINLOCK_INIT
-    private let bufferSize: Int
-    private var previousValues = [Value]()
+    fileprivate var subscribers: [String: AnyObserver<Value>] = [:]
+    fileprivate var lock: OSSpinLock = OS_SPINLOCK_INIT
+    fileprivate let bufferSize: Int
+    fileprivate var previousValues = [Value]()
 
     // MARK: Public methods
 
@@ -16,11 +16,11 @@ public class ReplaySubject<Value>: Observable<Value>, ObserverType {
         self.previousValues.reserveCapacity(bufferSize)
     }
 
-    override func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    override func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Value == Value {
         OSSpinLockLock(&lock)
         defer { OSSpinLockUnlock(&lock) }
 
-        let token = NSUUID().UUIDString
+        let token = UUID().uuidString
         subscribers[token] = observer.asObserver()
 
         for value in previousValues {
@@ -32,7 +32,7 @@ public class ReplaySubject<Value>: Observable<Value>, ObserverType {
         }
     }
 
-    public func handle(next next: Value) {
+    open func handle(next: Value) {
         OSSpinLockLock(&lock)
         defer { OSSpinLockUnlock(&lock) }
 
@@ -46,7 +46,7 @@ public class ReplaySubject<Value>: Observable<Value>, ObserverType {
         }
     }
 
-    public func asObserver() -> AnyObserver<Value> {
+    open func asObserver() -> AnyObserver<Value> {
         return AnyObserver(handleNext: {
             self.handle(next: $0)
         })
@@ -54,7 +54,7 @@ public class ReplaySubject<Value>: Observable<Value>, ObserverType {
 
     // MARK: Internal methods
 
-    func safeSubscriberCount(handler: (Int) -> Void) {
+    func safeSubscriberCount(_ handler: (Int) -> Void) {
         OSSpinLockLock(&lock)
         defer { OSSpinLockUnlock(&lock) }
         handler(subscribers.count)
@@ -69,8 +69,8 @@ class ShareReplay<Value>: Producer<Value> {
 
     // MARK: Private methods
 
-    private let subject: ReplaySubject<Value>
-    private let disposable: Disposable
+    fileprivate let subject: ReplaySubject<Value>
+    fileprivate let disposable: Disposable
 
     // MARK: Object lifecycle
 
@@ -81,7 +81,7 @@ class ShareReplay<Value>: Producer<Value> {
 
     // MARK: Public methods
 
-    override func run<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    override func run<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Value == Value {
         let subscriberDisposable = subject.subscribe(observer)
 
         return BasicDisposable {
@@ -96,7 +96,7 @@ class ShareReplay<Value>: Producer<Value> {
 }
 
 extension Observable {
-    public func shareReplay(bufferSize bufferSize: Int = 1) -> Observable<Value> {
+    public func shareReplay(bufferSize: Int = 1) -> Observable<Value> {
         return ShareReplay(source: self, subject: ReplaySubject(bufferSize: bufferSize))
     }
 }

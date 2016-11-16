@@ -6,12 +6,12 @@ public protocol ExtensionConnection {
     /**
      Can be used to prepare any sqlite3_stmts for better performance
      */
-    func prepare(db: SQLitePtr) throws
+    func prepare(_ db: SQLitePtr) throws
 
     /**
      Factory to create a new write transaction to process collection modifications
      - parameter transaction: Read-write transaction
      - returns: An extension's write transaction
      */
-    func writeTransaction<DatabaseCollections: CollectionsContainer>(transaction: ReadWriteTransaction<DatabaseCollections>) -> ExtensionWriteTransaction
+    func writeTransaction<DatabaseCollections: CollectionsContainer>(_ transaction: ReadWriteTransaction<DatabaseCollections>) -> ExtensionWriteTransaction
 }

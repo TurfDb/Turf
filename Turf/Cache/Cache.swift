@@ -3,11 +3,11 @@ import Foundation
 /**
  * Cache port from YapDatabase
  */
-internal class Cache<Key: Hashable, Value where Key: Any> {
+internal class Cache<Key: Hashable, Value> where Key: Any {
 
     // MARK: Internal properties
 
-    var onEviction: (Value? -> Void)?
+    var onEviction: ((Value?) -> Void)?
 
     var hasEntries: Bool {
         return container.count > 0
@@ -15,12 +15,12 @@ internal class Cache<Key: Hashable, Value where Key: Any> {
 
     // MARK: Private properties
 
-    private let capacity: Int
+    fileprivate let capacity: Int
 
-    private var container: [Key: CacheEntry<Key, Value>]
-    private var mostRecentEntry: CacheEntry<Key, Value>?
-    private var leastRecentEntry: CacheEntry<Key, Value>?
-    private var evictedEntry: CacheEntry<Key, Value>?
+    fileprivate var container: [Key: CacheEntry<Key, Value>]
+    fileprivate var mostRecentEntry: CacheEntry<Key, Value>?
+    fileprivate var leastRecentEntry: CacheEntry<Key, Value>?
+    fileprivate var evictedEntry: CacheEntry<Key, Value>?
 
     // MARK: Object lifecycle
 
@@ -41,7 +41,7 @@ internal class Cache<Key: Hashable, Value where Key: Any> {
         }
     }
 
-    func seValue(value: Value, forKey key: Key) {
+    func seValue(_ value: Value, forKey key: Key) {
         if let existingEntry = container[key] {
             // Update item value
             existingEntry.value = value
@@ -100,8 +100,8 @@ internal class Cache<Key: Hashable, Value where Key: Any> {
                 evictedEntry = leastRecentEntry
                 leastRecentEntry = leastRecentEntry?.previous
 
-                if let evictedEntry = evictedEntry, key = evictedEntry.key {
-                    container.removeValueForKey(key)
+                if let evictedEntry = evictedEntry, let key = evictedEntry.key {
+                    container.removeValue(forKey: key)
 
                     evictedEntry.previous = nil
                     evictedEntry.next = nil
@@ -119,7 +119,7 @@ internal class Cache<Key: Hashable, Value where Key: Any> {
         }
     }
 
-    func valueForKey(key: Key) -> Value? {
+    func valueForKey(_ key: Key) -> Value? {
         if let entry = container[key] {
             if entry !== mostRecentEntry {
                 // Remove item from current position in linked-list.
@@ -151,7 +151,7 @@ internal class Cache<Key: Hashable, Value where Key: Any> {
         return nil
     }
 
-    func removeValueForKey(key: Key) {
+    func removeValueForKey(_ key: Key) {
         if let entry = container[key] {
             entry.previous?.next = entry.next
             entry.next?.previous = entry.previous
@@ -163,7 +163,7 @@ internal class Cache<Key: Hashable, Value where Key: Any> {
             if leastRecentEntry === entry {
                 leastRecentEntry = entry.previous
             }
-            container.removeValueForKey(key)
+            container.removeValue(forKey: key)
         }
     }
 
@@ -174,7 +174,7 @@ internal class Cache<Key: Hashable, Value where Key: Any> {
         container.removeAll()
     }
 
-    func removeAllValues(each: (Value) -> Void) {
+    func removeAllValues(_ each: (Value) -> Void) {
         mostRecentEntry = nil
         leastRecentEntry = nil
         evictedEntry = nil
@@ -188,7 +188,7 @@ internal class Cache<Key: Hashable, Value where Key: Any> {
         container.removeAll()
     }
 
-    func hasKey(key: Key) -> Bool {
+    func hasKey(_ key: Key) -> Bool {
         return container[key] != nil
     }
 }

@@ -1,39 +1,39 @@
 public enum CallbackThread {
-    case CallingThread
-    case MainThread
-    case OtherThread(dispatch_queue_t)
+    case callingThread
+    case mainThread
+    case otherThread(DispatchQueue)
 
     // MARK: Public properties
 
-    public var queue: dispatch_queue_t? {
+    public var queue: DispatchQueue? {
         switch self {
-        case .MainThread: return NSThread.isMainThread() ? nil : dispatch_get_main_queue()
-        case .OtherThread(let queue): return queue
-        case .CallingThread: return nil
+        case .mainThread: return Thread.isMainThread ? nil : DispatchQueue.main
+        case .otherThread(let queue): return queue
+        case .callingThread: return nil
         }
     }
 
     // MARK: Public methods
 
-    public func dispatchSynchronously(closure: () -> Void) {
+    public func dispatchSynchronously(_ closure: () -> Void) {
         if let queue = self.queue {
-            Dispatch.synchronouslyOn(queue, closure: closure)
+            queue.sync(execute: closure)
         } else {
             closure()
         }
     }
 
-    public func dispatchSynchronously(closure: () throws -> Void) throws {
+    public func dispatchSynchronously(_ closure: () throws -> Void) throws {
         if let queue = self.queue {
-            try Dispatch.synchronouslyOn(queue, closure: closure)
+            try queue.sync(execute: closure)
         } else {
             try closure()
         }
     }
 
-    public func dispatchAsynchronously(closure: () -> Void) {
+    public func dispatchAsynchronously(_ closure: @escaping () -> Void) {
         if let queue = self.queue {
-            Dispatch.asynchronouslyOn(queue, closure: closure)
+            queue.async(execute: closure)
         } else {
             closure()
         }

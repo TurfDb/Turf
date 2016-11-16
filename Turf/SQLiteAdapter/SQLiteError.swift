@@ -1,17 +1,17 @@
 /**
  Low level errors from SQLite3
  */
-public enum SQLiteError: ErrorType {
+public enum SQLiteError: Error {
     /// When sqlite3_open_v2 returns something other than OK
-    case FailedToOpenDatabase
+    case failedToOpenDatabase
 
     /// Any error from a sqlite3 call
-    case Error(code: Int32, reason: String?)
+    case error(code: Int32, reason: String?)
 
     /// sqlite3_prepare_v2 failed
-    case FailedToPrepareStatement(Int32, String?)
+    case failedToPrepareStatement(Int32, String?)
 
     /// sqlite3_reset failed
-    case FailedToResetStatement(Int32, String?)
+    case failedToResetStatement(Int32, String?)
 
 }

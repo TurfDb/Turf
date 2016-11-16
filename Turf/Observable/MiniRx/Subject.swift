@@ -1,13 +1,13 @@
 import Foundation
 
 /// Multicasts events sent by `handle(xyz:)` to all subscribers
-public class Subject<Value>: Observable<Value>, ObserverType {
+open class Subject<Value>: Observable<Value>, ObserverType {
     public typealias ValueType = Value
 
     // MARK: Private properties
 
-    private var subscribers: [String: AnyObserver<Value>] = [:]
-    private var lock: OSSpinLock = OS_SPINLOCK_INIT
+    fileprivate var subscribers: [String: AnyObserver<Value>] = [:]
+    fileprivate var lock: OSSpinLock = OS_SPINLOCK_INIT
 
     public override init() {
         
@@ -15,11 +15,11 @@ public class Subject<Value>: Observable<Value>, ObserverType {
 
     // MARK: Public methods
 
-    override func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    override func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Value == Value {
         OSSpinLockLock(&lock)
         defer { OSSpinLockUnlock(&lock) }
 
-        let token = NSUUID().UUIDString
+        let token = UUID().uuidString
         subscribers[token] = observer.asObserver()
 
         return BasicDisposable {
@@ -27,7 +27,7 @@ public class Subject<Value>: Observable<Value>, ObserverType {
         }
     }
 
-    public func handle(next next: Value) {
+    open func handle(next: Value) {
         OSSpinLockLock(&lock)
         defer { OSSpinLockUnlock(&lock) }
 
@@ -36,7 +36,7 @@ public class Subject<Value>: Observable<Value>, ObserverType {
         }
     }
 
-    public func asObserver() -> AnyObserver<Value> {
+    open func asObserver() -> AnyObserver<Value> {
         return AnyObserver(handleNext: {
             self.handle(next: $0)
         })
@@ -44,7 +44,7 @@ public class Subject<Value>: Observable<Value>, ObserverType {
 
     // MARK: Internal methods
 
-    func safeSubscriberCount(handler: (Int) -> Void) {
+    func safeSubscriberCount(_ handler: (Int) -> Void) {
         OSSpinLockLock(&lock)
         defer { OSSpinLockUnlock(&lock) }
         handler(subscribers.count)
@@ -52,16 +52,16 @@ public class Subject<Value>: Observable<Value>, ObserverType {
 }
 
 /// Subject with an initial value
-public class BehaviourSubject<Value>: Subject<Value> {
-    private var currentValue: Value
-    private var valueLock: OSSpinLock = OS_SPINLOCK_INIT
+open class BehaviourSubject<Value>: Subject<Value> {
+    fileprivate var currentValue: Value
+    fileprivate var valueLock: OSSpinLock = OS_SPINLOCK_INIT
 
     public init(initialValue: Value) {
         self.currentValue = initialValue
         super.init()
     }
 
-    override func subscribe<Observer : ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    override func subscribe<Observer : ObserverType>(_ observer: Observer) -> Disposable where Observer.Value == Value {
         OSSpinLockLock(&valueLock)
         defer { OSSpinLockUnlock(&valueLock) }
 
@@ -70,7 +70,7 @@ public class BehaviourSubject<Value>: Subject<Value> {
         return disposable
     }
 
-    public override func handle(next next: Value) {
+    open override func handle(next: Value) {
         OSSpinLockLock(&valueLock)
         defer { OSSpinLockUnlock(&valueLock) }
 

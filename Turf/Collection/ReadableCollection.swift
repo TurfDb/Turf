@@ -18,5 +18,5 @@ public protocol ReadableCollection {
      - parameter key: Primary key
      - returns: Value for primary key if it exists
      */
-    func valueForKey(key: String) -> Value?
+    func valueForKey(_ key: String) -> Value?
 }

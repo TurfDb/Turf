@@ -6,8 +6,8 @@ public extension ReadWriteCollection where TCollection: IndexedCollection {
      - parameter predicate: Query on secondary indexed properties
      - returns: Value if there is a match
      */
-    public func removeValuesWhere(clause: WhereClause) {
-        var stmt: COpaquePointer = nil
+    public func removeValuesWhere(_ clause: WhereClause) {
+        var stmt: OpaquePointer? = nil
         defer { sqlite3_finalize(stmt) }
 
         do {
@@ -16,22 +16,22 @@ public extension ReadWriteCollection where TCollection: IndexedCollection {
 
             let selectSql = "SELECT targetPrimaryKey FROM `\(connection.index.tableName)` WHERE \(clause.sql)"
             guard sqlite3_prepare_v2(db, selectSql, -1, &stmt, nil).isOK else {
-                throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+                throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
             }
 
-            try! clause.bindStatements(stmt: stmt, firstColumnIndex: SQLITE_FIRST_BIND_COLUMN)
+            try! clause.bindStatements(stmt!, SQLITE_FIRST_BIND_COLUMN)
 
             var keysRemoved = [String]()
             var result = sqlite3_step(stmt)
             while result.hasRow {
-                if let key = String(stmt: stmt, columnIndex: SQLITE_FIRST_COLUMN) {
+                if let key = String(stmt: stmt!, columnIndex: SQLITE_FIRST_COLUMN) {
                     keysRemoved.append(key)
                 }
                 result = sqlite3_step(stmt)
             }
 
             if !result.isDone {
-                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+                throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
             }
 
             sqlite3_finalize(stmt)
@@ -39,12 +39,12 @@ public extension ReadWriteCollection where TCollection: IndexedCollection {
 
             let deleteSql = "DELETE FROM `\(connection.index.tableName)` WHERE \(clause.sql);"
             guard sqlite3_prepare_v2(db, deleteSql, -1, &stmt, nil).isOK else {
-                throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+                throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
             }
 
-            try! clause.bindStatements(stmt: stmt, firstColumnIndex: SQLITE_FIRST_BIND_COLUMN)
+            try! clause.bindStatements(stmt!, SQLITE_FIRST_BIND_COLUMN)
             if sqlite3_step(stmt).isNotDone {
-                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+                throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
             }
         } catch {
             Logger.log(warning: "SQLite error", error)

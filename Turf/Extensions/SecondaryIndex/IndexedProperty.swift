@@ -1,17 +1,17 @@
 /**
  Define a property of type `T` that will be indexed.
  */
-public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType> {
+public struct IndexedProperty<IndexedCollection: TurfCollection, T: SQLiteType> {
     // MARK: Public properties
 
     public let name: String
 
-    public let Type: T.Type = T.self
+    public let PropertyType: T.Type = T.self
 
     // MARK: Internal properties
 
     /// Property getter
-    internal var propertyValueForValue: (IndexedCollection.Value -> T)
+    internal var propertyValueForValue: ((IndexedCollection.Value) -> T)
 
     // MARK: Object lifecycle
 
@@ -19,7 +19,7 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType> {
      - parameter name: Property name
      - parameter propertyValueForValue: Getter for the property
      */
-    public init(name: String, propertyValueForValue: (IndexedCollection.Value -> T)) {
+    public init(name: String, propertyValueForValue: @escaping ((IndexedCollection.Value) -> T)) {
         self.name = name
         self.propertyValueForValue = propertyValueForValue
     }
@@ -32,7 +32,7 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType> {
      - parameter value
      - returns: A predicate
     */
-    public func equals(value: T) -> WhereClause {
+    public func equals(_ value: T) -> WhereClause {
         return WhereClauses.equals(name: name, value: value)
     }
 
@@ -42,7 +42,7 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType> {
      - parameter value
      - returns: A predicate
      */
-    public func doesNotEqual(value: T) -> WhereClause {
+    public func doesNotEqual(_ value: T) -> WhereClause {
         return WhereClauses.notEquals(name: name, value: value)
     }
 
@@ -52,7 +52,7 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType> {
      - parameter value
      - returns: A predicate
      */
-    public func isIn(values: [T]) -> WhereClause {
+    public func isIn(_ values: [T]) -> WhereClause {
         return WhereClauses.IN(name: name, values: values)
     }
 
@@ -62,7 +62,7 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType> {
      - parameter value
      - returns: A predicate
      */
-    public func isNotIn(values: [T]) -> WhereClause {
+    public func isNotIn(_ values: [T]) -> WhereClause {
         return WhereClauses.IN(name: name, values: values, negate: true)
     }
 
@@ -72,7 +72,7 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType> {
      - parameter value
      - returns: A predicate
      */
-    public func isBetween(left: T, right: T) -> WhereClause {
+    public func isBetween(_ left: T, right: T) -> WhereClause {
         return WhereClauses.between(name: name, left: left, right: right)
     }
 
@@ -82,7 +82,7 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType> {
      - parameter value
      - returns: A predicate
      */
-    public func isLessThan(value: T) -> WhereClause {
+    public func isLessThan(_ value: T) -> WhereClause {
         return WhereClauses.lessThan(name: name, value: value)
     }
 
@@ -92,7 +92,7 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType> {
      - parameter value
      - returns: A predicate
      */
-    public func isLessThanOrEqualTo(value: T) -> WhereClause {
+    public func isLessThanOrEqualTo(_ value: T) -> WhereClause {
         return WhereClauses.lessThanOrEqual(name: name, value: value)
     }
 
@@ -102,7 +102,7 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType> {
      - parameter value
      - returns: A predicate
      */
-    public func isGreaterThan(value: T) -> WhereClause {
+    public func isGreaterThan(_ value: T) -> WhereClause {
         return WhereClauses.greaterThan(name: name, value: value)
     }
 
@@ -112,7 +112,7 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType> {
      - parameter value
      - returns: A predicate
      */
-    public func isGreaterThanOrEqualTo(value: T) -> WhereClause {
+    public func isGreaterThanOrEqualTo(_ value: T) -> WhereClause {
         return WhereClauses.greaterThanOrEqual(name: name, value: value)
     }
 
@@ -122,7 +122,7 @@ public struct IndexedProperty<IndexedCollection: Collection, T: SQLiteType> {
 
     // MARK: Internal methods
 
-    internal func bindPropertyValue(value: IndexedCollection.Value, toSQLiteStmt stmt: COpaquePointer, atIndex index: Int32) -> Int32 {
+    internal func bindPropertyValue(_ value: IndexedCollection.Value, toSQLiteStmt stmt: OpaquePointer, atIndex index: Int32) -> Int32 {
         let value = propertyValueForValue(value)
         return value.sqliteBind(stmt, index: index)
     }
@@ -140,7 +140,7 @@ extension IndexedProperty where T: TurfSwiftString {
      - parameter value
      - returns: A predicate
      */
-    public func isLike(value: T) -> WhereClause {
+    public func isLike(_ value: T) -> WhereClause {
         return WhereClauses.like(name: name, value: value._turfSwiftString)
     }
 
@@ -150,7 +150,7 @@ extension IndexedProperty where T: TurfSwiftString {
      - parameter value
      - returns: A predicate
      */
-    public func isNotLike(value: T) -> WhereClause {
+    public func isNotLike(_ value: T) -> WhereClause {
         return WhereClauses.like(name: name, value: value._turfSwiftString, negate: true)
     }
 
@@ -160,7 +160,7 @@ extension IndexedProperty where T: TurfSwiftString {
      - parameter regex
      - returns: A predicate
      */
-    public func matchesRegex(regex: NSRegularExpression) -> WhereClause {
+    public func matchesRegex(_ regex: NSRegularExpression) -> WhereClause {
         return WhereClauses.regexp(name: name, regex: regex.pattern)
     }
 
@@ -170,7 +170,7 @@ extension IndexedProperty where T: TurfSwiftString {
      - parameter regex
      - returns: A predicate
      */
-    public func doesNotMatcheRegex(regex: NSRegularExpression) -> WhereClause {
+    public func doesNotMatcheRegex(_ regex: NSRegularExpression) -> WhereClause {
         return WhereClauses.regexp(name: name, regex: regex.pattern, negate: true)
     }
 }
@@ -202,7 +202,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType {
      - parameter value
      - returns: A predicate
      */
-    public func equals(value: T._Wrapped) -> WhereClause {
+    public func equals(_ value: T._Wrapped) -> WhereClause {
         return WhereClauses.equals(name: name, value: value)
     }
 
@@ -212,7 +212,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType {
      - parameter value
      - returns: A predicate
      */
-    public func doesNotEqual(value: T._Wrapped) -> WhereClause {
+    public func doesNotEqual(_ value: T._Wrapped) -> WhereClause {
         return WhereClauses.notEquals(name: name, value: value)
     }
 
@@ -222,7 +222,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType {
      - parameter value
      - returns: A predicate
      */
-    public func isIn(values: [T._Wrapped]) -> WhereClause {
+    public func isIn(_ values: [T._Wrapped]) -> WhereClause {
         return WhereClauses.IN(name: name, values: values)
     }
 
@@ -232,7 +232,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType {
      - parameter value
      - returns: A predicate
      */
-    public func isNotIn(values: [T._Wrapped]) -> WhereClause {
+    public func isNotIn(_ values: [T._Wrapped]) -> WhereClause {
         return WhereClauses.IN(name: name, values: values, negate: true)
     }
 
@@ -242,7 +242,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType {
      - parameter value
      - returns: A predicate
      */
-    public func isBetween(left: T._Wrapped, right: T._Wrapped) -> WhereClause {
+    public func isBetween(_ left: T._Wrapped, right: T._Wrapped) -> WhereClause {
         return WhereClauses.between(name: name, left: left, right: right)
     }
 
@@ -252,7 +252,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType {
      - parameter value
      - returns: A predicate
      */
-    public func isLessThan(value: T._Wrapped) -> WhereClause {
+    public func isLessThan(_ value: T._Wrapped) -> WhereClause {
         return WhereClauses.lessThan(name: name, value: value)
     }
 
@@ -262,7 +262,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType {
      - parameter value
      - returns: A predicate
      */
-    public func isLessThanOrEqualTo(value: T._Wrapped) -> WhereClause {
+    public func isLessThanOrEqualTo(_ value: T._Wrapped) -> WhereClause {
         return WhereClauses.lessThanOrEqual(name: name, value: value)
     }
 
@@ -272,7 +272,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType {
      - parameter value
      - returns: A predicate
      */
-    public func isGreaterThan(value: T._Wrapped) -> WhereClause {
+    public func isGreaterThan(_ value: T._Wrapped) -> WhereClause {
         return WhereClauses.greaterThan(name: name, value: value)
     }
 
@@ -282,7 +282,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType {
      - parameter value
      - returns: A predicate
      */
-    public func isGreaterThanOrEqualTo(value: T._Wrapped) -> WhereClause {
+    public func isGreaterThanOrEqualTo(_ value: T._Wrapped) -> WhereClause {
         return WhereClauses.greaterThanOrEqual(name: name, value: value)
     }
 }
@@ -294,7 +294,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType, T
      - parameter value
      - returns: A predicate
      */
-    public func isLike(value: T._Wrapped) -> WhereClause {
+    public func isLike(_ value: T._Wrapped) -> WhereClause {
         return WhereClauses.like(name: name, value: value._turfSwiftString)
     }
 
@@ -304,7 +304,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType, T
      - parameter value
      - returns: A predicate
      */
-    public func isNotLike(value: T._Wrapped) -> WhereClause {
+    public func isNotLike(_ value: T._Wrapped) -> WhereClause {
         return WhereClauses.like(name: name, value: value._turfSwiftString, negate: true)
     }
 
@@ -314,7 +314,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType, T
      - parameter regex
      - returns: A predicate
      */
-    public func matchesRegex(regex: NSRegularExpression) -> WhereClause {
+    public func matchesRegex(_ regex: NSRegularExpression) -> WhereClause {
         return WhereClauses.regexp(name: name, regex: regex.pattern)
     }
 
@@ -324,7 +324,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType, T
      - parameter regex
      - returns: A predicate
      */
-    public func doesNotMatcheRegex(regex: NSRegularExpression) -> WhereClause {
+    public func doesNotMatcheRegex(_ regex: NSRegularExpression) -> WhereClause {
         return WhereClauses.regexp(name: name, regex: regex.pattern, negate: true)
     }
 }

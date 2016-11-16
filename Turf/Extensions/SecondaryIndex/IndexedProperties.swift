@@ -17,7 +17,7 @@
  */
 
 public protocol IndexedProperties {
-    associatedtype IndexedCollection: Collection
+    associatedtype IndexedCollection: TurfCollection
 
     /// All indexed properties
     /// - warning: Do not mutate this after registering a SecondaryIndex extension

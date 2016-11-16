@@ -1,4 +1,4 @@
-private let connectionQueueKey = "connectionQueueKey".UTF8String
+private let connectionQueueKey = DispatchSpecificKey<Int?>()
 
 public final class Connection<Collections: CollectionsContainer> {
     // MARK: Public properties
@@ -21,19 +21,19 @@ public final class Connection<Collections: CollectionsContainer> {
     internal var isClosed: Bool { return sqlite.isClosed }
 
     /// Non-thread safe snapshot number
-    internal private(set) var localSnapshot: UInt64
+    internal fileprivate(set) var localSnapshot: UInt64
 
-    internal let connectionQueue: Dispatch.Queue
+    internal let connectionQueue: DispatchQueue
 
     // MARK: Private properties
 
-    private let databaseWriteQueue: Dispatch.Queue
-    private var connectionModificationLock: OSSpinLock = OS_SPINLOCK_INIT
+    fileprivate let databaseWriteQueue: DispatchQueue
+    fileprivate var connectionModificationLock: OSSpinLock = OS_SPINLOCK_INIT
 
-    private var connectionState: ConnectionState = .Inactive
-    private var extensionConnections: [String: ExtensionConnection]
-    private var collectionsLocalStorage: [String: TypeErasedCollectionLocalStorage]
-    private var modifiedCollections: [String: TypeErasedCollection]
+    fileprivate var connectionState: ConnectionState = .inactive
+    fileprivate var extensionConnections: [String: ExtensionConnection]
+    fileprivate var collectionsLocalStorage: [String: TypeErasedCollectionLocalStorage]
+    fileprivate var modifiedCollections: [String: TypeErasedCollection]
 
     // MARK: Object lifecycle
 
@@ -47,21 +47,18 @@ public final class Connection<Collections: CollectionsContainer> {
      - parameter defaultValueCacheSize: The default when a collection does not provide its own cache size. Default = 50.
      - throws: SQLiteError.FailedToOpenDatabase or SQLiteError.Error(code, reason)
      */
-    internal init(id: Int, database: Database<Collections>, databaseWriteQueue: Dispatch.Queue, defaultValueCacheSize: Int = 50) throws {
+    internal init(id: Int, database: Database<Collections>, databaseWriteQueue: DispatchQueue, defaultValueCacheSize: Int = 50) throws {
         self.id = id
         self.database = database
         self.databaseWriteQueue = databaseWriteQueue
-        self.connectionQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.connection[\(id)]")
+        self.connectionQueue = DispatchQueue(label: "turf.connection[\(id)]")
         self.localSnapshot = 0
         self.defaultValueCacheSize = defaultValueCacheSize
         self.extensionConnections = [:]
         self.collectionsLocalStorage = [:]
         self.modifiedCollections = [:]
 
-        Dispatch.Queues.setContext(
-            Dispatch.Queues.makeContext(self.connectionQueue),
-            key: connectionQueueKey,
-            forQueue: self.connectionQueue)
+        databaseWriteQueue.setSpecific(key: connectionQueueKey, value: id)
 
         self.sqlite = try SQLiteAdapter(sqliteDatabaseUrl: database.url)
         try self.createExtensionConnections()
@@ -73,7 +70,7 @@ public final class Connection<Collections: CollectionsContainer> {
             - Will not close the sqlite connection until any read/writes have completed
      */
     deinit {
-        Dispatch.synchronouslyOn(connectionQueue) {
+        connectionQueue.sync {
             self.sqlite.close()
         }
         database?.removeConnection(self)
@@ -88,8 +85,8 @@ public final class Connection<Collections: CollectionsContainer> {
             - `closure` is executed on the connection's queue.
      - parameter closure: Operations to perform within the read transaction.
      */
-    public func readTransaction(closure: (ReadTransaction<Collections>, Collections) -> Void) throws {
-        try Dispatch.synchronouslyOn(connectionQueue) {
+    public func readTransaction(_ closure: @escaping (ReadTransaction<Collections>, Collections) -> Void) throws {
+        try connectionQueue.sync {
             let transaction = ReadTransaction(connection: self)
             try self.preReadTransaction(transaction)
             closure(transaction, self.database.collections)
@@ -104,20 +101,18 @@ public final class Connection<Collections: CollectionsContainer> {
              - `closure` is executed on the connection's queue and global write queue.
      - parameter closure: Operations to perform within the read-write transaction.
      */
-    public func readWriteTransaction(closure: (ReadWriteTransaction<Collections>, Collections) throws -> Void) throws {
-        try Dispatch.synchronouslyOn(connectionQueue) {
-            try Dispatch.synchronouslyOn(self.databaseWriteQueue) {
-                Dispatch.Queues.setContext(
-                    Dispatch.Queues.makeContext(self.connectionQueue),
-                    key: connectionQueueKey,
-                    forQueue: self.databaseWriteQueue)
+    public func readWriteTransaction(_ closure: @escaping (ReadWriteTransaction<Collections>, Collections) throws -> Void) throws {
+        try connectionQueue.sync {
+            try self.databaseWriteQueue.sync {
+
+                self.databaseWriteQueue.setSpecific(key: connectionQueueKey, value: self.id)
 
                 let transaction = ReadWriteTransaction(connection: self)
                 try self.preReadWriteTransaction(transaction)
                 try closure(transaction, self.database.collections)
                 try self.postReadWriteTransaction(transaction)
 
-                Dispatch.Queues.setContext(nil, key: connectionQueueKey, forQueue: self.databaseWriteQueue)
+                self.databaseWriteQueue.setSpecific(key: connectionQueueKey, value: nil)
             }
         }
     }
@@ -131,7 +126,7 @@ public final class Connection<Collections: CollectionsContainer> {
          - Thread safe
      - warning: Must be called from a read-write transaction
      */
-    func registerExtension<Ext: Extension>(ext: Ext, onTransaction transaction: ReadWriteTransaction<Collections>) throws {
+    func registerExtension<Ext: Extension>(_ ext: Ext, onTransaction transaction: ReadWriteTransaction<Collections>) throws {
         assert(database.isOnWriteQueue(), "Must be called from a read-write transaction")
         self.database.registerExtension(ext)
 
@@ -142,7 +137,7 @@ public final class Connection<Collections: CollectionsContainer> {
 
         try ext.install(transaction, db: self.sqlite.db, existingInstallationDetails: existingInstallation)
 
-        sqlite.setDetailsForExtension(name: ext.uniqueName, version: ext.version, turfVersion: ext.turfVersion, data: NSData())
+        sqlite.setDetailsForExtension(name: ext.uniqueName, version: ext.version, turfVersion: ext.turfVersion, data: Data())
     }
 
     /**
@@ -155,7 +150,7 @@ public final class Connection<Collections: CollectionsContainer> {
             - In the average use case this method should do no work so a lightweight synchronization method is required
      - warning: Must be called from a read or read-write transaction
      */
-    func connectionForExtension(ext: Extension) throws -> ExtensionConnection {
+    func connectionForExtension(_ ext: Extension) throws -> ExtensionConnection {
         assert(isOnConnectionQueue(), "Must be called from a read or read-write transaction")
         defer { OSSpinLockUnlock(&connectionModificationLock) }
         OSSpinLockLock(&connectionModificationLock)
@@ -176,7 +171,7 @@ public final class Connection<Collections: CollectionsContainer> {
             - Uses spin lock to create local storage if required
             - Creating local storage is a lightweight task and requires a lightweight synchronization method
      */
-    func localStorageForCollection<TCollection: Collection>(collection: TCollection) -> CollectionLocalStorage<TCollection.Value> {
+    func localStorageForCollection<TCollection: TurfCollection>(_ collection: TCollection) -> CollectionLocalStorage<TCollection.Value> {
         defer { OSSpinLockUnlock(&connectionModificationLock) }
         OSSpinLockLock(&connectionModificationLock)
 
@@ -197,13 +192,16 @@ public final class Connection<Collections: CollectionsContainer> {
         - **Not thread safe**
      - warning: This should be called from the write queue
      */
-    func recordModifiedCollection<TCollection: Collection>(collection: TCollection) {
+    func recordModifiedCollection<TCollection: TurfCollection>(_ collection: TCollection) {
         assert(database.isOnWriteQueue(), "Must be called from write queue")
         modifiedCollections[collection.name] = collection
     }
 
     func isOnConnectionQueue() -> Bool {
-        return Dispatch.Queues.queueHasContext(Dispatch.Queues.makeContext(connectionQueue), forKey: connectionQueueKey)
+        guard let value = DispatchQueue.getSpecific(key: connectionQueueKey) else {
+            return false
+        }
+        return value == self.id
     }
 
     /**
@@ -211,10 +209,10 @@ public final class Connection<Collections: CollectionsContainer> {
         **Not thread safe**
      - warning: This must be called from the connection queue.
      */
-    func preReadTransaction(transaction: ReadTransaction<Collections>) throws {
+    func preReadTransaction(_ transaction: ReadTransaction<Collections>) throws {
         assert(isOnConnectionQueue(), "Must be called from a read transaction")
 
-        connectionState = .ActiveReadTransaction
+        connectionState = .activeReadTransaction
         try sqlite.beginDeferredTransaction()
         ensureLocalCacheSnapshotConsistency()
     }
@@ -224,12 +222,12 @@ public final class Connection<Collections: CollectionsContainer> {
         **Not thread safe**
      - warning: This must be called from the connection queue.
      */
-    func postReadTransaction(transaction: ReadTransaction<Collections>) throws {
+    func postReadTransaction(_ transaction: ReadTransaction<Collections>) throws {
         assert(isOnConnectionQueue(), "Must be called from a read-write transaction")
 
         try sqlite.commitTransaction()
         database.removeUnneededCacheUpdates()
-        connectionState = .Inactive
+        connectionState = .inactive
     }
 
     // MARK: Private methods
@@ -239,10 +237,10 @@ public final class Connection<Collections: CollectionsContainer> {
         **Not thread safe**
      - warning: This must be called from the write queue.
      */
-    private func preReadWriteTransaction(transaction: ReadWriteTransaction<Collections>) throws {
+    fileprivate func preReadWriteTransaction(_ transaction: ReadWriteTransaction<Collections>) throws {
         assert(database.isOnWriteQueue(), "Must be called from write queue")
 
-        connectionState = .ActiveReadWriteTransaction
+        connectionState = .activeReadWriteTransaction
         try sqlite.beginDeferredTransaction()
         ensureLocalCacheSnapshotConsistency()
     }
@@ -252,7 +250,7 @@ public final class Connection<Collections: CollectionsContainer> {
         **Not thread safe**
      - warning: This must be called from the write queue.
      */
-    private func postReadWriteTransaction(transaction: ReadWriteTransaction<Collections>) throws {
+    fileprivate func postReadWriteTransaction(_ transaction: ReadWriteTransaction<Collections>) throws {
         assert(database.isOnWriteQueue(), "Must be called from write queue")
 
         if transaction.shouldRollback {
@@ -264,7 +262,7 @@ public final class Connection<Collections: CollectionsContainer> {
         }
 
         database.removeUnneededCacheUpdates()
-        connectionState = .Inactive
+        connectionState = .inactive
         modifiedCollections = [:]
     }
 
@@ -274,7 +272,7 @@ public final class Connection<Collections: CollectionsContainer> {
         - **Not thread safe**
      - warning: This must be called from the connection queue.
      */
-    private func ensureLocalCacheSnapshotConsistency() {
+    fileprivate func ensureLocalCacheSnapshotConsistency() {
         assert(isOnConnectionQueue(), "Must be called from a read or read-write transaction")
 
         // Calling this SELECT statement causes a read transaction to begin on the db/WAL
@@ -299,7 +297,7 @@ public final class Connection<Collections: CollectionsContainer> {
         - **Not thread safe**
      - warning: This must be called from the write queue.
      */
-    private func rollbackTransaction(transaction: ReadWriteTransaction<Collections>) throws {
+    fileprivate func rollbackTransaction(_ transaction: ReadWriteTransaction<Collections>) throws {
         assert(database.isOnWriteQueue(), "Must be called from write queue")
 
         try sqlite.rollbackTransaction()
@@ -317,7 +315,7 @@ public final class Connection<Collections: CollectionsContainer> {
         - **Not thread safe**
      - warning: This must be called from the write queue.
      */
-    private func commitWriteTransaction(transaction: ReadWriteTransaction<Collections>) throws {
+    fileprivate func commitWriteTransaction(_ transaction: ReadWriteTransaction<Collections>) throws {
         assert(database.isOnWriteQueue(), "Must be called from write queue")
 
         localSnapshot += 1
@@ -348,8 +346,8 @@ public final class Connection<Collections: CollectionsContainer> {
         - Thread safe
             - Prepares extension connections on the connection queue
      */
-    private func createExtensionConnections() throws {
-        try Dispatch.synchronouslyOn(connectionQueue) {
+    fileprivate func createExtensionConnections() throws {
+        try connectionQueue.sync {
             for (uniqueName, ext) in self.database.extensions {
                 let connection = ext.newConnection(self)
                 try connection.prepare(self.sqlite.db)
@@ -361,7 +359,7 @@ public final class Connection<Collections: CollectionsContainer> {
 }
 
 private enum ConnectionState {
-    case Inactive
-    case ActiveReadTransaction
-    case ActiveReadWriteTransaction
+    case inactive
+    case activeReadTransaction
+    case activeReadWriteTransaction
 }

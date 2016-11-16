@@ -26,11 +26,11 @@ extension ObservableCollection where TCollection: IndexedCollection {
      - parameter matching: Secondary indexed query to execute on collection change.
      - parameter prefilter: Executed before querying the collection to determine if the query is required.
      */
-    public func values(matching clause: WhereClause, prefilter: (changeSet: ChangeSet<String>, previousValues: [TCollection.Value]) -> Bool) -> Observable<TransactionalValue<[TCollection.Value], Collections>> {
+    public func values(matching clause: WhereClause, prefilter: @escaping (_ changeSet: ChangeSet<String>, _ previousValues: [TCollection.Value]) -> Bool) -> Observable<TransactionalValue<[TCollection.Value], Collections>> {
         var previous: [TCollection.Value] = []
 
         return self.filterChangeSet { (changeSet) -> Bool in
-                return prefilter(changeSet: changeSet, previousValues: previous)
+                return prefilter(changeSet, previous)
             }.map { (collection, changeSet)  in
                 let newValues = collection.findValuesWhere(clause)
                 previous = newValues
@@ -56,11 +56,11 @@ extension ObservableCollection where TCollection: IndexedCollection {
      - parameter matching: Secondary indexed query to execute on collection change.
      - parameter prefilter: Executed before querying the collection to determine if the query is required.
      */
-    public func indexableValues(matching clause: WhereClause, prefilter: (changeSet: ChangeSet<String>, previousValues: [TCollection.Value]) -> Bool) -> IndexableObservable<[TCollection.Value]> {
+    public func indexableValues(matching clause: WhereClause, prefilter: @escaping (_ changeSet: ChangeSet<String>, _ previousValues: [TCollection.Value]) -> Bool) -> IndexableObservable<[TCollection.Value]> {
         var previous: [TCollection.Value] = []
 
         let observable = self.filterChangeSet { (changeSet) -> Bool in
-                return prefilter(changeSet: changeSet, previousValues: previous)
+                return prefilter(changeSet, previous)
             }.map { (collection, changeSet) -> [TCollection.Value] in
                 let newValues = collection.findValuesWhere(clause)
                 previous = newValues
@@ -92,11 +92,11 @@ extension ObservableCollection where TCollection: IndexedCollection {
      - parameter matching: Secondary indexed query to execute on collection change.
      - parameter prefilter: Executed before querying the collection to determine if the query is required.
      */
-    public func values(matching clause: PreparedValuesWhereQuery<Collections>, prefilter: (changeSet: ChangeSet<String>, previousValues: [TCollection.Value]) -> Bool) -> Observable<TransactionalValue<[TCollection.Value], Collections>> {
+    public func values(matching clause: PreparedValuesWhereQuery<Collections>, prefilter: @escaping (_ changeSet: ChangeSet<String>, _ previousValues: [TCollection.Value]) -> Bool) -> Observable<TransactionalValue<[TCollection.Value], Collections>> {
         var previous: [TCollection.Value] = []
 
         return self.filterChangeSet { (changeSet) -> Bool in
-                return prefilter(changeSet: changeSet, previousValues: previous)
+                return prefilter(changeSet, previous)
             }.map { (collection, changeSet)  in
                 let newValues = collection.findValuesWhere(clause)
                 previous = newValues
@@ -122,11 +122,11 @@ extension ObservableCollection where TCollection: IndexedCollection {
      - parameter matching: Secondary indexed query to execute on collection change.
      - parameter prefilter: Executed before querying the collection to determine if the query is required.
      */
-    public func indexableValues(matching clause: PreparedValuesWhereQuery<Collections>, prefilter: (changeSet: ChangeSet<String>, previousValues: [TCollection.Value]) -> Bool) -> IndexableObservable<[TCollection.Value]> {
+    public func indexableValues(matching clause: PreparedValuesWhereQuery<Collections>, prefilter: @escaping (_ changeSet: ChangeSet<String>, _ previousValues: [TCollection.Value]) -> Bool) -> IndexableObservable<[TCollection.Value]> {
         var previous: [TCollection.Value] = []
 
         let observable = self.filterChangeSet { (changeSet) -> Bool in
-                return prefilter(changeSet: changeSet, previousValues: previous)
+                return prefilter(changeSet, previous)
             }.map { (collection, changeSet) -> [TCollection.Value] in
                 let newValues = collection.findValuesWhere(clause)
                 previous = newValues
@@ -158,11 +158,11 @@ extension ObservableCollection where TCollection: IndexedCollection {
      - parameter matchingRawSql: Secondary indexed query to execute on collection change.
      - parameter prefilter: Executed before querying the collection to determine if the query is required.
      */
-    public func values(matchingRawSql clause: String, prefilter: (changeSet: ChangeSet<String>, previousValues: [TCollection.Value]) -> Bool) -> Observable<TransactionalValue<[TCollection.Value], Collections>> {
+    public func values(matchingRawSql clause: String, prefilter: @escaping (_ changeSet: ChangeSet<String>, _ previousValues: [TCollection.Value]) -> Bool) -> Observable<TransactionalValue<[TCollection.Value], Collections>> {
         var previous: [TCollection.Value] = []
 
         return self.filterChangeSet { (changeSet) -> Bool in
-                return prefilter(changeSet: changeSet, previousValues: previous)
+                return prefilter(changeSet, previous)
             }.map { (collection, changeSet)  in
                 let newValues = collection.findValuesWhere(clause)
                 previous = newValues
@@ -188,11 +188,11 @@ extension ObservableCollection where TCollection: IndexedCollection {
      - parameter matchingRawSql: Secondary indexed query to execute on collection change.
      - parameter prefilter: Executed before querying the collection to determine if the query is required.
      */
-    public func indexableValues(matchingRawSql clause: String, prefilter: (changeSet: ChangeSet<String>, previousValues: [TCollection.Value]) -> Bool) -> IndexableObservable<[TCollection.Value]> {
+    public func indexableValues(matchingRawSql clause: String, prefilter: @escaping (_ changeSet: ChangeSet<String>, _ previousValues: [TCollection.Value]) -> Bool) -> IndexableObservable<[TCollection.Value]> {
         var previous: [TCollection.Value] = []
 
         let observable = self.filterChangeSet { (changeSet) -> Bool in
-                return prefilter(changeSet: changeSet, previousValues: previous)
+                return prefilter(changeSet, previous)
             }.map { (collection, changeSet) -> [TCollection.Value] in
                 let newValues = collection.findValuesWhere(clause)
                 previous = newValues

@@ -1,6 +1,6 @@
 import Foundation
 
-class SubscribeOnSink<Value, Observer: ObserverType where Observer.Value == Value>: Sink<Observer>, ObserverType {
+class SubscribeOnSink<Value, Observer: ObserverType>: Sink<Observer>, ObserverType where Observer.Value == Value {
     typealias Parent = SubscribeOn<Value>
 
     let parent: Parent
@@ -10,7 +10,7 @@ class SubscribeOnSink<Value, Observer: ObserverType where Observer.Value == Valu
         super.init(observer: observer)
     }
 
-    func handle(next next: Value) {
+    func handle(next: Value) {
         forwardOn(value: next)
     }
 
@@ -28,15 +28,15 @@ class SubscribeOnSink<Value, Observer: ObserverType where Observer.Value == Valu
 }
 
 class SubscribeOn<Value>: Producer<Value> {
-    private let source: Observable<Value>
-    let scheduler: Scheduler
+    fileprivate let source: Observable<Value>
+    let scheduler: RxScheduler
 
-    init(source: Observable<Value>, scheduler: Scheduler) {
+    init(source: Observable<Value>, scheduler: RxScheduler) {
         self.source = source
         self.scheduler = scheduler
     }
 
-    override func run<Observer : ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    override func run<Observer : ObserverType>(_ observer: Observer) -> Disposable where Observer.Value == Value {
         //calling subscribe, calls run
         let sink = SubscribeOnSink(parent: self, observer: observer)
         //calling run on sink
@@ -46,7 +46,7 @@ class SubscribeOn<Value>: Producer<Value> {
 }
 
 extension Observable {
-    public func subscribeOn(scheduler: Scheduler) -> Observable<Value> {
+    public func subscribeOn(_ scheduler: RxScheduler) -> Observable<Value> {
         return SubscribeOn(source: self, scheduler: scheduler)
     }
 }

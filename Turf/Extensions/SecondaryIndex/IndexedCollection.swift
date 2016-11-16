@@ -3,7 +3,7 @@
 
  Example
  ```swift
-    class FriendsCollection: Collection, IndexedCollection {
+    class FriendsCollection: TurfCollection, IndexedCollection {
          let index: SecondaryIndex<FriendsCollection, IndexedProperties>
          let indexed = IndexedProperties()
  
@@ -37,7 +37,7 @@
     }
  ```
  */
-public protocol IndexedCollection: Collection, ExtendedCollection {
+public protocol IndexedCollection: TurfCollection, ExtendedCollection {
     associatedtype IndexProperties: IndexedProperties
 
     var index: SecondaryIndex<Self, IndexProperties> { get }

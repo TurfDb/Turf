@@ -1,19 +1,19 @@
-public class ReadCollection<TCollection: Collection, Collections: CollectionsContainer>: ReadableCollection {
+open class ReadCollection<TCollection: TurfCollection, Collections: CollectionsContainer>: ReadableCollection {
     /// Collection row type
     public typealias Value = TCollection.Value
 
     // MARK: Public properties
 
     /// Reference to read transaction from which this collection reads on
-    public unowned let readTransaction: ReadTransaction<Collections>
+    open unowned let readTransaction: ReadTransaction<Collections>
 
     /// Reference to user defined collection
-    public unowned let collection: TCollection
+    open unowned let collection: TCollection
 
     // MARK: Internal properties
 
     /// Collection name
-    public var name: String { return collection.name }
+    open var name: String { return collection.name }
 
     /// Collection schema version - This must be incremented when the serialization structure changes
     var schemaVersion: UInt64 { return collection.schemaVersion }
@@ -24,7 +24,7 @@ public class ReadCollection<TCollection: Collection, Collections: CollectionsCon
     // MARK: Object lifecycle
 
     /// Work around to stop swift segfaulting when calling self.collection.deserializeValue(...)
-    private let deserializeValue: (NSData) -> Value?
+    fileprivate let deserializeValue: (Data) -> Value?
 
     /**
      - parameter collection: Collection this read-only view wraps
@@ -44,14 +44,14 @@ public class ReadCollection<TCollection: Collection, Collections: CollectionsCon
     /**
      - returns: Number of keys in the collection
     */
-    public var numberOfKeys: UInt {
+    open var numberOfKeys: UInt {
         return localStorage.sql.numberOfKeysInCollection()
     }
 
     /**
      - returns: Primary keys in collection
      */
-    public var allKeys: [String] {
+    open var allKeys: [String] {
         return localStorage.sql.keysInCollection()
     }
 
@@ -60,21 +60,21 @@ public class ReadCollection<TCollection: Collection, Collections: CollectionsCon
      - warning: A ValueSequence is not a `struct` as it requires a `deinit` hook for safety
      - returns: All values in the collection
      */
-    public var allValues: ValuesSequence<Value> {
+    open var allValues: ValuesSequence<Value> {
         let stmt = localStorage.sql.allValuesInCollectionStmt
-        return ValuesSequence(stmt: stmt, valueDataColumnIndex: SQLITE_FIRST_COLUMN, schemaVersionColumnIndex: SQLITE_FIRST_COLUMN + 1, deserializer: collection.deserializeValue, collectionSchemaVersion: schemaVersion)
+        return ValuesSequence(stmt: stmt!, valueDataColumnIndex: SQLITE_FIRST_COLUMN, schemaVersionColumnIndex: SQLITE_FIRST_COLUMN + 1, deserializer: collection.deserializeValue, collectionSchemaVersion: schemaVersion)
     }
 
     /**
      All keys and values in the collection.
      */
-    public var allKeysAndValues: [String: Value] {
+    open var allKeysAndValues: [String: Value] {
         var result = [String: Value]()
         localStorage.sql.enumerateKeySchemaVersionAndValueDataInCollection { key, schemaVersion, valueData in
             precondition(schemaVersion == self.schemaVersion,
                 "Collection \(self.name) requires a migration")
 
-            result[key] = self.deserializeValue(valueData)
+            result[key] = self.deserializeValue(valueData as Data)
             return true
         }
         return result
@@ -86,7 +86,7 @@ public class ReadCollection<TCollection: Collection, Collections: CollectionsCon
      - parameter key: Primary key
      - returns: Value for primary key if it exists
      */
-    public func valueForKey(key: String) -> Value? {
+    open func valueForKey(_ key: String) -> Value? {
         if let cachedValue = localStorage.valueCache[key] {
             return cachedValue
         }

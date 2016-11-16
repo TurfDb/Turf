@@ -3,7 +3,7 @@ import Foundation
 /**
  Defines a collection that contains values of type `Value`
  */
-public protocol Collection: class, TypeErasedCollection {
+public protocol TurfCollection: class, TypeErasedCollection {
     /// Collection row type
     associatedtype Value
 
@@ -21,14 +21,14 @@ public protocol Collection: class, TypeErasedCollection {
      - returns: Data to be stored as a SQLite blob
      - parameter value
      */
-    func serializeValue(value: Value) -> NSData
+    func serializeValue(_ value: Value) -> Data
 
     /**
      Deserialize collection values from persistent format
      - returns: Value if conforms to persisted format
      - parameter data Data from persistence
      */
-    func deserializeValue(data: NSData) -> Value?
+    func deserializeValue(_ data: Data) -> Value?
 
     /**
      Perform initial collection registration and setup.

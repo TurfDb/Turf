@@ -5,7 +5,7 @@ final class TestDatabase {
     let collections: Collections
     let connection1: Connection<Collections>
     let connection2: Connection<Collections>
-    private(set) var observingConnection: ObservingConnection<Collections>!
+    fileprivate(set) var observingConnection: ObservingConnection<Collections>!
 
     init(databasePath: String) throws {
         self.collections = Collections()

@@ -28,19 +28,19 @@ class SecondaryIndexingRegressionTests: QuickSpec {
 
                             let treesCollections = transaction.readWrite(collections.indexedTrees)
 
-                            let oakTree1 = Tree(type: "Oak", species: "Quercus robur", height: 21, age: .Young)
+                            let oakTree1 = Tree(type: "Oak", species: "Quercus robur", height: 21, age: .young)
 
-                            let oakTree2 = Tree(type: "Oak", species: "Quercus robur", height: 27, age: .Mature)
+                            let oakTree2 = Tree(type: "Oak", species: "Quercus robur", height: 27, age: .mature)
 
-                            let cypressTree1 = Tree(type: "Cypress", species: "Cupressocyparis leylandii", height: 23, age: .FullyMature)
+                            let cypressTree1 = Tree(type: "Cypress", species: "Cupressocyparis leylandii", height: 23, age: .fullyMature)
 
-                            let cypressTree2 = Tree(type: "Cypress", species: "Cupressocyparis leylandii", height: 19, age: .Mature)
+                            let cypressTree2 = Tree(type: "Cypress", species: "Cupressocyparis leylandii", height: 19, age: .mature)
 
-                            let beechTree1 = Tree(type: "Beech", species: "Ilex aquifolium", height: 14, age: .Mature)
+                            let beechTree1 = Tree(type: "Beech", species: "Ilex aquifolium", height: 14, age: .mature)
 
-                            let beechTree2 = Tree(type: "Beech", species: "Ilex aquifolium", height: 15, age: .Mature)
+                            let beechTree2 = Tree(type: "Beech", species: "Ilex aquifolium", height: 15, age: .mature)
 
-                            let beechTree3 = Tree(type: "Beech", species: "Ilex aquifolium", height: 18, age: .FullyMature)
+                            let beechTree3 = Tree(type: "Beech", species: "Ilex aquifolium", height: 18, age: .fullyMature)
 
                             treesCollections.setValue(oakTree1, forKey: oakTree1.uuid)
                             treesCollections.setValue(oakTree2, forKey: oakTree2.uuid)
@@ -98,7 +98,7 @@ class SecondaryIndexingRegressionTests: QuickSpec {
 
                             let treesCollection = transaction.readOnly(collections.indexedTrees)
 
-                            oldTrees = treesCollection.findValuesWhere(treesCollection.indexed.age.isGreaterThanOrEqualTo(TreeAge.Mature.rawValue))
+                            oldTrees = treesCollection.findValuesWhere(treesCollection.indexed.age.isGreaterThanOrEqualTo(TreeAge.mature.rawValue))
                         }
 
                         expect(oldTrees.count) == 6

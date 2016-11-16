@@ -1,12 +1,12 @@
-internal class SecondaryIndexConnection<TCollection: Collection, Properties: IndexedProperties>: ExtensionConnection {
+internal class SecondaryIndexConnection<TCollection: TurfCollection, Properties: IndexedProperties>: ExtensionConnection {
     // MARK: Internal properties
 
     internal unowned let index: SecondaryIndex<TCollection, Properties>
 
-    internal var insertStmt: COpaquePointer!
-    internal var updateStmt: COpaquePointer!
-    internal var removeStmt: COpaquePointer!
-    internal var removeAllStmt: COpaquePointer!
+    internal var insertStmt: OpaquePointer!
+    internal var updateStmt: OpaquePointer!
+    internal var removeStmt: OpaquePointer!
+    internal var removeAllStmt: OpaquePointer!
 
     // MARK: Private properties
 
@@ -25,11 +25,11 @@ internal class SecondaryIndexConnection<TCollection: Collection, Properties: Ind
 
     // MARK: Internal methods
 
-    func writeTransaction<DatabaseCollections: CollectionsContainer>(transaction: ReadWriteTransaction<DatabaseCollections>) -> ExtensionWriteTransaction {
+    func writeTransaction<DatabaseCollections: CollectionsContainer>(_ transaction: ReadWriteTransaction<DatabaseCollections>) -> ExtensionWriteTransaction {
         return SecondaryIndexWriteTransaction(connection: self)
     }
 
-    func prepare(db: SQLitePtr) throws {
+    func prepare(_ db: SQLitePtr) throws {
         try prepareInsertStmt(db: db)
         try prepareUpdateStmt(db: db)
         try prepareRemoveStmt(db: db)
@@ -38,7 +38,7 @@ internal class SecondaryIndexConnection<TCollection: Collection, Properties: Ind
 
     // MARK: Private methods
 
-    private func prepareInsertStmt(db db: SQLitePtr) throws {
+    fileprivate func prepareInsertStmt(db: SQLitePtr) throws {
         var propertyNames = ["targetPrimaryKey"]
         var propertyBindings = ["?"]
 
@@ -47,48 +47,48 @@ internal class SecondaryIndexConnection<TCollection: Collection, Properties: Ind
             propertyBindings.append("?")
         }
 
-        let sql = "INSERT INTO `\(index.tableName)` (\(propertyNames.joinWithSeparator(","))) VALUES (\(propertyBindings.joinWithSeparator(",")))"
+        let sql = "INSERT INTO `\(index.tableName)` (\(propertyNames.joined(separator: ","))) VALUES (\(propertyBindings.joined(separator: ",")))"
 
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
         guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
 
         insertStmt = stmt
     }
 
-    private func prepareUpdateStmt(db db: SQLitePtr) throws {
+    fileprivate func prepareUpdateStmt(db: SQLitePtr) throws {
         var propertyBindings = [String]()
 
         for property in index.properties.allProperties {
             propertyBindings.append("\(property.name)=?")
         }
 
-        let sql = "UPDATE `\(index.tableName)` SET \(propertyBindings.joinWithSeparator(",")) WHERE targetPrimaryKey=?"
+        let sql = "UPDATE `\(index.tableName)` SET \(propertyBindings.joined(separator: ",")) WHERE targetPrimaryKey=?"
 
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
         guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
 
         updateStmt = stmt
     }
 
-    private func prepareRemoveStmt(db db: SQLitePtr) throws {
-        var stmt: COpaquePointer = nil
+    fileprivate func prepareRemoveStmt(db: SQLitePtr) throws {
+        var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "DELETE FROM `\(index.tableName)` WHERE targetPrimaryKey=?;", -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
 
         removeStmt = stmt
     }
 
-    private func prepareRemoveAllStmt(db db: SQLitePtr) throws {
-        var stmt: COpaquePointer = nil
+    fileprivate func prepareRemoveAllStmt(db: SQLitePtr) throws {
+        var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "DELETE FROM `\(index.tableName)`;", -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
 
         removeAllStmt = stmt

@@ -1,7 +1,7 @@
 import Foundation
 
 extension Observable {
-    public func map<Mapped>(map: (Value) -> Mapped) -> Observable<Mapped> {
+    public func map<Mapped>(_ map: @escaping (Value) -> Mapped) -> Observable<Mapped> {
         return AnyObservable<Mapped>.create { (observer) -> Disposable in
             let mappedObserver = AnyObserver<Value>() { (value) in
                 observer.handle(next: map(value))
@@ -11,7 +11,7 @@ extension Observable {
         }
     }
 
-    public func flatMap<Mapped>(map: (Value) -> Observable<Mapped>) -> Observable<Mapped> {
+    public func flatMap<Mapped>(_ map: @escaping (Value) -> Observable<Mapped>) -> Observable<Mapped> {
         return AnyObservable<Mapped>.create { (observer) -> Disposable in
 
             let disposeBag = DisposeBag()

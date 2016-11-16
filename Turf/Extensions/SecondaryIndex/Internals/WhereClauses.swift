@@ -1,5 +1,5 @@
 internal struct WhereClauses {
-    static func equals<Value: SQLiteType>(name name: String, value: Value) -> WhereClause {
+    static func equals<Value: SQLiteType>(name: String, value: Value) -> WhereClause {
         return WhereClause(sql: "\(name)=?",
             bindStatements: { (stmt, firstColumnIndex) -> Int32 in
                 value.sqliteBind(stmt, index: firstColumnIndex)
@@ -7,7 +7,7 @@ internal struct WhereClauses {
         })
     }
 
-    static func notEquals<Value: SQLiteType>(name name: String, value: Value) -> WhereClause {
+    static func notEquals<Value: SQLiteType>(name: String, value: Value) -> WhereClause {
         return WhereClause(sql: "\(name)!=?",
             bindStatements: { (stmt, firstColumnIndex) -> Int32 in
                 value.sqliteBind(stmt, index: firstColumnIndex)
@@ -15,7 +15,7 @@ internal struct WhereClauses {
         })
     }
 
-    static func like(name name: String, value: String, negate: Bool = false) -> WhereClause {
+    static func like(name: String, value: String, negate: Bool = false) -> WhereClause {
         return WhereClause(sql: "\(name) \(negate ? "NOT" : "") LIKE ?",
             bindStatements: { (stmt, firstColumnIndex) -> Int32 in
                 value.sqliteBind(stmt, index: firstColumnIndex)
@@ -23,7 +23,7 @@ internal struct WhereClauses {
         })
     }
 
-    static func regexp(name name: String, regex: String, negate: Bool = false) -> WhereClause {
+    static func regexp(name: String, regex: String, negate: Bool = false) -> WhereClause {
         return WhereClause(sql: "\(name) \(negate ? "NOT" : "") REGEXP ?",
             bindStatements: { (stmt, firstColumnIndex) -> Int32 in
                 regex.sqliteBind(stmt, index: firstColumnIndex)
@@ -31,21 +31,21 @@ internal struct WhereClauses {
         })
     }
 
-    static func IN<Value: SQLiteType>(name name: String, values: [Value], negate: Bool = false) -> WhereClause {
+    static func IN<Value: SQLiteType>(name: String, values: [Value], negate: Bool = false) -> WhereClause {
         precondition(values.count < Int(Int32.max))
 
-        let placeholders = [String](count: values.count, repeatedValue: "?").joinWithSeparator(",")
+        let placeholders = [String](repeating: "?", count: values.count).joined(separator: ",")
 
         return WhereClause(sql: "\(name) \(negate ? "NOT" : "") IN [\(placeholders)]",
             bindStatements: { (stmt, firstColumnIndex) -> Int32 in
-                for (index, value) in values.enumerate() {
+                for (index, value) in values.enumerated() {
                     value.sqliteBind(stmt, index: firstColumnIndex + index)
                 }
                 return Int32(values.count)
         })
     }
 
-    static func between<Value: SQLiteType>(name name: String, left: Value, right: Value) -> WhereClause {
+    static func between<Value: SQLiteType>(name: String, left: Value, right: Value) -> WhereClause {
         return WhereClause(sql: "\(name) BETWEEN ? AND ?",
             bindStatements: { (stmt, firstColumnIndex) -> Int32 in
                 left.sqliteBind(stmt, index: firstColumnIndex)
@@ -54,7 +54,7 @@ internal struct WhereClauses {
         })
     }
 
-    static func lessThan<Value: SQLiteType>(name name: String, value: Value) -> WhereClause {
+    static func lessThan<Value: SQLiteType>(name: String, value: Value) -> WhereClause {
         return WhereClause(sql: "\(name) < ?",
             bindStatements: { (stmt, firstColumnIndex) -> Int32 in
                 value.sqliteBind(stmt, index: firstColumnIndex)
@@ -62,7 +62,7 @@ internal struct WhereClauses {
         })
     }
 
-    static func lessThanOrEqual<Value: SQLiteType>(name name: String, value: Value) -> WhereClause {
+    static func lessThanOrEqual<Value: SQLiteType>(name: String, value: Value) -> WhereClause {
         return WhereClause(sql: "\(name) <= ?",
             bindStatements: { (stmt, firstColumnIndex) -> Int32 in
                 value.sqliteBind(stmt, index: firstColumnIndex)
@@ -70,7 +70,7 @@ internal struct WhereClauses {
         })
     }
 
-    static func greaterThan<Value: SQLiteType>(name name: String, value: Value) -> WhereClause {
+    static func greaterThan<Value: SQLiteType>(name: String, value: Value) -> WhereClause {
         return WhereClause(sql: "\(name) > ?",
             bindStatements: { (stmt, firstColumnIndex) -> Int32 in
                 value.sqliteBind(stmt, index: firstColumnIndex)
@@ -78,7 +78,7 @@ internal struct WhereClauses {
         })
     }
 
-    static func greaterThanOrEqual<Value: SQLiteType>(name name: String, value: Value) -> WhereClause {
+    static func greaterThanOrEqual<Value: SQLiteType>(name: String, value: Value) -> WhereClause {
         return WhereClause(sql: "\(name) >= ?",
             bindStatements: { (stmt, firstColumnIndex) -> Int32 in
                 value.sqliteBind(stmt, index: firstColumnIndex)
@@ -86,7 +86,7 @@ internal struct WhereClauses {
         })
     }
 
-    static func isNull(name name: String, negate: Bool = false) -> WhereClause {
+    static func isNull(name: String, negate: Bool = false) -> WhereClause {
         return WhereClause(sql: "\(name) \(negate ? "NOT" : "") IS NULL",
             bindStatements: { (stmt, firstColumnIndex) -> Int32 in
                 return 0

@@ -1,36 +1,36 @@
 import Foundation
 
-private let databaseWriteQueueKey = "databaseWriteQueueKey".UTF8String
+private let databaseWriteQueueKey = DispatchSpecificKey<Int>()
 
 public final class Database<DatabaseCollections: CollectionsContainer> {
     // MARK: Public properties
 
     /// Database file url
-    public let url: NSURL
+    public let url: URL
     public let collections: DatabaseCollections
 
     // MARK: Internal properties
 
     /// Map of extensions used *only* to guarantee unique naming of extensions
-    internal private(set) var extensions: [String: Extension]
+    internal fileprivate(set) var extensions: [String: Extension]
 
     // MARK: Private properties
 
-    private var registeredCollectionNames: [String]
-    private var connections: [Int: WeakBox<Connection<DatabaseCollections>>]
-    private var observingConnections: [Int: WeakBox<ObservingConnection<DatabaseCollections>>]
-    private var lastConnectionId: Int
-    private var cacheUpdatesBySnapshot: [UInt64: [String: TypeErasedCacheUpdates]]
-    private var minCacheUpdatesSnapshot: UInt64
+    fileprivate var registeredCollectionNames: [String]
+    fileprivate var connections: [Int: WeakBox<Connection<DatabaseCollections>>]
+    fileprivate var observingConnections: [Int: WeakBox<ObservingConnection<DatabaseCollections>>]
+    fileprivate var lastConnectionId: Int
+    fileprivate var cacheUpdatesBySnapshot: [UInt64: [String: TypeErasedCacheUpdates]]
+    fileprivate var minCacheUpdatesSnapshot: UInt64
 
-    private let databaseWriteTransactionEnded: Subject<Void>
-    private let databaseWriteTransactionEndedQueue: Dispatch.Queue
+    fileprivate let databaseWriteTransactionEnded: Subject<Void>
+    fileprivate let databaseWriteTransactionEndedQueue: DispatchQueue
 
-    private let databaseWriteQueue: Dispatch.Queue
-    private let connectionSetUpQueue: Dispatch.Queue
-    private var connectionManipulationLock: OSSpinLock = OS_SPINLOCK_INIT
-    private var collectionRegistrationLock: OSSpinLock = OS_SPINLOCK_INIT
-    private var extensionRegisterationLock: OSSpinLock = OS_SPINLOCK_INIT
+    fileprivate let databaseWriteQueue: DispatchQueue
+    fileprivate let connectionSetUpQueue: DispatchQueue
+    fileprivate var connectionManipulationLock: OSSpinLock = OS_SPINLOCK_INIT
+    fileprivate var collectionRegistrationLock: OSSpinLock = OS_SPINLOCK_INIT
+    fileprivate var extensionRegisterationLock: OSSpinLock = OS_SPINLOCK_INIT
 
     // MARK: Object lifecycle
 
@@ -41,7 +41,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
      - throws: Any error thrown during `collections.setUpCollections(transaction:)` or one of `SQLiteError.FailedToOpenDatabase` or `SQLiteError.Error(code, reason)` if the database failed to open.
     */
     public convenience init(path: String, collections: DatabaseCollections) throws {
-        try self.init(url: NSURL(string: path)!, collections: collections)
+        try self.init(url: URL(string: path)!, collections: collections)
     }
 
     /**
@@ -50,7 +50,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
      - parameter collections: Container of collections associated with this database
      - throws: Any error thrown during `collections.setUpCollections(transaction:)` or one of `SQLiteError.FailedToOpenDatabase` or `SQLiteError.Error(code, reason)` if the database failed to open.
      */
-    public init(url: NSURL, collections: DatabaseCollections) throws {
+    public init(url: URL, collections: DatabaseCollections) throws {
         self.url = url
         self.collections = collections
         self.extensions = [:]
@@ -60,16 +60,12 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
         self.lastConnectionId = 0
         self.cacheUpdatesBySnapshot = [:]
         self.minCacheUpdatesSnapshot = 0
-        self.databaseWriteQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-queue")
-        self.connectionSetUpQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.setup-queue")
-        self.databaseWriteTransactionEndedQueue = Dispatch.Queues.create(.SerialQueue, name: "turf.database.write-ended")
+        self.databaseWriteQueue = DispatchQueue(label: "turf.database.write-queue")
+        self.connectionSetUpQueue = DispatchQueue(label: "turf.database.setup-queue")
+        self.databaseWriteTransactionEndedQueue = DispatchQueue(label: "turf.database.write-ended")
         self.databaseWriteTransactionEnded = Subject<Void>()
 
-        Dispatch.Queues.setContext(
-            Dispatch.Queues.makeContext(self.databaseWriteQueue),
-            key: databaseWriteQueueKey,
-            forQueue: self.databaseWriteQueue)
-
+        self.databaseWriteQueue.setSpecific(key: databaseWriteQueueKey, value: 1)
         try setUpCollections(collections)
     }
 
@@ -108,7 +104,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
         return connection
     }
 
-    public func newObservingConnection(shouldAdvanceWhenDatabaseChanges shouldAdvanceWhenDatabaseChanges: () -> Bool = { return true }) throws -> ObservingConnection<DatabaseCollections> {
+    public func newObservingConnection(shouldAdvanceWhenDatabaseChanges: @escaping () -> Bool = { return true }) throws -> ObservingConnection<DatabaseCollections> {
         let connection = try newConnection()
 
         defer { OSSpinLockUnlock(&connectionManipulationLock) }
@@ -138,13 +134,13 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
              - Downside is some wasted CPU cycles, but you should not be creating/destroying many connections anyway.
      - parameter connection: A uniquely named database collection to register.
      */
-    func removeConnection(connection: Connection<DatabaseCollections>) {
+    func removeConnection(_ connection: Connection<DatabaseCollections>) {
         precondition(connection.isClosed, "Connection must be closed before removing")
 
         defer { OSSpinLockUnlock(&connectionManipulationLock) }
         OSSpinLockLock(&connectionManipulationLock)
 
-        connections.removeValueForKey(connection.id)
+        connections.removeValue(forKey: connection.id)
     }
 
     /**
@@ -155,7 +151,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
             - Uses a spin lock for thread safe registration and unregistration of collections.
      - parameter collection: A uniquely named database collection to register.
      */
-    func registerCollection<TCollection: Collection>(collection: TCollection) {
+    func registerCollection<TCollection: TurfCollection>(_ collection: TCollection) {
         precondition(!registeredCollectionNames.contains(collection.name),
             "Collection '\(collection.name)' already registered")
 
@@ -173,7 +169,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
             - Uses a spin lock for thread safe registration and unregistration of extensions.
      - parameter ext: A uniquely named database extension to register.
      */
-    func registerExtension(ext: Extension) {
+    func registerExtension(_ ext: Extension) {
         precondition(extensions[ext.uniqueName] == nil,
             "Extension '\(ext.uniqueName)' already registered")
 
@@ -189,7 +185,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
         - Thread safe
      - warning: Must be called from the write queue
      */
-    func recordPendingCacheUpdates<Value>(updates: CacheUpdates<String, Value>, onSnapshot snapshot: UInt64, forCollectionNamed collectionName: String) {
+    func recordPendingCacheUpdates<Value>(_ updates: CacheUpdates<String, Value>, onSnapshot snapshot: UInt64, forCollectionNamed collectionName: String) {
         assert(isOnWriteQueue(), "Must be called from write queue")
 
         defer { OSSpinLockUnlock(&connectionManipulationLock) }
@@ -209,7 +205,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
      - note:
          - Thread safe
      */
-    func cacheChangesAfterSnapshot<Value>(minSnapshot: UInt64, upToSnapshot maxSnapshot: UInt64, forCollectionNamed collectionName: String) -> CacheUpdates<String, Value> {
+    func cacheChangesAfterSnapshot<Value>(_ minSnapshot: UInt64, upToSnapshot maxSnapshot: UInt64, forCollectionNamed collectionName: String) -> CacheUpdates<String, Value> {
         let cacheChanges = CacheUpdates<String, Value>()
 
         defer { OSSpinLockUnlock(&connectionManipulationLock) }
@@ -217,7 +213,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
 
         for snapshot in (minSnapshot + 1) ... maxSnapshot {
             if let cacheUpdatesByCollection = cacheUpdatesBySnapshot[snapshot],
-                   updatesForCollection = cacheUpdatesByCollection[collectionName] {
+                   let updatesForCollection = cacheUpdatesByCollection[collectionName] {
                     cacheChanges.mergeCacheUpdatesFrom(updatesForCollection as! CacheUpdates<String, Value>)
             }
         }
@@ -246,14 +242,14 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
 
         if lowestConnectionSnapshot != UInt64.max && lowestConnectionSnapshot > minCacheUpdatesSnapshot {
             for snapshot in minCacheUpdatesSnapshot ..< lowestConnectionSnapshot {
-                cacheUpdatesBySnapshot.removeValueForKey(snapshot)
+                cacheUpdatesBySnapshot.removeValue(forKey: snapshot)
             }
 
             minCacheUpdatesSnapshot = lowestConnectionSnapshot
         }
     }
 
-    func notifyObservingConnectionsOfModifiedCollectionsWithChangeSets(changeSets: [String: ChangeSet<String>]) throws {
+    func notifyObservingConnectionsOfModifiedCollectionsWithChangeSets(_ changeSets: [String: ChangeSet<String>]) throws {
 
         for (_, observingConnection) in observingConnections {
             try observingConnection.value?.processModifiedCollections(changeSets: changeSets)
@@ -261,19 +257,19 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
 
     }
 
-    func notifiyTransactionEnded(wasRolledBack wasRolledBack: Bool) {
-        Dispatch.asynchronouslyOn(databaseWriteTransactionEndedQueue) {
+    func notifiyTransactionEnded(wasRolledBack: Bool) {
+        databaseWriteTransactionEndedQueue.async {
             self.databaseWriteTransactionEnded.handle(next: ())
         }
     }
 
     func isOnWriteQueue() -> Bool {
-        return Dispatch.Queues.queueHasContext(Dispatch.Queues.makeContext(databaseWriteQueue), forKey: databaseWriteQueueKey)
+        return DispatchQueue.getSpecific(key: databaseWriteQueueKey) == 1
     }
 
     // MARK: Private methods
 
-    private func setUpCollections(collections: DatabaseCollections) throws {
+    fileprivate func setUpCollections(_ collections: DatabaseCollections) throws {
         let connection = try newConnection()
         try connection.sqlite.setSnapshot(0)
 

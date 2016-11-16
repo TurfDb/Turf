@@ -12,7 +12,7 @@ class CarsCollection: Collection {
         try transaction.registerCollection(self)
     }
 
-    func serializeValue(value: Value) -> NSData {
+    func serializeValue(_ value: Value) -> Data {
         let dict: [String: AnyObject] = [
             "uuid": value.uuid,
             "manufacturer": value.manufacturer,
@@ -20,16 +20,16 @@ class CarsCollection: Collection {
             "doors": value.doors
         ]
 
-        return try! NSJSONSerialization.dataWithJSONObject(dict, options: [])
+        return try! JSONSerialization.data(withJSONObject: dict, options: [])
     }
 
-    func deserializeValue(data: NSData) -> Value? {
-        let dict = try! NSJSONSerialization.JSONObjectWithData(data, options: [])
+    func deserializeValue(_ data: Data) -> Value? {
+        let dict = try! JSONSerialization.jsonObject(with: data, options: [])
         guard let
             uuid = dict["uuid"] as? String,
-            manufacturer = dict["manufacturer"] as? String,
-            name = dict["name"] as? String,
-            doors = dict["doors"] as? Int else {
+            let manufacturer = dict["manufacturer"] as? String,
+            let name = dict["name"] as? String,
+            let doors = dict["doors"] as? Int else {
             return nil
         }
         return CarModel(uuid: uuid, manufacturer: manufacturer, name: name, doors: doors)

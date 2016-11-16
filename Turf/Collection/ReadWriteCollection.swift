@@ -1,4 +1,4 @@
-public final class ReadWriteCollection<TCollection: Collection, Collections: CollectionsContainer>: ReadCollection<TCollection, Collections>, WritableCollection {
+public final class ReadWriteCollection<TCollection: TurfCollection, Collections: CollectionsContainer>: ReadCollection<TCollection, Collections>, WritableCollection {
     // MARK: Internal properties
 
     /// Reference to read-write transaction from which this collection operates on
@@ -7,7 +7,7 @@ public final class ReadWriteCollection<TCollection: Collection, Collections: Col
     // MARK: Private properties
 
     /// Work around to stop swift segfaulting when calling self.collection.serializeValue(...)
-    private let serializeValue: (Value) -> NSData
+    fileprivate let serializeValue: (Value) -> Data
 
     // MARK: Object lifecycle
 
@@ -28,7 +28,7 @@ public final class ReadWriteCollection<TCollection: Collection, Collections: Col
      - parameter value: Value
      - parameter key: Primary key for `value`
      */
-    public func setValue(value: Value, forKey key: String) {
+    public func setValue(_ value: Value, forKey key: String) {
         try! commonSetValue(value, forKey: key)
     }
 
@@ -36,7 +36,7 @@ public final class ReadWriteCollection<TCollection: Collection, Collections: Col
      Remove values with the given primary keys
      - parameter keys: Primary keys of the values to remove
      */
-    public func removeValuesWithKeys(keys: [String]) {
+    public func removeValuesWithKeys(_ keys: [String]) {
         try! commonRemoveValuesWithKeys(keys)
     }
 
@@ -49,13 +49,13 @@ public final class ReadWriteCollection<TCollection: Collection, Collections: Col
 
     // MARK: Private methods
 
-    private func commonSetValue(value: Value, forKey key: String) throws -> SQLiteRowChangeType {
+    fileprivate func commonSetValue(_ value: Value, forKey key: String) throws -> SQLiteRowChangeType {
         let valueData = serializeValue(value)
 
         let rowChange = try localStorage.sql.setValueData(valueData, valueSchemaVersion: schemaVersion, forKey: key)
         switch rowChange {
-        case .Insert(_): localStorage.changeSet.recordValueInsertedWithKey(key)
-        case .Update(_): localStorage.changeSet.recordValueUpdatedWithKey(key)
+        case .insert(_): localStorage.changeSet.recordValueInsertedWithKey(key)
+        case .update(_): localStorage.changeSet.recordValueUpdatedWithKey(key)
         }
         localStorage.valueCache[key] = value
         localStorage.cacheUpdates.recordValue(value, upsertedWithKey: key)
@@ -66,7 +66,7 @@ public final class ReadWriteCollection<TCollection: Collection, Collections: Col
         return rowChange
     }
 
-    private func commonRemoveValuesWithKeys(keys: [String]) throws {
+    fileprivate func commonRemoveValuesWithKeys(_ keys: [String]) throws {
         for key in keys {
             try localStorage.sql.removeValueWithKey(key)
             localStorage.valueCache.removeValueForKey(key)
@@ -78,7 +78,7 @@ public final class ReadWriteCollection<TCollection: Collection, Collections: Col
         connection.recordModifiedCollection(collection)
     }
 
-    private func commonRemoveAllValues() throws {
+    fileprivate func commonRemoveAllValues() throws {
         try localStorage.sql.removeAllValues()
         localStorage.valueCache.removeAllValues()
         localStorage.changeSet.recordAllValuesRemoved()
@@ -96,12 +96,12 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
      - parameter value: Value
      - parameter key: Primary key for `value`
      */
-    public func setValue(value: Value, forKey key: String) {
+    public func setValue(_ value: Value, forKey key: String) {
         let rowChange: SQLiteRowChangeType = try! commonSetValue(value, forKey: key)
         
         let connection = readWriteTransaction.connection
         switch rowChange {
-        case .Insert(_):
+        case .insert(_):
             for ext in collection.associatedExtensions {
                 //TODO Aggregate try! errors and throw at a commit level
                 let extConnection = try! connection.connectionForExtension(ext)
@@ -110,7 +110,7 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
                 try! extTransaction.handleValueInsertion(value, forKey: key, inCollection: collection)
             }
 
-        case .Update(_):
+        case .update(_):
             for ext in collection.associatedExtensions {
                 let extConnection = try! connection.connectionForExtension(ext)
                 //TODO Investigate the potential of caching extension write transactions on the connection
@@ -126,7 +126,7 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
      - note: Executes any associated extensions
      - parameter keys: Primary keys of the values to remove
      */
-    public func removeValuesWithKeys(keys: [String]) {
+    public func removeValuesWithKeys(_ keys: [String]) {
         try! commonRemoveValuesWithKeys(keys)
 
         let connection = readWriteTransaction.connection

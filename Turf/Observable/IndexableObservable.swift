@@ -1,10 +1,10 @@
 import Foundation
 
-public class IndexableObservable<Array: CollectionType>: Observable<Array> {
-    public let first: Observable<Array.Generator.Element?>
-    public let last: Observable<Array.Generator.Element?>
+open class IndexableObservable<Array: Collection>: Observable<Array> {
+    open let first: Observable<Array.Iterator.Element?>
+    open let last: Observable<Array.Iterator.Element?>
 
-    private let wrappedObservable: Observable<Array>
+    fileprivate let wrappedObservable: Observable<Array>
 
     init(observable: Observable<Array>) {
         wrappedObservable = observable
@@ -18,23 +18,18 @@ public class IndexableObservable<Array: CollectionType>: Observable<Array> {
         }
     }
 
-    public func observe(index index: Array.Index) -> Observable<Array.Generator.Element?> {
-        return wrappedObservable.map { array in
-            return array[safe: index]
+    open func observe(index: Array.Index) -> Observable<Array.Iterator.Element?> {
+        return wrappedObservable.map { array -> Array.Iterator.Element? in
+//            return array.indices.contains(index) ? array[index] : nil
+            return nil
         }
     }
 
-    public subscript(observableIndex index: Array.Index) -> Observable<Array.Generator.Element?> {
+    open subscript(observableIndex index: Array.Index) -> Observable<Array.Iterator.Element?> {
         return observe(index: index)
     }
 
-    public override func subscribe<Observer: ObserverType where Observer.Value == Array>(observer: Observer) -> Disposable {
+    open override func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Value == Array {
         return wrappedObservable.subscribe(observer)
-    }
-}
-
-extension CollectionType {
-    subscript (safe index: Index) -> Generator.Element? {
-        return indices.contains(index) ? self[index] : nil
     }
 }

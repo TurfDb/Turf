@@ -32,7 +32,7 @@ public final class ReadWriteTransaction<Collections: CollectionsContainer>: Read
      - returns: Read-write view of `collection`
      - parameter collection: The Collection we want a read-write view of
     */
-    public func readWrite<TCollection: Collection>(collection: TCollection) -> ReadWriteCollection<TCollection, Collections> {
+    public func readWrite<TCollection: TurfCollection>(_ collection: TCollection) -> ReadWriteCollection<TCollection, Collections> {
         //TODO Cache 
         return ReadWriteCollection(collection: collection, transaction: self)
     }
@@ -43,7 +43,7 @@ public final class ReadWriteTransaction<Collections: CollectionsContainer>: Read
         - Thread safe
      - parameter collection: The Collection we want to register. This creates a table in the database with the same name as the collection's 'name' property
      */
-    public func registerCollection<TCollection: Collection>(collection: TCollection) throws {
+    public func registerCollection<TCollection: TurfCollection>(_ collection: TCollection) throws {
         try SQLiteCollection.createCollectionTableNamed(collection.name, db: connection.sqlite.db)
         connection.database.registerCollection(collection)
     }
@@ -54,7 +54,7 @@ public final class ReadWriteTransaction<Collections: CollectionsContainer>: Read
          - Thread safe
      - parameter ext: An installable extension
      */
-    public func registerExtension<Ext: Extension>(ext: Ext) throws {
+    public func registerExtension<Ext: Extension>(_ ext: Ext) throws {
         //FIXME segfault
         let localConnection: Connection<Collections> = connection
         try localConnection.registerExtension(ext, onTransaction: self)

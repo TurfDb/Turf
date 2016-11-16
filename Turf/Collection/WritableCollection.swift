@@ -7,12 +7,12 @@ public protocol WritableCollection {
      - parameter value: Value
      - parameter key: Primary key
      */
-    func setValue(value: Value, forKey key: String)
+    func setValue(_ value: Value, forKey key: String)
 
     /**
      - parameter keys: Collection of primary keys to remove if they exist
      */
-    func removeValuesWithKeys(keys: [String])
+    func removeValuesWithKeys(_ keys: [String])
 
     /**
      Remove all values in the collection

@@ -13,11 +13,11 @@ class NoActionDisposable: Disposable {
 
     // MARK: Private properties
 
-    private let hasBeenDisposed: AtomicBool = false
+    fileprivate let hasBeenDisposed: AtomicBool = false
 
     // MARK: Object lifecycle
 
-    private init() { }
+    fileprivate init() { }
 
     // MARK: Public methods
 
@@ -27,19 +27,19 @@ class NoActionDisposable: Disposable {
 }
 
 
-public class BasicDisposable: Disposable {
+open class BasicDisposable: Disposable {
     // MARK: Public properties
 
-    public var disposed: Bool { return hasBeenDisposed == true }
+    open var disposed: Bool { return hasBeenDisposed == true }
 
     // MARK: Private properties
 
-    private let hasBeenDisposed: AtomicBool = false
-    private var action: (() -> Void)?
+    fileprivate let hasBeenDisposed: AtomicBool = false
+    fileprivate var action: (() -> Void)?
 
     // MARK: Object lifecycle
 
-    public init(_ action: () -> Void) {
+    public init(_ action: @escaping () -> Void) {
         self.action = action
     }
 
@@ -49,19 +49,19 @@ public class BasicDisposable: Disposable {
 
     // MARK: Public methods
 
-    public func dispose() {
+    open func dispose() {
         guard hasBeenDisposed.ensureFalseThenSetTrue() else { return }
         action?()
         action = nil
     }
 }
 
-public class AssignableDisposable: Disposable {
+open class AssignableDisposable: Disposable {
     // MARK: Public properties
 
-    public private(set) var disposed: Bool = false
+    open fileprivate(set) var disposed: Bool = false
 
-    public var disposable: Disposable? {
+    open var disposable: Disposable? {
         get {
             OSSpinLockLock(&lock)
             defer { OSSpinLockUnlock(&lock) }
@@ -84,8 +84,8 @@ public class AssignableDisposable: Disposable {
 
     // MARK: Private properties
 
-    private var lock = OSSpinLock()
-    private var _disposable: Disposable? = nil
+    fileprivate var lock = OSSpinLock()
+    fileprivate var _disposable: Disposable? = nil
 
     // MARK: Object lifecycle
 
@@ -99,7 +99,7 @@ public class AssignableDisposable: Disposable {
 
     // MARK: Public methods
 
-    public func dispose() {
+    open func dispose() {
         OSSpinLockLock(&lock)
         defer { OSSpinLockUnlock(&lock) }
 
@@ -114,8 +114,8 @@ public class AssignableDisposable: Disposable {
 }
 
 
-internal class AtomicBool: BooleanLiteralConvertible {
-    private var rawValue: Int32 = 0
+internal class AtomicBool: ExpressibleByBooleanLiteral {
+    fileprivate var rawValue: Int32 = 0
 
     required init(booleanLiteral value: Bool) {
         self.rawValue = value ? 1 : 0

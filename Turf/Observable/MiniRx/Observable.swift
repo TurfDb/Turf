@@ -1,57 +1,55 @@
 import Foundation
 
 /// An Observable is a registry of handlers (ObserverTypes) that can be pushed values by a producer
-public class Observable<Value> {
-    public static func create(build: (observer: AnyObserver<Value>) -> Disposable) -> Observable<Value> {
+open class Observable<Value> {
+    open static func create(_ build: @escaping (_ observer: AnyObserver<Value>) -> Disposable) -> Observable<Value> {
         return AnyObservable(factory: build)
     }
 
-    public static func just(value: Value) -> Observable<Value> {
+    open static func just(_ value: Value) -> Observable<Value> {
         return AnyObservable(factory: { (observer) -> Disposable in
             observer.handle(next: value)
             return BasicDisposable { }
         })
     }
 
-    public static func never() -> Observable<Value> {
+    open static func never() -> Observable<Value> {
         return AnyObservable(factory: { (observer) -> Disposable in
             return BasicDisposable { }
         })
     }
 
-    func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Value == Value {
         fatalError()
     }
-
-    @warn_unused_result
-    public func subscribeNext(observer: (Value) -> Void) -> Disposable {
+    
+    open func subscribeNext(_ observer: @escaping (Value) -> Void) -> Disposable {
         return subscribe(AnyObserver(handleNext: observer))
     }
 }
 
-public class Producer<Value>: Observable<Value> {
+open class Producer<Value>: Observable<Value> {
     override init() {
         super.init()
     }
 
-    override func subscribe<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    override func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Value == Value {
         return run(observer)
     }
 
-    func run<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    func run<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Value == Value {
         fatalError()
     }
-
 }
 
-public class AnyObservable<Value>: Producer<Value> {
-    private let observableFactory: (AnyObserver<Value>) -> Disposable
+open class AnyObservable<Value>: Producer<Value> {
+    fileprivate let observableFactory: (AnyObserver<Value>) -> Disposable
 
-    init(factory: (observer: AnyObserver<Value>) -> Disposable) {
+    init(factory: @escaping (_ observer: AnyObserver<Value>) -> Disposable) {
         self.observableFactory = factory
     }
 
-    override func run<Observer: ObserverType where Observer.Value == Value>(observer: Observer) -> Disposable {
+    override func run<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Value == Value {
         return observableFactory(observer.asObserver())
     }
 }

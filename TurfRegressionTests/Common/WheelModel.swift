@@ -7,7 +7,7 @@ struct WheelModel {
     let size: Double
 
     init(manufacturer: String, size: Double) {
-        self.init(uuid: NSUUID().UUIDString, manufacturer: manufacturer, size: size)
+        self.init(uuid: UUID().uuidString, manufacturer: manufacturer, size: size)
     }
 
     init(uuid: String, manufacturer: String, size: Double) {

@@ -1,7 +1,7 @@
 public struct ExistingExtensionInstallation {
     public let version: UInt64
     public let turfVersion: UInt64
-    public let data: NSData
+    public let data: Data
 }
 
 extension ExistingExtensionInstallation: CustomDebugStringConvertible {

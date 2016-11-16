@@ -1,8 +1,8 @@
-public class MigrationOperations {
+open class MigrationOperations {
     // MARK: Private properties
 
-    private let sqlite: SQLiteAdapter
-    private var sqliteCollectionCache: [String: SQLiteCollection]
+    fileprivate let sqlite: SQLiteAdapter
+    fileprivate var sqliteCollectionCache: [String: SQLiteCollection]
 
     // MARK: Object lifecycle
 
@@ -13,22 +13,22 @@ public class MigrationOperations {
 
     // MARK: Public methods
 
-    public func removeCollection(name: String) throws {
+    open func removeCollection(_ name: String) throws {
         try SQLiteCollection.dropCollectionTableNamed(name, db: sqlite.db)
     }
 
-    public func createCollection(name: String) throws {
+    open func createCollection(_ name: String) throws {
         try SQLiteCollection.createCollectionTableNamed(name, db: sqlite.db)
     }
 
-    public func enumerateValuesInCollection(name: String, each: (index: UInt, key: String, version: UInt64, value: NSData) throws -> Bool) throws {
+    open func enumerateValuesInCollection(_ name: String, each: @escaping (_ index: UInt, _ key: String, _ version: UInt64, _ value: Data) throws -> Bool) throws {
         var index = UInt(0)
-        var caughtError: ErrorType? = nil
+        var caughtError: Error? = nil
 
         try sqliteCollectionFor(name).enumerateKeySchemaVersionAndValueDataInCollection({ (key, version, value) -> Bool in
             var `continue` = true
             do {
-                `continue` = try each(index: index, key: key, version: version, value: value)
+                `continue` = try each(index, key, version, value)
                 index += 1
             } catch {
                 caughtError = error
@@ -42,29 +42,29 @@ public class MigrationOperations {
         }
     }
 
-    public func removeValueWithKey(key: String, inCollection name: String) throws {
+    open func removeValueWithKey(_ key: String, inCollection name: String) throws {
         try sqliteCollectionFor(name).removeValueWithKey(key)
     }
 
-    public func setSerializedValue(serializedValue: NSData, key: String, version: UInt64, inCollection name: String) throws {
+    open func setSerializedValue(_ serializedValue: Data, key: String, version: UInt64, inCollection name: String) throws {
         try sqliteCollectionFor(name).setValueData(serializedValue, valueSchemaVersion: version, forKey: key)
     }
 
-    public func getSerializedValueWithKey(key: String, inCollection name: String) throws -> (valueData: NSData, schemaVersion: UInt64)? {
+    open func getSerializedValueWithKey(_ key: String, inCollection name: String) throws -> (valueData: Data, schemaVersion: UInt64)? {
         return try sqliteCollectionFor(name).valueDataForKey(key)
     }
 
-    public func countOfValuesInCollection(name: String) throws -> UInt {
+    open func countOfValuesInCollection(_ name: String) throws -> UInt {
         return try sqliteCollectionFor(name).numberOfKeysInCollection()
     }
 
-    public func countOfValuesInCollection(name: String, atSchemaVersion version: UInt64) throws -> UInt {
+    open func countOfValuesInCollection(_ name: String, atSchemaVersion version: UInt64) throws -> UInt {
         return try sqliteCollectionFor(name).numberOfKeysInCollectionAtSchemaVersion(version)
     }
 
     // MARK: Private methods
 
-    private func sqliteCollectionFor(name: String) throws -> SQLiteCollection {
+    fileprivate func sqliteCollectionFor(_ name: String) throws -> SQLiteCollection {
         if let cached = sqliteCollectionCache[name] {
             return cached
         } else {

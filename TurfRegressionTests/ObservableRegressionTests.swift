@@ -63,7 +63,7 @@ class ObservablesRegressionTests: QuickSpec {
                         disposable.dispose()
 
                         switch changeSet!.changes.first! {
-                        case .Insert(let key):
+                        case .insert(let key):
                             if key != "test_1" { fail() }
                         default: fail()
                         }
@@ -97,7 +97,7 @@ class ObservablesRegressionTests: QuickSpec {
                             disposable.dispose()
 
                             switch changeSet!.changes.first! {
-                            case .Update(let key):
+                            case .update(let key):
                                 if key != "test_1" { fail() }
                             default: fail()
                             }
@@ -130,7 +130,7 @@ class ObservablesRegressionTests: QuickSpec {
                             disposable.dispose()
 
                             switch changeSet!.changes.first! {
-                            case .Remove(let key):
+                            case .remove(let key):
                                 if key != "test_1" { fail() }
                             default: fail()
                             }
@@ -177,8 +177,8 @@ class ObservablesRegressionTests: QuickSpec {
                     beforeEach {
                         try! tester.connection1.readWriteTransaction { transaction, collections in
                             let treesCollections = transaction.readWrite(collections.indexedTrees)
-                            let oakTree1 = Tree(uuid: "test_1", type: "Oak", species: "Quercus robur", height: 21, age: .Young)
-                            let cypressTree1 = Tree(type: "Cypress", species: "Cupressocyparis leylandii", height: 23, age: .FullyMature)
+                            let oakTree1 = Tree(uuid: "test_1", type: "Oak", species: "Quercus robur", height: 21, age: .young)
+                            let cypressTree1 = Tree(type: "Cypress", species: "Cupressocyparis leylandii", height: 23, age: .fullyMature)
 
                             treesCollections.setValue(oakTree1, forKey: oakTree1.uuid)
                             treesCollections.setValue(cypressTree1, forKey: cypressTree1.uuid)

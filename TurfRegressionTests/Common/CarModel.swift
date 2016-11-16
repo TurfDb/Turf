@@ -8,7 +8,7 @@ struct CarModel {
     let doors: Int
 
     init(manufacturer: String, name: String, doors: Int) {
-        self.init(uuid: NSUUID().UUIDString, manufacturer: manufacturer, name: name, doors: doors)
+        self.init(uuid: UUID().uuidString, manufacturer: manufacturer, name: name, doors: doors)
     }
 
     init(uuid: String, manufacturer: String, name: String, doors: Int) {

@@ -25,7 +25,7 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
     /**
      - parameter valueCacheCapactity: Number of deserialized values to keep in the value cache
      */
-    init(db: COpaquePointer, collectionName: String, valueCacheCapactity: Int) {
+    init(db: OpaquePointer, collectionName: String, valueCacheCapactity: Int) {
         self.collectionName = collectionName
         self.queryCache = Cache(capacity: 5)
         self.valueCache = Cache(capacity: valueCacheCapactity)
@@ -71,7 +71,7 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
      - note:
          - **Not thread safe**
      */
-    func copyChangeSetFor(collection collection: TypeErasedCollection) -> ChangeSet<String> {
+    func copyChangeSetFor(collection: TypeErasedCollection) -> ChangeSet<String> {
         assert(collection.name == collectionName,
             "Incorrect collection - I will refactor CollectionLocalStorage to not allow this...")
 
@@ -88,7 +88,7 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
      - parameter database: The database changes were made on
      - parameter snapshot: The connection's snapshot number at which the changes were made
      */
-    func recordPendingCacheUpdatesOnSnapshot<DatabaseCollections: CollectionsContainer>(snapshot: UInt64, withDatabase database: Database<DatabaseCollections>) {
+    func recordPendingCacheUpdatesOnSnapshot<DatabaseCollections: CollectionsContainer>(_ snapshot: UInt64, withDatabase database: Database<DatabaseCollections>) {
         database.recordPendingCacheUpdates(cacheUpdates.copy(), onSnapshot: snapshot, forCollectionNamed: collectionName)
     }
 
@@ -101,7 +101,7 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
      - parameter maxSnapshot: upper bound snapshot number
      - parameter database: The database the cache updates were recorded on
      */
-    func applyChangeSetsToValueCacheAfterSnapshot<DatabaseCollections: CollectionsContainer>(minSnapshot: UInt64, upToSnapshot maxSnapshot: UInt64, withDatabase database: Database<DatabaseCollections>) {
+    func applyChangeSetsToValueCacheAfterSnapshot<DatabaseCollections: CollectionsContainer>(_ minSnapshot: UInt64, upToSnapshot maxSnapshot: UInt64, withDatabase database: Database<DatabaseCollections>) {
         let cacheChanges: CacheUpdates<String, Value> = database
             .cacheChangesAfterSnapshot(minSnapshot, upToSnapshot: maxSnapshot, forCollectionNamed: collectionName)
         cacheChanges.applyUpdatesToCache(valueCache)

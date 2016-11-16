@@ -1,13 +1,13 @@
-public class DisposeBag: Disposable {
+open class DisposeBag: Disposable {
 
     // MARK: Public properties
 
-    public private(set) var disposed: Bool
+    open fileprivate(set) var disposed: Bool
 
     // MARK: Private properties
 
-    private var disposables: [Disposable]
-    private var lock: OSSpinLock = OS_SPINLOCK_INIT
+    fileprivate var disposables: [Disposable]
+    fileprivate var lock: OSSpinLock = OS_SPINLOCK_INIT
 
     // MARK: Object lifecycle
 
@@ -18,14 +18,14 @@ public class DisposeBag: Disposable {
 
     // MARK: Public methods
 
-    public func add(disposable disposable: Disposable) {
+    open func add(disposable: Disposable) {
         OSSpinLockLock(&lock)
         defer { OSSpinLockUnlock(&lock) }
 
         disposables.append(disposable)
     }
 
-    public func dispose() {
+    open func dispose() {
         OSSpinLockLock(&lock)
         defer { OSSpinLockUnlock(&lock) }
 

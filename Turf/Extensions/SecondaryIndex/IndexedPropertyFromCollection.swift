@@ -1,7 +1,7 @@
-public struct IndexedPropertyFromCollection<IndexedCollection: Collection> {
+public struct IndexedPropertyFromCollection<IndexedCollection: TurfCollection> {
     // MARK: Internal properties
 
-    internal let propertyValueForValue: (IndexedCollection.Value -> SQLiteType)
+    internal let propertyValueForValue: ((IndexedCollection.Value) -> SQLiteType)
     internal let sqliteTypeName: SQLiteTypeName
     internal let isNullable: Bool
     internal let name: String
@@ -15,7 +15,7 @@ public struct IndexedPropertyFromCollection<IndexedCollection: Collection> {
         self.name = property.name
     }
 
-    public init<T: TurfSQLiteOptional where T: SQLiteType>(property: IndexedProperty<IndexedCollection, T>) {
+    public init<T: TurfSQLiteOptional>(property: IndexedProperty<IndexedCollection, T>) where T: SQLiteType {
         self.sqliteTypeName = T.sqliteTypeName
         self.isNullable = true
         self.propertyValueForValue = property.propertyValueForValue
@@ -24,7 +24,7 @@ public struct IndexedPropertyFromCollection<IndexedCollection: Collection> {
 
     // MARK: Internal methods
 
-    func bindPropertyValue(value: IndexedCollection.Value, toSQLiteStmt stmt: COpaquePointer, atIndex index: Int32) -> Int32 {
+    func bindPropertyValue(_ value: IndexedCollection.Value, toSQLiteStmt stmt: OpaquePointer, atIndex index: Int32) -> Int32 {
         let value = propertyValueForValue(value)
         return value.sqliteBind(stmt, index: index)
     }

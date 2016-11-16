@@ -23,26 +23,26 @@ final class IndexedTreesCollection: Collection, IndexedCollection {
         index.collection = self
     }
 
-    func serializeValue(value: Tree) -> NSData {
+    func serializeValue(_ value: Tree) -> Data {
         let dictionaryRepresentation: [String: AnyObject] = [
-            "uuid": value.uuid,
-            "type": value.type,
-            "species": value.species,
-            "height": value.height,
-            "age": value.age.rawValue
+            "uuid": value.uuid as AnyObject,
+            "type": value.type as AnyObject,
+            "species": value.species as AnyObject,
+            "height": value.height as AnyObject,
+            "age": value.age.rawValue as AnyObject
         ]
 
-        return try! NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options: [])
+        return try! JSONSerialization.data(withJSONObject: dictionaryRepresentation, options: [])
     }
 
-    func deserializeValue(data: NSData) -> Value? {
-        let json = try! NSJSONSerialization.JSONObjectWithData(data, options: [])
+    func deserializeValue(_ data: Data) -> Value? {
+        let json = try! JSONSerialization.jsonObject(with: data, options: [])
         guard let
             uuid = json["uuid"] as? String,
-            type = json["type"] as? String,
-            species = json["species"] as? String,
-            height = json["height"] as? Int,
-            age = (json["age"] as? Int).flatMap({ TreeAge(rawValue: $0) })
+            let type = json["type"] as? String,
+            let species = json["species"] as? String,
+            let height = json["height"] as? Int,
+            let age = (json["age"] as? Int).flatMap({ TreeAge(rawValue: $0) })
             else {
                 return nil
         }
