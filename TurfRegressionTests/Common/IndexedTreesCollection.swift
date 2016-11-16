@@ -2,7 +2,7 @@ import Foundation
 
 import Turf
 
-final class IndexedTreesCollection: Collection, IndexedCollection {
+final class IndexedTreesCollection: TurfCollection, IndexedCollection {
 
     typealias Value = Tree
 
@@ -36,7 +36,7 @@ final class IndexedTreesCollection: Collection, IndexedCollection {
     }
 
     func deserializeValue(_ data: Data) -> Value? {
-        let json = try! JSONSerialization.jsonObject(with: data, options: [])
+        let json = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         guard let
             uuid = json["uuid"] as? String,
             let type = json["type"] as? String,

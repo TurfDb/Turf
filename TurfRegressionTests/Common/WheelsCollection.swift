@@ -1,7 +1,7 @@
 import Turf
 
 /// WheelsCollection is a very basic collection with no extensions and a simple class model
-class WheelsCollection: Collection {
+class WheelsCollection: TurfCollection {
     typealias Value = WheelModel
 
     let name = "Wheels"
@@ -13,7 +13,7 @@ class WheelsCollection: Collection {
     }
 
     func serializeValue(_ value: Value) -> Data {
-        let dict: [String: AnyObject] = [
+        let dict: [String: Any] = [
             "uuid": value.uuid,
             "manufacturer": value.manufacturer,
             "size": value.size
@@ -23,7 +23,7 @@ class WheelsCollection: Collection {
     }
 
     func deserializeValue(_ data: Data) -> Value? {
-        let dict = try! JSONSerialization.jsonObject(with: data, options: [])
+        let dict = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         guard let
             uuid = dict["uuid"] as? String,
             let manufacturer = dict["manufacturer"] as? String,

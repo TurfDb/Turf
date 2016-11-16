@@ -266,16 +266,17 @@ internal final class SQLiteAdapter {
     }
 
     fileprivate func createExtensionsTable() throws {
-//        if sqlite3_exec(db,
-//            "CREATE TABLE IF NOT EXISTS `\(TurfExtensionsTableName)` (" +
-//                "name TEXT NOT NULL UNIQUE," +
-//                "version INTEGER NOT NULL DEFAULT '(0)'," +
-//                "data BLOB," +
-//                "turfVersion INTEGER NOT NULL DEFAULT '(0)'," +
-//                "PRIMARY KEY(name)" +
-//            ");", nil, nil, nil).isNotOK {
-//                throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
-//        }
+        let sql = "CREATE TABLE IF NOT EXISTS `\(TurfExtensionsTableName)` (" +
+                  "name TEXT NOT NULL UNIQUE," +
+                  "version INTEGER NOT NULL DEFAULT '(0)'," +
+                  "data BLOB," +
+                  "turfVersion INTEGER NOT NULL DEFAULT '(0)'," +
+                  "PRIMARY KEY(name)" +
+                  ");"
+        if sqlite3_exec(db,
+            sql, nil, nil, nil).isNotOK {
+                throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
+        }
     }
 
     fileprivate func createRuntimeOperationsTable() throws {
