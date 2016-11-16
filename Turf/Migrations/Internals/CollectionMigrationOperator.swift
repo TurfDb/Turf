@@ -40,7 +40,7 @@ extension CollectionMigrationOperator: Migration {
         }
     }
 
-    fileprivate func totalNumberOfRows(_ operations: MigrationOperations) throws -> UInt {
+    private func totalNumberOfRows(_ operations: MigrationOperations) throws -> UInt {
         return try operations.countOfValuesInCollection(migration.collectionName, atSchemaVersion: migration.fromSchemaVersion)
     }
 }

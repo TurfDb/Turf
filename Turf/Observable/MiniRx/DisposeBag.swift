@@ -2,12 +2,12 @@ open class DisposeBag: Disposable {
 
     // MARK: Public properties
 
-    open fileprivate(set) var disposed: Bool
+    open private(set) var disposed: Bool
 
     // MARK: Private properties
 
-    fileprivate var disposables: [Disposable]
-    fileprivate var lock: OSSpinLock = OS_SPINLOCK_INIT
+    private var disposables: [Disposable]
+    private var lock: OSSpinLock = OS_SPINLOCK_INIT
 
     // MARK: Object lifecycle
 

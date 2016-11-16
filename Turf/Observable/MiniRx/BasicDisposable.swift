@@ -13,7 +13,7 @@ class NoActionDisposable: Disposable {
 
     // MARK: Private properties
 
-    fileprivate let hasBeenDisposed: AtomicBool = false
+    private let hasBeenDisposed: AtomicBool = false
 
     // MARK: Object lifecycle
 
@@ -34,8 +34,8 @@ open class BasicDisposable: Disposable {
 
     // MARK: Private properties
 
-    fileprivate let hasBeenDisposed: AtomicBool = false
-    fileprivate var action: (() -> Void)?
+    private let hasBeenDisposed: AtomicBool = false
+    private var action: (() -> Void)?
 
     // MARK: Object lifecycle
 
@@ -59,7 +59,7 @@ open class BasicDisposable: Disposable {
 open class AssignableDisposable: Disposable {
     // MARK: Public properties
 
-    open fileprivate(set) var disposed: Bool = false
+    open private(set) var disposed: Bool = false
 
     open var disposable: Disposable? {
         get {
@@ -84,8 +84,8 @@ open class AssignableDisposable: Disposable {
 
     // MARK: Private properties
 
-    fileprivate var lock = OSSpinLock()
-    fileprivate var _disposable: Disposable? = nil
+    private var lock = OSSpinLock()
+    private var _disposable: Disposable? = nil
 
     // MARK: Object lifecycle
 

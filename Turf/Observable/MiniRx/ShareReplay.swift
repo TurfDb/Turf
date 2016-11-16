@@ -4,10 +4,10 @@ open class ReplaySubject<Value>: Observable<Value>, ObserverType {
 
     // MARK: Private properties
 
-    fileprivate var subscribers: [String: AnyObserver<Value>] = [:]
-    fileprivate var lock: OSSpinLock = OS_SPINLOCK_INIT
-    fileprivate let bufferSize: Int
-    fileprivate var previousValues = [Value]()
+    private var subscribers: [String: AnyObserver<Value>] = [:]
+    private var lock: OSSpinLock = OS_SPINLOCK_INIT
+    private let bufferSize: Int
+    private var previousValues = [Value]()
 
     // MARK: Public methods
 
@@ -69,8 +69,8 @@ class ShareReplay<Value>: Producer<Value> {
 
     // MARK: Private methods
 
-    fileprivate let subject: ReplaySubject<Value>
-    fileprivate let disposable: Disposable
+    private let subject: ReplaySubject<Value>
+    private let disposable: Disposable
 
     // MARK: Object lifecycle
 

@@ -14,7 +14,7 @@ open class DatabaseMigrator {
         return migrationList.count > 0 && migrationList.lastMigrationIndex > lastRunMigrationIndex
     }
 
-    open fileprivate(set) var lastRunMigrationIndex: UInt {
+    open private(set) var lastRunMigrationIndex: UInt {
         get {
             return UInt(userDefaults.integer(forKey: lastRunMigrationKey))
         }
@@ -29,20 +29,20 @@ open class DatabaseMigrator {
 
     // MARK: Private properties
 
-    fileprivate let userDefaults: UserDefaults
-    fileprivate var sqlite: SQLiteAdapter!
-    fileprivate var migrationOperations: MigrationOperations!
-    fileprivate var startTimestamp: Date?
-    fileprivate var stopTimestamp: Date?
+    private let userDefaults: UserDefaults
+    private var sqlite: SQLiteAdapter!
+    private var migrationOperations: MigrationOperations!
+    private var startTimestamp: Date?
+    private var stopTimestamp: Date?
 
-    fileprivate var migrating: Bool {
+    private var migrating: Bool {
         didSet {
             if !oldValue && migrating { startTimestamp = Date() }
             else if oldValue && !migrating { stopTimestamp = Date() }
         }
     }
 
-    fileprivate var onMigrationsCompleted: ((Result<TimeInterval>) -> Void)?
+    private var onMigrationsCompleted: ((Result<TimeInterval>) -> Void)?
 
     // MARK: Object lifecycle
 
@@ -87,7 +87,7 @@ open class DatabaseMigrator {
 
     // MARK: Private methods
 
-    fileprivate func migrate(_ index: UInt) throws {
+    private func migrate(_ index: UInt) throws {
         switch migrationForIndex(index) {
         case .success(let migration):
             try sqlite.beginDeferredTransaction()
@@ -98,7 +98,7 @@ open class DatabaseMigrator {
         }
     }
 
-    fileprivate func migrationProgress(index: UInt, state: MigrationState) {
+    private func migrationProgress(index: UInt, state: MigrationState) {
         switch state {
         case .unstarted(totalRows: let total):
             onNextMigration?(index, total)
@@ -114,7 +114,7 @@ open class DatabaseMigrator {
         }
     }
 
-    fileprivate func migrationSuccess(_ index: UInt, totalRowsMigrated: UInt) {
+    private func migrationSuccess(_ index: UInt, totalRowsMigrated: UInt) {
         do {
             try sqlite.commitTransaction()
             lastRunMigrationIndex = index
@@ -137,13 +137,13 @@ open class DatabaseMigrator {
         }
     }
 
-    fileprivate func migrationFailure(_ index: UInt, error: MigrationError) {
+    private func migrationFailure(_ index: UInt, error: MigrationError) {
         let _ = try? sqlite.rollbackTransaction()
         sqlite.close()
         onMigrationsCompleted!(.failure(error))
     }
 
-    fileprivate func migrationForIndex(_ index: UInt) -> Result<Migration> {
+    private func migrationForIndex(_ index: UInt) -> Result<Migration> {
         if let migration = migrationList.migrations[index] {
             return .success(migration)
         } else {
@@ -151,7 +151,7 @@ open class DatabaseMigrator {
         }
     }
 
-    fileprivate func totalMigrationTime() -> TimeInterval {
+    private func totalMigrationTime() -> TimeInterval {
         return stopTimestamp!.timeIntervalSince(startTimestamp!)
     }
 }

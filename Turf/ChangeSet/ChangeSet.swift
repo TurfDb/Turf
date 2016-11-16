@@ -1,8 +1,8 @@
 public final class ChangeSet<Key: Equatable> {
     // MARK: Public properties
 
-    public fileprivate(set) var changes: [CollectionRowChange<Key>]
-    public fileprivate(set) var allValuesRemoved: Bool
+    public private(set) var changes: [CollectionRowChange<Key>]
+    public private(set) var allValuesRemoved: Bool
 
     // MARK: Internal properties
 

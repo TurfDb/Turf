@@ -38,7 +38,7 @@ internal class SecondaryIndexConnection<TCollection: TurfCollection, Properties:
 
     // MARK: Private methods
 
-    fileprivate func prepareInsertStmt(db: SQLitePtr) throws {
+    private func prepareInsertStmt(db: SQLitePtr) throws {
         var propertyNames = ["targetPrimaryKey"]
         var propertyBindings = ["?"]
 
@@ -57,7 +57,7 @@ internal class SecondaryIndexConnection<TCollection: TurfCollection, Properties:
         insertStmt = stmt
     }
 
-    fileprivate func prepareUpdateStmt(db: SQLitePtr) throws {
+    private func prepareUpdateStmt(db: SQLitePtr) throws {
         var propertyBindings = [String]()
 
         for property in index.properties.allProperties {
@@ -74,7 +74,7 @@ internal class SecondaryIndexConnection<TCollection: TurfCollection, Properties:
         updateStmt = stmt
     }
 
-    fileprivate func prepareRemoveStmt(db: SQLitePtr) throws {
+    private func prepareRemoveStmt(db: SQLitePtr) throws {
         var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "DELETE FROM `\(index.tableName)` WHERE targetPrimaryKey=?;", -1, &stmt, nil).isOK else {
@@ -84,7 +84,7 @@ internal class SecondaryIndexConnection<TCollection: TurfCollection, Properties:
         removeStmt = stmt
     }
 
-    fileprivate func prepareRemoveAllStmt(db: SQLitePtr) throws {
+    private func prepareRemoveAllStmt(db: SQLitePtr) throws {
         var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "DELETE FROM `\(index.tableName)`;", -1, &stmt, nil).isOK else {

@@ -1,11 +1,11 @@
 public final class ValuesSequence<Value>: Sequence {
     // MARK: Private properties
 
-    fileprivate let stmt: OpaquePointer
-    fileprivate let valueDataColumnIndex: Int32
-    fileprivate let schemaVersionColumnIndex: Int32
-    fileprivate let deserializer: (Data) -> Value?
-    fileprivate let collectionSchemaVersion: UInt64
+    private let stmt: OpaquePointer
+    private let valueDataColumnIndex: Int32
+    private let schemaVersionColumnIndex: Int32
+    private let deserializer: (Data) -> Value?
+    private let collectionSchemaVersion: UInt64
 
     // MARK: Object lifecycle
 
@@ -54,7 +54,7 @@ public final class ValuesSequence<Value>: Sequence {
 
     // MARK: Private methods
 
-    fileprivate func finalize() {
+    private func finalize() {
         sqlite3_reset(self.stmt)
     }
 }

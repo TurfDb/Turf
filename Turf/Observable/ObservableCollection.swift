@@ -3,7 +3,7 @@ import Foundation
 open class ObservableCollection<TCollection: TurfCollection, Collections: CollectionsContainer>: Producer<(collection: ReadCollection<TCollection, Collections>, changeSet: ChangeSet<String>)>, TypeErasedObservableCollection {
     public typealias CollectionChanges = (collection: ReadCollection<TCollection, Collections>, changeSet: ChangeSet<String>)
 
-    fileprivate let collectionChangedObservable: Observable<CollectionChanges>
+    private let collectionChangedObservable: Observable<CollectionChanges>
 
     // MARK: Object lifecycle
 

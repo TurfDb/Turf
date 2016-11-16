@@ -1,4 +1,4 @@
-open class ReadCollection<TCollection: TurfCollection, Collections: CollectionsContainer>: ReadableCollection {
+public class ReadCollection<TCollection: TurfCollection, Collections: CollectionsContainer>: ReadableCollection {
     /// Collection row type
     public typealias Value = TCollection.Value
 
@@ -24,7 +24,7 @@ open class ReadCollection<TCollection: TurfCollection, Collections: CollectionsC
     // MARK: Object lifecycle
 
     /// Work around to stop swift segfaulting when calling self.collection.deserializeValue(...)
-    fileprivate let deserializeValue: (Data) -> Value?
+    private let deserializeValue: (Data) -> Value?
 
     /**
      - parameter collection: Collection this read-only view wraps

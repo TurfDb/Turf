@@ -12,12 +12,12 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
 
     // MARK: Private properties
 
-    fileprivate let shouldAdvanceWhenDatabaseChanges: () -> Bool
-    fileprivate var observableCollections: [String: TypeErasedObservableCollection]
-    fileprivate var collectionUpdateProcessors: [String: (ReadTransaction<Collections>, ChangeSet<String>) -> Void]
+    private let shouldAdvanceWhenDatabaseChanges: () -> Bool
+    private var observableCollections: [String: TypeErasedObservableCollection]
+    private var collectionUpdateProcessors: [String: (ReadTransaction<Collections>, ChangeSet<String>) -> Void]
 
-    fileprivate var longLivedReadTransaction: ReadTransaction<Collections>!
-    fileprivate var pendingChangeSets: [[String: ChangeSet<String>]]
+    private var longLivedReadTransaction: ReadTransaction<Collections>!
+    private var pendingChangeSets: [[String: ChangeSet<String>]]
 
     // MARK: Object lifecycle
 
@@ -139,7 +139,7 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
      - note:
         - Thread safe.
      */
-    fileprivate func advanceToLatestSnapshot(changeSets: [String: ChangeSet<String>]) throws  {
+    private func advanceToLatestSnapshot(changeSets: [String: ChangeSet<String>]) throws  {
         try connection.connectionQueue.sync {
             self.pendingChangeSets = []
 

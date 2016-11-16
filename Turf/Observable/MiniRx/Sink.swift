@@ -3,7 +3,7 @@ import Foundation
 class Sink<Observer : ObserverType>: Disposable {
     var disposable: Disposable?
 
-    fileprivate let observer: Observer
+    private let observer: Observer
 
     init(observer: Observer) {
         self.observer = observer

@@ -17,20 +17,20 @@ internal final class SQLiteAdapter {
     // MARK: Internal properties
 
     /// Connection state
-    fileprivate(set) var isClosed: Bool
+    private(set) var isClosed: Bool
 
     /// sqlite3 pointer from `sqlite3_open`
     let db: OpaquePointer
 
     // MARK: Private properties
 
-    fileprivate var beginDeferredTransactionStmt: SQLStatement!
-    fileprivate var commitTransactionStmt: SQLStatement!
-    fileprivate var rollbackTransactionStmt: SQLStatement!
-    fileprivate var getSnapshotStmt: SQLStatement!
-    fileprivate var setSnapshotStmt: SQLStatement!
-    fileprivate var getExtensionDetailsStmt: SQLStatement!
-    fileprivate var setExtensionDetailsStmt: SQLStatement!
+    private var beginDeferredTransactionStmt: SQLStatement!
+    private var commitTransactionStmt: SQLStatement!
+    private var rollbackTransactionStmt: SQLStatement!
+    private var getSnapshotStmt: SQLStatement!
+    private var setSnapshotStmt: SQLStatement!
+    private var getExtensionDetailsStmt: SQLStatement!
+    private var setExtensionDetailsStmt: SQLStatement!
 
     // MARK: Object lifecycle
 
@@ -194,7 +194,7 @@ internal final class SQLiteAdapter {
 
     // MARK: Private methods
 
-    fileprivate func prepareStatements() throws {
+    private func prepareStatements() throws {
         var beginDeferredTransactionStmt: OpaquePointer? = nil
         if sqlite3_prepare_v2(db, "BEGIN TRANSACTION;",  -1, &beginDeferredTransactionStmt, nil).isNotOK {
             throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
@@ -238,7 +238,7 @@ internal final class SQLiteAdapter {
         self.setExtensionDetailsStmt = setExtensionDetailsStmt
     }
 
-    fileprivate func finalizePreparedStatements() {
+    private func finalizePreparedStatements() {
         if let stmt = beginDeferredTransactionStmt {
             sqlite3_finalize(stmt)
         }
@@ -262,14 +262,14 @@ internal final class SQLiteAdapter {
         }
     }
 
-    fileprivate func createMetadataTable() throws {
+    private func createMetadataTable() throws {
         if sqlite3_exec(db,
             "CREATE TABLE IF NOT EXISTS `\(TurfMetadataTableName)` (schemaVersion INTEGER NOT NULL DEFAULT '(1)' );", nil, nil, nil).isNotOK {
                 throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
         }
     }
 
-    fileprivate func createExtensionsTable() throws {
+    private func createExtensionsTable() throws {
         let sql = "CREATE TABLE IF NOT EXISTS `\(TurfExtensionsTableName)` (" +
                   "name TEXT NOT NULL UNIQUE," +
                   "version INTEGER NOT NULL DEFAULT '(0)'," +
@@ -283,7 +283,7 @@ internal final class SQLiteAdapter {
         }
     }
 
-    fileprivate func createRuntimeOperationsTable() throws {
+    private func createRuntimeOperationsTable() throws {
         if sqlite3_exec(db,
             "CREATE TABLE IF NOT EXISTS `\(TurfRuntimeTableName)`" +
                 "(key INTEGER NOT NULL UNIQUE," +

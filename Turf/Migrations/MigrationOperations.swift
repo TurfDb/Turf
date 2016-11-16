@@ -1,8 +1,8 @@
 open class MigrationOperations {
     // MARK: Private properties
 
-    fileprivate let sqlite: SQLiteAdapter
-    fileprivate var sqliteCollectionCache: [String: SQLiteCollection]
+    private let sqlite: SQLiteAdapter
+    private var sqliteCollectionCache: [String: SQLiteCollection]
 
     // MARK: Object lifecycle
 
@@ -64,7 +64,7 @@ open class MigrationOperations {
 
     // MARK: Private methods
 
-    fileprivate func sqliteCollectionFor(_ name: String) throws -> SQLiteCollection {
+    private func sqliteCollectionFor(_ name: String) throws -> SQLiteCollection {
         if let cached = sqliteCollectionCache[name] {
             return cached
         } else {

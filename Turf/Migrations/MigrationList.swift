@@ -18,7 +18,7 @@ open class MigrationList {
 
     // MARK: Internal properties
 
-    fileprivate (set) var migrations: [UInt: Migration]
+    private (set) var migrations: [UInt: Migration]
 
     // MARK: Object lifecycle
 

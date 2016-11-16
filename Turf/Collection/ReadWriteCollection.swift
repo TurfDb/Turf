@@ -7,7 +7,7 @@ public final class ReadWriteCollection<TCollection: TurfCollection, Collections:
     // MARK: Private properties
 
     /// Work around to stop swift segfaulting when calling self.collection.serializeValue(...)
-    fileprivate let serializeValue: (Value) -> Data
+    private let serializeValue: (Value) -> Data
 
     // MARK: Object lifecycle
 

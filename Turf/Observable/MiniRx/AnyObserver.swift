@@ -14,7 +14,7 @@ open class AnyObserver<Value>: ObserverType {
         self.handleNext(next)
     }
 
-    fileprivate let handleNext: ((Value) -> Void)
+    private let handleNext: ((Value) -> Void)
 
     init(handleNext: @escaping ((Value) -> Void)) {
         self.handleNext = handleNext

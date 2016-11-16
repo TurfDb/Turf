@@ -6,8 +6,8 @@ open class Subject<Value>: Observable<Value>, ObserverType {
 
     // MARK: Private properties
 
-    fileprivate var subscribers: [String: AnyObserver<Value>] = [:]
-    fileprivate var lock: OSSpinLock = OS_SPINLOCK_INIT
+    private var subscribers: [String: AnyObserver<Value>] = [:]
+    private var lock: OSSpinLock = OS_SPINLOCK_INIT
 
     public override init() {
         
@@ -53,8 +53,8 @@ open class Subject<Value>: Observable<Value>, ObserverType {
 
 /// Subject with an initial value
 open class BehaviourSubject<Value>: Subject<Value> {
-    fileprivate var currentValue: Value
-    fileprivate var valueLock: OSSpinLock = OS_SPINLOCK_INIT
+    private var currentValue: Value
+    private var valueLock: OSSpinLock = OS_SPINLOCK_INIT
 
     public init(initialValue: Value) {
         self.currentValue = initialValue

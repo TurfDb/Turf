@@ -43,7 +43,7 @@ open class Producer<Value>: Observable<Value> {
 }
 
 open class AnyObservable<Value>: Producer<Value> {
-    fileprivate let observableFactory: (AnyObserver<Value>) -> Disposable
+    private let observableFactory: (AnyObserver<Value>) -> Disposable
 
     init(factory: @escaping (_ observer: AnyObserver<Value>) -> Disposable) {
         self.observableFactory = factory

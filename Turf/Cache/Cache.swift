@@ -15,12 +15,12 @@ internal class Cache<Key: Hashable, Value> where Key: Any {
 
     // MARK: Private properties
 
-    fileprivate let capacity: Int
+    private let capacity: Int
 
-    fileprivate var container: [Key: CacheEntry<Key, Value>]
-    fileprivate var mostRecentEntry: CacheEntry<Key, Value>?
-    fileprivate var leastRecentEntry: CacheEntry<Key, Value>?
-    fileprivate var evictedEntry: CacheEntry<Key, Value>?
+    private var container: [Key: CacheEntry<Key, Value>]
+    private var mostRecentEntry: CacheEntry<Key, Value>?
+    private var leastRecentEntry: CacheEntry<Key, Value>?
+    private var evictedEntry: CacheEntry<Key, Value>?
 
     // MARK: Object lifecycle
 

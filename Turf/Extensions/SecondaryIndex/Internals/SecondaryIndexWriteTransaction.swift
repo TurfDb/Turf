@@ -1,7 +1,7 @@
 internal class SecondaryIndexWriteTransaction<IndexedCollection: TurfCollection, Properties: IndexedProperties>: ExtensionWriteTransaction {
     // MARK: Private properties
 
-    fileprivate unowned let connection: SecondaryIndexConnection<IndexedCollection, Properties>
+    private unowned let connection: SecondaryIndexConnection<IndexedCollection, Properties>
 
     // MARK: Object lifecycle
 

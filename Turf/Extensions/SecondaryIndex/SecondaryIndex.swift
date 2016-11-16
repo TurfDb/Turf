@@ -73,7 +73,7 @@ open class SecondaryIndex<TCollection: TurfCollection, Properties: IndexedProper
 
     // MARK: Private methods
 
-    fileprivate func repopulate<DatabaseCollections: CollectionsContainer>(_ transaction: ReadWriteTransaction<DatabaseCollections>, collection: TCollection) throws {
+    private func repopulate<DatabaseCollections: CollectionsContainer>(_ transaction: ReadWriteTransaction<DatabaseCollections>, collection: TCollection) throws {
         let readOnlyCollection = transaction.readOnly(collection)
         let extensionTransaction = newConnection(transaction.connection).writeTransaction(transaction)
 
@@ -82,7 +82,7 @@ open class SecondaryIndex<TCollection: TurfCollection, Properties: IndexedProper
         }
     }
 
-    fileprivate func handleExistingInstallation(_ existingInstallationDetails: ExistingExtensionInstallation?, db: SQLitePtr) throws -> Bool {
+    private func handleExistingInstallation(_ existingInstallationDetails: ExistingExtensionInstallation?, db: SQLitePtr) throws -> Bool {
         let requiresRepopulation = existingInstallationDetails != nil ? (existingInstallationDetails!.version < version) : true
 
         if requiresRepopulation &&
@@ -94,7 +94,7 @@ open class SecondaryIndex<TCollection: TurfCollection, Properties: IndexedProper
         return requiresRepopulation
     }
 
-    fileprivate func createTableSql() -> String {
+    private func createTableSql() -> String {
         let typeErasedProperties = properties.allProperties
         var propertyTypes = ["targetPrimaryKey TEXT NOT NULL UNIQUE"]
 
@@ -112,7 +112,7 @@ open class SecondaryIndex<TCollection: TurfCollection, Properties: IndexedProper
             + createIndexes.joined(separator: ";")
     }
 
-    fileprivate func createPropertyIndexSql(_ propertyName: String) -> String {
+    private func createPropertyIndexSql(_ propertyName: String) -> String {
         return "CREATE INDEX IF NOT EXISTS `\(tableName)_\(propertyName)_idx` ON `\(tableName)` (`\(propertyName)`)"
     }
 }

@@ -5,8 +5,8 @@ public protocol RxScheduler {
 }
 
 open class QueueScheduler: RxScheduler {
-    fileprivate let queue: DispatchQueue
-    fileprivate let requiresScheduling: () -> Bool
+    private let queue: DispatchQueue
+    private let requiresScheduling: () -> Bool
     public init(queue: DispatchQueue, requiresScheduling: @escaping () -> Bool) {
         self.queue = queue
         self.requiresScheduling = requiresScheduling

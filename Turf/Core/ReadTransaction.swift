@@ -1,11 +1,11 @@
-open class ReadTransaction<DatabaseCollections: CollectionsContainer> {
+public class ReadTransaction<DatabaseCollections: CollectionsContainer> {
     // MARK: Public properties
 
     /// Reference to parent connection
-    open unowned let connection: Connection<DatabaseCollections>
+    public unowned let connection: Connection<DatabaseCollections>
 
     /// Available collections associated with this database transaction
-    open var collections: DatabaseCollections { return connection.database.collections }
+    public var collections: DatabaseCollections { return connection.database.collections }
 
     // MARK: Internal properties
 
@@ -20,7 +20,7 @@ open class ReadTransaction<DatabaseCollections: CollectionsContainer> {
     // MARK: Public methods
 
     /// Collection names
-    open var collectionNames: [String] {
+    public var collectionNames: [String] {
         return []
     }
 
@@ -29,7 +29,7 @@ open class ReadTransaction<DatabaseCollections: CollectionsContainer> {
      - returns: Read only view of `collection`
      - parameter collection: The Collection we want a readonly view of
      */
-    open func readOnly<TCollection: TurfCollection>(_ collection: TCollection) -> ReadCollection<TCollection, DatabaseCollections> {
+    public func readOnly<TCollection: TurfCollection>(_ collection: TCollection) -> ReadCollection<TCollection, DatabaseCollections> {
         return ReadCollection(collection: collection, transaction: self)
     }
 

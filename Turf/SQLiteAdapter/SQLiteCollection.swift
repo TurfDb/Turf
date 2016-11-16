@@ -2,23 +2,23 @@
 internal final class SQLiteCollection {
     // MARK: Internal properties
 
-    fileprivate(set) var allValuesInCollectionStmt: OpaquePointer? = nil
+    private(set) var allValuesInCollectionStmt: OpaquePointer? = nil
 
     // MARK: Private properties
 
-    fileprivate let db: OpaquePointer
-    fileprivate let collectionName: String
+    private let db: OpaquePointer
+    private let collectionName: String
 
-    fileprivate var numberOfKeysInCollectionStmt: OpaquePointer? = nil
-    fileprivate var numberOfKeysAtVersionInCollectionStmt: OpaquePointer? = nil
-    fileprivate var keysInCollectionStmt: OpaquePointer? = nil
-    fileprivate var valueDataForKeyStmt: OpaquePointer? = nil
-    fileprivate var rowIdForKeyStmt: OpaquePointer? = nil
-    fileprivate var insertValueDataStmt: OpaquePointer? = nil
-    fileprivate var updateValueDataStmt: OpaquePointer? = nil
-    fileprivate var removeValueStmt: OpaquePointer? = nil
-    fileprivate var removeAllValuesStmt: OpaquePointer? = nil
-    fileprivate var allKeysAndValuesStmt: OpaquePointer? = nil
+    private var numberOfKeysInCollectionStmt: OpaquePointer? = nil
+    private var numberOfKeysAtVersionInCollectionStmt: OpaquePointer? = nil
+    private var keysInCollectionStmt: OpaquePointer? = nil
+    private var valueDataForKeyStmt: OpaquePointer? = nil
+    private var rowIdForKeyStmt: OpaquePointer? = nil
+    private var insertValueDataStmt: OpaquePointer? = nil
+    private var updateValueDataStmt: OpaquePointer? = nil
+    private var removeValueStmt: OpaquePointer? = nil
+    private var removeAllValuesStmt: OpaquePointer? = nil
+    private var allKeysAndValuesStmt: OpaquePointer? = nil
 
     // MARK: Object lifecycle
 
@@ -351,7 +351,7 @@ internal final class SQLiteCollection {
 
     // MARK: Private methods
 
-    fileprivate func setUpAllValuesInCollectionStmt() throws {
+    private func setUpAllValuesInCollectionStmt() throws {
         var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "SELECT valueData, schemaVersion FROM `\(collectionName)`", -1, &stmt, nil).isOK else {
@@ -361,7 +361,7 @@ internal final class SQLiteCollection {
         self.allValuesInCollectionStmt = stmt
     }
 
-    fileprivate func setUpRemoveValueInCollectionStmt() throws {
+    private func setUpRemoveValueInCollectionStmt() throws {
         var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "DELETE FROM `\(collectionName)` WHERE key=?;", -1, &stmt, nil).isOK else {
@@ -371,7 +371,7 @@ internal final class SQLiteCollection {
         self.removeValueStmt = stmt
     }
 
-    fileprivate func setUpRemoveAllValuesInCollectionStmt() throws {
+    private func setUpRemoveAllValuesInCollectionStmt() throws {
         var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "DELETE FROM `\(collectionName)`;", -1, &stmt, nil).isOK else {
@@ -381,7 +381,7 @@ internal final class SQLiteCollection {
         self.removeAllValuesStmt = stmt
     }
 
-    fileprivate func setUpNumberOfKeysInCollectionStmt() throws {
+    private func setUpNumberOfKeysInCollectionStmt() throws {
         var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "SELECT COUNT(key) FROM `\(collectionName)`", -1, &stmt, nil).isOK else {
@@ -390,7 +390,7 @@ internal final class SQLiteCollection {
         self.numberOfKeysInCollectionStmt = stmt
     }
 
-    fileprivate func setUpNumberOfKeysAtVersionInCollectionStmt() throws {
+    private func setUpNumberOfKeysAtVersionInCollectionStmt() throws {
         var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "SELECT COUNT(key) FROM `\(collectionName)` WHERE schemaVersion=?", -1, &stmt, nil).isOK else {
@@ -399,7 +399,7 @@ internal final class SQLiteCollection {
         self.numberOfKeysAtVersionInCollectionStmt = stmt
     }
 
-    fileprivate func setUpKeysInCollectionStmt() throws {
+    private func setUpKeysInCollectionStmt() throws {
         var stmt: OpaquePointer? = nil
 
         defer { sqlite3_reset(stmt) }
@@ -409,7 +409,7 @@ internal final class SQLiteCollection {
         self.keysInCollectionStmt = stmt
     }
 
-    fileprivate func setUpValueDataForKeyStmt() throws {
+    private func setUpValueDataForKeyStmt() throws {
         var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "SELECT valueData, schemaVersion FROM `\(collectionName)` WHERE key=? LIMIT 1", -1, &stmt, nil).isOK else {
@@ -419,7 +419,7 @@ internal final class SQLiteCollection {
         self.valueDataForKeyStmt = stmt
     }
 
-    fileprivate func setUpRowIdForKeyStmt() throws {
+    private func setUpRowIdForKeyStmt() throws {
         var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "SELECT rowid FROM `\(collectionName)` WHERE key=?;", -1, &stmt, nil).isOK else {
@@ -429,7 +429,7 @@ internal final class SQLiteCollection {
         self.rowIdForKeyStmt = stmt
     }
 
-    fileprivate func setUpInsertValueDataStmt() throws {
+    private func setUpInsertValueDataStmt() throws {
         var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "INSERT INTO `\(collectionName)` (key, valueData, schemaVersion) VALUES (?,?,?);", -1, &stmt, nil).isOK else {
@@ -439,7 +439,7 @@ internal final class SQLiteCollection {
         self.insertValueDataStmt = stmt
     }
 
-    fileprivate func setUpUpdateValueDataStmt() throws {
+    private func setUpUpdateValueDataStmt() throws {
         var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "UPDATE `\(collectionName)` SET valueData=?,schemaVersion=? WHERE key=?;", -1, &stmt, nil).isOK else {
@@ -449,7 +449,7 @@ internal final class SQLiteCollection {
         self.updateValueDataStmt = stmt
     }
 
-    fileprivate func setUpAllKeysAndValuesStmt() throws {
+    private func setUpAllKeysAndValuesStmt() throws {
         var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "SELECT key, valueData, schemaVersion FROM `\(collectionName)`", -1, &stmt, nil).isOK else {

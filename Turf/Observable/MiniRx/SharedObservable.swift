@@ -8,8 +8,8 @@ open class SharedObservable<Value>: Producer<Value> {
 
     // MARK: Private methods
 
-    fileprivate let subject: Subject<Value>
-    fileprivate let disposable: Disposable
+    private let subject: Subject<Value>
+    private let disposable: Disposable
 
     // MARK: Object lifecycle
 

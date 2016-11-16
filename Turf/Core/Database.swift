@@ -12,25 +12,25 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
     // MARK: Internal properties
 
     /// Map of extensions used *only* to guarantee unique naming of extensions
-    internal fileprivate(set) var extensions: [String: Extension]
+    internal private(set) var extensions: [String: Extension]
 
     // MARK: Private properties
 
-    fileprivate var registeredCollectionNames: [String]
-    fileprivate var connections: [Int: WeakBox<Connection<DatabaseCollections>>]
-    fileprivate var observingConnections: [Int: WeakBox<ObservingConnection<DatabaseCollections>>]
-    fileprivate var lastConnectionId: Int
-    fileprivate var cacheUpdatesBySnapshot: [UInt64: [String: TypeErasedCacheUpdates]]
-    fileprivate var minCacheUpdatesSnapshot: UInt64
+    private var registeredCollectionNames: [String]
+    private var connections: [Int: WeakBox<Connection<DatabaseCollections>>]
+    private var observingConnections: [Int: WeakBox<ObservingConnection<DatabaseCollections>>]
+    private var lastConnectionId: Int
+    private var cacheUpdatesBySnapshot: [UInt64: [String: TypeErasedCacheUpdates]]
+    private var minCacheUpdatesSnapshot: UInt64
 
-    fileprivate let databaseWriteTransactionEnded: Subject<Void>
-    fileprivate let databaseWriteTransactionEndedQueue: DispatchQueue
+    private let databaseWriteTransactionEnded: Subject<Void>
+    private let databaseWriteTransactionEndedQueue: DispatchQueue
 
-    fileprivate let databaseWriteQueue: DispatchQueue
-    fileprivate let connectionSetUpQueue: DispatchQueue
-    fileprivate var connectionManipulationLock: OSSpinLock = OS_SPINLOCK_INIT
-    fileprivate var collectionRegistrationLock: OSSpinLock = OS_SPINLOCK_INIT
-    fileprivate var extensionRegisterationLock: OSSpinLock = OS_SPINLOCK_INIT
+    private let databaseWriteQueue: DispatchQueue
+    private let connectionSetUpQueue: DispatchQueue
+    private var connectionManipulationLock: OSSpinLock = OS_SPINLOCK_INIT
+    private var collectionRegistrationLock: OSSpinLock = OS_SPINLOCK_INIT
+    private var extensionRegisterationLock: OSSpinLock = OS_SPINLOCK_INIT
 
     // MARK: Object lifecycle
 
@@ -269,7 +269,7 @@ public final class Database<DatabaseCollections: CollectionsContainer> {
 
     // MARK: Private methods
 
-    fileprivate func setUpCollections(_ collections: DatabaseCollections) throws {
+    private func setUpCollections(_ collections: DatabaseCollections) throws {
         let connection = try newConnection()
         try connection.sqlite.setSnapshot(0)
 

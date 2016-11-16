@@ -1,8 +1,8 @@
 open class CollectionMigrationOperations {
     // MARK: Private properties
-    fileprivate let operations: MigrationOperations
-    fileprivate let collectionName: String
-    fileprivate let toSchemaVersion: UInt64
+    private let operations: MigrationOperations
+    private let collectionName: String
+    private let toSchemaVersion: UInt64
 
     // MARK: Object lifecycle
 

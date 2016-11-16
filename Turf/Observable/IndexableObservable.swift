@@ -4,7 +4,7 @@ open class IndexableObservable<Array: Collection>: Observable<Array> {
     open let first: Observable<Array.Iterator.Element?>
     open let last: Observable<Array.Iterator.Element?>
 
-    fileprivate let wrappedObservable: Observable<Array>
+    private let wrappedObservable: Observable<Array>
 
     init(observable: Observable<Array>) {
         wrappedObservable = observable
