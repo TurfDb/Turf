@@ -9,10 +9,10 @@ class WheelsCollection: TurfCollection {
     let valueCacheSize: Int? = nil
 
     func setUp<DatabaseCollections: CollectionsContainer>(using transaction: ReadWriteTransaction<DatabaseCollections>) throws {
-        try transaction.registerCollection(self)
+        try transaction.register(collection: self)
     }
 
-    func serializeValue(_ value: Value) -> Data {
+    func serialize(value: Value) -> Data {
         let dict: [String: Any] = [
             "uuid": value.uuid,
             "manufacturer": value.manufacturer,
@@ -22,7 +22,7 @@ class WheelsCollection: TurfCollection {
         return try! JSONSerialization.data(withJSONObject: dict, options: [])
     }
 
-    func deserializeValue(_ data: Data) -> Value? {
+    func deserialize(data: Data) -> Value? {
         let dict = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         guard let
             uuid = dict["uuid"] as? String,

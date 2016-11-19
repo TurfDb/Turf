@@ -17,7 +17,7 @@ public final class ReadWriteCollection<TCollection: TurfCollection, Collections:
     */
     internal init(collection: TCollection, transaction: ReadWriteTransaction<Collections>) {
         self.readWriteTransaction = transaction
-        self.serializeValue = collection.serializeValue
+        self.serializeValue = collection.serialize
         super.init(collection: collection, transaction: transaction)
     }
 
@@ -28,16 +28,16 @@ public final class ReadWriteCollection<TCollection: TurfCollection, Collections:
      - parameter value: Value
      - parameter key: Primary key for `value`
      */
-    public func setValue(_ value: Value, forKey key: String) {
-        try! commonSetValue(value, forKey: key)
+    public func set(value: Value, forKey key: String) {
+        try! commonSet(value: value, forKey: key)
     }
 
     /**
      Remove values with the given primary keys
-     - parameter keys: Primary keys of the values to remove
+     - parameter withKeys: Primary keys of the values to remove
      */
-    public func removeValuesWithKeys(_ keys: [String]) {
-        try! commonRemoveValuesWithKeys(keys)
+    public func removeValues(withKeys keys: [String]) {
+        try! commonRemoveValues(withKeys: keys)
     }
 
     /**
@@ -49,7 +49,8 @@ public final class ReadWriteCollection<TCollection: TurfCollection, Collections:
 
     // MARK: Private methods
 
-    fileprivate func commonSetValue(_ value: Value, forKey key: String) throws -> SQLiteRowChangeType {
+    @discardableResult
+    fileprivate func commonSet(value: Value, forKey key: String) throws -> SQLiteRowChangeType {
         let valueData = serializeValue(value)
 
         let rowChange = try localStorage.sql.setValueData(valueData, valueSchemaVersion: schemaVersion, forKey: key)
@@ -66,7 +67,7 @@ public final class ReadWriteCollection<TCollection: TurfCollection, Collections:
         return rowChange
     }
 
-    fileprivate func commonRemoveValuesWithKeys(_ keys: [String]) throws {
+    fileprivate func commonRemoveValues(withKeys keys: [String]) throws {
         for key in keys {
             try localStorage.sql.removeValueWithKey(key)
             localStorage.valueCache.removeValueForKey(key)
@@ -96,8 +97,8 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
      - parameter value: Value
      - parameter key: Primary key for `value`
      */
-    public func setValue(_ value: Value, forKey key: String) {
-        let rowChange: SQLiteRowChangeType = try! commonSetValue(value, forKey: key)
+    public func set(value: Value, forKey key: String) {
+        let rowChange: SQLiteRowChangeType = try! commonSet(value: value, forKey: key)
         
         let connection = readWriteTransaction.connection
         switch rowChange {
@@ -107,7 +108,7 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
                 let extConnection = try! connection.connectionForExtension(ext)
                 let extTransaction = extConnection.writeTransaction(readWriteTransaction)
 
-                try! extTransaction.handleValueInsertion(value, forKey: key, inCollection: collection)
+                try! extTransaction.handleValueInsertion(value: value, forKey: key, inCollection: collection)
             }
 
         case .update(_):
@@ -116,7 +117,7 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
                 //TODO Investigate the potential of caching extension write transactions on the connection
                 let extTransaction = extConnection.writeTransaction(readWriteTransaction)
 
-                try! extTransaction.handleValueUpdate(value, forKey: key, inCollection: collection)
+                try! extTransaction.handleValueUpdate(value: value, forKey: key, inCollection: collection)
             }
         }
     }
@@ -124,17 +125,17 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
     /**
      Remove values with the given primary keys
      - note: Executes any associated extensions
-     - parameter keys: Primary keys of the values to remove
+     - parameter withKeys: Primary keys of the values to remove
      */
-    public func removeValuesWithKeys(_ keys: [String]) {
-        try! commonRemoveValuesWithKeys(keys)
+    public func removeValues(withKeys keys: [String]) {
+        try! commonRemoveValues(withKeys: keys)
 
         let connection = readWriteTransaction.connection
         for ext in collection.associatedExtensions {
             let extConnection = try! connection.connectionForExtension(ext)
             let extTransaction = extConnection.writeTransaction(readWriteTransaction)
 
-            try! extTransaction.handleRemovalOfRowsWithKeys(keys, inCollection: collection)
+            try! extTransaction.handleRemovalOfRows(withKeys: keys, inCollection: collection)
         }
     }
 
@@ -150,7 +151,7 @@ public extension ReadWriteCollection where TCollection: ExtendedCollection {
             let extConnection = try! connection.connectionForExtension(ext)
             let extTransaction = extConnection.writeTransaction(readWriteTransaction)
 
-            try! extTransaction.handleRemovalOfAllRowsInCollection(collection)
+            try! extTransaction.handleRemovalOfAllRows(collection: collection)
         }
     }
 }

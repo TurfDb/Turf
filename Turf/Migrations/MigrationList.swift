@@ -34,7 +34,7 @@ open class MigrationList {
      - parameter index: Index of the migration. This is not zero based and MUST START AT 1. It must be a strictly increasing number
      - warning: It is undefined behaviour if `index` does not strictly increase.
      */
-    open func register(_ migration: Migration, index: UInt) {
+    open func register(migration: Migration, index: UInt) {
         precondition(migrations[index] == nil, "Already register migration for \(index)")
         migrations[index] = migration
     }
@@ -45,7 +45,7 @@ open class MigrationList {
      - parameter index: Index of the migration. This is not zero based and MUST START AT 1. It must be a strictly increasing number
      - warning: It is undefined behaviour if `index` does not strictly increase.
      */
-    open func register(_ collectionMigration: CollectionMigration, index: UInt) {
-        register(CollectionMigrationOperator(migration: collectionMigration), index: index)
+    open func register(collectionMigration: CollectionMigration, index: UInt) {
+        register(migration: CollectionMigrationOperator(migration: collectionMigration), index: index)
     }
 }

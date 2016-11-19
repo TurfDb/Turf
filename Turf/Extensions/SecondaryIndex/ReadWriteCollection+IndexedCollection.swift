@@ -3,10 +3,10 @@ public extension ReadWriteCollection where TCollection: IndexedCollection {
 
     /**
      Find the first value that matches the given predicate using the collection's secondary index
-     - parameter predicate: Query on secondary indexed properties
+     - parameter where: Query on secondary indexed properties
      - returns: Value if there is a match
      */
-    public func removeValuesWhere(_ clause: WhereClause) {
+    public func removeValues(where clause: WhereClause) {
         var stmt: OpaquePointer? = nil
         defer { sqlite3_finalize(stmt) }
 
@@ -35,7 +35,7 @@ public extension ReadWriteCollection where TCollection: IndexedCollection {
             }
 
             sqlite3_finalize(stmt)
-            removeValuesWithKeys(keysRemoved)
+            removeValues(withKeys: keysRemoved)
 
             let deleteSql = "DELETE FROM `\(connection.index.tableName)` WHERE \(clause.sql);"
             guard sqlite3_prepare_v2(db, deleteSql, -1, &stmt, nil).isOK else {

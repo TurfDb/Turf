@@ -43,7 +43,7 @@ public final class ReadWriteTransaction<Collections: CollectionsContainer>: Read
         - Thread safe
      - parameter collection: The Collection we want to register. This creates a table in the database with the same name as the collection's 'name' property
      */
-    public func registerCollection<TCollection: TurfCollection>(_ collection: TCollection) throws {
+    public func register<TCollection: TurfCollection>(collection: TCollection) throws {
         try SQLiteCollection.createCollectionTableNamed(collection.name, db: connection.sqlite.db)
         connection.database.registerCollection(collection)
     }
@@ -52,9 +52,9 @@ public final class ReadWriteTransaction<Collections: CollectionsContainer>: Read
      Register and install (if required) a database extension
      - note:
          - Thread safe
-     - parameter ext: An installable extension
+     - parameter extension: An installable extension
      */
-    public func registerExtension<Ext: Extension>(_ ext: Ext) throws {
+    public func register<Ext: Extension>(extension ext: Ext) throws {
         //FIXME segfault
         let localConnection: Connection<Collections> = connection
         try localConnection.registerExtension(ext, onTransaction: self)

@@ -23,7 +23,7 @@ final class IndexedTreesCollection: TurfCollection, IndexedCollection {
         index.collection = self
     }
 
-    func serializeValue(_ value: Tree) -> Data {
+    func serialize(value: Tree) -> Data {
         let dictionaryRepresentation: [String: AnyObject] = [
             "uuid": value.uuid as AnyObject,
             "type": value.type as AnyObject,
@@ -35,7 +35,7 @@ final class IndexedTreesCollection: TurfCollection, IndexedCollection {
         return try! JSONSerialization.data(withJSONObject: dictionaryRepresentation, options: [])
     }
 
-    func deserializeValue(_ data: Data) -> Value? {
+    func deserialize(data: Data) -> Value? {
         let json = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         guard let
             uuid = json["uuid"] as? String,
@@ -50,8 +50,8 @@ final class IndexedTreesCollection: TurfCollection, IndexedCollection {
     }
 
     func setUp<Collections : CollectionsContainer>(using transaction: ReadWriteTransaction<Collections>) throws {
-        try transaction.registerCollection(self)
-        try transaction.registerExtension(index)
+        try transaction.register(collection: self)
+        try transaction.register(extension: index)
     }
 
     struct IndexedProperties: Turf.IndexedProperties {

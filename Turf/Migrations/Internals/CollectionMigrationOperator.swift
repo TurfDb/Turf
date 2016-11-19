@@ -23,13 +23,13 @@ extension CollectionMigrationOperator: Migration {
                 toSchemaVersion: migration.toSchemaVersion)
             
             var currentIndex = UInt(0)
-            try operations.enumerateValuesInCollection(migration.collectionName) { (index, key, version, value) -> Bool in
+            try operations.enumerateValues(in: migration.collectionName) { (index, key, version, value) -> Bool in
                 guard version == self.migration.fromSchemaVersion else { return true }
 
                 currentIndex += 1
                 onProgress(migrationId, .migrating(currentIndex, of: totalRows))
 
-                try self.migration.migrate(value, key: key, operations: collectionOperations)
+                try self.migration.migrate(serializedValue: value, key: key, operations: collectionOperations)
 
                 return true
             }
@@ -41,6 +41,6 @@ extension CollectionMigrationOperator: Migration {
     }
 
     private func totalNumberOfRows(_ operations: MigrationOperations) throws -> UInt {
-        return try operations.countOfValuesInCollection(migration.collectionName, atSchemaVersion: migration.fromSchemaVersion)
+        return try operations.countOfValues(in: migration.collectionName, atSchemaVersion: migration.fromSchemaVersion)
     }
 }

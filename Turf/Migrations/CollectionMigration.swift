@@ -3,5 +3,5 @@ public protocol CollectionMigration {
     var fromSchemaVersion: UInt64 { get }
     var toSchemaVersion: UInt64 { get }
 
-    func migrate(_ serializedValue: Data, key: String, operations: CollectionMigrationOperations) throws
+    func migrate(serializedValue: Data, key: String, operations: CollectionMigrationOperations) throws
 }

@@ -11,7 +11,7 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: TurfCollection,
 
     // MARK: Internal methods
 
-    func handleValueInsertion<TCollection : TurfCollection>(_ value: TCollection.Value, forKey primaryKey: String, inCollection collection: TCollection) throws {
+    func handleValueInsertion<TCollection : TurfCollection>(value: TCollection.Value, forKey primaryKey: String, inCollection collection: TCollection) throws {
         //Exensions are allowed to take values from any collection
         //We must force cast the value (to ensure it will crash otherwise) to the same type as the indexed collection's value
         let indexedCollectionValue = value as! Properties.IndexedCollection.Value
@@ -35,7 +35,7 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: TurfCollection,
         }
     }
 
-    func handleValueUpdate<TCollection : TurfCollection>(_ value: TCollection.Value, forKey primaryKey: String, inCollection collection: TCollection) throws {
+    func handleValueUpdate<TCollection : TurfCollection>(value: TCollection.Value, forKey primaryKey: String, inCollection collection: TCollection) throws {
         let indexedCollectionValue = value as! Properties.IndexedCollection.Value
 
         defer { sqlite3_reset(connection.updateStmt) }
@@ -56,7 +56,7 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: TurfCollection,
         }
     }
 
-    func handleRemovalOfAllRowsInCollection<TCollection : TurfCollection>(_ collection: TCollection) throws {
+    func handleRemovalOfAllRows<TCollection : TurfCollection>(collection: TCollection) throws {
         defer { sqlite3_reset(connection.removeAllStmt) }
 
         if sqlite3_step(connection.removeAllStmt).isNotDone {
@@ -66,7 +66,7 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: TurfCollection,
         }
     }
 
-    func handleRemovalOfRowsWithKeys<TCollection : TurfCollection>(_ primaryKeys: [String], inCollection collection: TCollection) throws {
+    func handleRemovalOfRows<TCollection : TurfCollection>(withKeys primaryKeys: [String], inCollection collection: TCollection) throws {
         let primaryKeyIndex = SQLITE_FIRST_BIND_COLUMN
 
         for primaryKey in primaryKeys {

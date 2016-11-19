@@ -42,13 +42,13 @@ class SecondaryIndexingRegressionTests: QuickSpec {
 
                             let beechTree3 = Tree(type: "Beech", species: "Ilex aquifolium", height: 18, age: .fullyMature)
 
-                            treesCollections.setValue(oakTree1, forKey: oakTree1.uuid)
-                            treesCollections.setValue(oakTree2, forKey: oakTree2.uuid)
-                            treesCollections.setValue(cypressTree1, forKey: cypressTree1.uuid)
-                            treesCollections.setValue(cypressTree2, forKey: cypressTree2.uuid)
-                            treesCollections.setValue(beechTree1, forKey: beechTree1.uuid)
-                            treesCollections.setValue(beechTree2, forKey: beechTree2.uuid)
-                            treesCollections.setValue(beechTree3, forKey: beechTree3.uuid)
+                            treesCollections.set(value: oakTree1, forKey: oakTree1.uuid)
+                            treesCollections.set(value: oakTree2, forKey: oakTree2.uuid)
+                            treesCollections.set(value: cypressTree1, forKey: cypressTree1.uuid)
+                            treesCollections.set(value: cypressTree2, forKey: cypressTree2.uuid)
+                            treesCollections.set(value: beechTree1, forKey: beechTree1.uuid)
+                            treesCollections.set(value: beechTree2, forKey: beechTree2.uuid)
+                            treesCollections.set(value: beechTree3, forKey: beechTree3.uuid)
                         }
                     }
 
@@ -59,7 +59,7 @@ class SecondaryIndexingRegressionTests: QuickSpec {
 
                             let treesCollection = transaction.readOnly(collections.indexedTrees)
 
-                            oakTrees = treesCollection.findValuesWhere(treesCollection.indexed.type.equals("Oak"))
+                            oakTrees = treesCollection.findValues(where: treesCollection.indexed.type.equals("Oak"))
                         }
 
                         expect(oakTrees.count) == 2
@@ -72,7 +72,7 @@ class SecondaryIndexingRegressionTests: QuickSpec {
 
                             let treesCollection = transaction.readOnly(collections.indexedTrees)
 
-                            beechTrees = treesCollection.findValuesWhere(treesCollection.indexed.species.equals("Ilex aquifolium"))
+                            beechTrees = treesCollection.findValues(where: treesCollection.indexed.species.equals("Ilex aquifolium"))
                         }
 
                         expect(beechTrees.count) == 3
@@ -85,7 +85,7 @@ class SecondaryIndexingRegressionTests: QuickSpec {
 
                             let treesCollection = transaction.readOnly(collections.indexedTrees)
 
-                            tallTrees = treesCollection.findValuesWhere(treesCollection.indexed.height.isGreaterThan(20))
+                            tallTrees = treesCollection.findValues(where: treesCollection.indexed.height.isGreaterThan(20))
                         }
 
                         expect(tallTrees.count) == 3
@@ -98,7 +98,7 @@ class SecondaryIndexingRegressionTests: QuickSpec {
 
                             let treesCollection = transaction.readOnly(collections.indexedTrees)
 
-                            oldTrees = treesCollection.findValuesWhere(treesCollection.indexed.age.isGreaterThanOrEqualTo(TreeAge.mature.rawValue))
+                            oldTrees = treesCollection.findValues(where: treesCollection.indexed.age.isGreaterThanOrEqualTo(TreeAge.mature.rawValue))
                         }
 
                         expect(oldTrees.count) == 6

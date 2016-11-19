@@ -12,15 +12,15 @@ open class CollectionMigrationOperations {
         self.toSchemaVersion = toSchemaVersion
     }
 
-    open func removeValueWithKey(_ key: String) throws {
-        try operations.removeValueWithKey(key, inCollection: collectionName)
+    open func removeValue(withKey key: String) throws {
+        try operations.removeValue(withKey: key, in: collectionName)
     }
 
-    open func setSerializedValue(_ serializedValue: Data, key: String) throws {
-        try operations.setSerializedValue(serializedValue, key: key, version: toSchemaVersion, inCollection: collectionName)
+    open func set(serializedValue: Data, key: String) throws {
+        try operations.set(serializedValue: serializedValue, key: key, version: toSchemaVersion, in: collectionName)
     }
 
-    open func getSerializedValueWithKey(_ key: String, inCollection name: String) throws -> (valueData: Data, schemaVersion: UInt64)? {
-        return try operations.getSerializedValueWithKey(key, inCollection: name)
+    open func getSerializedValue(for key: String, in name: String) throws -> (valueData: Data, schemaVersion: UInt64)? {
+        return try operations.getSerializedValue(for: key, in: name)
     }
 }

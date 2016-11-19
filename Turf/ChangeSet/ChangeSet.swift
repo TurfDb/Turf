@@ -15,7 +15,7 @@ public final class ChangeSet<Key: Equatable> {
 
     // MARK: Public methods
 
-    public func hasChangeForKey(_ key: Key) -> Bool {
+    public func hasChange(for key: Key) -> Bool {
         guard !allValuesRemoved else { return true }
 
         return changes.index {
@@ -23,7 +23,7 @@ public final class ChangeSet<Key: Equatable> {
         } != nil
     }
 
-    public func mergeWithChangeSet(_ otherChanges: ChangeSet<Key>) {
+    public func mergeInPlace(with otherChanges: ChangeSet<Key>) {
         if otherChanges.allValuesRemoved {
             self.changes = otherChanges.changes
         } else {

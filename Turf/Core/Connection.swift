@@ -134,7 +134,7 @@ public final class Connection<Collections: CollectionsContainer> {
             existingInstallation = details
         }
 
-        try ext.install(transaction, db: self.sqlite.db, existingInstallationDetails: existingInstallation)
+        try ext.install(using: transaction, db: self.sqlite.db, existingInstallationDetails: existingInstallation)
 
         sqlite.setDetailsForExtension(name: ext.uniqueName, version: ext.version, turfVersion: ext.turfVersion, data: Data())
     }

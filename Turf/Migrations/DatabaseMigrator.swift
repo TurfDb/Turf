@@ -60,7 +60,7 @@ open class DatabaseMigrator {
 
     // MARK: Internal methods
 
-    func migrate(_ onCompletion: @escaping (Result<TimeInterval>) -> Void) {
+    func migrate(onCompletion: @escaping (Result<TimeInterval>) -> Void) {
         guard !migrating else {
             onCompletion(.failure(MigrationError.migrationsCurrentlyRunning))
             return

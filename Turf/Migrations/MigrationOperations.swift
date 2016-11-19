@@ -13,15 +13,15 @@ open class MigrationOperations {
 
     // MARK: Public methods
 
-    open func removeCollection(_ name: String) throws {
+    open func remove(collection name: String) throws {
         try SQLiteCollection.dropCollectionTableNamed(name, db: sqlite.db)
     }
 
-    open func createCollection(_ name: String) throws {
+    open func create(collection name: String) throws {
         try SQLiteCollection.createCollectionTableNamed(name, db: sqlite.db)
     }
 
-    open func enumerateValuesInCollection(_ name: String, each: @escaping (_ index: UInt, _ key: String, _ version: UInt64, _ value: Data) throws -> Bool) throws {
+    open func enumerateValues(in name: String, each: @escaping (_ index: UInt, _ key: String, _ version: UInt64, _ value: Data) throws -> Bool) throws {
         var index = UInt(0)
         var caughtError: Error? = nil
 
@@ -42,23 +42,23 @@ open class MigrationOperations {
         }
     }
 
-    open func removeValueWithKey(_ key: String, inCollection name: String) throws {
+    open func removeValue(withKey key: String, in name: String) throws {
         try sqliteCollectionFor(name).removeValueWithKey(key)
     }
 
-    open func setSerializedValue(_ serializedValue: Data, key: String, version: UInt64, inCollection name: String) throws {
+    open func set(serializedValue: Data, key: String, version: UInt64, in name: String) throws {
         try sqliteCollectionFor(name).setValueData(serializedValue, valueSchemaVersion: version, forKey: key)
     }
 
-    open func getSerializedValueWithKey(_ key: String, inCollection name: String) throws -> (valueData: Data, schemaVersion: UInt64)? {
+    open func getSerializedValue(for key: String, in name: String) throws -> (valueData: Data, schemaVersion: UInt64)? {
         return try sqliteCollectionFor(name).valueDataForKey(key)
     }
 
-    open func countOfValuesInCollection(_ name: String) throws -> UInt {
+    open func countOfValues(in name: String) throws -> UInt {
         return try sqliteCollectionFor(name).numberOfKeysInCollection()
     }
 
-    open func countOfValuesInCollection(_ name: String, atSchemaVersion version: UInt64) throws -> UInt {
+    open func countOfValues(in name: String, atSchemaVersion version: UInt64) throws -> UInt {
         return try sqliteCollectionFor(name).numberOfKeysInCollectionAtSchemaVersion(version)
     }
 

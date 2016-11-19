@@ -18,7 +18,7 @@ class ObservablesRegressionTests: QuickSpec {
             context("when observing the cars collection") {
                 var observableCarsCollection: ObservableCollection<CarsCollection, Collections>!
                 beforeEach {
-                    observableCarsCollection = tester.observingConnection.observeCollection(tester.collections.cars)
+                    observableCarsCollection = tester.observingConnection.observe(collection: tester.collections.cars)
                 }
 
                 context("and a value is written to the wheels collection") {
@@ -34,7 +34,7 @@ class ObservablesRegressionTests: QuickSpec {
                         try! tester.connection1.readWriteTransaction { transaction, collections in
                             let wheel = WheelModel(uuid: "test_1", manufacturer: "Pirelli", size: 18.0)
                             transaction.readWrite(collections.wheels)
-                                .setValue(wheel, forKey: wheel.uuid)
+                                .set(value: wheel, forKey: wheel.uuid)
                         }
 
                         expect(didChangeCalled) == true
@@ -54,10 +54,10 @@ class ObservablesRegressionTests: QuickSpec {
                         try! tester.connection1.readWriteTransaction { transaction, collections in
                             let car = CarModel(uuid: "test_1", manufacturer: "McLaren", name: "P1", doors: 2)
                             transaction.readWrite(collections.cars)
-                                .setValue(car, forKey: car.uuid)
+                                .set(value: car, forKey: car.uuid)
                         }
 
-                        expect(changeSet?.hasChangeForKey("test_1")) == true
+                        expect(changeSet?.hasChange(for: "test_1")) == true
                         expect(changeSet?.changes.count) == 1
                         expect(changeSet?.allValuesRemoved) == false
                         disposable.dispose()
@@ -74,7 +74,7 @@ class ObservablesRegressionTests: QuickSpec {
                             try! tester.connection1.readWriteTransaction { transaction, collections in
                                 let car = CarModel(uuid: "test_1", manufacturer: "McLaren", name: "P1", doors: 2)
                                 transaction.readWrite(collections.cars)
-                                    .setValue(car, forKey: car.uuid)
+                                    .set(value: car, forKey: car.uuid)
                             }
                         }
 
@@ -88,10 +88,10 @@ class ObservablesRegressionTests: QuickSpec {
                             try! tester.connection1.readWriteTransaction { transaction, collections in
                                 let car = CarModel(uuid: "test_1", manufacturer: "McLaren", name: "P1", doors: 2)
                                 transaction.readWrite(collections.cars)
-                                    .setValue(car, forKey: car.uuid)
+                                    .set(value: car, forKey: car.uuid)
                             }
 
-                            expect(changeSet?.hasChangeForKey("test_1")) == true
+                            expect(changeSet?.hasChange(for: "test_1")) == true
                             expect(changeSet?.changes.count) == 1
                             expect(changeSet?.allValuesRemoved) == false
                             disposable.dispose()
@@ -109,7 +109,7 @@ class ObservablesRegressionTests: QuickSpec {
                             try! tester.connection1.readWriteTransaction { transaction, collections in
                                 let car = CarModel(uuid: "test_1", manufacturer: "McLaren", name: "P1", doors: 2)
                                 transaction.readWrite(collections.cars)
-                                    .setValue(car, forKey: car.uuid)
+                                    .set(value: car, forKey: car.uuid)
                             }
                         }
 
@@ -121,10 +121,10 @@ class ObservablesRegressionTests: QuickSpec {
                             }
 
                             try! tester.connection1.readWriteTransaction { transaction, collections in
-                                transaction.readWrite(collections.cars).removeValuesWithKeys(["test_1"])
+                                transaction.readWrite(collections.cars).removeValues(withKeys: ["test_1"])
                             }
 
-                            expect(changeSet?.hasChangeForKey("test_1")) == true
+                            expect(changeSet?.hasChange(for: "test_1")) == true
                             expect(changeSet?.changes.count) == 1
                             expect(changeSet?.allValuesRemoved) == false
                             disposable.dispose()
@@ -142,7 +142,7 @@ class ObservablesRegressionTests: QuickSpec {
                             try! tester.connection1.readWriteTransaction { transaction, collections in
                                 let car = CarModel(uuid: "test_1", manufacturer: "McLaren", name: "P1", doors: 2)
                                 transaction.readWrite(collections.cars)
-                                    .setValue(car, forKey: car.uuid)
+                                    .set(value: car, forKey: car.uuid)
                             }
                         }
 
@@ -157,7 +157,7 @@ class ObservablesRegressionTests: QuickSpec {
                                 transaction.readWrite(collections.cars).removeAllValues()
                             }
 
-                            expect(changeSet?.hasChangeForKey("test_1")) == true
+                            expect(changeSet?.hasChange(for: "test_1")) == true
                             expect(changeSet?.changes.count) == 0
                             expect(changeSet?.allValuesRemoved) == true
                             disposable.dispose()
@@ -170,7 +170,7 @@ class ObservablesRegressionTests: QuickSpec {
                 var observableTreesCollection: ObservableCollection<IndexedTreesCollection, Collections>!
                 beforeEach {
                     observableTreesCollection = tester.observingConnection
-                        .observeCollection(tester.collections.indexedTrees)
+                        .observe(collection: tester.collections.indexedTrees)
                 }
 
                 context("when there are values in the trees collection") {
@@ -180,8 +180,8 @@ class ObservablesRegressionTests: QuickSpec {
                             let oakTree1 = Tree(uuid: "test_1", type: "Oak", species: "Quercus robur", height: 21, age: .young)
                             let cypressTree1 = Tree(type: "Cypress", species: "Cupressocyparis leylandii", height: 23, age: .fullyMature)
 
-                            treesCollections.setValue(oakTree1, forKey: oakTree1.uuid)
-                            treesCollections.setValue(cypressTree1, forKey: cypressTree1.uuid)
+                            treesCollections.set(value: oakTree1, forKey: oakTree1.uuid)
+                            treesCollections.set(value: cypressTree1, forKey: cypressTree1.uuid)
                         }
                     }
 
@@ -190,7 +190,7 @@ class ObservablesRegressionTests: QuickSpec {
                             var trees: [Tree] = []
 
                             let disposable = observableTreesCollection
-                                .values(matching: tester.collections.indexedTrees.indexed.type.equals("Oak"))
+                                .values(where: tester.collections.indexedTrees.indexed.type.equals("Oak"))
                                 .subscribeNext { transactionalTrees in
                                     trees = transactionalTrees.value
                             }

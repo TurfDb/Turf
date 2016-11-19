@@ -36,7 +36,7 @@ public class ReadCollection<TCollection: TurfCollection, Collections: Collection
         //FIXME segfault
         let connection: Connection<Collections> = readTransaction.connection
         self.localStorage = connection.localStorageForCollection(collection)
-        self.deserializeValue = collection.deserializeValue
+        self.deserializeValue = collection.deserialize
     }
 
     // MARK: Public methods
@@ -62,7 +62,7 @@ public class ReadCollection<TCollection: TurfCollection, Collections: Collection
      */
     open var allValues: ValuesSequence<Value> {
         let stmt = localStorage.sql.allValuesInCollectionStmt
-        return ValuesSequence(stmt: stmt!, valueDataColumnIndex: SQLITE_FIRST_COLUMN, schemaVersionColumnIndex: SQLITE_FIRST_COLUMN + 1, deserializer: collection.deserializeValue, collectionSchemaVersion: schemaVersion)
+        return ValuesSequence(stmt: stmt!, valueDataColumnIndex: SQLITE_FIRST_COLUMN, schemaVersionColumnIndex: SQLITE_FIRST_COLUMN + 1, deserializer: collection.deserialize, collectionSchemaVersion: schemaVersion)
     }
 
     /**
@@ -83,10 +83,10 @@ public class ReadCollection<TCollection: TurfCollection, Collections: Collection
     /**
      Fetch the latest value from the database.
      - note: This can either hit the value cache or hit the database and deserialize the data blob.
-     - parameter key: Primary key
+     - parameter for: Primary key
      - returns: Value for primary key if it exists
      */
-    open func valueForKey(_ key: String) -> Value? {
+    open func value(for key: String) -> Value? {
         if let cachedValue = localStorage.valueCache[key] {
             return cachedValue
         }

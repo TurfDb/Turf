@@ -47,7 +47,7 @@ open class SecondaryIndex<TCollection: TurfCollection, Properties: IndexedProper
         return SecondaryIndexConnection(index: self)
     }
 
-    open func install<DatabaseCollections: CollectionsContainer>(_ transaction: ReadWriteTransaction<DatabaseCollections>, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) throws {
+    open func install<DatabaseCollections: CollectionsContainer>(using transaction: ReadWriteTransaction<DatabaseCollections>, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) throws {
         let requiresRepopulation = try handleExistingInstallation(existingInstallationDetails, db: db)
 
         let sql = createTableSql()
@@ -78,7 +78,7 @@ open class SecondaryIndex<TCollection: TurfCollection, Properties: IndexedProper
         let extensionTransaction = newConnection(transaction.connection).writeTransaction(transaction)
 
         for (key, value) in readOnlyCollection.allKeysAndValues {
-            try extensionTransaction.handleValueInsertion(value, forKey: key, inCollection: collection)
+            try extensionTransaction.handleValueInsertion(value: value, forKey: key, inCollection: collection)
         }
     }
 

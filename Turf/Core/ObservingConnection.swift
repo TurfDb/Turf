@@ -45,7 +45,6 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
      - note:
      Thread safe.
      */
-    
     public func observe<TCollection: TurfCollection>(collection: TCollection) -> ObservableCollection<TCollection, Collections> {
         var returnedObserable: ObservableCollection<TCollection, Collections>!
 
@@ -74,15 +73,6 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
         return returnedObserable
     }
 
-
-    /**
-     - note:
-     Thread safe.
-     */
-    public func observeCollection<TCollection: TurfCollection>(_ collection: TCollection) -> ObservableCollection<TCollection, Collections> {
-        return observe(collection: collection)
-    }
-
     /**
      - note: 
         - Thread safe
@@ -94,7 +84,7 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
             for pendingChanges in self.pendingChangeSets {
                 for (collectionName, pendingChangeSet) in pendingChanges {
                     if let changeSet = changeSets[collectionName] {
-                        changeSet.mergeWithChangeSet(pendingChangeSet)
+                        changeSet.mergeInPlace(with: pendingChangeSet)
                     } else {
                         changeSets[collectionName] = pendingChangeSet
                     }
