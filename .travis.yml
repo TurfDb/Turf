@@ -1,6 +1,6 @@
 language: objective-c
 osx_image: xcode8
 xcode_project: Turf.xcodeproj
-xcode_scheme: Turf
+xcode_scheme: Turf-iOS
 xcode_sdk: iphonesimulator10.0
 install: carthage update --platform iOS
