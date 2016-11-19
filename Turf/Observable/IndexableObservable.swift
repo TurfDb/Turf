@@ -1,6 +1,6 @@
 import Foundation
 
-open class IndexableObservable<Array: Collection>: Observable<Array> {
+open class IndexableObservable<Array: Collection>: Observable<Array> where Array.Indices.Iterator.Element == Array.Index {
     open let first: Observable<Array.Iterator.Element?>
     open let last: Observable<Array.Iterator.Element?>
 
@@ -20,8 +20,7 @@ open class IndexableObservable<Array: Collection>: Observable<Array> {
 
     open func observe(index: Array.Index) -> Observable<Array.Iterator.Element?> {
         return wrappedObservable.map { array -> Array.Iterator.Element? in
-//            return array.indices.contains(index) ? array[index] : nil
-            return nil
+            return array[safe: index]
         }
     }
 
@@ -31,5 +30,12 @@ open class IndexableObservable<Array: Collection>: Observable<Array> {
 
     open override func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Value == Array {
         return wrappedObservable.subscribe(observer)
+    }
+}
+
+extension Collection where Indices.Iterator.Element : Equatable, Indices.Iterator.Element == Index {
+    /// Returns the element at the specified index iff it is within bounds, otherwise nil.
+    subscript (safe index: Index) -> Generator.Element? {
+        return indices.contains(index) ? self[index] : nil
     }
 }
