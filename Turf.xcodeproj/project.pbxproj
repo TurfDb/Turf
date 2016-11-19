@@ -822,6 +822,7 @@
 				TargetAttributes = {
 					723555E91CD512B100EAB32D = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					724E75B51CA945270082841B = {
 						CreatedOnToolsVersion = 7.3;
@@ -829,6 +830,7 @@
 					};
 					729C5C4E1CD76D0700EE1B6E = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					72B616DF1BAF474A00CFE67C = {
 						CreatedOnToolsVersion = 7.0;
@@ -1144,6 +1146,7 @@
 				PRODUCT_NAME = Turf;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1167,6 +1170,7 @@
 				PRODUCT_NAME = Turf;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1224,6 +1228,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jordanhamill.TurfRegressionTests-OSX";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1243,6 +1248,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jordanhamill.TurfRegressionTests-OSX";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
