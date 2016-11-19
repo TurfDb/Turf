@@ -111,7 +111,6 @@
 		723556431CD5238F00EAB32D /* SQLiteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B581C57BF310058F6EF /* SQLiteType.swift */; };
 		723556441CD5238F00EAB32D /* SQLiteTypeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B5A1C57C0310058F6EF /* SQLiteTypeName.swift */; };
 		723556461CD5238F00EAB32D /* WeakBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9621C274778004457DB /* WeakBox.swift */; };
-		723556481CD5243100EAB32D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 723556471CD5243100EAB32D /* libsqlite3.tbd */; };
 		7235564C1CD524E800EAB32D /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 7235564B1CD524E800EAB32D /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		724C9B5C1C2575D700E9AD79 /* CollectionLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C9B5B1C2575D700E9AD79 /* CollectionLocalStorage.swift */; };
 		724C9B5E1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C9B5D1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift */; };
@@ -162,7 +161,6 @@
 		729C5C671CD76D7F00EE1B6E /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72857BF21CD766A000B8FA43 /* Quick.framework */; };
 		729C5C691CD76D8E00EE1B6E /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 72857BF11CD766A000B8FA43 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		729C5C6A1CD76D8E00EE1B6E /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 72857BF21CD766A000B8FA43 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		729C5C6C1CD76E4B00EE1B6E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 729C5C6B1CD76E4B00EE1B6E /* Info.plist */; };
 		72B616E41BAF474A00CFE67C /* Turf.h in Headers */ = {isa = PBXBuildFile; fileRef = 72B616E31BAF474A00CFE67C /* Turf.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		72BCDD481D3009F6000AB623 /* TransactionalValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD471D3009F6000AB623 /* TransactionalValue.swift */; };
 		72BCDD4A1D301715000AB623 /* IndexableObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD491D301715000AB623 /* IndexableObservable.swift */; };
@@ -193,6 +191,7 @@
 		72D10FE11CBBEF8800401FFE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72D10FDF1CBBEF8800401FFE /* Quick.framework */; };
 		72E7F4EA1C3433D9009C1D9D /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */; };
 		72F6F7001C24622A0059D72C /* ExtendedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F6F6FF1C24622A0059D72C /* ExtendedCollection.swift */; };
+		72FFB58D1DE082D5008134B7 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 72FFB58C1DE082D5008134B7 /* libsqlite3.tbd */; };
 		F198DD231CC297A8008E9464 /* IndexedTreesCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F198DD221CC297A8008E9464 /* IndexedTreesCollection.swift */; };
 		F198DD251CC297CF008E9464 /* TreeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F198DD241CC297CF008E9464 /* TreeModel.swift */; };
 /* End PBXBuildFile section */
@@ -284,7 +283,6 @@
 		723555EA1CD512B100EAB32D /* Turf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Turf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		723555EC1CD512B100EAB32D /* Turf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Turf.h; sourceTree = "<group>"; };
 		723555EE1CD512B100EAB32D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		723556471CD5243100EAB32D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libsqlite3.tbd; sourceTree = DEVELOPER_DIR; };
 		7235564B1CD524E800EAB32D /* sqlite3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/sqlite3.h; sourceTree = DEVELOPER_DIR; };
 		724C9B5B1C2575D700E9AD79 /* CollectionLocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionLocalStorage.swift; sourceTree = "<group>"; };
 		724C9B5D1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeErasedCollectionLocalStorage.swift; sourceTree = "<group>"; };
@@ -344,6 +342,7 @@
 		72D37B7E1BC326770087153A /* iOS.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = iOS.modulemap; path = ../Turf/iOS.modulemap; sourceTree = "<group>"; };
 		72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteError.swift; sourceTree = "<group>"; };
 		72F6F6FF1C24622A0059D72C /* ExtendedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedCollection.swift; sourceTree = "<group>"; };
+		72FFB58C1DE082D5008134B7 /* libsqlite3.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/libsqlite3.tbd; sourceTree = DEVELOPER_DIR; };
 		F198DD221CC297A8008E9464 /* IndexedTreesCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedTreesCollection.swift; sourceTree = "<group>"; };
 		F198DD241CC297CF008E9464 /* TreeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -353,7 +352,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				723556481CD5243100EAB32D /* libsqlite3.tbd in Frameworks */,
+				72FFB58D1DE082D5008134B7 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,7 +640,7 @@
 		72B616D61BAF474A00CFE67C = {
 			isa = PBXGroup;
 			children = (
-				723556471CD5243100EAB32D /* libsqlite3.tbd */,
+				72FFB58C1DE082D5008134B7 /* libsqlite3.tbd */,
 				726D24521C767D5C003CE68C /* libsqlite3.tbd */,
 				72B616E11BAF474A00CFE67C /* Products */,
 				72B616E21BAF474A00CFE67C /* Turf */,
@@ -817,7 +816,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = JordanHamill;
 				TargetAttributes = {
 					723555E91CD512B100EAB32D = {
@@ -870,7 +869,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				729C5C6C1CD76E4B00EE1B6E /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1130,7 +1128,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1140,7 +1138,7 @@
 				INFOPLIST_FILE = TurfOSX/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.TurfOSX;
 				PRODUCT_MODULE_NAME = Turf;
 				PRODUCT_NAME = Turf;
@@ -1154,7 +1152,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1164,7 +1162,7 @@
 				INFOPLIST_FILE = TurfOSX/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.TurfOSX;
 				PRODUCT_MODULE_NAME = Turf;
 				PRODUCT_NAME = Turf;
@@ -1265,8 +1263,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1314,8 +1314,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1336,6 +1338,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = Turf;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1347,6 +1350,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1373,6 +1377,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
