@@ -1,5 +1,3 @@
-private let connectionQueueKey = DispatchSpecificKey<Int?>()
-
 public final class Connection<Collections: CollectionsContainer> {
     // MARK: Public properties
 
@@ -27,6 +25,7 @@ public final class Connection<Collections: CollectionsContainer> {
 
     // MARK: Private properties
 
+    private let connectionQueueKey = DispatchSpecificKey<Int?>()
     private let databaseWriteQueue: DispatchQueue
     private var connectionModificationLock: OSSpinLock = OS_SPINLOCK_INIT
 
@@ -58,7 +57,7 @@ public final class Connection<Collections: CollectionsContainer> {
         self.collectionsLocalStorage = [:]
         self.modifiedCollections = [:]
 
-        databaseWriteQueue.setSpecific(key: connectionQueueKey, value: id)
+        connectionQueue.setSpecific(key: connectionQueueKey, value: id)
 
         self.sqlite = try SQLiteAdapter(sqliteDatabaseUrl: database.url)
         try self.createExtensionConnections()
