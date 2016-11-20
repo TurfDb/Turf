@@ -1,5 +1,6 @@
 public protocol SQLiteType {
     static var sqliteTypeName: SQLiteTypeName { get }
+    static var isNullable: Bool { get }
 
     /**
      Extract the type from a (sqlite3_stmt *).
@@ -22,6 +23,7 @@ public protocol SQLiteType {
 
 extension SQLiteType {
     public var sqliteTypeName: SQLiteTypeName { return Self.sqliteTypeName }
+    public static var isNullable: Bool { return false }
 }
 
 extension Int: SQLiteType {
@@ -139,6 +141,8 @@ public enum SQLiteOptional<Wrapped: SQLiteType>: SQLiteType, TurfSQLiteOptional 
     public static var sqliteTypeName: SQLiteTypeName {
         return Wrapped.sqliteTypeName
     }
+
+    public static var isNullable: Bool { return true }
 
     public init?(stmt: OpaquePointer, columnIndex: Int32) {
         if let wrapped = Wrapped(stmt: stmt, columnIndex: columnIndex) {

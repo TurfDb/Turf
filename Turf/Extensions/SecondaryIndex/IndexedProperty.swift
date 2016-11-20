@@ -128,6 +128,7 @@ public struct IndexedProperty<IndexedCollection: TurfCollection, T: SQLiteType> 
     }
 }
 
+/// Remove when concrete type constraints allow `extension IndexedProperty where T == String { ... }`
 public protocol TurfSwiftString { var _turfSwiftString: String { get } }
 extension String: TurfSwiftString {
     public var _turfSwiftString: String { return self }
@@ -160,7 +161,7 @@ extension IndexedProperty where T: TurfSwiftString {
      - parameter regex
      - returns: A predicate
      */
-    public func matchesRegex(_ regex: NSRegularExpression) -> WhereClause {
+    public func matches(regex: NSRegularExpression) -> WhereClause {
         return WhereClauses.regexp(name: name, regex: regex.pattern)
     }
 
@@ -170,7 +171,7 @@ extension IndexedProperty where T: TurfSwiftString {
      - parameter regex
      - returns: A predicate
      */
-    public func doesNotMatcheRegex(_ regex: NSRegularExpression) -> WhereClause {
+    public func doesNotMatch(regex: NSRegularExpression) -> WhereClause {
         return WhereClauses.regexp(name: name, regex: regex.pattern, negate: true)
     }
 }

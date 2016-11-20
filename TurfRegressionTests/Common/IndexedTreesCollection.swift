@@ -24,12 +24,12 @@ final class IndexedTreesCollection: TurfCollection, IndexedCollection {
     }
 
     func serialize(value: Tree) -> Data {
-        let dictionaryRepresentation: [String: AnyObject] = [
-            "uuid": value.uuid as AnyObject,
-            "type": value.type as AnyObject,
-            "species": value.species as AnyObject,
-            "height": value.height as AnyObject,
-            "age": value.age.rawValue as AnyObject
+        let dictionaryRepresentation: [String: Any] = [
+            "uuid": value.uuid,
+            "type": value.type,
+            "species": value.species,
+            "height": value.height,
+            "age": value.age.rawValue
         ]
 
         return try! JSONSerialization.data(withJSONObject: dictionaryRepresentation, options: [])
@@ -56,7 +56,7 @@ final class IndexedTreesCollection: TurfCollection, IndexedCollection {
 
     struct IndexedProperties: Turf.IndexedProperties {
 
-        let type = IndexedProperty<IndexedTreesCollection, String>(name: "type") { tree -> String in
+        let type = IndexedProperty<IndexedTreesCollection, String>(name: "type") { tree in
             return tree.type
         }
 
