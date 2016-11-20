@@ -24,13 +24,13 @@ class BasicRegressionTests: QuickSpec {
 
                             try! tester.connection1.readWriteTransaction { transaction, collections in
                                 let collection = transaction.readWrite(collections.cars)
-                                collection.setValue(expectedCar, forKey: expectedCar.uuid)
+                                collection.set(value: expectedCar, forKey: expectedCar.uuid)
                             }
 
                             var fetchedCar: CarModel?
                             try! tester.connection1.readWriteTransaction { transaction, collections in
                                 let collection = transaction.readWrite(collections.cars)
-                                fetchedCar = collection.valueForKey("test_1")
+                                fetchedCar = collection.value(for: "test_1")
                             }
 
                             expect(fetchedCar?.uuid) == "test_1"
@@ -47,13 +47,13 @@ class BasicRegressionTests: QuickSpec {
 
                                 try! tester.connection1.readWriteTransaction { transaction, collections in
                                     let collection = transaction.readWrite(collections.cars)
-                                    collection.setValue(expectedCar, forKey: expectedCar.uuid)
+                                    collection.set(value: expectedCar, forKey: expectedCar.uuid)
                                 }
 
                                 var fetchedCar: CarModel?
                                 try! tester.connection1.readWriteTransaction { transaction, collections in
                                     let collection = transaction.readOnly(collections.cars)
-                                    fetchedCar = collection.valueForKey("test_1")
+                                    fetchedCar = collection.value(for:"test_1")
                                 }
 
                                 expect(fetchedCar?.uuid) == "test_1"
@@ -69,13 +69,13 @@ class BasicRegressionTests: QuickSpec {
 
                                 try! tester.connection1.readWriteTransaction { transaction, collections in
                                     let collection = transaction.readWrite(collections.cars)
-                                    collection.setValue(expectedCar, forKey: expectedCar.uuid)
+                                    collection.set(value: expectedCar, forKey: expectedCar.uuid)
                                 }
 
                                 var fetchedCar: CarModel?
                                 try! tester.connection1.readTransaction { transaction, collections in
                                     let collection = transaction.readOnly(collections.cars)
-                                    fetchedCar = collection.valueForKey("test_1")
+                                    fetchedCar = collection.value(for:"test_1")
                                 }
 
                                 expect(fetchedCar?.uuid) == "test_1"
@@ -97,13 +97,13 @@ class BasicRegressionTests: QuickSpec {
 
                             try! tester.connection1.readWriteTransaction { transaction, collections in
                                 let collection = transaction.readWrite(collections.cars)
-                                collection.setValue(expectedCar, forKey: expectedCar.uuid)
+                                collection.set(value: expectedCar, forKey: expectedCar.uuid)
                             }
 
                             var fetchedCar: CarModel?
                             try! tester.connection2.readWriteTransaction { transaction, collections in
                                 let collection = transaction.readWrite(collections.cars)
-                                fetchedCar = collection.valueForKey("test_1")
+                                fetchedCar = collection.value(for:"test_1")
                             }
 
                             expect(fetchedCar?.uuid) == "test_1"
@@ -120,13 +120,13 @@ class BasicRegressionTests: QuickSpec {
 
                                 try! tester.connection1.readWriteTransaction { transaction, collections in
                                     let collection = transaction.readWrite(collections.cars)
-                                    collection.setValue(expectedCar, forKey: expectedCar.uuid)
+                                    collection.set(value: expectedCar, forKey: expectedCar.uuid)
                                 }
 
                                 var fetchedCar: CarModel?
                                 try! tester.connection2.readWriteTransaction { transaction, collections in
                                     let collection = transaction.readOnly(collections.cars)
-                                    fetchedCar = collection.valueForKey("test_1")
+                                    fetchedCar = collection.value(for:"test_1")
                                 }
 
                                 expect(fetchedCar?.uuid) == "test_1"
@@ -142,13 +142,13 @@ class BasicRegressionTests: QuickSpec {
 
                                 try! tester.connection1.readWriteTransaction { transaction, collections in
                                     let collection = transaction.readWrite(collections.cars)
-                                    collection.setValue(expectedCar, forKey: expectedCar.uuid)
+                                    collection.set(value: expectedCar, forKey: expectedCar.uuid)
                                 }
 
                                 var fetchedCar: CarModel?
                                 try! tester.connection2.readTransaction { transaction, collections in
                                     let collection = transaction.readOnly(collections.cars)
-                                    fetchedCar = collection.valueForKey("test_1")
+                                    fetchedCar = collection.value(for:"test_1")
                                 }
 
                                 expect(fetchedCar?.uuid) == "test_1"
@@ -172,14 +172,14 @@ class BasicRegressionTests: QuickSpec {
 
                             try! tester.connection1.readWriteTransaction { transaction, collections in
                                 let collection = transaction.readWrite(collections.wheels)
-                                collection.setValue(expectedWheel, forKey: expectedWheel.uuid)
+                                collection.set(value: expectedWheel, forKey: expectedWheel.uuid)
                             }
 
                             var fetchedWheel: WheelModel?
 
                             try! tester.connection1.readWriteTransaction { transaction, collections in
                                 let collection = transaction.readWrite(collections.wheels)
-                                fetchedWheel = collection.valueForKey("test_1")
+                                fetchedWheel = collection.value(for:"test_1")
                             }
 
                             expect(fetchedWheel?.uuid) == "test_1"
@@ -195,14 +195,14 @@ class BasicRegressionTests: QuickSpec {
 
                             try! tester.connection1.readWriteTransaction { transaction, collections in
                                 let collection = transaction.readWrite(collections.wheels)
-                                collection.setValue(expectedWheel, forKey: expectedWheel.uuid)
+                                collection.set(value: expectedWheel, forKey: expectedWheel.uuid)
                             }
 
                             var fetchedWheel: WheelModel?
 
                             try! tester.connection1.readWriteTransaction { transaction, collections in
                                 let collection = transaction.readOnly(collections.wheels)
-                                fetchedWheel = collection.valueForKey("test_1")
+                                fetchedWheel = collection.value(for:"test_1")
                             }
 
                             expect(fetchedWheel?.uuid) == "test_1"
@@ -222,14 +222,14 @@ class BasicRegressionTests: QuickSpec {
 
                             try! tester.connection1.readWriteTransaction { transaction, collections in
                                 let collection = transaction.readWrite(collections.wheels)
-                                collection.setValue(expectedWheel, forKey: expectedWheel.uuid)
+                                collection.set(value: expectedWheel, forKey: expectedWheel.uuid)
                             }
 
                             var fetchedWheel: WheelModel?
 
                             try! tester.connection2.readWriteTransaction { transaction, collections in
                                 let collection = transaction.readWrite(collections.wheels)
-                                fetchedWheel = collection.valueForKey("test_1")
+                                fetchedWheel = collection.value(for:"test_1")
                             }
 
                             expect(fetchedWheel?.uuid) == "test_1"
@@ -245,14 +245,14 @@ class BasicRegressionTests: QuickSpec {
 
                             try! tester.connection1.readWriteTransaction { transaction, collections in
                                 let collection = transaction.readWrite(collections.wheels)
-                                collection.setValue(expectedWheel, forKey: expectedWheel.uuid)
+                                collection.set(value: expectedWheel, forKey: expectedWheel.uuid)
                             }
 
                             var fetchedWheel: WheelModel?
 
                             try! tester.connection2.readWriteTransaction { transaction, collections in
                                 let collection = transaction.readOnly(collections.wheels)
-                                fetchedWheel = collection.valueForKey("test_1")
+                                fetchedWheel = collection.value(for:"test_1")
                             }
 
                             expect(fetchedWheel?.uuid) == "test_1"

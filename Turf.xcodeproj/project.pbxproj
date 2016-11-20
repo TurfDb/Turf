@@ -17,7 +17,7 @@
 		72088F8C1C1CD93E00127EA0 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F8B1C1CD93E00127EA0 /* Extension.swift */; };
 		72088F8E1C1CD95600127EA0 /* ExtensionConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F8D1C1CD95600127EA0 /* ExtensionConnection.swift */; };
 		72088F901C1CD97A00127EA0 /* ExtensionWriteTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F8F1C1CD97A00127EA0 /* ExtensionWriteTransaction.swift */; };
-		72088F921C1CD9FA00127EA0 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F911C1CD9FA00127EA0 /* Collection.swift */; };
+		72088F921C1CD9FA00127EA0 /* TurfCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F911C1CD9FA00127EA0 /* TurfCollection.swift */; };
 		72088F941C1CDA1C00127EA0 /* ReadCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F931C1CDA1C00127EA0 /* ReadCollection.swift */; };
 		72088F961C1CDA3200127EA0 /* ReadWriteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F951C1CDA3200127EA0 /* ReadWriteCollection.swift */; };
 		72088F981C1CE0B400127EA0 /* WritableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F971C1CE0B400127EA0 /* WritableCollection.swift */; };
@@ -38,10 +38,8 @@
 		720C69F01CA95E66005C12E3 /* WheelsCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720C69EF1CA95E66005C12E3 /* WheelsCollection.swift */; };
 		720FA9B11C259D2000BEF295 /* ValuesSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720FA9B01C259D2000BEF295 /* ValuesSequence.swift */; };
 		7218C9631C274778004457DB /* WeakBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9621C274778004457DB /* WeakBox.swift */; };
-		7218C9661C274D94004457DB /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9651C274D94004457DB /* Dispatch.swift */; };
-		7218C9681C2809BB004457DB /* DispatchQueueType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9671C2809BB004457DB /* DispatchQueueType.swift */; };
 		721C88011D36EB6600F96E96 /* ShareReplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721C88001D36EB6600F96E96 /* ShareReplay.swift */; };
-		722597781D35A5B9009B38D6 /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722597771D35A5B9009B38D6 /* Scheduler.swift */; };
+		722597781D35A5B9009B38D6 /* RxScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722597771D35A5B9009B38D6 /* RxScheduler.swift */; };
 		7225977A1D35A5D4009B38D6 /* Sink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722597791D35A5D4009B38D6 /* Sink.swift */; };
 		72297A8C1C257B290001BE40 /* SQLiteRowChangeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72297A8B1C257B290001BE40 /* SQLiteRowChangeType.swift */; };
 		72297A8E1C257CDB0001BE40 /* CollectionRowChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72297A8D1C257CDB0001BE40 /* CollectionRowChange.swift */; };
@@ -61,7 +59,7 @@
 		723556061CD5238F00EAB32D /* CollectionLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C9B5B1C2575D700E9AD79 /* CollectionLocalStorage.swift */; };
 		723556071CD5238F00EAB32D /* TypeErasedCollectionLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C9B5D1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift */; };
 		723556081CD5238F00EAB32D /* TypeErasedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */; };
-		723556091CD5238F00EAB32D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F911C1CD9FA00127EA0 /* Collection.swift */; };
+		723556091CD5238F00EAB32D /* TurfCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F911C1CD9FA00127EA0 /* TurfCollection.swift */; };
 		7235560A1CD5238F00EAB32D /* CollectionProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088FD61C1E10EF00127EA0 /* CollectionProperty.swift */; };
 		7235560B1CD5238F00EAB32D /* ReadableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F991C1CE15100127EA0 /* ReadableCollection.swift */; };
 		7235560C1CD5238F00EAB32D /* ReadCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F931C1CDA1C00127EA0 /* ReadCollection.swift */; };
@@ -94,8 +92,6 @@
 		723556271CD5238F00EAB32D /* ExtensionConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F8D1C1CD95600127EA0 /* ExtensionConnection.swift */; };
 		723556281CD5238F00EAB32D /* ExtensionWriteTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72088F8F1C1CD97A00127EA0 /* ExtensionWriteTransaction.swift */; };
 		723556291CD5238F00EAB32D /* ExistingExtensionInstallation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722DCF641C5EAE020011C1EF /* ExistingExtensionInstallation.swift */; };
-		7235562A1CD5238F00EAB32D /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9651C274D94004457DB /* Dispatch.swift */; };
-		7235562B1CD5238F00EAB32D /* DispatchQueueType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9671C2809BB004457DB /* DispatchQueueType.swift */; };
 		7235562C1CD5238F00EAB32D /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75AD1CA6F76F0082841B /* Logger.swift */; };
 		7235562D1CD5238F00EAB32D /* CollectionMigrationOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75AA1CA6E3ED0082841B /* CollectionMigrationOperator.swift */; };
 		7235562E1CD5238F00EAB32D /* CollectionMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75A51CA6C2890082841B /* CollectionMigration.swift */; };
@@ -115,8 +111,6 @@
 		723556431CD5238F00EAB32D /* SQLiteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B581C57BF310058F6EF /* SQLiteType.swift */; };
 		723556441CD5238F00EAB32D /* SQLiteTypeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72662B5A1C57C0310058F6EF /* SQLiteTypeName.swift */; };
 		723556461CD5238F00EAB32D /* WeakBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C9621C274778004457DB /* WeakBox.swift */; };
-		723556481CD5243100EAB32D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 723556471CD5243100EAB32D /* libsqlite3.tbd */; };
-		7235564C1CD524E800EAB32D /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 7235564B1CD524E800EAB32D /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		724C9B5C1C2575D700E9AD79 /* CollectionLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C9B5B1C2575D700E9AD79 /* CollectionLocalStorage.swift */; };
 		724C9B5E1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C9B5D1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift */; };
 		724E758A1CA5A04C0082841B /* ReadWriteCollection+IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E75891CA5A04C0082841B /* ReadWriteCollection+IndexedCollection.swift */; };
@@ -146,6 +140,21 @@
 		7277F5481C4C01040081118D /* SQLiteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277F5471C4C01040081118D /* SQLiteCollection.swift */; };
 		727B02481CA55B3B006D245A /* WhereClause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727B02471CA55B3B006D245A /* WhereClause.swift */; };
 		727B024A1CA56BC5006D245A /* WhereClauses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727B02491CA56BC5006D245A /* WhereClauses.swift */; };
+		727E693A1DE08701009F305A /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 727E69391DE08701009F305A /* sqlite3.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		727E693F1DE08907009F305A /* AnyObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD521D3017A0000AB623 /* AnyObserver.swift */; };
+		727E69401DE08907009F305A /* BasicDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4E1D3017A0000AB623 /* BasicDisposable.swift */; };
+		727E69411DE08907009F305A /* CallbackThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD551D3017A0000AB623 /* CallbackThread.swift */; };
+		727E69421DE08907009F305A /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD531D3017A0000AB623 /* Disposable.swift */; };
+		727E69431DE08907009F305A /* DisposeBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD541D3017A0000AB623 /* DisposeBag.swift */; };
+		727E69441DE08907009F305A /* FilterObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD511D3017A0000AB623 /* FilterObservable.swift */; };
+		727E69451DE08907009F305A /* MapObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4D1D3017A0000AB623 /* MapObservable.swift */; };
+		727E69461DE08907009F305A /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4C1D3017A0000AB623 /* Observable.swift */; };
+		727E69471DE08907009F305A /* RxScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722597771D35A5B9009B38D6 /* RxScheduler.swift */; };
+		727E69481DE08907009F305A /* SharedObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD501D3017A0000AB623 /* SharedObservable.swift */; };
+		727E69491DE08907009F305A /* Sink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722597791D35A5D4009B38D6 /* Sink.swift */; };
+		727E694A1DE08907009F305A /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4F1D3017A0000AB623 /* Subject.swift */; };
+		727E694B1DE08907009F305A /* SubscribeOn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728ACFE51D358BC0009E75DC /* SubscribeOn.swift */; };
+		727E694C1DE08907009F305A /* ShareReplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721C88001D36EB6600F96E96 /* ShareReplay.swift */; };
 		728ACFE61D358BC0009E75DC /* SubscribeOn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728ACFE51D358BC0009E75DC /* SubscribeOn.swift */; };
 		728C235C1C3B121E0033D986 /* CacheUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728C235B1C3B121E0033D986 /* CacheUpdates.swift */; };
 		729C5C521CD76D0700EE1B6E /* TurfRegressionTests_OSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729C5C511CD76D0700EE1B6E /* TurfRegressionTests_OSX.swift */; };
@@ -166,7 +175,6 @@
 		729C5C671CD76D7F00EE1B6E /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72857BF21CD766A000B8FA43 /* Quick.framework */; };
 		729C5C691CD76D8E00EE1B6E /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 72857BF11CD766A000B8FA43 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		729C5C6A1CD76D8E00EE1B6E /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 72857BF21CD766A000B8FA43 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		729C5C6C1CD76E4B00EE1B6E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 729C5C6B1CD76E4B00EE1B6E /* Info.plist */; };
 		72B616E41BAF474A00CFE67C /* Turf.h in Headers */ = {isa = PBXBuildFile; fileRef = 72B616E31BAF474A00CFE67C /* Turf.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		72BCDD481D3009F6000AB623 /* TransactionalValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD471D3009F6000AB623 /* TransactionalValue.swift */; };
 		72BCDD4A1D301715000AB623 /* IndexableObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD491D301715000AB623 /* IndexableObservable.swift */; };
@@ -182,21 +190,12 @@
 		72BCDD5F1D3017A0000AB623 /* CallbackThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD551D3017A0000AB623 /* CallbackThread.swift */; };
 		72BCDD601D32D353000AB623 /* IndexableObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD491D301715000AB623 /* IndexableObservable.swift */; };
 		72BCDD611D32D357000AB623 /* TransactionalValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD471D3009F6000AB623 /* TransactionalValue.swift */; };
-		72BCDD621D32D35B000AB623 /* AnyObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD521D3017A0000AB623 /* AnyObserver.swift */; };
-		72BCDD631D32D35B000AB623 /* BasicDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4E1D3017A0000AB623 /* BasicDisposable.swift */; };
-		72BCDD641D32D35B000AB623 /* CallbackThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD551D3017A0000AB623 /* CallbackThread.swift */; };
-		72BCDD651D32D35B000AB623 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD531D3017A0000AB623 /* Disposable.swift */; };
-		72BCDD661D32D35B000AB623 /* DisposeBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD541D3017A0000AB623 /* DisposeBag.swift */; };
-		72BCDD671D32D35B000AB623 /* FilterObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD511D3017A0000AB623 /* FilterObservable.swift */; };
-		72BCDD681D32D35B000AB623 /* MapObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4D1D3017A0000AB623 /* MapObservable.swift */; };
-		72BCDD691D32D35B000AB623 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4C1D3017A0000AB623 /* Observable.swift */; };
-		72BCDD6A1D32D35B000AB623 /* SharedObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD501D3017A0000AB623 /* SharedObservable.swift */; };
-		72BCDD6B1D32D35B000AB623 /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BCDD4F1D3017A0000AB623 /* Subject.swift */; };
 		72CC14631C271A2A0048F331 /* TypeErasedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CC14621C271A2A0048F331 /* TypeErasedCollection.swift */; };
 		72D10FE01CBBEF8800401FFE /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72D10FDE1CBBEF8800401FFE /* Nimble.framework */; };
 		72D10FE11CBBEF8800401FFE /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72D10FDF1CBBEF8800401FFE /* Quick.framework */; };
 		72E7F4EA1C3433D9009C1D9D /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */; };
 		72F6F7001C24622A0059D72C /* ExtendedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F6F6FF1C24622A0059D72C /* ExtendedCollection.swift */; };
+		72FFB58E1DE0836B008134B7 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 72FFB58C1DE082D5008134B7 /* libsqlite3.tbd */; };
 		F198DD231CC297A8008E9464 /* IndexedTreesCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F198DD221CC297A8008E9464 /* IndexedTreesCollection.swift */; };
 		F198DD251CC297CF008E9464 /* TreeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F198DD241CC297CF008E9464 /* TreeModel.swift */; };
 /* End PBXBuildFile section */
@@ -252,7 +251,7 @@
 		72088F8B1C1CD93E00127EA0 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		72088F8D1C1CD95600127EA0 /* ExtensionConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionConnection.swift; sourceTree = "<group>"; };
 		72088F8F1C1CD97A00127EA0 /* ExtensionWriteTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionWriteTransaction.swift; sourceTree = "<group>"; };
-		72088F911C1CD9FA00127EA0 /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		72088F911C1CD9FA00127EA0 /* TurfCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TurfCollection.swift; sourceTree = "<group>"; };
 		72088F931C1CDA1C00127EA0 /* ReadCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadCollection.swift; sourceTree = "<group>"; };
 		72088F951C1CDA3200127EA0 /* ReadWriteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadWriteCollection.swift; sourceTree = "<group>"; };
 		72088F971C1CE0B400127EA0 /* WritableCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WritableCollection.swift; sourceTree = "<group>"; };
@@ -273,10 +272,8 @@
 		720C69EF1CA95E66005C12E3 /* WheelsCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WheelsCollection.swift; sourceTree = "<group>"; };
 		720FA9B01C259D2000BEF295 /* ValuesSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValuesSequence.swift; sourceTree = "<group>"; };
 		7218C9621C274778004457DB /* WeakBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakBox.swift; sourceTree = "<group>"; };
-		7218C9651C274D94004457DB /* Dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
-		7218C9671C2809BB004457DB /* DispatchQueueType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchQueueType.swift; sourceTree = "<group>"; };
 		721C88001D36EB6600F96E96 /* ShareReplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareReplay.swift; sourceTree = "<group>"; };
-		722597771D35A5B9009B38D6 /* Scheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
+		722597771D35A5B9009B38D6 /* RxScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxScheduler.swift; sourceTree = "<group>"; };
 		722597791D35A5D4009B38D6 /* Sink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sink.swift; sourceTree = "<group>"; };
 		72297A8B1C257B290001BE40 /* SQLiteRowChangeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteRowChangeType.swift; sourceTree = "<group>"; };
 		72297A8D1C257CDB0001BE40 /* CollectionRowChange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionRowChange.swift; sourceTree = "<group>"; };
@@ -290,8 +287,6 @@
 		723555EA1CD512B100EAB32D /* Turf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Turf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		723555EC1CD512B100EAB32D /* Turf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Turf.h; sourceTree = "<group>"; };
 		723555EE1CD512B100EAB32D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		723556471CD5243100EAB32D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libsqlite3.tbd; sourceTree = DEVELOPER_DIR; };
-		7235564B1CD524E800EAB32D /* sqlite3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/sqlite3.h; sourceTree = DEVELOPER_DIR; };
 		724C9B5B1C2575D700E9AD79 /* CollectionLocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionLocalStorage.swift; sourceTree = "<group>"; };
 		724C9B5D1C2575F100E9AD79 /* TypeErasedCollectionLocalStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeErasedCollectionLocalStorage.swift; sourceTree = "<group>"; };
 		724E75891CA5A04C0082841B /* ReadWriteCollection+IndexedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReadWriteCollection+IndexedCollection.swift"; sourceTree = "<group>"; };
@@ -321,6 +316,7 @@
 		7277F5471C4C01040081118D /* SQLiteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteCollection.swift; sourceTree = "<group>"; };
 		727B02471CA55B3B006D245A /* WhereClause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhereClause.swift; sourceTree = "<group>"; };
 		727B02491CA56BC5006D245A /* WhereClauses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhereClauses.swift; sourceTree = "<group>"; };
+		727E69391DE08701009F305A /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sqlite3.h; sourceTree = DEVELOPER_DIR; };
 		72857BF11CD766A000B8FA43 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = ../Carthage/Build/Mac/Nimble.framework; sourceTree = "<group>"; };
 		72857BF21CD766A000B8FA43 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = ../Carthage/Build/Mac/Quick.framework; sourceTree = "<group>"; };
 		728ACFE51D358BC0009E75DC /* SubscribeOn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeOn.swift; sourceTree = "<group>"; };
@@ -350,6 +346,7 @@
 		72D37B7E1BC326770087153A /* iOS.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = iOS.modulemap; path = ../Turf/iOS.modulemap; sourceTree = "<group>"; };
 		72E7F4E91C3433D9009C1D9D /* SQLiteError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteError.swift; sourceTree = "<group>"; };
 		72F6F6FF1C24622A0059D72C /* ExtendedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedCollection.swift; sourceTree = "<group>"; };
+		72FFB58C1DE082D5008134B7 /* libsqlite3.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/libsqlite3.tbd; sourceTree = DEVELOPER_DIR; };
 		F198DD221CC297A8008E9464 /* IndexedTreesCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedTreesCollection.swift; sourceTree = "<group>"; };
 		F198DD241CC297CF008E9464 /* TreeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -359,7 +356,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				723556481CD5243100EAB32D /* libsqlite3.tbd in Frameworks */,
+				72FFB58E1DE0836B008134B7 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,7 +420,7 @@
 			isa = PBXGroup;
 			children = (
 				724C9B5A1C2575BD00E9AD79 /* Internals */,
-				72088F911C1CD9FA00127EA0 /* Collection.swift */,
+				72088F911C1CD9FA00127EA0 /* TurfCollection.swift */,
 				72088FD61C1E10EF00127EA0 /* CollectionProperty.swift */,
 				72088F991C1CE15100127EA0 /* ReadableCollection.swift */,
 				72088F931C1CDA1C00127EA0 /* ReadCollection.swift */,
@@ -509,15 +506,6 @@
 			path = Weak;
 			sourceTree = "<group>";
 		};
-		7218C9641C274D6D004457DB /* GCDWrapper */ = {
-			isa = PBXGroup;
-			children = (
-				7218C9651C274D94004457DB /* Dispatch.swift */,
-				7218C9671C2809BB004457DB /* DispatchQueueType.swift */,
-			);
-			path = GCDWrapper;
-			sourceTree = "<group>";
-		};
 		72297A8A1C257AF90001BE40 /* ChangeSet */ = {
 			isa = PBXGroup;
 			children = (
@@ -550,7 +538,7 @@
 			isa = PBXGroup;
 			children = (
 				723555EE1CD512B100EAB32D /* Info.plist */,
-				7235564B1CD524E800EAB32D /* sqlite3.h */,
+				727E69391DE08701009F305A /* sqlite3.h */,
 				723555EC1CD512B100EAB32D /* Turf.h */,
 			);
 			name = "Turf-OSX";
@@ -656,7 +644,7 @@
 		72B616D61BAF474A00CFE67C = {
 			isa = PBXGroup;
 			children = (
-				723556471CD5243100EAB32D /* libsqlite3.tbd */,
+				72FFB58C1DE082D5008134B7 /* libsqlite3.tbd */,
 				726D24521C767D5C003CE68C /* libsqlite3.tbd */,
 				72B616E11BAF474A00CFE67C /* Products */,
 				72B616E21BAF474A00CFE67C /* Turf */,
@@ -687,7 +675,6 @@
 				72088F7C1C1CD76400127EA0 /* Collection */,
 				72088F821C1CD7C900127EA0 /* Core */,
 				72088F7F1C1CD7B400127EA0 /* Extensions */,
-				7218C9641C274D6D004457DB /* GCDWrapper */,
 				724E75AC1CA6F74C0082841B /* Logger */,
 				724E75961CA69B010082841B /* Migrations */,
 				720558321C518CF000B0847E /* Observable */,
@@ -708,7 +695,7 @@
 				72BCDD511D3017A0000AB623 /* FilterObservable.swift */,
 				72BCDD4D1D3017A0000AB623 /* MapObservable.swift */,
 				72BCDD4C1D3017A0000AB623 /* Observable.swift */,
-				722597771D35A5B9009B38D6 /* Scheduler.swift */,
+				722597771D35A5B9009B38D6 /* RxScheduler.swift */,
 				72BCDD501D3017A0000AB623 /* SharedObservable.swift */,
 				722597791D35A5D4009B38D6 /* Sink.swift */,
 				72BCDD4F1D3017A0000AB623 /* Subject.swift */,
@@ -734,8 +721,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				727E693A1DE08701009F305A /* sqlite3.h in Headers */,
 				723555ED1CD512B100EAB32D /* Turf.h in Headers */,
-				7235564C1CD524E800EAB32D /* sqlite3.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -833,20 +820,24 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = JordanHamill;
 				TargetAttributes = {
 					723555E91CD512B100EAB32D = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					724E75B51CA945270082841B = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					729C5C4E1CD76D0700EE1B6E = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					72B616DF1BAF474A00CFE67C = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -882,7 +873,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				729C5C6C1CD76E4B00EE1B6E /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -929,14 +919,13 @@
 				723556021CD5238F00EAB32D /* CacheEntry.swift in Sources */,
 				723556031CD5238F00EAB32D /* CollectionRowChange.swift in Sources */,
 				72BCDD611D32D357000AB623 /* TransactionalValue.swift in Sources */,
-				72BCDD681D32D35B000AB623 /* MapObservable.swift in Sources */,
 				723556041CD5238F00EAB32D /* ChangeSet.swift in Sources */,
 				723556051CD5238F00EAB32D /* CacheUpdates.swift in Sources */,
 				723556061CD5238F00EAB32D /* CollectionLocalStorage.swift in Sources */,
-				72BCDD6B1D32D35B000AB623 /* Subject.swift in Sources */,
 				723556071CD5238F00EAB32D /* TypeErasedCollectionLocalStorage.swift in Sources */,
+				727E694A1DE08907009F305A /* Subject.swift in Sources */,
 				723556081CD5238F00EAB32D /* TypeErasedCollection.swift in Sources */,
-				723556091CD5238F00EAB32D /* Collection.swift in Sources */,
+				723556091CD5238F00EAB32D /* TurfCollection.swift in Sources */,
 				7235560A1CD5238F00EAB32D /* CollectionProperty.swift in Sources */,
 				7235560B1CD5238F00EAB32D /* ReadableCollection.swift in Sources */,
 				7235560C1CD5238F00EAB32D /* ReadCollection.swift in Sources */,
@@ -944,58 +933,61 @@
 				7235560E1CD5238F00EAB32D /* WritableCollection.swift in Sources */,
 				7235560F1CD5238F00EAB32D /* ValuesSequence.swift in Sources */,
 				723556101CD5238F00EAB32D /* CollectionsContainer.swift in Sources */,
+				727E69411DE08907009F305A /* CallbackThread.swift in Sources */,
 				723556111CD5238F00EAB32D /* Connection.swift in Sources */,
+				727E69471DE08907009F305A /* RxScheduler.swift in Sources */,
+				727E69421DE08907009F305A /* Disposable.swift in Sources */,
 				723556121CD5238F00EAB32D /* Database.swift in Sources */,
 				723556131CD5238F00EAB32D /* ObservingConnection.swift in Sources */,
+				727E69431DE08907009F305A /* DisposeBag.swift in Sources */,
 				723556141CD5238F00EAB32D /* ReadTransaction.swift in Sources */,
-				72BCDD651D32D35B000AB623 /* Disposable.swift in Sources */,
 				723556151CD5238F00EAB32D /* ReadWriteTransaction.swift in Sources */,
-				72BCDD621D32D35B000AB623 /* AnyObserver.swift in Sources */,
 				723556161CD5238F00EAB32D /* SecondaryIndexConnection.swift in Sources */,
-				72BCDD641D32D35B000AB623 /* CallbackThread.swift in Sources */,
 				723556171CD5238F00EAB32D /* SecondaryIndexWriteTransaction.swift in Sources */,
+				727E69401DE08907009F305A /* BasicDisposable.swift in Sources */,
+				727E69451DE08907009F305A /* MapObservable.swift in Sources */,
+				727E69441DE08907009F305A /* FilterObservable.swift in Sources */,
 				723556181CD5238F00EAB32D /* WhereClauses.swift in Sources */,
 				723556191CD5238F00EAB32D /* Connection+PreparedQuery.swift in Sources */,
 				7235561A1CD5238F00EAB32D /* ObservingConnection+PreparedQuery.swift in Sources */,
 				7235561B1CD5238F00EAB32D /* PreparedQuery.swift in Sources */,
 				7235561C1CD5238F00EAB32D /* IndexedCollection.swift in Sources */,
 				72BCDD601D32D353000AB623 /* IndexableObservable.swift in Sources */,
+				727E69481DE08907009F305A /* SharedObservable.swift in Sources */,
 				7235561D1CD5238F00EAB32D /* IndexedProperties.swift in Sources */,
-				72BCDD631D32D35B000AB623 /* BasicDisposable.swift in Sources */,
+				727E69491DE08907009F305A /* Sink.swift in Sources */,
 				7235561E1CD5238F00EAB32D /* IndexedProperty.swift in Sources */,
 				7235561F1CD5238F00EAB32D /* IndexedPropertyFromCollection.swift in Sources */,
 				723556201CD5238F00EAB32D /* ReadCollection+IndexedCollection.swift in Sources */,
 				723556211CD5238F00EAB32D /* ReadWriteCollection+IndexedCollection.swift in Sources */,
-				72BCDD691D32D35B000AB623 /* Observable.swift in Sources */,
 				723556221CD5238F00EAB32D /* SecondaryIndex.swift in Sources */,
 				723556231CD5238F00EAB32D /* WhereClause.swift in Sources */,
 				723556241CD5238F00EAB32D /* ObservableCollection+IndexedCollection.swift in Sources */,
+				727E694C1DE08907009F305A /* ShareReplay.swift in Sources */,
 				723556251CD5238F00EAB32D /* ExtendedCollection.swift in Sources */,
 				723556261CD5238F00EAB32D /* Extension.swift in Sources */,
 				723556271CD5238F00EAB32D /* ExtensionConnection.swift in Sources */,
 				723556281CD5238F00EAB32D /* ExtensionWriteTransaction.swift in Sources */,
 				723556291CD5238F00EAB32D /* ExistingExtensionInstallation.swift in Sources */,
-				7235562A1CD5238F00EAB32D /* Dispatch.swift in Sources */,
-				7235562B1CD5238F00EAB32D /* DispatchQueueType.swift in Sources */,
 				7235562C1CD5238F00EAB32D /* Logger.swift in Sources */,
 				7235562D1CD5238F00EAB32D /* CollectionMigrationOperator.swift in Sources */,
 				7235562E1CD5238F00EAB32D /* CollectionMigration.swift in Sources */,
 				7235562F1CD5238F00EAB32D /* CollectionMigrationOperations.swift in Sources */,
-				72BCDD661D32D35B000AB623 /* DisposeBag.swift in Sources */,
 				723556301CD5238F00EAB32D /* DatabaseMigrator.swift in Sources */,
 				723556311CD5238F00EAB32D /* Migration.swift in Sources */,
 				723556321CD5238F00EAB32D /* MigrationList.swift in Sources */,
 				723556331CD5238F00EAB32D /* MigrationOperations.swift in Sources */,
 				723556341CD5238F00EAB32D /* MigrationState.swift in Sources */,
 				723556351CD5238F00EAB32D /* Result.swift in Sources */,
+				727E693F1DE08907009F305A /* AnyObserver.swift in Sources */,
 				723556361CD5238F00EAB32D /* TypeErasedObservableCollection.swift in Sources */,
 				7235563C1CD5238F00EAB32D /* ObservableCollection.swift in Sources */,
-				72BCDD6A1D32D35B000AB623 /* SharedObservable.swift in Sources */,
-				72BCDD671D32D35B000AB623 /* FilterObservable.swift in Sources */,
 				7235563F1CD5238F00EAB32D /* SQLiteAdapter.swift in Sources */,
 				723556401CD5238F00EAB32D /* SQLiteError.swift in Sources */,
 				723556411CD5238F00EAB32D /* SQLiteRowChangeType.swift in Sources */,
 				723556421CD5238F00EAB32D /* SQLiteCollection.swift in Sources */,
+				727E694B1DE08907009F305A /* SubscribeOn.swift in Sources */,
+				727E69461DE08907009F305A /* Observable.swift in Sources */,
 				723556431CD5238F00EAB32D /* SQLiteType.swift in Sources */,
 				723556441CD5238F00EAB32D /* SQLiteTypeName.swift in Sources */,
 				723556461CD5238F00EAB32D /* WeakBox.swift in Sources */,
@@ -1075,7 +1067,7 @@
 				72345EAA1C1E254C0001A136 /* SQLiteAdapter.swift in Sources */,
 				724E75AE1CA6F76F0082841B /* Logger.swift in Sources */,
 				72345EA61C1E1B840001A136 /* SecondaryIndexConnection.swift in Sources */,
-				722597781D35A5B9009B38D6 /* Scheduler.swift in Sources */,
+				722597781D35A5B9009B38D6 /* RxScheduler.swift in Sources */,
 				72BCDD561D3017A0000AB623 /* Observable.swift in Sources */,
 				72088FB31C1CEB9500127EA0 /* IndexedProperties.swift in Sources */,
 				724E75A41CA6C0AD0082841B /* MigrationOperations.swift in Sources */,
@@ -1098,13 +1090,11 @@
 				72297A8C1C257B290001BE40 /* SQLiteRowChangeType.swift in Sources */,
 				720558381C518D2F00B0847E /* ObservableCollection.swift in Sources */,
 				72088F8E1C1CD95600127EA0 /* ExtensionConnection.swift in Sources */,
-				7218C9681C2809BB004457DB /* DispatchQueueType.swift in Sources */,
 				72088F8A1C1CD91200127EA0 /* Database.swift in Sources */,
 				72088FAF1C1CEB6500127EA0 /* SecondaryIndex.swift in Sources */,
 				72088F981C1CE0B400127EA0 /* WritableCollection.swift in Sources */,
-				72088F921C1CD9FA00127EA0 /* Collection.swift in Sources */,
+				72088F921C1CD9FA00127EA0 /* TurfCollection.swift in Sources */,
 				724E75931CA5BD160082841B /* ObservingConnection+PreparedQuery.swift in Sources */,
-				7218C9661C274D94004457DB /* Dispatch.swift in Sources */,
 				72088F901C1CD97A00127EA0 /* ExtensionWriteTransaction.swift in Sources */,
 				72088FB11C1CEB8400127EA0 /* IndexedCollection.swift in Sources */,
 				721C88011D36EB6600F96E96 /* ShareReplay.swift in Sources */,
@@ -1146,7 +1136,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1162,6 +1152,7 @@
 				PRODUCT_NAME = Turf;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1169,7 +1160,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1185,6 +1176,7 @@
 				PRODUCT_NAME = Turf;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1203,6 +1195,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.TurfRegressionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1221,6 +1214,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordanhamill.TurfRegressionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1240,6 +1234,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jordanhamill.TurfRegressionTests-OSX";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1259,6 +1254,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.jordanhamill.TurfRegressionTests-OSX";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1275,8 +1271,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1324,8 +1322,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1346,6 +1346,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = Turf;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1357,6 +1358,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1375,6 +1377,7 @@
 				PRODUCT_NAME = Turf;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1382,6 +1385,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1399,6 +1403,7 @@
 				PRODUCT_MODULE_NAME = Turf;
 				PRODUCT_NAME = Turf;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

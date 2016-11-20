@@ -1,4 +1,4 @@
-internal struct WeakBox<T where T: AnyObject> {
+internal struct WeakBox<T> where T: AnyObject {
     weak var value : T?
 
     init (value: T) {

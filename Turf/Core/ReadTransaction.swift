@@ -29,7 +29,7 @@ public class ReadTransaction<DatabaseCollections: CollectionsContainer> {
      - returns: Read only view of `collection`
      - parameter collection: The Collection we want a readonly view of
      */
-    public func readOnly<TCollection: Collection>(collection: TCollection) -> ReadCollection<TCollection, DatabaseCollections> {
+    public func readOnly<TCollection: TurfCollection>(_ collection: TCollection) -> ReadCollection<TCollection, DatabaseCollections> {
         return ReadCollection(collection: collection, transaction: self)
     }
 

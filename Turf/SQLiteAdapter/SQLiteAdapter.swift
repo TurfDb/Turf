@@ -6,21 +6,21 @@ private let TurfExtensionsTableName = "\(TurfTablePrefix)_extensions"
 
 let SQLITE_FIRST_BIND_COLUMN = Int32(1)
 let SQLITE_FIRST_COLUMN = Int32(0)
-let SQLITE_STATIC = unsafeBitCast(0, sqlite3_destructor_type.self)
-let SQLITE_TRANSIENT = unsafeBitCast(-1, sqlite3_destructor_type.self)
+let SQLITE_STATIC = unsafeBitCast(0, to: sqlite3_destructor_type.self)
+let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 
 /**
  Wrapper around sqlite3
  */
 internal final class SQLiteAdapter {
-    typealias SQLStatement = COpaquePointer
+    typealias SQLStatement = OpaquePointer
     // MARK: Internal properties
 
     /// Connection state
     private(set) var isClosed: Bool
 
     /// sqlite3 pointer from `sqlite3_open`
-    let db: COpaquePointer
+    let db: OpaquePointer
 
     // MARK: Private properties
 
@@ -39,18 +39,18 @@ internal final class SQLiteAdapter {
      - throws: SQLiteError.FailedToOpenDatabase if sqlite3_open_v2 fails
      - parameter sqliteDatabaseUrl: Path to a sqlite database (will be created if it does not exist)
      */
-    init(sqliteDatabaseUrl: NSURL) throws {
-        var internalDb: COpaquePointer = nil
+    init(sqliteDatabaseUrl: URL) throws {
+        var internalDb: OpaquePointer? = nil
         let flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_PRIVATECACHE
 
         self.isClosed = true
         let success = sqlite3_open_v2(sqliteDatabaseUrl.absoluteString, &internalDb, flags, nil).isOK
-        self.db = internalDb
+        self.db = internalDb!
 
         if success {
             sqlite3_busy_timeout(self.db, 0/*ms*/)
             if sqlite3_exec(db, "PRAGMA journal_mode = WAL;", nil, nil, nil).isNotOK {
-                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+                throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
             }
 
             try createMetadataTable()
@@ -64,7 +64,7 @@ internal final class SQLiteAdapter {
             self.rollbackTransactionStmt = nil
             self.getSnapshotStmt = nil
             self.setSnapshotStmt = nil
-            throw SQLiteError.FailedToOpenDatabase
+            throw SQLiteError.failedToOpenDatabase
         }
     }
 
@@ -92,7 +92,7 @@ internal final class SQLiteAdapter {
         sqlite3_reset(beginDeferredTransactionStmt)
         if sqlite3_step(beginDeferredTransactionStmt).isNotDone {
             Logger.log(error: "Could not begin transaction - SQLite error")
-            throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
         }
         sqlite3_reset(beginDeferredTransactionStmt)
     }
@@ -104,7 +104,7 @@ internal final class SQLiteAdapter {
         sqlite3_reset(self.commitTransactionStmt)
         if sqlite3_step(commitTransactionStmt).isNotDone {
             Logger.log(error: "Could not commit transaction - SQLite error")
-            throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
         }
         sqlite3_reset(beginDeferredTransactionStmt)
     }
@@ -116,7 +116,7 @@ internal final class SQLiteAdapter {
         sqlite3_reset(beginDeferredTransactionStmt)
         if sqlite3_step(rollbackTransactionStmt).isNotDone {
             Logger.log(error: "Could not rollback transaction - SQLite error")
-            throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
         }
     }
 
@@ -134,11 +134,11 @@ internal final class SQLiteAdapter {
     /**
      Set snapshot number in the runtime table
      */
-    func setSnapshot(snapshot: UInt64) throws {
+    func setSnapshot(_ snapshot: UInt64) throws {
         sqlite3_bind_int64(setSnapshotStmt, SQLITE_FIRST_BIND_COLUMN, Int64(snapshot))
         if sqlite3_step(setSnapshotStmt).isNotDone {
             Logger.log(error: "Could not set snapshot - SQLite error")
-            throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
         }
         sqlite3_reset(setSnapshotStmt)
     }
@@ -147,7 +147,7 @@ internal final class SQLiteAdapter {
      Each installed extension gets a row in a turf metadata table for extensions tracking versions and extension data.
      - returns: Extension's version, turf version in case the extension is potentially refactored and a blob of data that could be associated with the extension's installation.
      */
-    func getDetailsForExtensionWithName(name: String) -> ExistingExtensionInstallation? {
+    func getDetailsForExtensionWithName(_ name: String) -> ExistingExtensionInstallation? {
         defer { sqlite3_reset(getExtensionDetailsStmt) }
 
         let nameIndex = SQLITE_FIRST_BIND_COLUMN
@@ -161,16 +161,20 @@ internal final class SQLiteAdapter {
 
         let version = UInt64(sqlite3_column_int64(getExtensionDetailsStmt, versionIndex))
 
-        let bytes = sqlite3_column_blob(getExtensionDetailsStmt, dataIndex)
-        let bytesLength = Int(sqlite3_column_bytes(getExtensionDetailsStmt, dataIndex))
-        let data = NSData(bytes: bytes, length: bytesLength)
+        let data: Data
+        if let bytes = sqlite3_column_blob(getExtensionDetailsStmt, dataIndex){
+            let bytesLength = Int(sqlite3_column_bytes(getExtensionDetailsStmt, dataIndex))
+            data = Data(bytes: bytes, count: bytesLength)
+        } else {
+            data = Data()
+        }
 
         let turfVersion = UInt64(sqlite3_column_int64(getExtensionDetailsStmt, turfVersionIndex))
 
         return ExistingExtensionInstallation(version: version, turfVersion: turfVersion, data: data)
     }
 
-    func setDetailsForExtension(name name: String, version: UInt64, turfVersion: UInt64, data: NSData) {
+    func setDetailsForExtension(name: String, version: UInt64, turfVersion: UInt64, data: Data) {
         defer { sqlite3_reset(setExtensionDetailsStmt) }
 
         let nameIndex = SQLITE_FIRST_BIND_COLUMN
@@ -180,56 +184,56 @@ internal final class SQLiteAdapter {
 
         sqlite3_bind_text(setExtensionDetailsStmt, nameIndex, name, -1, SQLITE_TRANSIENT)
         sqlite3_bind_int64(setExtensionDetailsStmt, versionIndex, Int64(version))
-        sqlite3_bind_blob(setExtensionDetailsStmt, dataIndex, data.bytes, Int32(data.length), nil)
+        sqlite3_bind_blob(setExtensionDetailsStmt, dataIndex, (data as NSData).bytes, Int32(data.count), nil)
         sqlite3_bind_int64(setExtensionDetailsStmt, turfVersionIndex, Int64(turfVersion))
         if sqlite3_step(setExtensionDetailsStmt).isNotDone {
             print("ERROR: Could not set extension details")
-            print(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            print(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
     }
 
     // MARK: Private methods
 
     private func prepareStatements() throws {
-        var beginDeferredTransactionStmt: COpaquePointer = nil
+        var beginDeferredTransactionStmt: OpaquePointer? = nil
         if sqlite3_prepare_v2(db, "BEGIN TRANSACTION;",  -1, &beginDeferredTransactionStmt, nil).isNotOK {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
         self.beginDeferredTransactionStmt = beginDeferredTransactionStmt
 
-        var commitTransactionStmt: COpaquePointer = nil
+        var commitTransactionStmt: OpaquePointer? = nil
         if sqlite3_prepare_v2(db, "COMMIT TRANSACTION;",  -1, &commitTransactionStmt, nil).isNotOK {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
         self.commitTransactionStmt = commitTransactionStmt
 
-        var rollbackTransactionStmt: COpaquePointer = nil
+        var rollbackTransactionStmt: OpaquePointer? = nil
         if sqlite3_prepare_v2(db, "ROLLBACK TRANSACTION;",  -1, &rollbackTransactionStmt, nil).isNotOK {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
         self.rollbackTransactionStmt = rollbackTransactionStmt
 
-        var getSnapshotStmt: COpaquePointer = nil
+        var getSnapshotStmt: OpaquePointer? = nil
         if sqlite3_prepare_v2(db, "SELECT snapshot FROM `\(TurfRuntimeTableName)` WHERE key=1;",  -1, &getSnapshotStmt, nil).isNotOK {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
         self.getSnapshotStmt = getSnapshotStmt
 
-        var setSnapshotStmt: COpaquePointer = nil
+        var setSnapshotStmt: OpaquePointer? = nil
         if sqlite3_prepare_v2(db, "INSERT OR REPLACE INTO `\(TurfRuntimeTableName)` (key, snapshot) VALUES (1, ?);",  -1, &setSnapshotStmt, nil).isNotOK {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
         self.setSnapshotStmt = setSnapshotStmt
 
-        var getExtensionDetailsStmt: COpaquePointer = nil
+        var getExtensionDetailsStmt: OpaquePointer? = nil
         if sqlite3_prepare_v2(db, "SELECT version, data, turfVersion FROM `\(TurfExtensionsTableName)` WHERE name=?;",  -1, &getExtensionDetailsStmt, nil).isNotOK {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
         self.getExtensionDetailsStmt = getExtensionDetailsStmt
 
-        var setExtensionDetailsStmt: COpaquePointer = nil
+        var setExtensionDetailsStmt: OpaquePointer? = nil
         if sqlite3_prepare_v2(db, "INSERT OR REPLACE INTO `\(TurfExtensionsTableName)` (name, version, data, turfVersion) VALUES (?, ?, ?, 0);",  -1, &setExtensionDetailsStmt, nil).isNotOK {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
         self.setExtensionDetailsStmt = setExtensionDetailsStmt
     }
@@ -261,20 +265,21 @@ internal final class SQLiteAdapter {
     private func createMetadataTable() throws {
         if sqlite3_exec(db,
             "CREATE TABLE IF NOT EXISTS `\(TurfMetadataTableName)` (schemaVersion INTEGER NOT NULL DEFAULT '(1)' );", nil, nil, nil).isNotOK {
-                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+                throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
         }
     }
 
     private func createExtensionsTable() throws {
+        let sql = "CREATE TABLE IF NOT EXISTS `\(TurfExtensionsTableName)` (" +
+                  "name TEXT NOT NULL UNIQUE," +
+                  "version INTEGER NOT NULL DEFAULT '(0)'," +
+                  "data BLOB," +
+                  "turfVersion INTEGER NOT NULL DEFAULT '(0)'," +
+                  "PRIMARY KEY(name)" +
+                  ");"
         if sqlite3_exec(db,
-            "CREATE TABLE IF NOT EXISTS `\(TurfExtensionsTableName)` (" +
-                "name TEXT NOT NULL UNIQUE," +
-                "version INTEGER NOT NULL DEFAULT '(0)'," +
-                "data BLOB," +
-                "turfVersion INTEGER NOT NULL DEFAULT '(0)'," +
-                "PRIMARY KEY(name)" +
-            ");", nil, nil, nil).isNotOK {
-                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            sql, nil, nil, nil).isNotOK {
+                throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
         }
     }
 
@@ -284,7 +289,7 @@ internal final class SQLiteAdapter {
                 "(key INTEGER NOT NULL UNIQUE," +
                 "snapshot INTEGER NOT NULL DEFAULT '(0)'" +
             ");", nil, nil, nil).isNotOK {
-            throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
         }
     }
 }
@@ -317,7 +322,7 @@ internal extension Int32 {
 }
 
 ///http://ericasadun.com/2014/07/04/swift-my-love-for-postfix-printing/
-postfix operator *** {}
+postfix operator ***
 postfix func *** <T>(object : T) -> T {
     if let i = object as? Int32 {
         switch i {

@@ -1,8 +1,8 @@
-public class DisposeBag: Disposable {
+open class DisposeBag: Disposable {
 
     // MARK: Public properties
 
-    public private(set) var disposed: Bool
+    open private(set) var disposed: Bool
 
     // MARK: Private properties
 
@@ -18,14 +18,14 @@ public class DisposeBag: Disposable {
 
     // MARK: Public methods
 
-    public func add(disposable disposable: Disposable) {
+    open func add(disposable: Disposable) {
         OSSpinLockLock(&lock)
         defer { OSSpinLockUnlock(&lock) }
 
         disposables.append(disposable)
     }
 
-    public func dispose() {
+    open func dispose() {
         OSSpinLockLock(&lock)
         defer { OSSpinLockUnlock(&lock) }
 

@@ -1,21 +1,21 @@
 import Foundation
 
-public protocol Scheduler {
-    func schedule(action action: () -> Disposable) -> Disposable
+public protocol RxScheduler {
+    func schedule(action:  @escaping () -> Disposable) -> Disposable
 }
 
-public class QueueScheduler: Scheduler {
-    private let queue: dispatch_queue_t
+open class QueueScheduler: RxScheduler {
+    private let queue: DispatchQueue
     private let requiresScheduling: () -> Bool
-    public init(queue: dispatch_queue_t, requiresScheduling: () -> Bool) {
+    public init(queue: DispatchQueue, requiresScheduling: @escaping () -> Bool) {
         self.queue = queue
         self.requiresScheduling = requiresScheduling
     }
 
-    public func schedule(action action: () -> Disposable) -> Disposable {
+    open func schedule(action: @escaping () -> Disposable) -> Disposable {
         let disposable = AssignableDisposable()
         if requiresScheduling() {
-            dispatch_async(queue) {
+            queue.async {
                 disposable.disposable = action()
             }
         } else {

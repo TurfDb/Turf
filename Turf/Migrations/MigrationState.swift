@@ -1,5 +1,5 @@
 public enum MigrationState {
-    case Unstarted(totalRows: UInt)
-    case Migrating(UInt, of: UInt)
-    case Completed(Result<UInt>)
+    case unstarted(totalRows: UInt)
+    case migrating(UInt, of: UInt)
+    case completed(Result<UInt>)
 }

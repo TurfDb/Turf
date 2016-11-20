@@ -31,7 +31,7 @@ You can play with Turf in [these Playgrounds](https://github.com/TurfDb/Playgrou
 ```swift
 
 // Set up a collection to persist a tuple
-final class PeopleCollection: Collection {
+final class PeopleCollection: TurfCollection {
     typealias Value = (name: String, age: UInt)
 
     let name = "People"
@@ -42,7 +42,7 @@ final class PeopleCollection: Collection {
         try transaction.registerCollection(self)
     }
 
-    func serializeValue(value: Value) -> NSData {
+    func serialize(value: Value) -> NSData {
         let dict = [
             "name": value.name,
             "age": value.age
@@ -51,7 +51,7 @@ final class PeopleCollection: Collection {
         return try! NSJSONSerialization.dataWithJSONObject(dict, options: [])
     }
 
-    func deserializeValue(data: NSData) -> Value? {
+    func deserialize(data: NSData) -> Value? {
         let dict = try! NSJSONSerialization.JSONObjectWithData(data, options: [])
         return (name: dict["name"] as! String, age: dict["age"] as! UInt)
     }
@@ -77,14 +77,14 @@ let connection = try database.newConnection()
 
 try connection.readWriteTransaction { transaction, collections in
     transaction.readWrite(collections.people)
-        .setValue(("Kelsey", 30), forKey: "kelsey")
+        .set(value: ("Kelsey", 30), forKey: "kelsey")
 }
 
 // Read a person back
 
 try connection.readWriteTransaction { transaction, collections in
     let kelsey = transaction.readOnly(collections.people)
-        .valueForKey("kelsey")
+        .value(for: "kelsey")
     print(kelsey)
 }
 

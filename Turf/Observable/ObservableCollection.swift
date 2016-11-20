@@ -1,6 +1,6 @@
 import Foundation
 
-public class ObservableCollection<TCollection: Collection, Collections: CollectionsContainer>: Producer<(collection: ReadCollection<TCollection, Collections>, changeSet: ChangeSet<String>)>, TypeErasedObservableCollection {
+open class ObservableCollection<TCollection: TurfCollection, Collections: CollectionsContainer>: Producer<(collection: ReadCollection<TCollection, Collections>, changeSet: ChangeSet<String>)>, TypeErasedObservableCollection {
     public typealias CollectionChanges = (collection: ReadCollection<TCollection, Collections>, changeSet: ChangeSet<String>)
 
     private let collectionChangedObservable: Observable<CollectionChanges>
@@ -25,23 +25,23 @@ public class ObservableCollection<TCollection: Collection, Collections: Collecti
             .subscribeOn(scheduler)
     }
 
-    override func run<Observer : ObserverType where Observer.Value == CollectionChanges>(observer: Observer) -> Disposable {
+    override func run<Observer : ObserverType>(_ observer: Observer) -> Disposable where Observer.Value == CollectionChanges {
         return collectionChangedObservable.subscribe(observer)
     }
 
-    public func allValues() -> Observable<TransactionalValue<[TCollection.Value], Collections>> {
+    open func allValues() -> Observable<TransactionalValue<[TCollection.Value], Collections>> {
         return self.map { collection, changeSet in
             return TransactionalValue(transaction: collection.readTransaction, value: Array(collection.allValues))
         }
     }
 
-    public func observableIndexedValues() -> IndexableObservable<[TCollection.Value]> {
+    open func observableIndexedValues() -> IndexableObservable<[TCollection.Value]> {
         return IndexableObservable(observable: self.map { collection, changeSet in
             return Array(collection.allValues)
         })
     }
 
-    public func filterChangeSet(filter: (ChangeSet<String>) -> Bool) -> Observable<CollectionChanges>  {
+    open func filterChangeSet(_ filter: @escaping (ChangeSet<String>) -> Bool) -> Observable<CollectionChanges>  {
         return self.flatMap { result in
             if filter(result.changeSet) {
                 return Observable.just(result)

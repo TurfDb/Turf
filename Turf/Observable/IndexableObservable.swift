@@ -1,8 +1,8 @@
 import Foundation
 
-public class IndexableObservable<Array: CollectionType>: Observable<Array> {
-    public let first: Observable<Array.Generator.Element?>
-    public let last: Observable<Array.Generator.Element?>
+open class IndexableObservable<Array: Collection>: Observable<Array> where Array.Indices.Iterator.Element == Array.Index {
+    open let first: Observable<Array.Iterator.Element?>
+    open let last: Observable<Array.Iterator.Element?>
 
     private let wrappedObservable: Observable<Array>
 
@@ -18,22 +18,23 @@ public class IndexableObservable<Array: CollectionType>: Observable<Array> {
         }
     }
 
-    public func observe(index index: Array.Index) -> Observable<Array.Generator.Element?> {
-        return wrappedObservable.map { array in
+    open func observe(index: Array.Index) -> Observable<Array.Iterator.Element?> {
+        return wrappedObservable.map { array -> Array.Iterator.Element? in
             return array[safe: index]
         }
     }
 
-    public subscript(observableIndex index: Array.Index) -> Observable<Array.Generator.Element?> {
+    open subscript(observableIndex index: Array.Index) -> Observable<Array.Iterator.Element?> {
         return observe(index: index)
     }
 
-    public override func subscribe<Observer: ObserverType where Observer.Value == Array>(observer: Observer) -> Disposable {
+    open override func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Value == Array {
         return wrappedObservable.subscribe(observer)
     }
 }
 
-extension CollectionType {
+extension Collection where Indices.Iterator.Element : Equatable, Indices.Iterator.Element == Index {
+    /// Returns the element at the specified index iff it is within bounds, otherwise nil.
     subscript (safe index: Index) -> Generator.Element? {
         return indices.contains(index) ? self[index] : nil
     }

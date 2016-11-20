@@ -8,7 +8,7 @@ struct Tree {
     let age: TreeAge
 
     init(type: String, species: String, height: Int, age: TreeAge) {
-        self.init(uuid: NSUUID().UUIDString, type: type, species: species, height: height, age: age)
+        self.init(uuid: UUID().uuidString, type: type, species: species, height: height, age: age)
     }
 
     init(uuid: String, type: String, species: String, height: Int, age: TreeAge) {
@@ -21,8 +21,8 @@ struct Tree {
 }
 
 enum TreeAge: Int {
-    case Juvenile
-    case Young
-    case Mature
-    case FullyMature
+    case juvenile
+    case young
+    case mature
+    case fullyMature
 }

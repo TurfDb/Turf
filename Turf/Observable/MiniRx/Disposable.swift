@@ -3,7 +3,7 @@ public protocol Disposable {
 }
 
 extension Disposable {
-    public func addTo(bag bag: DisposeBag) {
+    public func addTo(bag: DisposeBag) {
         bag.add(disposable: self)
     }
 }

@@ -1,55 +1,55 @@
 import Foundation
 
-public class DatabaseMigrator {
-    public enum Error: ErrorType {
-        case MigrationsCurrentlyRunning
-        case MissingMigration(missingIndex: UInt)
+open class DatabaseMigrator {
+    public enum MigrationError: Error {
+        case migrationsCurrentlyRunning
+        case missingMigration(missingIndex: UInt)
     }
 
     // MARK: Public properties
 
-    public let migrationList: MigrationList
+    open let migrationList: MigrationList
 
-    public var migrationRequired: Bool {
+    open var migrationRequired: Bool {
         return migrationList.count > 0 && migrationList.lastMigrationIndex > lastRunMigrationIndex
     }
 
-    public private(set) var lastRunMigrationIndex: UInt {
+    open private(set) var lastRunMigrationIndex: UInt {
         get {
-            return UInt(userDefaults.integerForKey(lastRunMigrationKey))
+            return UInt(userDefaults.integer(forKey: lastRunMigrationKey))
         }
         set {
-            userDefaults.setInteger(Int(newValue), forKey: lastRunMigrationKey)
+            userDefaults.set(Int(newValue), forKey: lastRunMigrationKey)
             userDefaults.synchronize()
         }
     }
 
-    public var onNextMigration: ((index: UInt, total: UInt) -> Void)?
-    public var onMigrationProgressChanged: ((index: UInt, progress: UInt, of: UInt) -> Void)?
+    open var onNextMigration: ((_ index: UInt, _ total: UInt) -> Void)?
+    open var onMigrationProgressChanged: ((_ index: UInt, _ progress: UInt, _ of: UInt) -> Void)?
 
     // MARK: Private properties
 
-    private let userDefaults: NSUserDefaults
+    private let userDefaults: UserDefaults
     private var sqlite: SQLiteAdapter!
     private var migrationOperations: MigrationOperations!
-    private var startTimestamp: NSDate?
-    private var stopTimestamp: NSDate?
+    private var startTimestamp: Date?
+    private var stopTimestamp: Date?
 
     private var migrating: Bool {
         didSet {
-            if !oldValue && migrating { startTimestamp = NSDate() }
-            else if oldValue && !migrating { stopTimestamp = NSDate() }
+            if !oldValue && migrating { startTimestamp = Date() }
+            else if oldValue && !migrating { stopTimestamp = Date() }
         }
     }
 
-    private var onMigrationsCompleted: (Result<NSTimeInterval> -> Void)?
+    private var onMigrationsCompleted: ((Result<TimeInterval>) -> Void)?
 
     // MARK: Object lifecycle
 
     /**
      Open a database for migration. The last run migration will be stored in `userDefaults`.
      */
-    public init(databaseUrl: NSURL, migrationList: MigrationList, userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()) throws {
+    public init(databaseUrl: URL, migrationList: MigrationList, userDefaults: UserDefaults = UserDefaults.standard) throws {
         self.userDefaults = userDefaults
         self.migrationList = migrationList
         self.migrating = false
@@ -60,9 +60,9 @@ public class DatabaseMigrator {
 
     // MARK: Internal methods
 
-    func migrate(onCompletion: Result<NSTimeInterval> -> Void) {
+    func migrate(onCompletion: @escaping (Result<TimeInterval>) -> Void) {
         guard !migrating else {
-            onCompletion(.Failure(Error.MigrationsCurrentlyRunning))
+            onCompletion(.failure(MigrationError.migrationsCurrentlyRunning))
             return
         }
 
@@ -71,7 +71,7 @@ public class DatabaseMigrator {
         guard migrationRequired else {
             sqlite.close()
             migrating = false
-            onCompletion(.Success(totalMigrationTime()))
+            onCompletion(.success(totalMigrationTime()))
             return
         }
 
@@ -81,78 +81,78 @@ public class DatabaseMigrator {
             // MigrationList.migrations use 1 based indexing so this also covers the first ever migration
             try migrate(lastRunMigrationIndex + 1)
         } catch {
-            onCompletion(.Failure(error))
+            onCompletion(.failure(error))
         }
     }
 
     // MARK: Private methods
 
-    private func migrate(index: UInt) throws {
+    private func migrate(_ index: UInt) throws {
         switch migrationForIndex(index) {
-        case .Success(let migration):
+        case .success(let migration):
             try sqlite.beginDeferredTransaction()
             migration.migrate(migrationId: index, operations: migrationOperations, onProgress: migrationProgress)
             break
-        case .Failure(let error):
-            migrationProgress(index: index, state: MigrationState.Completed(.Failure(error)))
+        case .failure(let error):
+            migrationProgress(index: index, state: MigrationState.completed(.failure(error)))
         }
     }
 
-    private func migrationProgress(index index: UInt, state: MigrationState) {
+    private func migrationProgress(index: UInt, state: MigrationState) {
         switch state {
-        case .Unstarted(totalRows: let total):
-            onNextMigration?(index: index, total: total)
-        case .Migrating(let currentPosition, let total):
-            onMigrationProgressChanged?(index: index, progress: currentPosition, of: total)
-        case .Completed(let result):
+        case .unstarted(totalRows: let total):
+            onNextMigration?(index, total)
+        case .migrating(let currentPosition, let total):
+            onMigrationProgressChanged?(index, currentPosition, total)
+        case .completed(let result):
             switch result {
-            case .Success(let total):
+            case .success(let total):
                 migrationSuccess(index, totalRowsMigrated: total)
-            case .Failure(let error):
-                migrationFailure(index, error: error)
+            case .failure(let error):
+                migrationFailure(index, error: error as! DatabaseMigrator.MigrationError)
             }
         }
     }
 
-    private func migrationSuccess(index: UInt, totalRowsMigrated: UInt) {
+    private func migrationSuccess(_ index: UInt, totalRowsMigrated: UInt) {
         do {
             try sqlite.commitTransaction()
             lastRunMigrationIndex = index
         } catch {
-            migrationFailure(index, error: error)
+            migrationFailure(index, error: error as! DatabaseMigrator.MigrationError)
         }
 
-        onMigrationProgressChanged?(index: index, progress: totalRowsMigrated, of: totalRowsMigrated)
+        onMigrationProgressChanged?(index, totalRowsMigrated, totalRowsMigrated)
         guard index != self.migrationList.lastMigrationIndex else {
             sqlite.close()
             migrating = false
-            onMigrationsCompleted!(.Success(totalMigrationTime()))
+            onMigrationsCompleted!(.success(totalMigrationTime()))
             return
         }
 
         do {
             try migrate(index + 1)
         } catch {
-            migrationFailure(index, error: error)
+            migrationFailure(index, error: error as! DatabaseMigrator.MigrationError)
         }
     }
 
-    private func migrationFailure(index: UInt, error: ErrorType) {
+    private func migrationFailure(_ index: UInt, error: MigrationError) {
         let _ = try? sqlite.rollbackTransaction()
         sqlite.close()
-        onMigrationsCompleted!(.Failure(error))
+        onMigrationsCompleted!(.failure(error))
     }
 
-    private func migrationForIndex(index: UInt) -> Result<Migration> {
+    private func migrationForIndex(_ index: UInt) -> Result<Migration> {
         if let migration = migrationList.migrations[index] {
-            return .Success(migration)
+            return .success(migration)
         } else {
-            return .Failure(Error.MissingMigration(missingIndex: index))
+            return .failure(MigrationError.missingMigration(missingIndex: index))
         }
     }
 
-    private func totalMigrationTime() -> NSTimeInterval {
-        return stopTimestamp!.timeIntervalSinceDate(startTimestamp!)
+    private func totalMigrationTime() -> TimeInterval {
+        return stopTimestamp!.timeIntervalSince(startTimestamp!)
     }
 }
 

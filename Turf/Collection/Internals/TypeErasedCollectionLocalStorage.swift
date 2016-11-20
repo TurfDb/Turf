@@ -31,7 +31,7 @@ internal protocol TypeErasedCollectionLocalStorage {
      - note:
      - **Not thread safe**
      */
-    func copyChangeSetFor(collection collection: TypeErasedCollection) -> ChangeSet<String>
+    func copyChangeSetFor(collection: TypeErasedCollection) -> ChangeSet<String>
     
     /**
      Informs `database` of any changes a connection has made to a collection for value cache consistency.
@@ -42,7 +42,7 @@ internal protocol TypeErasedCollectionLocalStorage {
      - parameter snapshot: The connection's snapshot number at which the changes were made
      - parameter database: The database changes were made on
      */
-    func recordPendingCacheUpdatesOnSnapshot<DatabaseCollections: CollectionsContainer>(snapshot: UInt64, withDatabase database: Database<DatabaseCollections>)
+    func recordPendingCacheUpdatesOnSnapshot<DatabaseCollections: CollectionsContainer>(_ snapshot: UInt64, withDatabase database: Database<DatabaseCollections>)
 
     /**
      Gets all pending and commited cache changes *after* `minSnapshot` up to *and including* `maxSnapshot` from
@@ -53,5 +53,5 @@ internal protocol TypeErasedCollectionLocalStorage {
      - parameter maxSnapshot: upper bound snapshot number
      - parameter database: The database the cache updates were recorded on
      */
-    func applyChangeSetsToValueCacheAfterSnapshot<DatabaseCollections: CollectionsContainer>(minSnapshot: UInt64, upToSnapshot maxSnapshot: UInt64, withDatabase database: Database<DatabaseCollections>)
+    func applyChangeSetsToValueCacheAfterSnapshot<DatabaseCollections: CollectionsContainer>(_ minSnapshot: UInt64, upToSnapshot maxSnapshot: UInt64, withDatabase database: Database<DatabaseCollections>)
 }

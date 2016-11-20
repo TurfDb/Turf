@@ -21,7 +21,7 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
 
     // MARK: Object lifecycle
 
-    internal init(connection: Connection<Collections>, shouldAdvanceWhenDatabaseChanges: () -> Bool) throws {
+    internal init(connection: Connection<Collections>, shouldAdvanceWhenDatabaseChanges: @escaping () -> Bool) throws {
         self.connection = connection
         self.shouldAdvanceWhenDatabaseChanges = shouldAdvanceWhenDatabaseChanges
         self.observableCollections = [:]
@@ -32,7 +32,7 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
     }
 
     deinit {
-        let _ = try? Dispatch.synchronouslyOn(connection.connectionQueue) {
+        let _ = try? connection.connectionQueue.sync {
             if let longLivedReadTransaction = self.longLivedReadTransaction {
                 try self.connection.postReadTransaction(longLivedReadTransaction)
             }
@@ -45,11 +45,10 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
      - note:
      Thread safe.
      */
-    @warn_unused_result
-    public func observe<TCollection: Collection>(collection collection: TCollection) -> ObservableCollection<TCollection, Collections> {
+    public func observe<TCollection: TurfCollection>(collection: TCollection) -> ObservableCollection<TCollection, Collections> {
         var returnedObserable: ObservableCollection<TCollection, Collections>!
 
-        Dispatch.synchronouslyOn(self.connection.connectionQueue) {
+        self.connection.connectionQueue.sync {
             guard self.observableCollections[collection.name] == nil else {
                 returnedObserable = self.observableCollections[collection.name]  as! ObservableCollection<TCollection, Collections>
                 return
@@ -74,15 +73,6 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
         return returnedObserable
     }
 
-
-    /**
-     - note:
-     Thread safe.
-     */
-    public func observeCollection<TCollection: Collection>(collection: TCollection) -> ObservableCollection<TCollection, Collections> {
-        return observe(collection: collection)
-    }
-
     /**
      - note: 
         - Thread safe
@@ -90,11 +80,11 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
     public func advanceToLatestSnapshot() throws {
         var changeSets = [String: ChangeSet<String>]()
 
-        Dispatch.synchronouslyOn(connection.connectionQueue) {
+        connection.connectionQueue.sync {
             for pendingChanges in self.pendingChangeSets {
                 for (collectionName, pendingChangeSet) in pendingChanges {
                     if let changeSet = changeSets[collectionName] {
-                        changeSet.mergeWithChangeSet(pendingChangeSet)
+                        changeSet.mergeInPlace(with: pendingChangeSet)
                     } else {
                         changeSets[collectionName] = pendingChangeSet
                     }
@@ -117,7 +107,7 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
         - Thread safe due to being called on the write queue.
      - warning: This method should only ever be called from at the end of a commit on the write queue.
      */
-    func processModifiedCollections(changeSets changeSets: [String: ChangeSet<String>]) throws {
+    func processModifiedCollections(changeSets: [String: ChangeSet<String>]) throws {
         assert(connection.database.isOnWriteQueue(), "Must be called from write queue")
 
         guard shouldAdvanceWhenDatabaseChanges() else {
@@ -139,8 +129,8 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
      - note:
         - Thread safe.
      */
-    private func advanceToLatestSnapshot(changeSets changeSets: [String: ChangeSet<String>]) throws  {
-        try Dispatch.synchronouslyOn(connection.connectionQueue) {
+    private func advanceToLatestSnapshot(changeSets: [String: ChangeSet<String>]) throws  {
+        try connection.connectionQueue.sync {
             self.pendingChangeSets = []
 
             // End previous read transaction
@@ -156,7 +146,7 @@ public final class ObservingConnection<Collections: CollectionsContainer> {
             // Update observers
             for collectionName in self.observableCollections.keys {
                 if let updateProcessor = self.collectionUpdateProcessors[collectionName],
-                       changeSet = changeSets[collectionName] {
+                       let changeSet = changeSets[collectionName] {
                     updateProcessor(readTransaction, changeSet)
                 }
             }

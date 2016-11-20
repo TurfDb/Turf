@@ -2,27 +2,27 @@
 internal final class SQLiteCollection {
     // MARK: Internal properties
 
-    private(set) var allValuesInCollectionStmt: COpaquePointer = nil
+    private(set) var allValuesInCollectionStmt: OpaquePointer? = nil
 
     // MARK: Private properties
 
-    private let db: COpaquePointer
+    private let db: OpaquePointer
     private let collectionName: String
 
-    private var numberOfKeysInCollectionStmt: COpaquePointer = nil
-    private var numberOfKeysAtVersionInCollectionStmt: COpaquePointer = nil
-    private var keysInCollectionStmt: COpaquePointer = nil
-    private var valueDataForKeyStmt: COpaquePointer = nil
-    private var rowIdForKeyStmt: COpaquePointer = nil
-    private var insertValueDataStmt: COpaquePointer = nil
-    private var updateValueDataStmt: COpaquePointer = nil
-    private var removeValueStmt: COpaquePointer = nil
-    private var removeAllValuesStmt: COpaquePointer = nil
-    private var allKeysAndValuesStmt: COpaquePointer = nil
+    private var numberOfKeysInCollectionStmt: OpaquePointer? = nil
+    private var numberOfKeysAtVersionInCollectionStmt: OpaquePointer? = nil
+    private var keysInCollectionStmt: OpaquePointer? = nil
+    private var valueDataForKeyStmt: OpaquePointer? = nil
+    private var rowIdForKeyStmt: OpaquePointer? = nil
+    private var insertValueDataStmt: OpaquePointer? = nil
+    private var updateValueDataStmt: OpaquePointer? = nil
+    private var removeValueStmt: OpaquePointer? = nil
+    private var removeAllValuesStmt: OpaquePointer? = nil
+    private var allKeysAndValuesStmt: OpaquePointer? = nil
 
     // MARK: Object lifecycle
 
-    init(db: COpaquePointer, collectionName: String) throws {
+    init(db: OpaquePointer, collectionName: String) throws {
         self.db = db
         self.collectionName = collectionName
         try setUpAllValuesInCollectionStmt()
@@ -56,7 +56,7 @@ internal final class SQLiteCollection {
     /**
      Create a new table called `name`.
      */
-    static func createCollectionTableNamed(name: String, db: COpaquePointer) throws {
+    static func createCollectionTableNamed(_ name: String, db: OpaquePointer) throws {
         if sqlite3_exec(db,
             "CREATE TABLE IF NOT EXISTS `\(name)` (" +
                 "    key TEXT NOT NULL UNIQUE," +
@@ -65,18 +65,18 @@ internal final class SQLiteCollection {
             ");" +
             "CREATE INDEX IF NOT EXISTS `\(name)_schemaVersion_idx` ON \(name) (schemaVersion);",
             nil, nil, nil).isNotOK {
-                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+                throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
         }
     }
 
     /**
      Drop a collection table.
      */
-    static func dropCollectionTableNamed(name: String, db: COpaquePointer) throws {
+    static func dropCollectionTableNamed(_ name: String, db: OpaquePointer) throws {
         if sqlite3_exec(db,
             "DROP TABLE IF EXISTS `\(name)`;",
             nil, nil, nil).isNotOK {
-                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+                throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
         }
     }
 
@@ -84,7 +84,7 @@ internal final class SQLiteCollection {
      Drop all collection tables, leaving only Turf tables
      - returns: Names of dropped tables
      */
-    static func dropAllCollectionTables(db db: COpaquePointer) throws -> [String] {
+    static func dropAllCollectionTables(db: OpaquePointer) throws -> [String] {
         let collectionTableNames = collectionNames(db: db)
         for name in collectionTableNames {
             try dropCollectionTableNamed(name, db: db)
@@ -96,8 +96,8 @@ internal final class SQLiteCollection {
     /**
      - returns: Count of user collections in the database.
      */
-    static func numberOfCollections(db: COpaquePointer) -> UInt {
-        var stmt: COpaquePointer = nil
+    static func numberOfCollections(_ db: OpaquePointer) -> UInt {
+        var stmt: OpaquePointer? = nil
 
         defer { sqlite3_finalize(stmt) }
         guard sqlite3_prepare_v2(db, "SELECT COUNT(name) FROM sqlite_master where type='table' AND name NOT LIKE ?;", -1, &stmt, nil).isOK else {
@@ -120,8 +120,8 @@ internal final class SQLiteCollection {
     /**
      - returns: Names of each user collection in the database.
      */
-    static func collectionNames(db db: COpaquePointer) -> [String] {
-        var stmt: COpaquePointer = nil
+    static func collectionNames(db: OpaquePointer) -> [String] {
+        var stmt: OpaquePointer? = nil
 
         defer { sqlite3_reset(stmt) }
         guard sqlite3_prepare_v2(db, "SELECT name, type FROM sqlite_master WHERE type='table' AND name NOT LIKE ?;", -1, &stmt, nil).isOK else {
@@ -138,7 +138,7 @@ internal final class SQLiteCollection {
         var result = sqlite3_step(stmt)
 
         while(result.hasRow) {
-            if let name = String.fromCString(UnsafePointer(sqlite3_column_text(stmt, nameColumnIndex))) {
+            if let name = String(validatingUTF8: UnsafePointer(sqlite3_column_text(stmt, nameColumnIndex))) {
                 collectionNames.append(name)
             }
             result = sqlite3_step(stmt)
@@ -166,7 +166,7 @@ internal final class SQLiteCollection {
     /**
      - returns: Number of keys in `collection`.
      */
-    func numberOfKeysInCollectionAtSchemaVersion(schemaVersion: UInt64) -> UInt {
+    func numberOfKeysInCollectionAtSchemaVersion(_ schemaVersion: UInt64) -> UInt {
         defer { sqlite3_reset(numberOfKeysAtVersionInCollectionStmt) }
 
         let schemaVersionIndex = SQLITE_FIRST_BIND_COLUMN
@@ -194,7 +194,7 @@ internal final class SQLiteCollection {
         var result = sqlite3_step(keysInCollectionStmt)
 
         while(result.hasRow) {
-            if let key = String.fromCString(UnsafePointer(sqlite3_column_text(keysInCollectionStmt, keyColumnIndex))) {
+            if let key = String(validatingUTF8: UnsafePointer(sqlite3_column_text(keysInCollectionStmt, keyColumnIndex))) {
                 keys.append(key)
             }
             result = sqlite3_step(keysInCollectionStmt)
@@ -203,7 +203,7 @@ internal final class SQLiteCollection {
         return keys
     }
 
-    func enumerateKeySchemaVersionAndValueDataInCollection(enumerate: (String, UInt64, NSData) -> Bool) {
+    func enumerateKeySchemaVersionAndValueDataInCollection(_ enumerate: (String, UInt64, Data) -> Bool) {
         defer { sqlite3_reset(allKeysAndValuesStmt) }
 
         let keyColumnIndex = SQLITE_FIRST_COLUMN
@@ -213,10 +213,15 @@ internal final class SQLiteCollection {
         var result = sqlite3_step(keysInCollectionStmt)
 
         while(result.hasRow) {
-            if let key = String.fromCString(UnsafePointer(sqlite3_column_text(keysInCollectionStmt, keyColumnIndex))) {
-                let bytes = sqlite3_column_blob(valueDataForKeyStmt, valueDataColumnIndex)
-                let bytesLength = Int(sqlite3_column_bytes(valueDataForKeyStmt, valueDataColumnIndex))
-                let valueData = NSData(bytes: bytes, length: bytesLength)
+            if let key = String(validatingUTF8: UnsafePointer(sqlite3_column_text(keysInCollectionStmt, keyColumnIndex))) {
+
+                let valueData: Data
+                if let bytes = sqlite3_column_blob(valueDataForKeyStmt, valueDataColumnIndex){
+                    let bytesLength = Int(sqlite3_column_bytes(valueDataForKeyStmt, valueDataColumnIndex))
+                    valueData = Data(bytes: bytes, count: bytesLength)
+                } else {
+                    valueData = Data()
+                }
 
                 let schemaVersion = UInt64(sqlite3_column_int64(valueDataForKeyStmt, schemaVersionColumnIndex))
 
@@ -233,7 +238,7 @@ internal final class SQLiteCollection {
      - parameter collection: Collection name.
      - returns: Serialized value and schema version of the persisted value.
      */
-    func valueDataForKey(key: String) -> (valueData: NSData, schemaVersion: UInt64)? {
+    func valueDataForKey(_ key: String) -> (valueData: Data, schemaVersion: UInt64)? {
         defer { sqlite3_reset(valueDataForKeyStmt) }
 
         let keyIndex = SQLITE_FIRST_BIND_COLUMN
@@ -243,9 +248,13 @@ internal final class SQLiteCollection {
         sqlite3_bind_text(valueDataForKeyStmt, keyIndex, key, -1, SQLITE_TRANSIENT)
 
         if sqlite3_step(valueDataForKeyStmt).hasRow {
-            let bytes = sqlite3_column_blob(valueDataForKeyStmt, valueDataColumnIndex)
-            let bytesLength = Int(sqlite3_column_bytes(valueDataForKeyStmt, valueDataColumnIndex))
-            let valueData = NSData(bytes: bytes, length: bytesLength)
+            let valueData: Data
+            if let bytes = sqlite3_column_blob(valueDataForKeyStmt, valueDataColumnIndex){
+                let bytesLength = Int(sqlite3_column_bytes(valueDataForKeyStmt, valueDataColumnIndex))
+                valueData = Data(bytes: bytes, count: bytesLength)
+            } else {
+                valueData = Data()
+            }
 
             let schemaVersion = UInt64(sqlite3_column_int64(valueDataForKeyStmt, schemaVersionColumnIndex))
             return (valueData: valueData, schemaVersion: schemaVersion)
@@ -259,7 +268,7 @@ internal final class SQLiteCollection {
      - parameter collection: Collection name.
      - returns: Internal sqlite rowid column value.
      */
-    func rowIdForKey(key: String) -> Int64? {
+    func rowIdForKey(_ key: String) -> Int64? {
         defer { sqlite3_reset(rowIdForKeyStmt) }
 
         let keyIndex = SQLITE_FIRST_BIND_COLUMN
@@ -283,9 +292,9 @@ internal final class SQLiteCollection {
      - paramter collection: Collection name.
      - returns: The row id and type of upsert operation (.Insert or .Update).
      */
-    func setValueData(valueData: NSData, valueSchemaVersion: UInt64, forKey key: String) throws -> SQLiteRowChangeType {
+    func setValueData(_ valueData: Data, valueSchemaVersion: UInt64, forKey key: String) throws -> SQLiteRowChangeType {
 
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
 
         if let rowId = rowIdForKey(key) {
             defer { sqlite3_reset(updateValueDataStmt) }
@@ -294,14 +303,14 @@ internal final class SQLiteCollection {
             let schemaVersionIndex = SQLITE_FIRST_BIND_COLUMN + 1
             let keyIndex = SQLITE_FIRST_BIND_COLUMN + 2
 
-            sqlite3_bind_blob(updateValueDataStmt, dataIndex, valueData.bytes, Int32(valueData.length), nil)
+            sqlite3_bind_blob(updateValueDataStmt, dataIndex, (valueData as NSData).bytes, Int32(valueData.count), nil)
             sqlite3_bind_int64(updateValueDataStmt, schemaVersionIndex, Int64(valueSchemaVersion))
             sqlite3_bind_text(updateValueDataStmt, keyIndex, key, -1, SQLITE_TRANSIENT)
 
             if sqlite3_step(updateValueDataStmt).isNotDone {
-                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+                throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
             } else {
-                return .Update(rowId: rowId)
+                return .update(rowId: rowId)
             }
         } else {
             defer { sqlite3_reset(insertValueDataStmt) }
@@ -310,141 +319,141 @@ internal final class SQLiteCollection {
             let dataIndex = SQLITE_FIRST_BIND_COLUMN + 1
             let schemaVersionIndex = SQLITE_FIRST_BIND_COLUMN + 2
 
-            sqlite3_bind_blob(insertValueDataStmt, dataIndex, valueData.bytes, Int32(valueData.length), nil)
+            sqlite3_bind_blob(insertValueDataStmt, dataIndex, (valueData as NSData).bytes, Int32(valueData.count), nil)
             sqlite3_bind_int64(insertValueDataStmt, schemaVersionIndex, Int64(valueSchemaVersion))
             sqlite3_bind_text(insertValueDataStmt, keyIndex, key, -1, SQLITE_TRANSIENT)
 
             if sqlite3_step(insertValueDataStmt).isNotDone {
-                throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+                throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
             } else {
-                return .Insert(rowId: sqlite3_last_insert_rowid(db))
+                return .insert(rowId: sqlite3_last_insert_rowid(db))
             }
         }
     }
 
-    func removeValueWithKey(key: String) throws {
+    func removeValueWithKey(_ key: String) throws {
         defer { sqlite3_reset(removeAllValuesStmt) }
 
         let keyIndex = SQLITE_FIRST_BIND_COLUMN
         sqlite3_bind_text(insertValueDataStmt, keyIndex, key, -1, SQLITE_TRANSIENT)
 
         if sqlite3_step(removeAllValuesStmt).isNotDone {
-            throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
         }
     }
 
     func removeAllValues() throws {
         defer { sqlite3_reset(removeAllValuesStmt) }
         if sqlite3_step(removeAllValuesStmt).isNotDone {
-            throw SQLiteError.Error(code: sqlite3_errcode(db), reason: String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
         }
     }
 
     // MARK: Private methods
 
     private func setUpAllValuesInCollectionStmt() throws {
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "SELECT valueData, schemaVersion FROM `\(collectionName)`", -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
 
         self.allValuesInCollectionStmt = stmt
     }
 
     private func setUpRemoveValueInCollectionStmt() throws {
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "DELETE FROM `\(collectionName)` WHERE key=?;", -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
 
         self.removeValueStmt = stmt
     }
 
     private func setUpRemoveAllValuesInCollectionStmt() throws {
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "DELETE FROM `\(collectionName)`;", -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
 
         self.removeAllValuesStmt = stmt
     }
 
     private func setUpNumberOfKeysInCollectionStmt() throws {
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "SELECT COUNT(key) FROM `\(collectionName)`", -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
         self.numberOfKeysInCollectionStmt = stmt
     }
 
     private func setUpNumberOfKeysAtVersionInCollectionStmt() throws {
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "SELECT COUNT(key) FROM `\(collectionName)` WHERE schemaVersion=?", -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
         self.numberOfKeysAtVersionInCollectionStmt = stmt
     }
 
     private func setUpKeysInCollectionStmt() throws {
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
 
         defer { sqlite3_reset(stmt) }
         guard sqlite3_prepare_v2(db, "SELECT key FROM `\(collectionName)`", -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
         self.keysInCollectionStmt = stmt
     }
 
     private func setUpValueDataForKeyStmt() throws {
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "SELECT valueData, schemaVersion FROM `\(collectionName)` WHERE key=? LIMIT 1", -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
 
         self.valueDataForKeyStmt = stmt
     }
 
     private func setUpRowIdForKeyStmt() throws {
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "SELECT rowid FROM `\(collectionName)` WHERE key=?;", -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
 
         self.rowIdForKeyStmt = stmt
     }
 
     private func setUpInsertValueDataStmt() throws {
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "INSERT INTO `\(collectionName)` (key, valueData, schemaVersion) VALUES (?,?,?);", -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
 
         self.insertValueDataStmt = stmt
     }
 
     private func setUpUpdateValueDataStmt() throws {
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "UPDATE `\(collectionName)` SET valueData=?,schemaVersion=? WHERE key=?;", -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
         
         self.updateValueDataStmt = stmt
     }
 
     private func setUpAllKeysAndValuesStmt() throws {
-        var stmt: COpaquePointer = nil
+        var stmt: OpaquePointer? = nil
 
         guard sqlite3_prepare_v2(db, "SELECT key, valueData, schemaVersion FROM `\(collectionName)`", -1, &stmt, nil).isOK else {
-            throw SQLiteError.FailedToPrepareStatement(sqlite3_errcode(db), String.fromCString(sqlite3_errmsg(db)))
+            throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
         }
 
         self.allKeysAndValuesStmt = stmt

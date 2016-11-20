@@ -13,7 +13,7 @@ class Sink<Observer : ObserverType>: Disposable {
         dispose()
     }
 
-    final func forwardOn(value value: Observer.Value) {
+    final func forwardOn(value: Observer.Value) {
         observer.handle(next: value)
     }
 

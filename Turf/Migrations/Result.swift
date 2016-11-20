@@ -1,4 +1,4 @@
 public enum Result<TSuccess> {
-    case Success(TSuccess)
-    case Failure(ErrorType)
+    case success(TSuccess)
+    case failure(Error)
 }

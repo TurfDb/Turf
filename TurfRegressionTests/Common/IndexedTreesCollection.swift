@@ -2,7 +2,7 @@ import Foundation
 
 import Turf
 
-final class IndexedTreesCollection: Collection, IndexedCollection {
+final class IndexedTreesCollection: TurfCollection, IndexedCollection {
 
     typealias Value = Tree
 
@@ -23,8 +23,8 @@ final class IndexedTreesCollection: Collection, IndexedCollection {
         index.collection = self
     }
 
-    func serializeValue(value: Tree) -> NSData {
-        let dictionaryRepresentation: [String: AnyObject] = [
+    func serialize(value: Tree) -> Data {
+        let dictionaryRepresentation: [String: Any] = [
             "uuid": value.uuid,
             "type": value.type,
             "species": value.species,
@@ -32,17 +32,17 @@ final class IndexedTreesCollection: Collection, IndexedCollection {
             "age": value.age.rawValue
         ]
 
-        return try! NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options: [])
+        return try! JSONSerialization.data(withJSONObject: dictionaryRepresentation, options: [])
     }
 
-    func deserializeValue(data: NSData) -> Value? {
-        let json = try! NSJSONSerialization.JSONObjectWithData(data, options: [])
+    func deserialize(data: Data) -> Value? {
+        let json = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         guard let
             uuid = json["uuid"] as? String,
-            type = json["type"] as? String,
-            species = json["species"] as? String,
-            height = json["height"] as? Int,
-            age = (json["age"] as? Int).flatMap({ TreeAge(rawValue: $0) })
+            let type = json["type"] as? String,
+            let species = json["species"] as? String,
+            let height = json["height"] as? Int,
+            let age = (json["age"] as? Int).flatMap({ TreeAge(rawValue: $0) })
             else {
                 return nil
         }
@@ -50,13 +50,13 @@ final class IndexedTreesCollection: Collection, IndexedCollection {
     }
 
     func setUp<Collections : CollectionsContainer>(using transaction: ReadWriteTransaction<Collections>) throws {
-        try transaction.registerCollection(self)
-        try transaction.registerExtension(index)
+        try transaction.register(collection: self)
+        try transaction.register(extension: index)
     }
 
     struct IndexedProperties: Turf.IndexedProperties {
 
-        let type = IndexedProperty<IndexedTreesCollection, String>(name: "type") { tree -> String in
+        let type = IndexedProperty<IndexedTreesCollection, String>(name: "type") { tree in
             return tree.type
         }
 

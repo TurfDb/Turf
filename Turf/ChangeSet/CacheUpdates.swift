@@ -1,19 +1,19 @@
 internal final class CacheUpdates<Key: Hashable, Value>: TypeErasedCacheUpdates {
     // MARK: Private properties
 
-    private var valueUpdates: [Key: Value] = [:]
-    private var removedKeys: Set<Key> = []
-    private var allValuesRemoved = false
+    fileprivate var valueUpdates: [Key: Value] = [:]
+    fileprivate var removedKeys: Set<Key> = []
+    fileprivate var allValuesRemoved = false
 
     // MARK: Internal methods
 
-    func recordValue(value: Value, upsertedWithKey key: Key) {
+    func recordValue(_ value: Value, upsertedWithKey key: Key) {
         valueUpdates[key] = value
         removedKeys.remove(key)
     }
 
-    func recordValueRemovedWithKey(key: Key) {
-        valueUpdates.removeValueForKey(key)
+    func recordValueRemovedWithKey(_ key: Key) {
+        valueUpdates.removeValue(forKey: key)
         removedKeys.insert(key)
     }
 
@@ -24,15 +24,15 @@ internal final class CacheUpdates<Key: Hashable, Value>: TypeErasedCacheUpdates 
     }
 
     func resetUpdates() {
-        valueUpdates.removeAll(keepCapacity: true)
-        removedKeys.removeAll(keepCapacity: true)
+        valueUpdates.removeAll(keepingCapacity: true)
+        removedKeys.removeAll(keepingCapacity: true)
         allValuesRemoved = false
     }
 
-    func mergeCacheUpdatesFrom(otherUpdates: CacheUpdates<Key, Value>) {
+    func mergeCacheUpdatesFrom(_ otherUpdates: CacheUpdates<Key, Value>) {
         if otherUpdates.allValuesRemoved {
-            valueUpdates.removeAll(keepCapacity: true)
-            removedKeys.removeAll(keepCapacity: true)
+            valueUpdates.removeAll(keepingCapacity: true)
+            removedKeys.removeAll(keepingCapacity: true)
             allValuesRemoved = true
 
             for (key, value) in otherUpdates.valueUpdates {
@@ -49,7 +49,7 @@ internal final class CacheUpdates<Key: Hashable, Value>: TypeErasedCacheUpdates 
         }
     }
 
-    func applyUpdatesToCache(cache: Cache<Key, Value>) {
+    func applyUpdatesToCache(_ cache: Cache<Key, Value>) {
         if allValuesRemoved {
             cache.removeAllValues()
 

@@ -1,16 +1,16 @@
-public class MigrationList {
+open class MigrationList {
     /// Number of registered migrations
-    public var count: Int { return migrations.count }
+    open var count: Int { return migrations.count }
 
     /// First migration to be executed
-    public var firstMigrationIndex: UInt {
+    open var firstMigrationIndex: UInt {
         return migrations.keys.reduce(UInt.max) { (min, index) -> UInt in
             return index < min ? index : min
         }
     }
 
     /// Last migration to be executed
-    public var lastMigrationIndex: UInt {
+    open var lastMigrationIndex: UInt {
         return migrations.keys.reduce(UInt.min) { (max, index) -> UInt in
             return index > max ? index : max
         }
@@ -34,7 +34,7 @@ public class MigrationList {
      - parameter index: Index of the migration. This is not zero based and MUST START AT 1. It must be a strictly increasing number
      - warning: It is undefined behaviour if `index` does not strictly increase.
      */
-    public func register(migration: Migration, index: UInt) {
+    open func register(migration: Migration, index: UInt) {
         precondition(migrations[index] == nil, "Already register migration for \(index)")
         migrations[index] = migration
     }
@@ -45,7 +45,7 @@ public class MigrationList {
      - parameter index: Index of the migration. This is not zero based and MUST START AT 1. It must be a strictly increasing number
      - warning: It is undefined behaviour if `index` does not strictly increase.
      */
-    public func register(collectionMigration: CollectionMigration, index: UInt) {
-        register(CollectionMigrationOperator(migration: collectionMigration), index: index)
+    open func register(collectionMigration: CollectionMigration, index: UInt) {
+        register(migration: CollectionMigrationOperator(migration: collectionMigration), index: index)
     }
 }
