@@ -4,7 +4,7 @@ Turf is a document store database built entirely in Swift using SQLite.
 
 Built from the ground up to take advantage of Swift's type system, it has full support for persisting any `struct`, `class`, `enum` or even `tuple`.
 
-Turf makes heavy use of generics and Swift 2's protocol constraints to provide a very safe API for reading, writing and query collections.
+Turf makes heavy use of generics and Swift's protocol constraints to provide a very safe API for reading, writing and query collections.
 
 [![Build Status](https://travis-ci.org/TurfDb/Turf.svg?branch=master)](https://travis-ci.org/TurfDb/Turf)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
@@ -92,7 +92,7 @@ try connection.readWriteTransaction { transaction, collections in
 
 # Installation
 
-**Requirements:** Swift 2.2
+**Requirements:** Swift 3
 
 ## Carthage
 
