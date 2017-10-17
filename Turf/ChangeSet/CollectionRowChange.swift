@@ -12,7 +12,7 @@ public enum CollectionRowChange<Key: Equatable> {
     }
 }
 
-public func ==<Key: Equatable>(lhs: CollectionRowChange<Key>, rhs: CollectionRowChange<Key>) -> Bool {
+public func ==<Key>(lhs: CollectionRowChange<Key>, rhs: CollectionRowChange<Key>) -> Bool {
     switch (lhs, rhs) {
     case (.insert(let leftKey), .insert(let rightKey)): return leftKey == rightKey
     case (.update(let leftKey), .update(let rightKey)): return leftKey == rightKey

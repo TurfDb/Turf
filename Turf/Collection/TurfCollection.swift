@@ -43,5 +43,5 @@ public protocol TurfCollection: class, TypeErasedCollection {
      - warning: You must call `transaction.registerCollection(self)`
      - parameter transaction
      */
-    func setUp<Collections: CollectionsContainer>(using transaction: ReadWriteTransaction<Collections>) throws
+    func setUp<Collections>(using transaction: ReadWriteTransaction<Collections>) throws
 }

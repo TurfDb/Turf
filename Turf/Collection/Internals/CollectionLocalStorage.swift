@@ -88,7 +88,7 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
      - parameter database: The database changes were made on
      - parameter snapshot: The connection's snapshot number at which the changes were made
      */
-    func recordPendingCacheUpdatesOnSnapshot<DatabaseCollections: CollectionsContainer>(_ snapshot: UInt64, withDatabase database: Database<DatabaseCollections>) {
+    func recordPendingCacheUpdatesOnSnapshot<DatabaseCollections>(_ snapshot: UInt64, withDatabase database: Database<DatabaseCollections>) {
         database.recordPendingCacheUpdates(cacheUpdates.copy(), onSnapshot: snapshot, forCollectionNamed: collectionName)
     }
 
@@ -101,7 +101,7 @@ internal class CollectionLocalStorage<Value>: TypeErasedCollectionLocalStorage {
      - parameter maxSnapshot: upper bound snapshot number
      - parameter database: The database the cache updates were recorded on
      */
-    func applyChangeSetsToValueCacheAfterSnapshot<DatabaseCollections: CollectionsContainer>(_ minSnapshot: UInt64, upToSnapshot maxSnapshot: UInt64, withDatabase database: Database<DatabaseCollections>) {
+    func applyChangeSetsToValueCacheAfterSnapshot<DatabaseCollections>(_ minSnapshot: UInt64, upToSnapshot maxSnapshot: UInt64, withDatabase database: Database<DatabaseCollections>) {
         let cacheChanges: CacheUpdates<String, Value> = database
             .cacheChangesAfterSnapshot(minSnapshot, upToSnapshot: maxSnapshot, forCollectionNamed: collectionName)
         cacheChanges.applyUpdatesToCache(valueCache)

@@ -43,11 +43,11 @@ open class SecondaryIndex<TCollection: TurfCollection, Properties: IndexedProper
         self.properties = properties
     }
 
-    open func newConnection<DatabaseCollections: CollectionsContainer>(_ connection: Connection<DatabaseCollections>) -> ExtensionConnection {
+    open func newConnection<DatabaseCollections>(_ connection: Connection<DatabaseCollections>) -> ExtensionConnection {
         return SecondaryIndexConnection(index: self)
     }
 
-    open func install<DatabaseCollections: CollectionsContainer>(using transaction: ReadWriteTransaction<DatabaseCollections>, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) throws {
+    open func install<DatabaseCollections>(using transaction: ReadWriteTransaction<DatabaseCollections>, db: SQLitePtr, existingInstallationDetails: ExistingExtensionInstallation?) throws {
         let requiresRepopulation = try handleExistingInstallation(existingInstallationDetails, db: db)
 
         let sql = createTableSql()
@@ -73,7 +73,7 @@ open class SecondaryIndex<TCollection: TurfCollection, Properties: IndexedProper
 
     // MARK: Private methods
 
-    private func repopulate<DatabaseCollections: CollectionsContainer>(_ transaction: ReadWriteTransaction<DatabaseCollections>, collection: TCollection) throws {
+    private func repopulate<DatabaseCollections>(_ transaction: ReadWriteTransaction<DatabaseCollections>, collection: TCollection) throws {
         let readOnlyCollection = transaction.readOnly(collection)
         let extensionTransaction = newConnection(transaction.connection).writeTransaction(transaction)
 
