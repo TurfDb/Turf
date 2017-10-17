@@ -25,7 +25,7 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: TurfCollection,
 
         let properties = connection.index.properties
         for (index, property) in properties.allProperties.enumerated() {
-            property.bindPropertyValue(indexedCollectionValue, toSQLiteStmt: stmt!, atIndex: index + primaryKeyIndex + 1)
+            property.bindPropertyValue(indexedCollectionValue, toSQLiteStmt: stmt!, atIndex: Int32(index) + primaryKeyIndex + 1)
         }
 
         if sqlite3_step(stmt).isNotDone {
@@ -42,11 +42,11 @@ internal class SecondaryIndexWriteTransaction<IndexedCollection: TurfCollection,
         let stmt = connection.updateStmt
 
         let properties = connection.index.properties
-        let primaryKeyIndex = SQLITE_FIRST_BIND_COLUMN + properties.allProperties.count
+        let primaryKeyIndex = SQLITE_FIRST_BIND_COLUMN + Int32(properties.allProperties.count)
         sqlite3_bind_text(stmt, primaryKeyIndex, primaryKey, -1, SQLITE_TRANSIENT)
 
         for (index, property) in properties.allProperties.enumerated() {
-            property.bindPropertyValue(indexedCollectionValue, toSQLiteStmt: stmt!, atIndex: index + SQLITE_FIRST_BIND_COLUMN)
+            property.bindPropertyValue(indexedCollectionValue, toSQLiteStmt: stmt!, atIndex: Int32(index) + SQLITE_FIRST_BIND_COLUMN)
         }
 
         if sqlite3_step(stmt).isNotDone {

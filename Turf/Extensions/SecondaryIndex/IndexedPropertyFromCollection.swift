@@ -8,7 +8,7 @@ public struct IndexedPropertyFromCollection<IndexedCollection: TurfCollection> {
 
     // MARK: Object lifecycle
 
-    public init<T: SQLiteType>(property: IndexedProperty<IndexedCollection, T>) {
+    public init<T>(property: IndexedProperty<IndexedCollection, T>) {
         self.sqliteTypeName = T.sqliteTypeName
         self.isNullable = T.isNullable
         self.propertyValueForValue = property.propertyValueForValue
@@ -17,6 +17,8 @@ public struct IndexedPropertyFromCollection<IndexedCollection: TurfCollection> {
 
     // MARK: Internal methods
 
+    /// TODO: Remove `@discardableResult`.
+    @discardableResult
     func bindPropertyValue(_ value: IndexedCollection.Value, toSQLiteStmt stmt: OpaquePointer, atIndex index: Int32) -> Int32 {
         let value = propertyValueForValue(value)
         return value.sqliteBind(stmt, index: index)

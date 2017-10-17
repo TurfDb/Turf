@@ -12,10 +12,12 @@ public protocol SQLiteType {
 
     /**
      Bind the type to a sqlite3_stmt.
+     TODO: Remove `@discardableResult`.
 
      - parameter stmt: sqlite3_stmt.
      - parameter index: Index of the column to bind to.
      */
+    @discardableResult
     func sqliteBind(_ stmt: OpaquePointer, index: Int32) -> Int32
 
     func sqliteValue() -> SQLiteType
@@ -57,6 +59,8 @@ extension String: SQLiteType {
         }
     }
 
+    /// TODO: Remove `@discardableResult`.
+    @discardableResult
     public func sqliteBind(_ stmt: OpaquePointer, index: Int32) -> Int32 {
         return sqlite3_bind_text(stmt, index, self, -1, SQLITE_TRANSIENT)
     }

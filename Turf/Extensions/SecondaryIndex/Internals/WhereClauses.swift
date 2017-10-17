@@ -39,7 +39,7 @@ internal struct WhereClauses {
         return WhereClause(sql: "\(name) \(negate ? "NOT" : "") IN [\(placeholders)]",
             bindStatements: { (stmt, firstColumnIndex) -> Int32 in
                 for (index, value) in values.enumerated() {
-                    value.sqliteBind(stmt, index: firstColumnIndex + index)
+                    value.sqliteBind(stmt, index: firstColumnIndex + Int32(index))
                 }
                 return Int32(values.count)
         })

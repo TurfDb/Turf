@@ -176,7 +176,7 @@ extension IndexedProperty where T: TurfSwiftString {
     }
 }
 
-extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType {
+extension IndexedProperty where T: TurfSQLiteOptional {
     /**
      Generates a SQL predicate
      - note: Property must be comparable within SQLite
@@ -288,7 +288,7 @@ extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType {
     }
 }
 
-extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: SQLiteType, T._Wrapped: TurfSwiftString {
+extension IndexedProperty where T: TurfSQLiteOptional, T._Wrapped: TurfSwiftString {
     /**
      Generates a SQL predicate
      - note: Property must be comparable within SQLite

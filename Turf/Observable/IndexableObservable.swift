@@ -1,6 +1,6 @@
 import Foundation
 
-open class IndexableObservable<Array: Collection>: Observable<Array> where Array.Indices.Iterator.Element == Array.Index {
+open class IndexableObservable<Array: Collection>: Observable<Array> {
     open let first: Observable<Array.Iterator.Element?>
     open let last: Observable<Array.Iterator.Element?>
 
@@ -33,7 +33,7 @@ open class IndexableObservable<Array: Collection>: Observable<Array> where Array
     }
 }
 
-extension Collection where Indices.Iterator.Element : Equatable, Indices.Iterator.Element == Index {
+extension Collection {
     /// Returns the element at the specified index iff it is within bounds, otherwise nil.
     subscript (safe index: Index) -> Iterator.Element? {
         return indices.contains(index) ? self[index] : nil
