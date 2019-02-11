@@ -25,7 +25,7 @@ internal class SecondaryIndexConnection<TCollection: TurfCollection, Properties:
 
     // MARK: Internal methods
 
-    func writeTransaction<DatabaseCollections: CollectionsContainer>(_ transaction: ReadWriteTransaction<DatabaseCollections>) -> ExtensionWriteTransaction {
+    func writeTransaction<DatabaseCollections>(_ transaction: ReadWriteTransaction<DatabaseCollections>) -> ExtensionWriteTransaction {
         return SecondaryIndexWriteTransaction(connection: self)
     }
 

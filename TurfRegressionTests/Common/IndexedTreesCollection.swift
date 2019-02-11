@@ -49,7 +49,7 @@ final class IndexedTreesCollection: TurfCollection, IndexedCollection {
         return Tree(uuid: uuid, type: type, species: species, height: height, age: age)
     }
 
-    func setUp<Collections : CollectionsContainer>(using transaction: ReadWriteTransaction<Collections>) throws {
+    func setUp<Collections>(using transaction: ReadWriteTransaction<Collections>) throws {
         try transaction.register(collection: self)
         try transaction.register(extension: index)
     }

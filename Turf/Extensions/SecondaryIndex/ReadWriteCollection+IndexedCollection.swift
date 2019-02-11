@@ -19,7 +19,7 @@ public extension ReadWriteCollection where TCollection: IndexedCollection {
                 throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
             }
 
-            try! clause.bindStatements(stmt!, SQLITE_FIRST_BIND_COLUMN)
+            _ = try! clause.bindStatements(stmt!, SQLITE_FIRST_BIND_COLUMN)
 
             var keysRemoved = [String]()
             var result = sqlite3_step(stmt)
@@ -42,7 +42,7 @@ public extension ReadWriteCollection where TCollection: IndexedCollection {
                 throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
             }
 
-            try! clause.bindStatements(stmt!, SQLITE_FIRST_BIND_COLUMN)
+            _ = try! clause.bindStatements(stmt!, SQLITE_FIRST_BIND_COLUMN)
             if sqlite3_step(stmt).isNotDone {
                 throw SQLiteError.error(code: sqlite3_errcode(db), reason: String(cString: sqlite3_errmsg(db)))
             }

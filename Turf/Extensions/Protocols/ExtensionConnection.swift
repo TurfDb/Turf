@@ -13,5 +13,5 @@ public protocol ExtensionConnection {
      - parameter transaction: Read-write transaction
      - returns: An extension's write transaction
      */
-    func writeTransaction<DatabaseCollections: CollectionsContainer>(_ transaction: ReadWriteTransaction<DatabaseCollections>) -> ExtensionWriteTransaction
+    func writeTransaction<DatabaseCollections>(_ transaction: ReadWriteTransaction<DatabaseCollections>) -> ExtensionWriteTransaction
 }

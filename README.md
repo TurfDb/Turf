@@ -92,7 +92,7 @@ try connection.readWriteTransaction { transaction, collections in
 
 # Installation
 
-**Requirements:** Swift 3
+**Requirements:** Swift 4
 
 ## Carthage
 

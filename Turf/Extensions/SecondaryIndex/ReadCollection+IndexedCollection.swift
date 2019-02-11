@@ -26,7 +26,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
                 throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
             }
 
-            try! clause.bindStatements(stmt!, SQLITE_FIRST_BIND_COLUMN)
+            _ = try! clause.bindStatements(stmt!, SQLITE_FIRST_BIND_COLUMN)
 
             let result = sqlite3_step(stmt)
             if result.hasRow {
@@ -64,7 +64,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
                 throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
             }
 
-            try! clause.bindStatements(stmt!, SQLITE_FIRST_BIND_COLUMN)
+            _ = try! clause.bindStatements(stmt!, SQLITE_FIRST_BIND_COLUMN)
 
             var result = sqlite3_step(stmt)
             while result.hasRow {
@@ -103,7 +103,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
                 throw SQLiteError.failedToPrepareStatement(sqlite3_errcode(db), String(cString: sqlite3_errmsg(db)))
             }
 
-            try! clause.bindStatements(stmt!, SQLITE_FIRST_BIND_COLUMN)
+            _ = try! clause.bindStatements(stmt!, SQLITE_FIRST_BIND_COLUMN)
             let result = sqlite3_step(stmt)
             if result.hasRow {
                 count = Int(sqlite3_column_int64(stmt!, SQLITE_FIRST_COLUMN))
@@ -137,7 +137,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
             let connection = extensionConnection()
             let db = sqlite3_db_handle(connection.insertStmt)
 
-            try! preparedQuery.clause.bindStatements(stmt, SQLITE_FIRST_BIND_COLUMN)
+            _ = try! preparedQuery.clause.bindStatements(stmt, SQLITE_FIRST_BIND_COLUMN)
 
             let result = sqlite3_step(stmt)
             if result.hasRow {
@@ -172,7 +172,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
             let connection = extensionConnection()
             let db = sqlite3_db_handle(connection.insertStmt)
 
-            try! preparedQuery.clause.bindStatements(stmt, SQLITE_FIRST_BIND_COLUMN)
+            _ = try! preparedQuery.clause.bindStatements(stmt, SQLITE_FIRST_BIND_COLUMN)
 
             var result = sqlite3_step(stmt)
             while result.hasRow {
@@ -209,7 +209,7 @@ public extension ReadCollection where TCollection: IndexedCollection {
             let connection = extensionConnection()
             let db = sqlite3_db_handle(connection.insertStmt)
 
-            try! preparedQuery.clause.bindStatements(stmt, SQLITE_FIRST_BIND_COLUMN)
+            _ = try! preparedQuery.clause.bindStatements(stmt, SQLITE_FIRST_BIND_COLUMN)
 
             let result = sqlite3_step(stmt)
             if result.hasRow {

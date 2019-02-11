@@ -47,7 +47,7 @@ open class MigrationOperations {
     }
 
     open func set(serializedValue: Data, key: String, version: UInt64, in name: String) throws {
-        try sqliteCollectionFor(name).setValueData(serializedValue, valueSchemaVersion: version, forKey: key)
+        _ = try sqliteCollectionFor(name).setValueData(serializedValue, valueSchemaVersion: version, forKey: key)
     }
 
     open func getSerializedValue(for key: String, in name: String) throws -> (valueData: Data, schemaVersion: UInt64)? {
